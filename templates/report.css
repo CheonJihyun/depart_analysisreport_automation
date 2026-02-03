@@ -1,0 +1,492 @@
+/* =========================
+   Paged Media (A4 Landscape)
+   ========================= */
+@page {
+  size: A4 landscape;
+  margin: 12mm 14mm 12mm 14mm;
+
+  /* 지원되는 엔진에서만 표시됨 */
+  @bottom-right {
+    content: "Page " counter(page) " / " counter(pages);
+    font-size: 9pt;
+    color: #666;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: #111;
+  background: #fff;
+}
+
+/* =========================
+   Page Layout
+   - 페이지는 3영역: header / title / body
+   - body 내부는 12컬럼 그리드
+   ========================= */
+.page {
+  width: 297mm;
+  min-height: 210mm;
+
+  break-after: page;
+  page-break-after: always;
+
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 8mm;
+  row-gap: 6mm;
+
+  /* header/title/body 영역 */
+  grid-template-areas:
+    "header header header header header header header header header header header header"
+    "title  title  title  title  title  title  title  title  title  title  title  title"
+    "body   body   body   body   body   body   body   body   body   body   body   body";
+
+  /* ✅ page-note 같은 absolute 요소의 기준 */
+  position: relative;
+
+  /* 하단에 노트 들어갈 여유를 확보 */
+  padding: 12mm 14mm 24mm 14mm;
+}
+
+.page:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+/* =========================
+   Header
+   ========================= */
+.page-header {
+  grid-area: header;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page-header__section {
+  font-size: 10.5pt;
+  font-weight: 800;
+  color: #6b8e23;
+  letter-spacing: -0.2px;
+}
+
+.page-header__brand {
+  font-size: 9pt;
+  color: #888;
+  white-space: nowrap;
+}
+
+/* =========================
+   Title
+   ========================= */
+.title-block {
+  grid-area: title;
+  margin: 0;
+}
+
+.title-block__title {
+  margin: 0;
+  font-size: 34pt;
+  line-height: 1.08;
+  letter-spacing: -0.8px;
+  word-break: keep-all;
+}
+
+.title-block__subtitle {
+  margin-top: 4mm;
+  font-size: 12pt;
+  color: #444;
+}
+
+/* =========================
+   Body grid (12 columns)
+   ========================= */
+.page-body {
+  grid-area: body;
+
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 8mm;
+  row-gap: 6mm;
+
+  /* 프린트 엔진에서 재배치 최소화 */
+  grid-auto-flow: row;
+  grid-auto-rows: min-content;
+}
+
+/* Span utilities */
+.span-12 { grid-column: span 12; }
+.span-8  { grid-column: span 8; }
+.span-6  { grid-column: span 6; }
+.span-4  { grid-column: span 4; }
+.span-3  { grid-column: span 3; }
+
+/* =========================
+   Cover (그리드 끊기)
+   ========================= */
+.page--cover {
+  display: block !important;
+  padding: 0 !important;
+}
+
+.page--cover .cover {
+  width: 100%;
+  min-height: 210mm;
+  padding: 30mm 24mm;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+}
+
+.cover__meta {
+  font-size: 18pt;
+  font-weight: 900;
+  margin: 0 0 6mm 0;
+}
+
+.cover__client {
+  font-size: 28pt;
+  font-weight: 900;
+  margin: 0 0 8mm 0;
+}
+
+.cover__date {
+  font-size: 12pt;
+  color: #555;
+  margin: 0;
+}
+
+/* =========================
+   KPI Cards
+   ========================= */
+.kpi-card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 8mm;
+  background: #fff;
+
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.kpi-card__label {
+  font-size: 10pt;
+  color: #666;
+  font-weight: 800;
+}
+
+.kpi-card__value {
+  margin-top: 4mm;
+  font-size: 18pt;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+
+.kpi-card__note {
+  margin-top: 3mm;
+  font-size: 9.5pt;
+  color: #777;
+}
+
+/* =========================
+   Notes / Footnotes
+   ========================= */
+.note-block {
+  font-size: 10pt;
+  color: #333;
+}
+
+.note-block__line {
+  margin: 1.8mm 0;
+}
+
+.subtitle {
+  font-size: 11pt;
+  color: #444;
+  margin: 0;
+}
+
+/* ✅ “페이지 좌하단 고정 노트” (top_note, bottom_note 용) */
+.page-note {
+  position: absolute;
+  left: 14mm;
+  bottom: 10mm;
+  z-index: 2;
+
+  font-size: 9.5pt;
+  color: #555;
+  margin: 0;
+
+  /* 겹침/찢김 최소화 */
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ✅ 실제로 좌측 하단에 모아두는 스타일 */
+.page-note--left {
+  width: 120mm;          /* 필요 시 100~150mm 조절 */
+  text-align: left;
+}
+
+/* 일반 footnote (차트 아래/표 아래 등) */
+.footnote {
+  font-size: 9.5pt;
+  color: #555;
+  margin: 1mm 0 0 0;
+
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* =========================
+   Figures / Charts
+   ========================= */
+.figure {
+  margin: 0;
+  border-radius: 12px;
+
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.figure__img {
+  width: 100%;
+  height: auto;
+  max-height: 150mm;
+  object-fit: contain;
+  display: block;
+}
+
+.figure__placeholder {
+  width: 100%;
+  height: 140mm;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: #999;
+  font-weight: 900;
+}
+
+.figure__caption {
+  margin-top: 2mm;
+  font-size: 9.5pt;
+  color: #555;
+}
+
+/* 차트+노트 묶음용 */
+.keep-together {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* 차트 바로 아래 footnote가 갈라지는 현상 완화 */
+.figure + .footnote {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+
+/* =========================
+   Content cards (Top/Bottom)
+   ========================= */
+.content-card {
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 6mm;
+
+  break-inside: avoid;
+  page-break-inside: avoid;
+
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4mm;
+}
+
+.content-card__meta {
+  grid-column: span 12;
+  font-size: 9.5pt;
+  color: #555;
+}
+
+.content-card__thumb {
+  grid-column: span 7;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background: #fafafa;
+  min-height: 65mm;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.content-card__chart {
+  grid-column: span 5;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background: #fafafa;
+  min-height: 65mm;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.content-card__thumb img,
+.content-card__chart img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb-placeholder,
+.mini-chart-placeholder {
+  color: #aaa;
+  font-weight: 900;
+}
+
+/* =========================
+   Keyword combo cards
+   ========================= */
+.combo-card {
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 7mm;
+
+  break-inside: avoid;
+  page-break-inside: avoid;
+
+  display: grid;
+  grid-template-rows: min-content min-content 1fr;
+  row-gap: 3mm;
+}
+
+.combo-card__title {
+  font-size: 11pt;
+  font-weight: 900;
+}
+
+.combo-card__sub {
+  font-size: 9.5pt;
+  color: #666;
+}
+
+.combo-card__viz {
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background: #fafafa;
+  min-height: 90mm;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.combo-card__viz img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.combo-placeholder {
+  color: #aaa;
+  font-weight: 900;
+}
+
+/* =========================
+   Chips / annotations
+   ========================= */
+.annotation-row {
+  display: flex;
+  gap: 2mm;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-block;
+  padding: 1.6mm 3mm;
+  border-radius: 999px;
+  border: 1px solid #e7e7e7;
+  font-size: 9pt;
+  color: #555;
+}
+
+/* =========================
+   Rank block
+   ========================= */
+.rank-block {
+  font-size: 11pt;
+  font-weight: 900;
+  color: #6b8e23;
+}
+
+.rank-block__line {
+  margin: 1mm 0;
+}
+
+/* =========================
+   Tables (Appendix + Keyword tables)
+   ========================= */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5pt;
+
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.table th, .table td {
+  border: 1px solid #e8e8e8;
+  padding: 2.5mm 2.8mm;
+  vertical-align: middle;
+}
+
+.table th {
+  background: #fafafa;
+  font-weight: 900;
+  text-align: left;
+}
+
+/* 표 바로 아래 footnote 안정화 */
+.table + .footnote {
+  break-before: avoid;
+  page-break-before: avoid;
+}
+
+/* =========================
+   EOD (완전 중앙)
+   ========================= */
+.page--eod {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  min-height: 210mm;
+}
+
+.page--eod .eod {
+  margin: 0;
+  font-size: 20pt;
+  color: #aaa;
+  font-weight: 900;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+}
+
+/* =========================
+   Safety: cover/eod에서 page-note가 있더라도 레이아웃 망가지지 않게
+   ========================= */
+.page--cover .page-note,
+.page--eod .page-note {
+  position: static;
+  width: auto;
+  margin-top: 6mm;
+}
