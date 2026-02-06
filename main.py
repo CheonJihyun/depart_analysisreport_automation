@@ -228,6 +228,42 @@ def run():
             "sub": "함께 쓰인 브랜드 변수 키워드별 성과",
             "image": ""
         })
+
+    if main_age and main_gender :
+        
+        # 상위 키워드 조합
+        main_keyword_comb_df = get_strategic_performance(target_id, start, end, main_age, main_gender)
+        # 1. 중복 제거하고 상위 6개 조합만 딱 뽑기
+        top_combos_main = main_keyword_comb_df[['ess_1', 'ess_2', 'combo_overall_ctr']].drop_duplicates().head(6)
+        # 2. 리스트로 변환 (수동으로 채우기 가장 편한 상태)
+        combo_list_main = top_combos_main.values.tolist()
+
+
+        cards_main = []
+        for i, (e1, e2, ctr) in enumerate(combo_list_main, 1):
+            cards_main.append({
+                "title": f"업종 필수 키워드 조합 {i}위<br>{e1} {e2} ({ctr}%)",
+                "sub": "함께 쓰인 브랜드 변수 키워드별 성과",
+                "image": ""
+            })
+
+    if avoid_age and avoid_gender :
+        
+        # 상위 키워드 조합
+        avoid_keyword_comb_df = get_strategic_performance(target_id, start, end, avoid_age, avoid_gender)
+        # 1. 중복 제거하고 상위 6개 조합만 딱 뽑기
+        top_combos_avoid = avoid_keyword_comb_df[['ess_1', 'ess_2', 'combo_overall_ctr']].drop_duplicates().head(6)
+        # 2. 리스트로 변환 (수동으로 채우기 가장 편한 상태)
+        combo_list_avoid = top_combos_avoid.values.tolist()
+
+
+        cards_avoid = []
+        for i, (e1, e2, ctr) in enumerate(combo_list_avoid, 1):
+            cards_avoid.append({
+                "title": f"업종 필수 키워드 조합 {i}위<br>{e1} {e2} ({ctr}%)",
+                "sub": "함께 쓰인 브랜드 변수 키워드별 성과",
+                "image": ""
+            })
         
 
 
@@ -346,12 +382,13 @@ def run():
             {
                 "note": f"*3개 이상의 콘텐츠에 등장한 조합만 표시<br>*업종 필수 키워드: 동일 업종의 상위 브랜드 10개의 웹사이트에서 자주 사용된 단어\
                     <br>*브랜드 변수 키워드: 필수 키워드 외 콘텐츠에 활용된 단어<br><br>*계정 전체 평균 CTR: {main_ctr}%",
-                "cards": [{f"title": "업종 필수 키워드 조합 1위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 2위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 3위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 4위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 5위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 6위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""}]
+                "cards": cards_main
+                        # [{f"title": "업종 필수 키워드 조합 1위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
+                        #   {f"title": "업종 필수 키워드 조합 2위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
+                        #   {f"title": "업종 필수 키워드 조합 3위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
+                        #   {f"title": "업종 필수 키워드 조합 4위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
+                        #   {f"title": "업종 필수 키워드 조합 5위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
+                        #   {f"title": "업종 필수 키워드 조합 6위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""}]
             }
         ] if main_age and main_gender else None,
         "main_bottom_tables": [
@@ -367,12 +404,7 @@ def run():
             {
                 "note": f"*3개 이상의 콘텐츠에 등장한 조합만 표시<br>*업종 필수 키워드: 동일 업종의 상위 브랜드 10개의 웹사이트에서 자주 사용된 단어\
                     <br>*브랜드 변수 키워드: 필수 키워드 외 콘텐츠에 활용된 단어<br><br>*계정 전체 평균 CTR: {avoid_ctr}%",
-                "cards": [{f"title": "업종 필수 키워드 조합 1위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 2위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 3위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 4위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 5위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""},
-                          {f"title": "업종 필수 키워드 조합 6위<br>{} {} ({})", "sub": "함께 쓰인 브랜드 변수 키워드별 성과", "image": ""}]
+                "cards": cards_avoid
             }
         ] if avoid_age and avoid_gender else None,
         "avoid_bottom_tables": [
