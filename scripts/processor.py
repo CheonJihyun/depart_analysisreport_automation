@@ -1,13 +1,13 @@
 # scripts/processor.py
 import pandas as pd
 import numpy as np
-from scripts.db_connector import get_engine
+from scripts.db_connector import get_engine, get_engine_db
 
 # 제목 부분 : (기업명) 광고 계정
 def get_account_name(account_id):
     """ID를 받아 DB에서 실제 대행사/광고주 이름을 찾아오는 함수"""
     engine = get_engine()
-    query = f"SELECT account_name FROM ad_account WHERE account_id = '{account_id}' LIMIT 1"
+    query = f"SELECT account_name FROM ad_account WHERE account_id = {account_id} LIMIT 1"
     df = pd.read_sql(query, engine)
     
     if not df.empty:
@@ -25,7 +25,7 @@ def get_active_ad_count(account_id, date_start, date_end):
     query = f"""
         SELECT COUNT(DISTINCT ad_id) as ad_count
         FROM ad
-        WHERE account_id = '{account_id}'
+        WHERE account_id = {account_id}
             AND created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -45,7 +45,7 @@ def get_total_content_count(account_id, date_start, date_end):
     query = f"""
         SELECT COUNT(DISTINCT ad.ig_permalink) as content_count
         FROM ad
-        WHERE ad.account_id = '{account_id}'
+        WHERE ad.account_id = {account_id}
             AND created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -66,7 +66,7 @@ def get_ad_period(account_id, date_start, date_end):
             -- 필터 조건에서 사용한 '직전 일요일'의 바로 다음 날(월요일)을 고정적으로 반환
             DATE_TRUNC('week', '{date_end}'::date)::date AS end_date
         FROM ad
-        WHERE account_id = '{account_id}'
+        WHERE account_id = {account_id}
             AND created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -87,7 +87,7 @@ def get_content_period(account_id, date_start, date_end):
             -- 가장 늦은 날짜의 직후 월요일 계산
             MAX(ig_timestamp) AS end_date
         FROM ad
-        WHERE account_id = '{account_id}'
+        WHERE account_id = {account_id}
             AND created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -106,7 +106,7 @@ def get_total_keyword_count(account_id, date_start, date_end):
         SELECT DISTINCT ak.essential_keywords, ak.variable_keywords
         FROM ad
         LEFT JOIN ad_keyword ak ON ad.ad_id = ak.ad_id
-        WHERE account_id = '{account_id}'
+        WHERE account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -144,6 +144,22 @@ def get_total_keyword_count(account_id, date_start, date_end):
 # ----------------------------------
 
 # 인스타그램 팔로워 데이터 가져오기
+def get_instagram_followers(account_id, date_start, date_end):
+    engine_db = get_engine_db()
+    query = f"""
+    SELECT aa.account_name, ig.updated_at, ig.follower_count, ig.profile_views
+    FROM instagram_followers ig
+    JOIN facebook_pages fb ON ig.page_id = fb.id
+    JOIN ad_accounts aa ON fb.ad_account_id = aa.id
+    WHERE aa.id = '{account_id}'
+        AND ig.updated_at >= '{date_start}'
+        AND ig.updated_at <= '{date_end}'
+    """
+    df = pd.read_sql(query, engine_db)
+
+    if df.empty:
+        return None
+    return df
 
 # 주차별 CTR(%) 데이터 가져오기
 def get_ctr_data(account_id, date_start, date_end):
@@ -155,7 +171,7 @@ def get_ctr_data(account_id, date_start, date_end):
         SELECT apd.date, apd.impressions, apd.clicks
         FROM ad
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-        WHERE account_id = '{account_id}'
+        WHERE account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -178,7 +194,7 @@ def get_organic_data(account_id, date_start, date_end):
     query = f"""
         SELECT date_start, date_end, organic_impressions 
         FROM account_organic_weekly 
-        WHERE account_id = '{account_id}'
+        WHERE account_id = {account_id}
             AND date_start >= '{date_start}'
             AND date_end <= '{date_end}'
         ORDER BY date_start ASC
@@ -201,7 +217,7 @@ def get_imp_threshold(account_id, date_start, date_end):
         SELECT SUM(impressions) as total_site_imp
         FROM ad
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-        WHERE account_id = '{account_id}'
+        WHERE account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -231,7 +247,7 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
         ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
     FROM ad 
     LEFT JOIN ad_performance_daily apd ON apd.ad_id = ad.ad_id
-    WHERE ad.account_id = '{account_id}'
+    WHERE ad.account_id = {account_id}
         AND ad.created_time >= '{date_start}'
         -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
         AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -270,7 +286,7 @@ def get_a_content_target_ctr_data(ad_id, date_start, date_end):
             ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-        WHERE ad.ad_id = '{ad_id}'
+        WHERE ad.ad_id = {ad_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -306,7 +322,7 @@ def get_target_avg_imp_ctr(account_id, date_start, date_end):
         ) AS ctr
         FROM ad
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-        WHERE ad.account_id = '{account_id}'
+        WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
@@ -320,3 +336,237 @@ def get_target_avg_imp_ctr(account_id, date_start, date_end):
         return None
 
     return df
+
+def get_target_avg_imp_ctr_threshold(account_id, date_start, date_end, threshold):
+    engine = get_engine()
+    
+    query = f"""
+        SELECT 
+        apd.age, 
+        apd.gender, 
+        AVG(apd.impressions) AS impressions, 
+        AVG(apd.clicks) AS clicks,
+        -- NULLIF를 사용하여 분모(impressions)가 0이면 NULL로 처리
+        -- CTR 공식은 (클릭 / 노출) * 100입니다.
+        ROUND(
+            (SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 
+            2
+        ) AS ctr
+        FROM ad
+        LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
+        WHERE ad.account_id = {account_id}
+            AND ad.created_time >= '{date_start}'
+            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date >= '{date_start}'
+            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+        GROUP BY apd.age, apd.gender
+        HAVING SUM(apd.impressions) >= {threshold}
+    """
+
+    df = pd.read_sql(query, engine)
+    
+    if df.empty:
+        return None
+
+    return df
+
+
+
+# 키워드 마다의 imp, click, ctr
+def get_raw_keyword_performance(account_id, date_start, date_end, target_age=None, target_gender=None, is_top=True):
+    engine = get_engine()
+    
+    # 1. 정렬 방향 설정
+    # 상위 10개는 CTR 높은 순(DESC), 하위 10개는 CTR 낮은 순(ASC)
+    order_direction = "DESC" if is_top else "ASC"
+    
+    # 2. 타겟 필터링 조건
+    target_filter = ""
+    if target_age: target_filter += f" AND apd.age = '{target_age}'"
+    if target_gender: target_filter += f" AND apd.gender = '{target_gender}'"
+
+    query = f"""
+        WITH exploded_keywords AS (
+            SELECT ad_id, UNNEST(essential_keywords || variable_keywords) as keyword
+            FROM ad_keyword
+        )
+        SELECT 
+            ek.keyword,
+            COUNT(DISTINCT ad.ad_id) as doc_freq,
+            SUM(apd.impressions) as total_impressions,
+            SUM(apd.clicks) as total_clicks,
+            ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as avg_ctr
+        FROM ad
+        JOIN exploded_keywords ek ON ad.ad_id = ek.ad_id
+        LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
+        WHERE ad.account_id = {account_id}
+            AND ad.created_time >= '{date_start}'
+            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date >= '{date_start}'
+            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            {target_filter}
+        GROUP BY ek.keyword
+        HAVING COUNT(DISTINCT ad.ad_id) >= 3
+        -- 하위 정렬(ASC)일 때, 노출수가 너무 적어 우연히 CTR이 0인 것들을 방지하기 위해 
+        -- 노출수 정렬을 보조로 추가하거나 필요시 HAVING에 노출수 하한선을 추가할 수 있습니다.
+        ORDER BY avg_ctr {order_direction}, total_impressions DESC
+    """
+    return pd.read_sql(query, engine)
+
+
+# get_raw_keyword_performance로부터 얻은 df를 원하는 type(명,형동)으로 구분하여 나누는 함수 (10개 단어)
+from kiwipiepy import Kiwi
+kiwi = Kiwi()
+
+def filter_keywords_by_pos(df, pos_type='noun'):
+    """
+    pos_type: 'noun' (NNG, NNP), 'verb_adj' (VV, VA)
+    """
+    if df is None or df.empty:
+        return None
+
+    def get_cleaned_keyword(text):
+        # 1. 형태소 분석
+        tokens = kiwi.tokenize(str(text))
+        if not tokens: return None
+        
+        # 기존 로직: 첫 번째 유효한 토큰의 형태와 태그를 가져옴
+        # (보통 단어 하나가 들어오므로 tokens[0]으로 충분함)
+        t = tokens[0]
+        
+        # 2. 태그 필터링 (기존 로직 반영)
+        valid_tags = {"NNG", "NNP", "VA", "VV"}
+        if t.tag not in valid_tags:
+            return None
+        
+        # 3. 길이 및 숫자 조건 (기존 로직 반영)
+        tok = t.form
+        if len(tok) < 2 or tok.isdigit():
+            return None
+            
+        # 4. 타입 매칭
+        cur_type = "noun" if t.tag in {"NNG", "NNP"} else "verb_adj"
+        
+        # 요청한 타입과 일치하면 해당 형태(원형) 반환
+        if cur_type == pos_type:
+            return tok
+        return None
+
+    # 새로운 컬럼에 정제된 키워드 할당
+    df['cleaned_kw'] = df['keyword'].apply(get_cleaned_keyword)
+    
+    # 필터링 후 상위 10개 추출
+    filtered_df = df.dropna(subset=['cleaned_kw']).copy()
+    
+    # 중복된 원형이 있을 경우(예: '예뻐서', '예쁘니' -> '예쁘') 성과를 합쳐주는 것이 좋지만,
+    # 일단 가장 간단하게 상위 10개를 뽑으려면 아래와 같이 처리합니다.
+    return filtered_df.head(10).drop(columns=['cleaned_kw'])
+
+# 전체 기간 CTR
+def get_overall_ctr(account_id, date_start, date_end):
+    engine = get_engine()
+    
+    # 1. 쿼리: apd와 ad를 JOIN하여 account_id 기준으로 데이터 추출
+
+    query = f"""
+        SELECT ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
+        FROM ad
+        LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
+        WHERE account_id = {account_id}
+            AND ad.created_time >= '{date_start}'
+            -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
+            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date >= '{date_start}'
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+    """
+
+    df = pd.read_sql(query, engine)
+    
+    if df.empty:
+        return None
+
+    return df.iloc[0]['ctr']
+
+
+
+# 필수 키워드 조합(A+B)마다의 전체ctr성과 + 필수키워드 조합마다의 변수 키워드별마다의 ctr 성과
+# essential keywords 조합
+
+def get_strategic_performance(account_id, date_start, date_end, target_age=None, target_gender=None):
+    engine = get_engine()
+    
+    target_filter = ""
+    if target_age: target_filter += f" AND apd.age = '{target_age}'"
+    if target_gender: target_filter += f" AND apd.gender = '{target_gender}'"
+
+    query = f"""
+        WITH ad_raw AS (
+            -- 1. 광고별 필수/변수 키워드와 기초 성과를 가져옴
+            SELECT 
+                ad.ad_id,
+                ak.essential_keywords,
+                ak.variable_keywords,
+                SUM(apd.impressions) as ad_imps,
+                SUM(apd.clicks) as ad_clicks
+            FROM ad
+            JOIN ad_keyword ak ON ad.ad_id = ak.ad_id
+            LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
+            WHERE account_id = {account_id}
+                AND ad.created_time >= '{date_start}'
+                -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
+                AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+                AND apd.date >= '{date_start}'
+                AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+                {target_filter}
+            GROUP BY ad.ad_id, ak.essential_keywords, ak.variable_keywords
+            HAVING array_length(ak.essential_keywords, 1) >= 2 -- 필수 키워드가 2개 이상인 것만
+        ),
+        combo_pairs AS (
+            -- 2. 필수 키워드 리스트 내에서 가능한 모든 2개 조합(Pair) 생성
+            -- SNS, 브랜드, 채널 -> (SNS, 브랜드), (SNS, 채널), (브랜드, 채널)로 확장
+            SELECT 
+                ad_id,
+                ad_imps,
+                ad_clicks,
+                variable_keywords,
+                essential_keywords[i] as ess_1,
+                essential_keywords[j] as ess_2
+            FROM ad_raw,
+            LATERAL generate_series(1, array_length(essential_keywords, 1)) i,
+            LATERAL generate_series(i + 1, array_length(essential_keywords, 1)) j
+        ),
+        essential_agg AS (
+            -- 3. 생성된 [ess_1, ess_2] 쌍을 기준으로 전체 성과 합산
+            SELECT 
+                ess_1, ess_2,
+                COUNT(DISTINCT ad_id) as combo_doc_freq,
+                SUM(ad_imps) as total_imps,
+                ROUND((SUM(ad_clicks)::numeric / NULLIF(SUM(ad_imps), 0)::numeric) * 100, 2) as combo_overall_ctr
+            FROM combo_pairs
+            GROUP BY ess_1, ess_2
+            HAVING COUNT(DISTINCT ad_id) >= 3 -- 3개 이상의 광고에서 발견된 조합만
+        ),
+        variable_agg AS (
+            -- 4. 해당 조합이 포함된 광고들 내에서 변수 키워드별 성과 계산
+            SELECT 
+                cp.ess_1, cp.ess_2,
+                UNNEST(cp.variable_keywords) as var_keyword,
+                SUM(cp.ad_imps) as v_imps,
+                SUM(cp.ad_clicks) as v_clicks
+            FROM combo_pairs cp
+            INNER JOIN essential_agg ea ON cp.ess_1 = ea.ess_1 AND cp.ess_2 = ea.ess_2
+            GROUP BY cp.ess_1, cp.ess_2, var_keyword
+        )
+        -- 5. 최종 결합 및 정렬
+        SELECT 
+            ea.ess_1, ea.ess_2,
+            ea.combo_doc_freq,
+            ea.combo_overall_ctr,
+            va.var_keyword,
+            ROUND((va.v_clicks::numeric / NULLIF(va.v_imps, 0)::numeric) * 100, 2) as with_var_ctr,
+            va.v_imps as var_imps
+        FROM essential_agg ea
+        JOIN variable_agg va ON ea.ess_1 = va.ess_1 AND ea.ess_2 = va.ess_2
+        ORDER BY ea.combo_overall_ctr DESC, with_var_ctr DESC
+    """
+    return pd.read_sql(query, engine)

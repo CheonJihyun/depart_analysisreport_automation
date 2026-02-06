@@ -13,7 +13,7 @@ def visual(df):
         # 2. 저장 경로 및 유니크한 파일명 설정 (현재 시간 기반)
         save_dir = "static/charts"
         os.makedirs(save_dir, exist_ok=True)
-        file_path = f"{save_dir}/temp_chart_{int(time.time() * 1000)}.png"
+        file_path = f"{save_dir}/temp_chart_{int(time.time() * 1000)}.svg"
 
         # 3. 데이터 추출 (컬럼명 몰라도 됨: 첫 번째=X, 마지막=Y)
         plt.figure(figsize=(4, 2))
@@ -21,7 +21,7 @@ def visual(df):
         
         # 4. 부가 설정 없이 바로 저장
         plt.tight_layout()
-        plt.savefig(file_path)
+        plt.savefig(file_path, format="svg")
         plt.close()
         
         return file_path
