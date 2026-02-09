@@ -25,10 +25,12 @@ def get_active_ad_count(account_id, date_start, date_end):
     query = f"""
         SELECT COUNT(DISTINCT ad_id) as ad_count
         FROM ad
-        WHERE account_id = {account_id}
-            AND created_time >= '{date_start}'
+        JOIN campaign c ON ad.account_id = c.account_id
+        WHERE ad.account_id = {account_id}
+            AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
-            AND created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
     df = pd.read_sql(query, engine)
@@ -45,10 +47,12 @@ def get_total_content_count(account_id, date_start, date_end):
     query = f"""
         SELECT COUNT(DISTINCT ad.ig_permalink) as content_count
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         WHERE ad.account_id = {account_id}
-            AND created_time >= '{date_start}'
+            AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
-            AND created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
     df = pd.read_sql(query, engine)
@@ -66,10 +70,12 @@ def get_ad_period(account_id, date_start, date_end):
             -- 필터 조건에서 사용한 '직전 일요일'의 바로 다음 날(월요일)을 고정적으로 반환
             DATE_TRUNC('week', '{date_end}'::date)::date AS end_date
         FROM ad
-        WHERE account_id = {account_id}
-            AND created_time >= '{date_start}'
+        JOIN campaign c ON ad.account_id = c.account_id
+        WHERE ad.account_id = {account_id}
+            AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
-            AND created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
     df = pd.read_sql(query, engine)
     if not df.empty:
@@ -87,10 +93,12 @@ def get_content_period(account_id, date_start, date_end):
             -- 가장 늦은 날짜의 직후 월요일 계산
             MAX(ig_timestamp) AS end_date
         FROM ad
-        WHERE account_id = {account_id}
-            AND created_time >= '{date_start}'
+        JOIN campaign c ON ad.account_id = c.account_id
+        WHERE ad.account_id = {account_id}
+            AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
-            AND created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
     df = pd.read_sql(query, engine)
     if not df.empty:
@@ -105,11 +113,13 @@ def get_total_keyword_count(account_id, date_start, date_end):
     query = f"""
         SELECT DISTINCT ak.essential_keywords, ak.variable_keywords
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         LEFT JOIN ad_keyword ak ON ad.ad_id = ak.ad_id
-        WHERE account_id = {account_id}
+        WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
     df = pd.read_sql(query, engine)
@@ -155,11 +165,14 @@ def get_instagram_followers(account_id, date_start, date_end):
     FROM instagram_followers ig
     JOIN facebook_pages fb ON ig.page_id = fb.id
     JOIN ad_accounts aa ON fb.ad_account_id = aa.id
+    JOIN campaigns c ON aa.id = c.ad_account_id
     WHERE aa.id = '{account_id}'
         AND ig.updated_at >= '{date_start}'
         AND ig.updated_at <= '{date_end}'
+        AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     ORDER BY ig.updated_at::date, ig.updated_at ASC
     """
+    # 통합시 campaigns테이블명, ad_account_id컬럼명 주의 !!
     # ORDER BY의 첫 번째 기준은 DISTINCT ON과 일치해야 하며, 
     # 그 뒤에 ASC를 붙여 가장 빠른 시점을 선택합니다.
 
@@ -183,12 +196,14 @@ def get_ctr_data(account_id, date_start, date_end):
             SUM(impressions) as total_impressions,
             ROUND((SUM(clicks)::numeric / NULLIF(SUM(impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-        WHERE account_id = {account_id}
+        WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
             AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY week_start
         ORDER BY week_start;
     """
@@ -206,7 +221,7 @@ def get_organic_data(account_id, date_start, date_end):
     # 파라미터로 받은 기간 범위 내에 있는 주차 데이터만 가져옴
     query = f"""
         SELECT date_start, date_end, organic_impressions 
-        FROM account_organic_weekly 
+        FROM account_organic_weekly
         WHERE account_id = {account_id}
             AND date_start >= '{date_start}'
             AND date_end <= '{date_end}'
@@ -229,13 +244,15 @@ def get_imp_threshold(account_id, date_start, date_end):
     total_stats_query = f"""
         SELECT SUM(impressions) as total_site_imp
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-        WHERE account_id = {account_id}
+        WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
             AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
     
     total_site_imp = pd.read_sql(total_stats_query, engine).iloc[0]['total_site_imp'] or 0
@@ -258,7 +275,8 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
         ad.ig_timestamp as uploaded_at, -- 업로드일로 사용
         ad.ig_permalink as thumbnail, -- 썸네일 경로로 사용
         ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
-    FROM ad 
+    FROM ad
+    JOIN campaign c ON ad.account_id = c.account_id
     LEFT JOIN ad_performance_daily apd ON apd.ad_id = ad.ad_id
     WHERE ad.account_id = {account_id}
         AND ad.created_time >= '{date_start}'
@@ -266,6 +284,7 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
         AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
         AND apd.date >= '{date_start}'
         AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+        AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     GROUP BY ad.ad_id
     HAVING SUM(apd.impressions) >= {threshold}
     ORDER BY ctr {order_direction}
@@ -298,6 +317,7 @@ def get_a_content_target_ctr_data(ad_id, date_start, date_end):
             apd.age, apd.gender,
             ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.ad_id = {ad_id}
             AND ad.created_time >= '{date_start}'
@@ -305,6 +325,7 @@ def get_a_content_target_ctr_data(ad_id, date_start, date_end):
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
             AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY apd.age, apd.gender
         ORDER BY ctr DESC;
     """
@@ -334,12 +355,14 @@ def get_target_avg_imp_ctr(account_id, date_start, date_end):
             2
         ) AS ctr
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
             AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY apd.age, apd.gender
     """
 
@@ -366,12 +389,14 @@ def get_target_avg_imp_ctr_threshold(account_id, date_start, date_end, threshold
             2
         ) AS ctr
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
             AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY apd.age, apd.gender
         HAVING SUM(apd.impressions) >= {threshold}
     """
@@ -410,6 +435,7 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
             SUM(apd.clicks) as total_clicks,
             ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as avg_ctr
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         JOIN exploded_keywords ek ON ad.ad_id = ek.ad_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
@@ -418,6 +444,7 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
             AND apd.date >= '{date_start}'
             AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             {target_filter}
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY ek.keyword
         HAVING COUNT(DISTINCT ad.ad_id) >= 3
         -- 하위 정렬(ASC)일 때, 노출수가 너무 적어 우연히 CTR이 0인 것들을 방지하기 위해 
@@ -484,13 +511,15 @@ def get_overall_ctr(account_id, date_start, date_end):
     query = f"""
         SELECT ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
+        JOIN campaign c ON ad.account_id = c.account_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-        WHERE account_id = {account_id}
+        WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
             AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
     df = pd.read_sql(query, engine)
@@ -522,15 +551,17 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
                 SUM(apd.impressions) as ad_imps,
                 SUM(apd.clicks) as ad_clicks
             FROM ad
+            JOIN campaign c ON ad.account_id = c.account_id
             JOIN ad_keyword ak ON ad.ad_id = ak.ad_id
             LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-            WHERE account_id = {account_id}
+            WHERE ad.account_id = {account_id}
                 AND ad.created_time >= '{date_start}'
                 -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
                 AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
                 AND apd.date >= '{date_start}'
                 AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
                 {target_filter}
+                AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
             GROUP BY ad.ad_id, ak.essential_keywords, ak.variable_keywords
             HAVING array_length(ak.essential_keywords, 1) >= 2 -- 필수 키워드가 2개 이상인 것만
         ),

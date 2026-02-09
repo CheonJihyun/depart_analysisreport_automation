@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import numpy as np
 from datetime import datetime
 # 기존에 사용하시던 스크립트 임포트 (경로에 맞춰 유지)
 from scripts.processor import (
@@ -40,47 +41,42 @@ def run():
     def add_ds(key, kind, title, df, unit="", x=None, ys=None, extra_meta=None):
         if df is None or df.empty: return
         
-        df_c = df.copy()
+        # [수정포인트 1] 모든 함수의 인덱스 문제를 한 번에 해결
+        df_c = df.copy().reset_index() if df.index.name else df.copy()
         columns = list(df_c.columns)
         
-        # 1. X축(날짜) 컬럼 자동 매칭
-        if x not in columns:
+        # [수정포인트 2] X축 매칭 로직 개선 (테이블일 때는 X축을 억지로 잡지 않음)
+        if kind != "table" and x not in columns:
             possible_x = [c for c in columns if any(word in c.lower() for word in ['date', 'at', 'start', 'week', 'time'])]
             x = possible_x[0] if possible_x else columns[0]
 
-        # 2. 날짜 변환 (경고 방지: dayfirst/yearfirst 추측 허용 및 에러 무시)
-        try:
-            # format='mixed'를 사용하면 다양한 형식을 알아서 안전하게 처리합니다 (Pandas 2.0+ 권장)
-            df_c[x] = pd.to_datetime(df_c[x], errors='coerce', format='mixed').dt.strftime('%Y-%m-%d')
-            # 변환 실패(NaT)된 행은 제거하거나 빈 문자열 처리
-            df_c = df_c.dropna(subset=[x])
-        except Exception:
-            pass 
+        # 날짜 변환 (x가 컬럼에 있고, 실제 날짜 성격일 때만 실행)
+        if x in columns and ('date' in x.lower() or 'time' in x.lower() or 'at' in x.lower()):
+            try:
+                df_c[x] = pd.to_datetime(df_c[x], errors='coerce', format='mixed').dt.strftime('%Y-%m-%d')
+            except:
+                pass
 
         data_obj = {"kind": kind, "title": title, "unit": unit}
         if extra_meta: data_obj.update(extra_meta)
 
         if kind == "table":
-            # JSON 저장 시 에러 방지를 위해 NaT/NaN을 None으로 변환
-            data_obj["rows"] = df_c.replace({pd.NA: None, pd.NaT: None}).to_dict(orient='records')
+            # 테이블은 모든 컬럼을 보존하여 rows에 담음
+            data_obj["rows"] = df_c.replace({pd.NA: None, pd.NaT: None, np.nan: None}).to_dict(orient='records')
         else:
-            data_obj["labels"] = df_c[x].tolist()
+            # 차트(bar, line 등)일 때만 x를 분리하여 labels로 사용
+            data_obj["labels"] = df_c[x].fillna("Unknown").tolist()
             
-            # 3. Y축(데이터) 컬럼 자동 매칭
             series_data = []
-            if ys:
-                for y_req in ys:
-                    matched_col = next((c for c in columns if y_req.lower() == c.lower() or y_req.lower() in c.lower()), None)
-                    if matched_col:
-                        # 데이터 내 NaN 값을 0으로 채워 시각화 깨짐 방지
-                        clean_data = df_c[matched_col].fillna(0).tolist()
-                        series_data.append({"name": matched_col, "data": clean_data})
+            # 지정된 Y축이 있으면 그것만, 없으면 숫자 컬럼 전체를 가져옴
+            target_ys = ys if ys else df_c.select_dtypes(include=['number']).columns.tolist()
             
-            if not series_data:
-                num_cols = df_c.select_dtypes(include=['number']).columns.tolist()
-                if num_cols:
-                    series_data.append({"name": num_cols[0], "data": df_c[num_cols[0]].fillna(0).tolist()})
-                
+            for y_req in target_ys:
+                matched_col = next((c for c in columns if y_req.lower() == c.lower() or y_req.lower() in c.lower()), None)
+                if matched_col and matched_col != x: # X축과 중복 방지
+                    clean_data = df_c[matched_col].fillna(0).tolist()
+                    series_data.append({"name": matched_col, "data": clean_data})
+            
             data_obj["series"] = series_data
             
         final_report["datasets"][key] = data_obj
@@ -103,8 +99,10 @@ def run():
     ctr_df = get_ctr_data(target_id, start, end)
     add_ds("ctr_trend", "line", "주차별 CTR 추이", ctr_df, "%", "week_start", ["ctr"])
 
+
+    _, threshold = get_imp_threshold(target_id, start, end)
     # 3. 타겟 히트맵 데이터 (노출/CTR)
-    target_df = get_target_avg_imp_ctr(target_id, start, end)
+    target_df = get_target_avg_imp_ctr_threshold(target_id, start, end, threshold)
     # 히트맵은 테이블 형태가 시각화하기 좋음
     add_ds("target_heatmap", "table", "타겟별 노출 및 CTR 성과", target_df)
 
@@ -131,14 +129,15 @@ def run():
             vas = filter_keywords_by_pos(raw_kw_df, 'verb_adj')
             add_ds(f"{prefix}_{suffix}_va", "bar_h", f"{label} {suffix.upper()} 10 (형용사)", vas, "%", "keyword", ["ctr"])
 
-        # 키워드 조합 (Strategic Performance)
+        # to_json.py 내부
+        print(f"DEBUG: target_id={target_id}, start={start}, end={end}") # 1. 입력값 확인
         strat_df = get_strategic_performance(target_id, start, end, age, gen)
+        print(f"DEBUG: strat_df length = {len(strat_df)}") # 2. 결과 개수 확인
         if strat_df is not None:
             top_combos = strat_df[['ess_1', 'ess_2', 'combo_overall_ctr']].drop_duplicates().head(6)
             add_ds(f"{prefix}_keyword_combo", "table", f"{label} 키워드 조합 상위", top_combos)
 
     # 5. 콘텐츠별 타겟 성과 (상/하위)
-    _, threshold = get_imp_threshold(target_id, start, end)
     for is_top in [True, False]:
         suffix = "top" if is_top else "bottom"
         contents = get_content_ctr_data(target_id, start, end, threshold, is_top=is_top)
