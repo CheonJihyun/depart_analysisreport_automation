@@ -145,20 +145,29 @@ def get_total_keyword_count(account_id, date_start, date_end):
 
 # 인스타그램 팔로워 데이터 가져오기
 def get_instagram_followers(account_id, date_start, date_end):
-    engine_db = get_engine_db()
+    engine_db = get_engine_db() # 현재 여기만 engine_db로 되어있음! 통합 필요 !!
     query = f"""
-    SELECT aa.account_name, ig.updated_at, ig.follower_count, ig.profile_views
+    SELECT DISTINCT ON (ig.updated_at::date)
+        aa.account_name, 
+        ig.updated_at, 
+        ig.follower_count, 
+        ig.profile_views
     FROM instagram_followers ig
     JOIN facebook_pages fb ON ig.page_id = fb.id
     JOIN ad_accounts aa ON fb.ad_account_id = aa.id
     WHERE aa.id = '{account_id}'
         AND ig.updated_at >= '{date_start}'
         AND ig.updated_at <= '{date_end}'
+    ORDER BY ig.updated_at::date, ig.updated_at ASC
     """
+    # ORDER BY의 첫 번째 기준은 DISTINCT ON과 일치해야 하며, 
+    # 그 뒤에 ASC를 붙여 가장 빠른 시점을 선택합니다.
+
     df = pd.read_sql(query, engine_db)
 
     if df.empty:
         return None
+        
     return df
 
 # 주차별 CTR(%) 데이터 가져오기
@@ -168,16 +177,20 @@ def get_ctr_data(account_id, date_start, date_end):
     # 1. 쿼리: apd와 ad를 JOIN하여 account_id 기준으로 데이터 추출
 
     query = f"""
-        SELECT apd.date, apd.impressions, apd.clicks
+        SELECT 
+            DATE_TRUNC('week', apd.date)::date as week_start, -- 해당 주의 월요일 날짜
+            SUM(clicks) as total_clicks, 
+            SUM(impressions) as total_impressions,
+            ROUND((SUM(clicks)::numeric / NULLIF(SUM(impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE account_id = {account_id}
             AND ad.created_time >= '{date_start}'
-            -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
             AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
-        ORDER BY date
+        GROUP BY week_start
+        ORDER BY week_start;
     """
 
     df = pd.read_sql(query, engine)
