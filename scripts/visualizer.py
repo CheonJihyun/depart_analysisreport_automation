@@ -1,124 +1,359 @@
 # scripts/visualizer.py
-import matplotlib.pyplot as plt
-import pandas as pd
+import io
+import math
 import os
-import time
+import colorsys
+from typing import Any, Dict, List
 
-def visual(df):
-    # 1. 최소한의 데이터 체크
-    if df is None or df.empty:
-        return None
+os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
+os.makedirs(os.environ["MPLCONFIGDIR"], exist_ok=True)
 
-    try:
-        # 2. 저장 경로 및 유니크한 파일명 설정 (현재 시간 기반)
-        save_dir = "static/charts"
-        os.makedirs(save_dir, exist_ok=True)
-        file_path = f"{save_dir}/temp_chart_{int(time.time() * 1000)}.svg"
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
+import pandas as pd
 
-        # 3. 데이터 추출 (컬럼명 몰라도 됨: 첫 번째=X, 마지막=Y)
-        plt.figure(figsize=(4, 2))
-        plt.plot(df.iloc[:, 0], df.iloc[:, -1], marker='.', color='blue')
-        
-        # 4. 부가 설정 없이 바로 저장
-        plt.tight_layout()
-        plt.savefig(file_path, format="svg")
-        plt.close()
-        
-        return file_path
-
-    except:
-        # 어떤 에러가 나도 무조건 None 반환하여 메인 프로세스 보호
-        return None
+DEFAULT_THEME = "#4e73df"
 
 
-
-def create_ctr_trend_chart(df, account_id):
-    if df is None or df.empty:
-        return None
-
-    # 1. 저장 경로 설정 및 폴더 생성
-    save_dir = "static/charts"
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-    
-    file_path = f"{save_dir}/{account_id}_ctr_trend.png"
-
-    df.columns = [str(col).lower().strip() for col in df.columns]
-
-    # 2. 그래도 'date'가 없다면 첫 번째 컬럼을 'date'라고 간주함
-    if 'date' not in df.columns:
-        df = df.rename(columns={df.columns[0]: 'date'})
+def _configure_matplotlib_fonts() -> None:
+    # Prefer Korean-capable fonts to avoid broken glyphs in SVG.
+    preferred = [
+        "Apple SD Gothic Neo",
+        "Noto Sans KR",
+        "Malgun Gothic",
+        "Arial Unicode MS",
+        "DejaVu Sans",
+    ]
+    plt.rcParams["font.family"] = preferred
+    plt.rcParams["axes.unicode_minus"] = False
+    # Embed glyphs as paths for consistent rendering in SVG/PDF.
+    plt.rcParams["svg.fonttype"] = "path"
 
 
-    # 2. 데이터 전처리 (주차별 CTR 계산)
-    df['date'] = pd.to_datetime(df['date'])
-    weekly = df.set_index('date').resample('W-SUN').sum()
-    weekly['ctr'] = (weekly['clicks'] / weekly['impressions'] * 100).fillna(0)
+_configure_matplotlib_fonts()
 
-    # 3. 시각화 (최대한 심플하게)
-    plt.figure(figsize=(6, 3))
-    plt.plot(weekly.index, weekly['ctr'], marker='o', linestyle='-', color='#007bff')
-    
-    # 불필요한 테두리 제거 및 최소한의 정보만 표시
-    plt.title("Weekly CTR Trend (%)")
-    plt.grid(True, axis='y', alpha=0.3)
-    plt.tight_layout()
 
-    # 4. 저장 및 종료
-    plt.savefig(file_path)
-    plt.close()
-    
-    return file_path
+def _normalize_hex(hex_color: str) -> str:
+    if not hex_color:
+        return DEFAULT_THEME
+    color = hex_color.strip().lower()
+    if color.startswith("#"):
+        color = color[1:]
+    if len(color) == 3:
+        color = "".join([c * 2 for c in color])
+    if len(color) != 6 or any(c not in "0123456789abcdef" for c in color):
+        return DEFAULT_THEME
+    return "#" + color
 
-def create_organic_trend_chart(df, account_id):
-    """주차별 organic_impressions 추세를 그려 이미지로 저장"""
+
+def _hex_to_rgb01(hex_color: str) -> tuple:
+    hex_color = _normalize_hex(hex_color)[1:]
+    r = int(hex_color[0:2], 16) / 255.0
+    g = int(hex_color[2:4], 16) / 255.0
+    b = int(hex_color[4:6], 16) / 255.0
+    return r, g, b
+
+
+def _rgb01_to_hex(r: float, g: float, b: float) -> str:
+    r_i = int(max(0.0, min(1.0, r)) * 255)
+    g_i = int(max(0.0, min(1.0, g)) * 255)
+    b_i = int(max(0.0, min(1.0, b)) * 255)
+    return "#{:02x}{:02x}{:02x}".format(r_i, g_i, b_i)
+
+
+def _adjust_lightness(hex_color: str, delta: float) -> str:
+    r, g, b = _hex_to_rgb01(hex_color)
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    l = max(0.0, min(1.0, l + delta))
+    r, g, b = colorsys.hls_to_rgb(h, l, s)
+    return _rgb01_to_hex(r, g, b)
+
+
+def build_color_map(theme_color: str) -> Dict[str, Any]:
+    base = _normalize_hex(theme_color)
+    light = _adjust_lightness(base, 0.22)
+    lighter = _adjust_lightness(base, 0.38)
+    dark = _adjust_lightness(base, -0.18)
+    darker = _adjust_lightness(base, -0.32)
+    series = [base, dark, light, darker]
+    return {
+        "base": base,
+        "light": light,
+        "lighter": lighter,
+        "dark": dark,
+        "darker": darker,
+        "series": series,
+        "grid": "#e6e6e6",
+        "text": "#111111",
+        "muted": "#666666",
+    }
+
+
+def relative_luminance(hex_color: str) -> float:
+    r, g, b = _hex_to_rgb01(hex_color)
+
+    def to_lin(c: float) -> float:
+        return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+    r_l, g_l, b_l = map(to_lin, (r, g, b))
+    return 0.2126 * r_l + 0.7152 * g_l + 0.0722 * b_l
+
+
+def is_dark_color(hex_color: str) -> bool:
+    return relative_luminance(hex_color) < 0.5
+
+
+def _fig_to_svg(fig) -> str:
+    buf = io.StringIO()
+    fig.savefig(buf, format="svg", bbox_inches="tight")
+    plt.close(fig)
+    svg = buf.getvalue()
+    idx = svg.find("<svg")
+    if idx != -1:
+        svg = svg[idx:]
+    return svg
+
+
+def _style_axes(ax, color_map: Dict[str, Any]) -> None:
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_color("#dddddd")
+    ax.spines["bottom"].set_color("#dddddd")
+    ax.tick_params(colors="#666666", labelsize=8)
+    ax.grid(True, axis="y", color=color_map["grid"], linewidth=0.8)
+
+
+def _value_colors(values: List[float], color_map: Dict[str, Any]):
+    if not values:
+        return [color_map["base"]]
+    vmin, vmax = min(values), max(values)
+    if vmax == vmin:
+        return [color_map["base"] for _ in values]
+    cmap = LinearSegmentedColormap.from_list(
+        "theme",
+        [color_map["lighter"], color_map["light"], color_map["base"], color_map["dark"]],
+    )
+    return [cmap((v - vmin) / (vmax - vmin)) for v in values]
+
+
+def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compact: bool = False) -> str:
+    if not dataset:
+        return ""
+    labels = dataset.get("labels") or []
+    series = dataset.get("series") or []
+    if not labels or not series:
+        return ""
+
+    x = list(range(len(labels)))
+    fig, ax = plt.subplots(figsize=(6, 3) if not compact else (3.2, 1.6))
+
+    for idx, s in enumerate(series):
+        data = s.get("data") or []
+        if not data:
+            continue
+        color = color_map["series"][idx % len(color_map["series"])]
+        ax.plot(x[: len(data)], data, color=color, linewidth=2)
+
+    if compact:
+        ax.set_xticks([])
+        ax.set_yticks([])
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+    else:
+        tick_count = min(6, len(labels))
+        if tick_count > 1:
+            step = max(1, math.floor(len(labels) / (tick_count - 1)))
+            idxs = list(range(0, len(labels), step))
+            if idxs[-1] != len(labels) - 1:
+                idxs.append(len(labels) - 1)
+        else:
+            idxs = [0]
+        ax.set_xticks(idxs)
+        ax.set_xticklabels([labels[i] for i in idxs], rotation=30, ha="right", fontsize=8)
+        unit = dataset.get("unit", "")
+        if unit:
+            ax.set_ylabel(unit, fontsize=8, color=color_map["muted"])
+        _style_axes(ax, color_map)
+
+    fig.tight_layout(pad=0.6)
+    return _fig_to_svg(fig)
+
+
+def render_bar_h_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compact: bool = False) -> str:
+    if not dataset:
+        return ""
+    labels = dataset.get("labels") or []
+    series = dataset.get("series") or []
+    if not labels or not series:
+        return ""
+
+    values = series[0].get("data") or []
+    if not values:
+        return ""
+
+    labels = labels[: len(values)]
+    y = list(range(len(labels)))
+    fig, ax = plt.subplots(figsize=(6, 3.4) if not compact else (3.2, 1.8))
+
+    colors = _value_colors(values, color_map)
+    ax.barh(y, values, color=colors)
+    ax.invert_yaxis()
+
+    if compact:
+        ax.set_xticks([])
+        ax.set_yticks([])
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+    else:
+        ax.set_yticks(y)
+        ax.set_yticklabels(labels, fontsize=8)
+        unit = dataset.get("unit", "")
+        if unit:
+            ax.set_xlabel(unit, fontsize=8, color=color_map["muted"])
+        _style_axes(ax, color_map)
+
+    fig.tight_layout(pad=0.6)
+    return _fig_to_svg(fig)
+
+
+def _render_heatmap(rows: List[Dict[str, Any]], metric: str, color_map: Dict[str, Any]) -> str:
+    df = pd.DataFrame(rows)
+    if df.empty or metric not in df.columns:
+        return ""
+    if "age" not in df.columns or "gender" not in df.columns:
+        return ""
+
+    pivot = df.pivot_table(index="age", columns="gender", values=metric, aggfunc="mean")
+
+    age_order = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
+    gender_order = ["female", "male", "unknown"]
+    pivot = pivot.reindex(
+        index=[a for a in age_order if a in pivot.index],
+        columns=[g for g in gender_order if g in pivot.columns],
+    )
+
+    fig, ax = plt.subplots(figsize=(6, 3.2))
+    cmap = LinearSegmentedColormap.from_list(
+        "theme",
+        [color_map["lighter"], color_map["light"], color_map["base"], color_map["dark"]],
+    )
+    im = ax.imshow(pivot.values, cmap=cmap)
+
+    for i in range(pivot.shape[0]):
+        for j in range(pivot.shape[1]):
+            val = pivot.iloc[i, j]
+            if pd.isna(val):
+                continue
+            ax.text(j, i, f"{val:.2f}", ha="center", va="center", fontsize=7, color="#111111")
+
+    ax.set_xticks(range(len(pivot.columns)))
+    ax.set_xticklabels([str(c) for c in pivot.columns], fontsize=8)
+    ax.set_yticks(range(len(pivot.index)))
+    ax.set_yticklabels([str(c) for c in pivot.index], fontsize=8)
+    ax.tick_params(axis="x", bottom=True, top=False)
+
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+    fig.tight_layout(pad=0.6)
+    return _fig_to_svg(fig)
+
+
+def _render_simple_table(rows: List[Dict[str, Any]]) -> str:
+    df = pd.DataFrame(rows)
     if df.empty:
-        return None
+        return ""
 
-    # 날짜순 정렬 (혹시 모르니)
-    df = df.sort_values('date_start')
+    max_rows = 12
+    if len(df) > max_rows:
+        df = df.head(max_rows)
 
-    plt.figure(figsize=(10, 5))
-    plt.plot(df['date_start'], df['organic_impressions'], marker='o', linestyle='-', color='green')
-    
-    plt.title(f"Weekly Organic Trend: {account_id}")
-    plt.xlabel("Week Start Date")
-    plt.ylabel("Impressions")
-    plt.xticks(rotation=45)
-    plt.grid(True, linestyle='--', alpha=0.7)
-    plt.tight_layout()
+    fig_height = 0.35 * len(df) + 1.2
+    fig, ax = plt.subplots(figsize=(6, fig_height))
+    ax.axis("off")
 
-    # 이미지 저장 경로 설정
-    os.makedirs('static/charts', exist_ok=True)
-    file_path = f"static/charts/{account_id}_trend.png"
-    plt.savefig(file_path)
-    plt.close() # 메모리 해제
-    
-    return file_path
+    table = ax.table(
+        cellText=df.values,
+        colLabels=df.columns,
+        loc="center",
+        cellLoc="center",
+    )
+    table.auto_set_font_size(False)
+    table.set_fontsize(7)
+    table.scale(1, 1.2)
 
+    fig.tight_layout(pad=0.6)
+    return _fig_to_svg(fig)
 
 
-def create_mini_chart_from_df(ad_id, daily_df):
-    """
-    이미 쿼리된 daily_df에서 특정 ad_id의 데이터만 필터링하여 차트 생성
-    """
-    # 해당 광고의 일별 데이터만 추출
-    df = daily_df[daily_df['ad_id'] == ad_id].sort_values('uploaded_at')
+def render_table_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], metric: str = None) -> str:
+    if not dataset:
+        return ""
+    rows = dataset.get("rows") or []
+    if not rows:
+        return ""
 
-    plt.figure(figsize=(3, 1.2))
-    
-    if not df.empty:
-        # daily_ctr 계산이 이미 되어있다고 가정 (또는 여기서 계산)
-        plt.plot(df['date'], df['daily_ctr'], color='#4e73df', linewidth=2)
-        plt.fill_between(df['date'], df['daily_ctr'], color='#4e73df', alpha=0.1)
-    
-    plt.axis('off') 
-    plt.tight_layout(pad=0)
+    if metric:
+        heatmap_svg = _render_heatmap(rows, metric, color_map)
+        if heatmap_svg:
+            return heatmap_svg
 
-    os.makedirs("static/charts", exist_ok=True)
-    file_path = f"static/charts/mini_chart_{ad_id}.png"
-    
-    plt.savefig(file_path, transparent=True, dpi=100)
-    plt.close()
-    
-    return file_path
+    if "age" in rows[0] and "gender" in rows[0] and "ctr" in rows[0]:
+        heatmap_svg = _render_heatmap(rows, "ctr", color_map)
+        if heatmap_svg:
+            return heatmap_svg
+
+    return _render_simple_table(rows)
+
+
+def render_content_card(dataset: Dict[str, Any], color_map: Dict[str, Any]) -> List[Dict[str, Any]]:
+    if not dataset:
+        return []
+
+    items = dataset.get("items") or []
+    rendered = []
+
+    for item in items:
+        new_item = dict(item)
+        details = item.get("target_details") or []
+        chart_svg = ""
+
+        if details:
+            detail_df = pd.DataFrame(details)
+            if not detail_df.empty and "ctr" in detail_df.columns:
+                detail_df = detail_df.sort_values("ctr", ascending=False).head(6)
+                labels = [f"{row['age']} {row['gender']}" for _, row in detail_df.iterrows()]
+                values = detail_df["ctr"].tolist()
+                mini_ds = {
+                    "kind": "bar_h",
+                    "labels": labels,
+                    "series": [{"name": "ctr", "data": values}],
+                    "unit": "%",
+                }
+                chart_svg = render_bar_h_chart(mini_ds, color_map, compact=True)
+
+        new_item["chart"] = chart_svg
+        rendered.append(new_item)
+
+    return rendered
+
+
+def render_dataset(dataset: Dict[str, Any], color_map: Dict[str, Any], **kwargs):
+    if not dataset:
+        return ""
+
+    kind = dataset.get("kind")
+    renderers = {
+        "line": render_line_chart,
+        "bar_h": render_bar_h_chart,
+        "table": render_table_chart,
+        "content_card": render_content_card,
+    }
+
+    renderer = renderers.get(kind)
+    if not renderer:
+        return ""
+
+    return renderer(dataset, color_map, **kwargs)

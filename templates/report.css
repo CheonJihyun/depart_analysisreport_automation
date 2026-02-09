@@ -16,9 +16,15 @@
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 
+:root {
+  --theme-color: #ffffff;
+  --theme-title-color: #111111;
+  --cover-text-color: #111111;
+}
+
 body {
   margin: 0;
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "Arial Unicode MS", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: #111;
   background: #fff;
 }
@@ -95,6 +101,7 @@ body {
   line-height: 1.08;
   letter-spacing: -0.8px;
   word-break: keep-all;
+  color: var(--theme-title-color, #111);
 }
 
 .title-block__subtitle {
@@ -143,27 +150,42 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  position: relative;
 
   writing-mode: horizontal-tb !important;
   text-orientation: mixed !important;
-}
-
-.cover__meta {
-  font-size: 18pt;
-  font-weight: 900;
-  margin: 0 0 6mm 0;
+  background: var(--theme-color, #fff);
+  color: var(--cover-text-color, #111);
 }
 
 .cover__client {
-  font-size: 28pt;
+  font-size: 18pt;
+  font-weight: 800;
+  margin: 0 0 4mm 0;
+}
+
+.cover__title {
+  font-size: 36pt;
   font-weight: 900;
-  margin: 0 0 8mm 0;
+  line-height: 1.1;
+  margin: 0;
 }
 
 .cover__date {
-  font-size: 12pt;
-  color: #555;
+  font-size: 11pt;
+  color: var(--cover-text-color, #111);
   margin: 0;
+  position: absolute;
+  left: 24mm;
+  bottom: 18mm;
+}
+
+.cover__brand {
+  font-size: 22pt;
+  font-weight: 900;
+  position: absolute;
+  right: 24mm;
+  bottom: 16mm;
 }
 
 /* =========================
@@ -267,6 +289,27 @@ body {
   display: block;
 }
 
+.figure__svg {
+  width: 100%;
+  max-height: 150mm;
+}
+
+.figure__svg svg {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+.figure--heatmap {
+  justify-self: start;
+  align-self: start;
+}
+
+.figure--heatmap .figure__svg,
+.figure--heatmap .figure__img {
+  max-height: 60mm;
+}
+
 .figure__placeholder {
   width: 100%;
   height: 140mm;
@@ -347,6 +390,13 @@ body {
   object-fit: cover;
 }
 
+.content-card__chart svg,
+.mini-chart-svg svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
 .thumb-placeholder,
 .mini-chart-placeholder {
   color: #aaa;
@@ -393,6 +443,12 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.combo-card__viz svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }
 
 .combo-placeholder {
