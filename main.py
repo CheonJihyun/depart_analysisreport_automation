@@ -4,7 +4,7 @@ from datetime import datetime
 
 from scripts.visualizer import build_color_map, render_dataset, is_dark_color
 from scripts.reporter import generate_html
-
+from to_json import run as generate_json
 
 def _load_report(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
@@ -64,15 +64,58 @@ def _combo_cards(dataset: dict):
     return cards
 
 
+import asyncio
+from playwright.sync_api import sync_playwright
+# pdf 변환 함수
+def export_to_pdf(html_path, output_pdf_path):
+    with sync_playwright() as p:
+        # 브라우저 실행 (백그라운드)
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        
+        # 1. HTML 파일 로드 (절대 경로 권장)
+        import os
+        file_url = f"file://{os.path.abspath(html_path)}"
+        page.goto(file_url, wait_until="networkidle") # 네트워크 활동이 멈출 때까지 대기
+        
+        # 2. PDF 저장 설정
+        page.pdf(
+            path=output_pdf_path,
+            format="A4",           # 용지 규격
+            print_background=True, # 배경 색상/이미지 포함 (중요!)
+            margin={"top": "20px", "bottom": "20px", "left": "20px", "right": "20px"}
+        )
+        
+        browser.close()
+    print(f" PDF 저장 완료: {output_pdf_path}")
+
+
 def run():
+
+    config = {
+        "target_id": 3,
+        "fb_ad_account_id":"act_4204029286499182",
+        "start":"2025-02-13",
+        "end": "2025-12-31",
+        "main_age": "25-34",
+        "main_gender": "female",
+        "avoid_age":"",
+        "avoid_gender":""
+    }
+    target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
+    start, end = config["start"], config["end"]
+    main_age, main_gender = config["main_age"], config["main_gender"]
+    avoid_age, avoid_gender = config["avoid_age"], config["avoid_gender"]
+
+    # 3. to_json 실행코드 (수정된 파라미터 방식)
+    # generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
+    #               start=start, end=end,\
+    #                main_age=main_age, main_gender=main_gender,\
+    #                 avoid_age=avoid_age, avoid_gender=avoid_gender)
+    
     # 사용자 입력
     report_path = "json_reports/integrated_report.json"
     theme_color = "#4e73df"
-
-    main_age = ""
-    main_gender = ""
-    avoid_age = "18-24"
-    avoid_gender = "male"
 
     report_json = _load_report(report_path)
     meta = report_json.get("meta", {})
@@ -243,8 +286,13 @@ def run():
     }
 
     generate_html(context)
+    
+    # PDF 변환 추가
+    export_to_pdf("report.html", f"outputs/{acc_name}_리포트.pdf")
+    
     print(f"✅ {acc_name} 리포트 생성 완료!")
 
 
 if __name__ == "__main__":
     run()
+

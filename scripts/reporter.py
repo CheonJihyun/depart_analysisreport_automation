@@ -13,7 +13,7 @@ def generate_html(context):
     output = template.render(context)
 
     # 4. 결과 HTML 파일로 저장
-    output_path = "real_final_report.html"
+    output_path = "report.html"
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(output)
     

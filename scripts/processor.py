@@ -154,7 +154,30 @@ def get_total_keyword_count(account_id, date_start, date_end):
 # ----------------------------------
 
 # 인스타그램 팔로워 데이터 가져오기
-def get_instagram_followers(account_id, date_start, date_end):
+def get_instagram_followers(fb_ad_account_id, date_start, date_end):
+    # engine = get_engine() 
+    # query = f"""
+    # SELECT DISTINCT ON (iid.updated_at::date)
+    #     aa.account_name, 
+    #     iid.updated_at, 
+    #     ii.follower_count, 
+    #     iid.profile_views
+    # FROM ig_insights_daily iid
+    # JOIN ig_account ia ON iid.ig_id = ia.ig_id
+    # JOIN business_portfolio bp ON ia.business_id = bp.business_id
+    # JOIN ad_account aa ON bp.business_id = aa.business_id 
+    # JOIN campaign c ON aa.account_id = c.account_id
+    # WHERE aa.account_id = '{account_id}'
+    #     AND iid.updated_at >= '{date_start}'
+    #     AND iid.updated_at <= '{date_end}'
+    #     AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
+    # ORDER BY iid.updated_at::date, iid.updated_at ASC
+    # """
+    # # ORDER BY의 첫 번째 기준은 DISTINCT ON과 일치해야 하며, 
+    # # 그 뒤에 ASC를 붙여 가장 빠른 시점을 선택합니다.
+
+    # df = pd.read_sql(query, engine)
+
     engine_db = get_engine_db() # 현재 여기만 engine_db로 되어있음! 통합 필요 !!
     query = f"""
     SELECT DISTINCT ON (ig.updated_at::date)
@@ -166,7 +189,7 @@ def get_instagram_followers(account_id, date_start, date_end):
     JOIN facebook_pages fb ON ig.page_id = fb.id
     JOIN ad_accounts aa ON fb.ad_account_id = aa.id
     JOIN campaigns c ON aa.id = c.ad_account_id
-    WHERE aa.id = '{account_id}'
+    WHERE aa.fb_ad_account_id = '{fb_ad_account_id}'
         AND ig.updated_at >= '{date_start}'
         AND ig.updated_at <= '{date_end}'
         AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')

@@ -13,12 +13,8 @@ from scripts.processor import (
     get_strategic_performance
 )
 
-def run():
+def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", avoid_age="", avoid_gender=""):
     # 1. 기본 설정 및 파라미터
-    target_id = 3
-    start, end = "2025-02-13", "2025-12-31"
-    main_age, main_gender = '', ''  # 메인 타겟 설정 시 값 입력
-    avoid_age, avoid_gender = '18-24', 'male' # 기피 타겟
 
     acc_name = get_account_name(target_id)
     
@@ -84,7 +80,7 @@ def run():
     # --- 데이터 수집 및 변환 시작 ---
 
     # 1. 인스타그램 및 오가닉 추이
-    insta_df = get_instagram_followers(target_id, start, end)
+    insta_df = get_instagram_followers(fb_ad_account_id, start, end)
 
     # 'date' -> 'updated_at'으로 수정
     add_ds("insta_followers", "line", "팔로워 추이", insta_df, "명", "updated_at", ["follower_count"])
