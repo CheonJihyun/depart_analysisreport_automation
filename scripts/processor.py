@@ -66,7 +66,7 @@ def get_ad_period(account_id, date_start, date_end):
     engine = get_engine()
     query = f"""
         SELECT 
-            MIN(created_time) AS start_date,
+            MIN(ad.created_time) AS start_date,
             -- 필터 조건에서 사용한 '직전 일요일'의 바로 다음 날(월요일)을 고정적으로 반환
             DATE_TRUNC('week', '{date_end}'::date)::date AS end_date
         FROM ad

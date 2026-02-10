@@ -1,4 +1,3 @@
-# main.py
 import json
 from datetime import datetime
 
@@ -108,10 +107,10 @@ def run():
     avoid_age, avoid_gender = config["avoid_age"], config["avoid_gender"]
 
     # 3. to_json 실행코드 (수정된 파라미터 방식)
-    # generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
-    #               start=start, end=end,\
-    #                main_age=main_age, main_gender=main_gender,\
-    #                 avoid_age=avoid_age, avoid_gender=avoid_gender)
+    generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
+                  start=start, end=end,\
+                   main_age=main_age, main_gender=main_gender,\
+                    avoid_age=avoid_age, avoid_gender=avoid_gender)
     
     # 사용자 입력
     report_path = "json_reports/integrated_report.json"
@@ -124,6 +123,8 @@ def run():
 
     acc_name = meta.get("account_name", "")
     period = meta.get("period", "")
+    period_ads = meta.get("period_ads", "")
+    period_contents = meta.get("period_contents", "")
     year = period.split("-")[0] if period else ""
     generated_at = meta.get("generated_at") or datetime.now().strftime("%Y-%m-%d %H:%M")
 
@@ -205,8 +206,8 @@ def run():
             "year": year,
             "generated_at": generated_at,
             "brand": "De:part",
-            "period_ads": period or "-",
-            "period_contents": period or "-",
+            "period_ads": period_ads or "-",
+            "period_contents": period_contents or "-",
             "keyword_count": f"{summary.get('total_keywords', '-') }개",
             "overview_notes": [
                 f"광고 {summary.get('total_ads', '-') }개",

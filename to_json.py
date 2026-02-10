@@ -17,12 +17,16 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     # 1. 기본 설정 및 파라미터
 
     acc_name = get_account_name(target_id)
+    ad_start, ad_end = get_ad_period(target_id, start, end)
+    content_start, content_end = get_content_period(target_id, start, end)
     
     # 2. 결과 저장용 구조 (핵심)
     final_report = {
         "meta": {
             "account_name": acc_name,
             "period": f"{start} ~ {end}",
+            "period_ads": f"{ad_start} ~ {ad_end}",
+            "period_contents": f"{content_start} ~ {content_end}",
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         },
         "summary": {
