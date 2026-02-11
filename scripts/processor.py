@@ -420,6 +420,7 @@ def get_target_avg_imp_ctr_threshold(account_id, date_start, date_end, threshold
             AND apd.date >= '{date_start}'
             AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
+            AND apd.gender != 'unknown'
         GROUP BY apd.age, apd.gender
         HAVING SUM(apd.impressions) >= {threshold}
     """
@@ -469,6 +470,8 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
             AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)
             {target_filter}
             AND (c.campaign_name ~* 'depart|디파트|de;part')
+            AND apd.gender != 'unknown'
+            AND apd.ad_id IS NOT NULL
             GROUP BY apd.ad_id
         ) perf
         INNER JOIN (

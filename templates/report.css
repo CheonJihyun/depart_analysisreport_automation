@@ -298,6 +298,15 @@ body {
   width: 100% !important;
   height: auto !important;
   display: block;
+  background: transparent !important;
+}
+
+/* Matplotlib SVG 배경(흰색 patch) 제거 */
+.figure__svg svg #patch_1 path,
+.figure__svg svg #patch_2 path,
+.mini-chart-svg svg #patch_1 path,
+.mini-chart-svg svg #patch_2 path {
+  fill: transparent !important;
 }
 
 .figure--heatmap {

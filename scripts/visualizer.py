@@ -225,14 +225,16 @@ def _render_heatmap(rows: List[Dict[str, Any]], metric: str, color_map: Dict[str
     if "age" not in df.columns or "gender" not in df.columns:
         return ""
 
-    pivot = df.pivot_table(index="age", columns="gender", values=metric, aggfunc="mean")
+    pivot = df.pivot_table(index="gender", columns="age", values=metric, aggfunc="mean")
 
     age_order = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
-    gender_order = ["female", "male", "unknown"]
+    gender_order = ["female", "male"]
     pivot = pivot.reindex(
-        index=[a for a in age_order if a in pivot.index],
-        columns=[g for g in gender_order if g in pivot.columns],
+        index=[g for g in gender_order if g in pivot.index],
+        columns=[a for a in age_order if a in pivot.columns],
     )
+    if pivot.empty:
+        return ""
 
     fig, ax = plt.subplots(figsize=(6, 3.2))
     cmap = LinearSegmentedColormap.from_list(
