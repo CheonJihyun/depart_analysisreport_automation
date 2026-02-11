@@ -4,7 +4,7 @@ from datetime import datetime
 from scripts.visualizer import build_color_map, render_dataset, is_dark_color
 from scripts.reporter import generate_html
 from to_json import run as generate_json
-
+import time
 def _load_report(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -90,6 +90,7 @@ def export_to_pdf(html_path, output_pdf_path):
 
 
 def run():
+    start_time = time.time()
 
     config = {
         "target_id": 3,
@@ -196,6 +197,11 @@ def run():
     cards_main = _combo_cards(datasets.get("main_keyword_combo")) if main_age and main_gender else []
     cards_avoid = _combo_cards(datasets.get("avoid_keyword_combo")) if avoid_age and avoid_gender else []
 
+
+
+
+
+
     context = {
         "css_path": "./templates/report.css",
         "theme": theme,
@@ -275,14 +281,15 @@ def run():
                 {"title": "table_title_test", "headers": [], "rows": [[]], "footnote": "table_footnote_test"}
             ] if avoid_age and avoid_gender else None,
         },
-        "appendix_groups": [
-            {
-                "title": "",
-                "items": [
-                    {"title": "", "subtitle": "", "image": "", "headers": [], "rows": [[]], "footnote": ""}
-                ],
-            }
-        ],
+        "appendix_groups": report_json.get("appendix_groups", []),
+        # [
+        #     {
+        #         "title": "",
+        #         "items": [
+        #             {"title": "", "subtitle": "", "image": "", "headers": [], "rows": [[]], "footnote": ""}
+        #         ],
+        #     }
+        # ]
         "appendix": [],
     }
 
@@ -292,6 +299,13 @@ def run():
     export_to_pdf("report.html", f"outputs/{acc_name}_리포트.pdf")
     
     print(f"✅ {acc_name} 리포트 생성 완료!")
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time # 소요 시간(초)
+
+    print("-" * 50)
+    print(f"⏳ 총 소요 시간: {elapsed_time:.2f}초") # 소수점 2자리까지 표시
+    print("-" * 50)
 
 
 if __name__ == "__main__":

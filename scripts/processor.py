@@ -447,31 +447,37 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
     if target_gender: target_filter += f" AND apd.gender = '{target_gender}'"
 
     query = f"""
-        WITH exploded_keywords AS (
-            SELECT ad_id, UNNEST(essential_keywords || variable_keywords) as keyword
-            FROM ad_keyword
-        )
         SELECT 
             ek.keyword,
-            COUNT(DISTINCT ad.ad_id) as doc_freq,
-            SUM(apd.impressions) as total_impressions,
-            SUM(apd.clicks) as total_clicks,
-            ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as avg_ctr
-        FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
-        JOIN exploded_keywords ek ON ad.ad_id = ek.ad_id
-        LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
-        WHERE ad.account_id = {account_id}
-            AND ad.created_time >= '{date_start}'
-            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
-            AND apd.date >= '{date_start}'
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            COUNT(DISTINCT perf.ad_id) as doc_freq,
+            SUM(perf.ad_imp) as total_impressions,
+            SUM(perf.ad_clk) as total_clicks,
+            ROUND((SUM(perf.ad_clk)::numeric / NULLIF(SUM(perf.ad_imp), 0)) * 100, 2) as avg_ctr
+        FROM (
+            -- [1단계] 조건에 맞는 광고의 성과 데이터를 ad_id별로 먼저 합산
+            SELECT 
+                apd.ad_id,
+                SUM(apd.impressions) as ad_imp,
+                SUM(apd.clicks) as ad_clk
+            FROM ad_performance_daily apd
+            INNER JOIN ad a ON apd.ad_id = a.ad_id
+            INNER JOIN campaign c ON a.account_id = c.account_id
+            WHERE a.account_id = {account_id}
+            AND a.created_time >= '{date_start}'::date
+            AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date >= '{date_start}'::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)
             {target_filter}
-            AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
+            AND (c.campaign_name ~* 'depart|디파트|de;part')
+            GROUP BY apd.ad_id
+        ) perf
+        INNER JOIN (
+            -- [2단계] 키워드만 따로 추출 (필요한 광고 ID에 대해서만)
+            SELECT ad_id, UNNEST(COALESCE(essential_keywords, ARRAY[]::text[]) || COALESCE(variable_keywords, ARRAY[]::text[])) as keyword
+            FROM ad_keyword
+        ) ek ON perf.ad_id = ek.ad_id
         GROUP BY ek.keyword
-        HAVING COUNT(DISTINCT ad.ad_id) >= 3
-        -- 하위 정렬(ASC)일 때, 노출수가 너무 적어 우연히 CTR이 0인 것들을 방지하기 위해 
-        -- 노출수 정렬을 보조로 추가하거나 필요시 HAVING에 노출수 하한선을 추가할 수 있습니다.
+        HAVING COUNT(DISTINCT perf.ad_id) >= 3
         ORDER BY avg_ctr {order_direction}, total_impressions DESC
     """
     return pd.read_sql(query, engine)
@@ -637,3 +643,154 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
         ORDER BY ea.combo_overall_ctr DESC, with_var_ctr DESC
     """
     return pd.read_sql(query, engine)
+
+
+# 별첨 필수키워드
+def get_essence_target_performance(account_id, date_start, date_end):
+    engine = get_engine()
+    
+    query = f"""
+    SELECT 
+    res.single_ess AS "키워드",
+    res.total_ad_count AS "등장 광고 수",
+    -- 노출 파트
+    MAX(CASE WHEN res.imp_rank = 1 THEN res.age || ' ' || res.gender END) AS "최다 노출 타겟",
+    MAX(CASE WHEN res.imp_rank = 1 THEN res.target_imp END)::bigint AS "타겟 노출량",
+    ROUND(MAX(CASE WHEN res.imp_rank = 1 THEN res.target_imp END)::numeric / NULLIF(MAX(res.total_imp), 0) * 100, 1) || '%%' AS "노출 비중",
+    MAX(res.total_imp)::bigint AS "총 노출량",
+    -- 클릭 파트
+    MAX(CASE WHEN res.clk_rank = 1 THEN res.age || ' ' || res.gender END) AS "최다 클릭 타겟",
+    MAX(CASE WHEN res.clk_rank = 1 THEN res.target_clk END)::bigint AS "타겟 클릭량",
+    ROUND(MAX(CASE WHEN res.clk_rank = 1 THEN res.target_clk END)::numeric / NULLIF(MAX(res.total_clk), 0) * 100, 1) || '%%' AS "클릭 비중",
+    MAX(res.total_clk)::bigint AS "총 클릭량"
+    FROM (
+        SELECT 
+            ts.single_ess, ts.age, ts.gender, ts.target_imp, ts.target_clk,
+            summ.total_ad_count,
+            SUM(ts.target_imp) OVER(PARTITION BY ts.single_ess) as total_imp,
+            SUM(ts.target_clk) OVER(PARTITION BY ts.single_ess) as total_clk,
+            RANK() OVER (PARTITION BY ts.single_ess ORDER BY ts.target_imp DESC, ts.age) as imp_rank,
+            RANK() OVER (PARTITION BY ts.single_ess ORDER BY ts.target_clk DESC, ts.age) as clk_rank
+        FROM (
+            SELECT 
+                ak_u.single_ess, p.age, p.gender,
+                SUM(p.imp) as target_imp,
+                SUM(p.clk) as target_clk
+            FROM (
+                SELECT ad_id, UNNEST(essential_keywords) as single_ess
+                FROM ad_keyword
+                WHERE essential_keywords IS NOT NULL AND ARRAY_LENGTH(essential_keywords, 1) > 0
+            ) ak_u
+            INNER JOIN (
+                SELECT 
+                    apd.ad_id, apd.age, apd.gender,
+                    SUM(apd.impressions) as imp, SUM(apd.clicks) as clk
+                FROM ad_performance_daily apd
+                INNER JOIN ad a ON apd.ad_id = a.ad_id
+                INNER JOIN campaign c ON a.account_id = c.account_id
+                WHERE a.account_id = {account_id}
+                AND a.created_time >= '{date_start}'::date
+                AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+                AND apd.date >= '{date_start}'::date
+                AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)
+                AND (c.campaign_name ~* 'depart|디파트|de;part')
+                GROUP BY 1, 2, 3
+            ) p ON ak_u.ad_id = p.ad_id
+            GROUP BY 1, 2, 3
+        ) ts
+        INNER JOIN (
+            SELECT 
+                UNNEST(ak.essential_keywords) as single_ess,
+                COUNT(DISTINCT ak.ad_id) as total_ad_count
+            FROM ad_keyword ak
+            INNER JOIN ad a ON ak.ad_id = a.ad_id
+            INNER JOIN campaign c ON a.account_id = c.account_id
+            WHERE a.account_id = {account_id}
+            AND a.created_time >= '{date_start}'::date
+            AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ~* 'depart|디파트|de;part')
+            GROUP BY 1
+        ) summ ON ts.single_ess = summ.single_ess
+    ) res
+    GROUP BY res.single_ess, res.total_ad_count
+    ORDER BY "등장 광고 수" DESC, "총 노출량" DESC
+    LIMIT 10;
+    """
+    
+    df = pd.read_sql(query, engine)
+    return df
+
+# 별첨 변수키워드
+def get_variable_target_performance(account_id, date_start, date_end):
+    engine = get_engine()
+    
+    query = f"""
+    SELECT 
+    res.single_var AS "키워드",
+    res.total_ad_count AS "등장 광고 수",
+    -- 노출 파트
+    MAX(CASE WHEN res.imp_rank = 1 THEN res.age || ' ' || res.gender END) AS "최다 노출 타겟",
+    MAX(CASE WHEN res.imp_rank = 1 THEN res.target_imp END)::bigint AS "타겟 노출량",
+    ROUND(MAX(CASE WHEN res.imp_rank = 1 THEN res.target_imp END)::numeric / NULLIF(MAX(res.total_imp), 0) * 100, 1) || '%%' AS "노출 비중",
+    MAX(res.total_imp)::bigint AS "총 노출량",
+    -- 클릭 파트
+    MAX(CASE WHEN res.clk_rank = 1 THEN res.age || ' ' || res.gender END) AS "최다 클릭 타겟",
+    MAX(CASE WHEN res.clk_rank = 1 THEN res.target_clk END)::bigint AS "타겟 클릭량",
+    ROUND(MAX(CASE WHEN res.clk_rank = 1 THEN res.target_clk END)::numeric / NULLIF(MAX(res.total_clk), 0) * 100, 1) || '%%' AS "클릭 비중",
+    MAX(res.total_clk)::bigint AS "총 클릭량"
+    FROM (
+        SELECT 
+            ts.single_var, ts.age, ts.gender, ts.target_imp, ts.target_clk,
+            summ.total_ad_count,
+            SUM(ts.target_imp) OVER(PARTITION BY ts.single_var) as total_imp,
+            SUM(ts.target_clk) OVER(PARTITION BY ts.single_var) as total_clk,
+            RANK() OVER (PARTITION BY ts.single_var ORDER BY ts.target_imp DESC, ts.age) as imp_rank,
+            RANK() OVER (PARTITION BY ts.single_var ORDER BY ts.target_clk DESC, ts.age) as clk_rank
+        FROM (
+            SELECT 
+                ak_u.single_var, p.age, p.gender,
+                SUM(p.imp) as target_imp,
+                SUM(p.clk) as target_clk
+            FROM (
+                SELECT ad_id, UNNEST(variable_keywords) as single_var
+                FROM ad_keyword
+                WHERE variable_keywords IS NOT NULL AND ARRAY_LENGTH(variable_keywords, 1) > 0
+            ) ak_u
+            INNER JOIN (
+                SELECT 
+                    apd.ad_id, apd.age, apd.gender,
+                    SUM(apd.impressions) as imp, SUM(apd.clicks) as clk
+                FROM ad_performance_daily apd
+                INNER JOIN ad a ON apd.ad_id = a.ad_id
+                INNER JOIN campaign c ON a.account_id = c.account_id
+                WHERE a.account_id = {account_id}
+                AND a.created_time >= '{date_start}'::date
+                AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+                AND apd.date >= '{date_start}'::date
+                AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)
+                AND (c.campaign_name ~* 'depart|디파트|de;part')
+                GROUP BY 1, 2, 3
+            ) p ON ak_u.ad_id = p.ad_id
+            GROUP BY 1, 2, 3
+        ) ts
+        INNER JOIN (
+            SELECT 
+                UNNEST(ak.variable_keywords) as single_var,
+                COUNT(DISTINCT ak.ad_id) as total_ad_count
+            FROM ad_keyword ak
+            INNER JOIN ad a ON ak.ad_id = a.ad_id
+            INNER JOIN campaign c ON a.account_id = c.account_id
+            WHERE a.account_id = {account_id}
+            AND a.created_time >= '{date_start}'::date
+            AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (c.campaign_name ~* 'depart|디파트|de;part')
+            GROUP BY 1
+        ) summ ON ts.single_var = summ.single_var
+    ) res
+    GROUP BY res.single_var, res.total_ad_count
+    ORDER BY "등장 광고 수" DESC, "총 노출량" DESC
+    LIMIT 10;
+    """
+    
+    df = pd.read_sql(query, engine)
+    return df

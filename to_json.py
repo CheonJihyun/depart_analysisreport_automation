@@ -10,7 +10,7 @@ from scripts.processor import (
     get_content_ctr_data, get_a_content_target_ctr_data,
     get_target_avg_imp_ctr, get_target_avg_imp_ctr_threshold,
     get_raw_keyword_performance, filter_keywords_by_pos, get_overall_ctr,
-    get_strategic_performance
+    get_strategic_performance,get_essence_target_performance,get_variable_target_performance
 )
 
 def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", avoid_age="", avoid_gender=""):
@@ -84,11 +84,12 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     # --- 데이터 수집 및 변환 시작 ---
 
     # 1. 인스타그램 및 오가닉 추이
+    print("인스타그램 및 오가닉 추이 생성 중...")
     insta_df = get_instagram_followers(fb_ad_account_id, start, end)
 
     # 'date' -> 'updated_at'으로 수정
     add_ds("insta_followers", "line", "팔로워 추이", insta_df, "명", "updated_at", ["follower_count"])
-
+    
     # 'profile_visit_count' -> 'profile_views'로 수정
     add_ds("insta_profile_visits", "line", "프로필 방문 수", insta_df, "회", "updated_at", ["profile_views"])
     
@@ -96,17 +97,20 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     add_ds("organic_trend", "line", "오가닉 조회수 추이", organic_df, "회", "date_start", ["organic_impressions"])
 
     # 2. CTR 추이
+    print("CTR 추이 생성 중...")
     ctr_df = get_ctr_data(target_id, start, end)
     add_ds("ctr_trend", "line", "주차별 CTR 추이", ctr_df, "%", "week_start", ["ctr"])
 
 
     _, threshold = get_imp_threshold(target_id, start, end)
     # 3. 타겟 히트맵 데이터 (노출/CTR)
+    print("타겟 히트맵 데이터 (노출/CTR) 생성 중...")
     target_df = get_target_avg_imp_ctr_threshold(target_id, start, end, threshold)
     # 히트맵은 테이블 형태가 시각화하기 좋음
     add_ds("target_heatmap", "table", "타겟별 노출 및 CTR 성과", target_df)
 
     # 4. 키워드 분석 (전체/메인/기피 + 명사/형용사)
+    print("키워드 분석 (전체/메인/기피 + 명사/형용사) 생성 중...")
     target_configs = [
         ("overall", None, None, "전체"),
         ("main", main_age, main_gender, "메인 타겟"),
@@ -130,14 +134,13 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             add_ds(f"{prefix}_{suffix}_va", "bar_h", f"{label} {suffix.upper()} 10 (형용사)", vas, "%", "keyword", ["ctr"])
 
         # to_json.py 내부
-        print(f"DEBUG: target_id={target_id}, start={start}, end={end}") # 1. 입력값 확인
         strat_df = get_strategic_performance(target_id, start, end, age, gen)
-        print(f"DEBUG: strat_df length = {len(strat_df)}") # 2. 결과 개수 확인
         if strat_df is not None:
             top_combos = strat_df[['ess_1', 'ess_2', 'combo_overall_ctr']].drop_duplicates().head(6)
             add_ds(f"{prefix}_keyword_combo", "table", f"{label} 키워드 조합 상위", top_combos)
 
     # 5. 콘텐츠별 타겟 성과 (상/하위)
+    print("콘텐츠별 타겟 성과 (상/하위) 생성 중...")
     for is_top in [True, False]:
         suffix = "top" if is_top else "bottom"
         contents = get_content_ctr_data(target_id, start, end, threshold, is_top=is_top)
@@ -155,6 +158,63 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             "title": f"성과 {suffix} 콘텐츠 분석",
             "items": content_results
         }
+
+    # --- [추가] 6. 별첨 자료용 키워드 상세 분석 (4페이지 분량) ---
+    
+    # 데이터 불러오기
+    print("별첨 자료용 키워드 상세 분석 생성 중...")
+    df_ess = get_essence_target_performance(target_id, start, end)
+    df_var = get_variable_target_performance(target_id, start, end)
+
+    def format_rows(df, col_indices):
+        """데이터프레임에서 특정 인덱스의 컬럼만 추출하여 리스트로 반환"""
+        if df is None or df.empty: return []
+        # NaN 처리 후 리스트 변환
+        temp_df = df.replace({pd.NA: None, pd.NaT: None, np.nan: None})
+        return temp_df.iloc[:, col_indices].values.tolist()
+
+    # 가공된 아이템 리스트 생성
+    print("아이템 리스트 생성 중...")
+    appendix_items = [
+        {
+            "title": "많이 사용한 업종 필수 키워드 - 노출",
+            "subtitle": "키워드가 가장 많이 노출된 타겟",
+            "headers": ["랭킹", "키워드", "등장 광고 수", "최다 노출 타겟", "타겟 노출량", "노출 비중", "총 노출량"], # '순위' 추가
+            "rows": [[i + 1] + row for i, row in enumerate(format_rows(df_ess, [0, 1, 2, 3, 4, 5]))], # 순위 결합
+            "footnote": "*등장 광고 수 상위 10개 기준"
+        },
+        {
+            "title": "많이 사용한 업종 필수 키워드 - 클릭",
+            "subtitle": "키워드가 가장 많이 노출된 타겟",
+            "headers": ["랭킹", "키워드", "등장 광고 수", "최다 클릭 타겟", "타겟 클릭량", "클릭 비중", "총 클릭량"],
+            "rows": [[i + 1] + row for i, row in enumerate(format_rows(df_ess, [0, 1, 6, 7, 8, 9]))],
+            "footnote": "*등장 광고 수 상위 10개 기준"
+        },
+        {
+            "title": "많이 사용한 업종 변수 키워드 - 노출",
+            "subtitle": "키워드가 가장 많이 노출된 타겟",
+            "headers": ["랭킹", "키워드", "등장 광고 수", "최다 노출 타겟", "타겟 노출량", "노출 비중", "총 노출량"],
+            "rows": [[i + 1] + row for i, row in enumerate(format_rows(df_var, [0, 1, 2, 3, 4, 5]))],
+            "footnote": "*등장 광고 수 상위 10개 기준"
+        },
+        {
+            "title": "많이 사용한 업종 변수 키워드 - 클릭",
+            "subtitle": "키워드가 가장 많이 노출된 타겟",
+            "headers": ["랭킹", "키워드", "등장 광고 수", "최다 클릭 타겟", "타겟 클릭량", "클릭 비중", "총 클릭량"],
+            "rows": [[i + 1] + row for i, row in enumerate(format_rows(df_var, [0, 1, 6, 7, 8, 9]))],
+            "footnote": "*등장 광고 수 상위 10개 기준"
+        }
+    ]
+
+    # 최종 리포트 구조에 삽입 (HTML 템플릿의 appendix_groups 구조에 맞춤)
+    final_report["appendix_groups"] = [
+        {
+            "title": "",
+            "items": appendix_items
+        }
+    ]
+
+    # --- [기존] 6. 최종 JSON 저장 ---
 
     # 6. 최종 JSON 저장
     output_path = "json_reports/integrated_report.json"
