@@ -1,5 +1,4 @@
 import json
-import os
 from datetime import datetime
 
 from scripts.visualizer import build_color_map, render_dataset, is_dark_color
@@ -100,8 +99,8 @@ def run():
         "end": "2025-12-31",
         "main_age": "25-34",
         "main_gender": "female",
-        "avoid_age":"35-44",
-        "avoid_gender":"male"
+        "avoid_age":"",
+        "avoid_gender":""
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
     start, end = config["start"], config["end"]
@@ -109,20 +108,19 @@ def run():
     avoid_age, avoid_gender = config["avoid_age"], config["avoid_gender"]
 
     # 3. to_json 실행코드 (수정된 파라미터 방식)
-    # DB 접속이 안 되는 환경에서는 기존 integrated_report.json으로 렌더링을 계속 진행한다.
-    if os.getenv("SKIP_GENERATE_JSON", "0") == "1":
-        print("⚠️ SKIP_GENERATE_JSON=1: 기존 json_reports/integrated_report.json 사용")
-    else:
-        try:
-            generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
-                        start=start, end=end,\
-                        main_age=main_age, main_gender=main_gender,\
-                            avoid_age=avoid_age, avoid_gender=avoid_gender)
-        except Exception as e:
-            print(f"⚠️ to_json 실패, 기존 integrated_report.json으로 계속 진행: {e}")
+    generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
+                  start=start, end=end,\
+                   main_age=main_age, main_gender=main_gender,\
+                    avoid_age=avoid_age, avoid_gender=avoid_gender)
     
     # 사용자 입력
     report_path = "json_reports/integrated_report.json"
+    with open(report_path, 'r', encoding='utf-8') as f:
+        full_data = json.load(f)
+
+    # 3. JSON 안에 담긴 datasets 꺼내기
+    # 주의: JSON에서 불러오면 데이터프레임이 아니라 '리스트' 형태이므로 그에 맞춰 처리합니다.
+    raw_datasets = full_data.get("datasets", {})
     theme_color = "#4e73df"
 
     report_json = _load_report(report_path)
@@ -166,21 +164,83 @@ def run():
     if heatmap_ctr:
         charts["heatmap_ctr"] = heatmap_ctr
 
-    keyword_chart_size = {"chart_width": 2.4, "chart_height": 5.4}
-    add_chart("keyword_overall_top_noun", "overall_top_noun", **keyword_chart_size)
-    add_chart("keyword_overall_top_verb_adj", "overall_top_va", **keyword_chart_size)
-    add_chart("keyword_overall_bottom_noun", "overall_bottom_noun", **keyword_chart_size)
-    add_chart("keyword_overall_bottom_verb_adj", "overall_bottom_va", **keyword_chart_size)
+    add_chart("keyword_overall_top_noun", "overall_top_noun")
+    add_chart("keyword_overall_top_verb_adj", "overall_top_va")
+    add_chart("keyword_overall_bottom_noun", "overall_bottom_noun")
+    add_chart("keyword_overall_bottom_verb_adj", "overall_bottom_va")
 
-    add_chart("keyword_main_top_noun", "main_top_noun", **keyword_chart_size)
-    add_chart("keyword_main_top_verb_adj", "main_top_va", **keyword_chart_size)
-    add_chart("keyword_main_bottom_noun", "main_bottom_noun", **keyword_chart_size)
-    add_chart("keyword_main_bottom_verb_adj", "main_bottom_va", **keyword_chart_size)
+    add_chart("keyword_main_top_noun", "main_top_noun")
+    add_chart("keyword_main_top_verb_adj", "main_top_va")
+    add_chart("keyword_main_bottom_noun", "main_bottom_noun")
+    add_chart("keyword_main_bottom_verb_adj", "main_bottom_va")
 
-    add_chart("keyword_avoid_top_noun", "avoid_top_noun", **keyword_chart_size)
-    add_chart("keyword_avoid_top_verb_adj", "avoid_top_va", **keyword_chart_size)
-    add_chart("keyword_avoid_bottom_noun", "avoid_bottom_noun", **keyword_chart_size)
-    add_chart("keyword_avoid_bottom_verb_adj", "avoid_bottom_va", **keyword_chart_size)
+    add_chart("keyword_avoid_top_noun", "avoid_top_noun")
+    add_chart("keyword_avoid_top_verb_adj", "avoid_top_va")
+    add_chart("keyword_avoid_bottom_noun", "avoid_bottom_noun")
+    add_chart("keyword_avoid_bottom_verb_adj", "avoid_bottom_va")
+
+    # 1. 테이블을 담을 그릇 준비
+    tables = {}
+
+    # 2. add_chart와 똑같은 방식의 add_table 정의
+    def add_table(dataset_key: str, title: str, rank_head: str, kw_head: str):
+        ds = datasets.get(dataset_key)
+        if not ds or ds.get('data') is None or ds['data'].empty:
+            return []
+        
+        # 데이터프레임에서 데이터 추출 및 포맷팅
+        rows = []
+        for i, row in enumerate(ds['data'].head(10).itertuples(), 1):
+            rows.append([
+                f"{i}위", 
+                getattr(row, 'keyword', '-'), 
+                f"{getattr(row, 'ctr', 0):.2f}%"
+            ])
+        
+        return {
+            "title": title,
+            "headers": [rank_head, kw_head, "평균 CTR"],
+            "rows": rows,
+            "footnote": ""
+        }
+
+    # 2. 각 계층별(Overall, Main, Avoid) 테이블 묶음 생성
+    # [Overall]
+    o_top = [
+        add_table("overall_top_noun", "전체 TOP 10 (명사)", "순위(상위)", "키워드(명사)"),
+        add_table("overall_top_va", "전체 TOP 10 (형용사/동사)", "순위(상위)", "키워드(형용사/동사)")
+    ]
+    o_bot = [
+        add_table("overall_bottom_noun", "전체 BOTTOM 10 (명사)", "순위(하위)", "키워드(명사)"),
+        add_table("overall_bottom_va", "전체 BOTTOM 10 (형용사/동사)", "순위(하위)", "키워드(형용사/동사)")
+    ]
+
+    # [Main Target] - 조건부 생성
+    m_top, m_bot = [], []
+    if main_age and main_gender:
+        m_top = [
+            add_table("main_top_noun", f"{main_age} {main_gender} TOP 10 (명사)", "순위(상위)", "키워드(명사)"),
+            add_table("main_top_va", f"{main_age} {main_gender} TOP 10 (형용사/동사)", "순위(상위)", "키워드(형용사/동사)")
+        ]
+        m_bot = [
+            add_table("main_bottom_noun", f"{main_age} {main_gender} BOTTOM 10 (명사)", "순위(하위)", "키워드(명사)"),
+            add_table("main_bottom_va", f"{main_age} {main_gender} BOTTOM 10 (형용사/동사)", "순위(하위)", "키워드(형용사/동사)")
+        ]
+
+    # [Avoid Target] - 조건부 생성
+    a_top, a_bot = [], []
+    if avoid_age and avoid_gender:
+        a_top = [
+            add_table("avoid_top_noun", f"{avoid_age} {avoid_gender} TOP 10 (명사)", "순위(상위)", "키워드(명사)"),
+            add_table("avoid_top_va", f"{avoid_age} {avoid_gender} TOP 10 (형용사/동사)", "순위(상위)", "키워드(형용사/동사)")
+        ]
+        a_bot = [
+            add_table("avoid_bottom_noun", f"{avoid_age} {avoid_gender} BOTTOM 10 (명사)", "순위(하위)", "키워드(명사)"),
+            add_table("avoid_bottom_va", f"{avoid_age} {avoid_gender} BOTTOM 10 (형용사/동사)", "순위(하위)", "키워드(형용사/동사)")
+        ]
+
+    # 3. None 값(데이터 없음) 필터링 함수
+    filter_none = lambda lst: [t for t in lst if t is not None]
 
     top_items = render_dataset(datasets.get("content_top_analysis"), color_map)
     if not isinstance(top_items, list):
@@ -247,9 +307,7 @@ def run():
         },
         "keywords": {
             "overall_top_note": "*3개 이상의 콘텐츠에 등장한 단어만 표시",
-            "overall_top_tables": [
-                {"title": "table_title_test", "headers": [], "rows": [[]], "footnote": "table_footnote_test"}
-            ],
+            "overall_top_tables": filter_none(o_top),
             "overall_combo_pages": [
                 {
                     "note": f"*3개 이상의 콘텐츠에 등장한 조합만 표시<br>*업종 필수 키워드: 동일 업종의 상위 브랜드 10개의 웹사이트에서 자주 사용된 단어"
@@ -258,13 +316,9 @@ def run():
                 }
             ],
             "overall_bottom_note": "*3개 이상의 콘텐츠에 등장한 단어만 표시",
-            "overall_bottom_tables": [
-                {"title": "table_title_test", "headers": [], "rows": [[]], "footnote": "table_footnote_test"}
-            ],
+            "overall_bottom_tables": filter_none(o_bot),
             "main_target": {"title": f"{main_age} {main_gender} 성과 분석"} if main_age and main_gender else None,
-            "main_top_tables": [
-                {"title": "table_title_test", "headers": [], "rows": [[]], "footnote": "table_footnote_test"}
-            ] if main_age and main_gender else None,
+            "main_top_tables": filter_none(m_top) if m_top else None,
             "main_combo_pages": [
                 {
                     "note": f"*3개 이상의 콘텐츠에 등장한 조합만 표시<br>*업종 필수 키워드: 동일 업종의 상위 브랜드 10개의 웹사이트에서 자주 사용된 단어"
@@ -272,13 +326,9 @@ def run():
                     "cards": cards_main,
                 }
             ] if main_age and main_gender else None,
-            "main_bottom_tables": [
-                {"title": "table_title_test", "headers": [], "rows": [[]], "footnote": "table_footnote_test"}
-            ] if main_age and main_gender else None,
+            "main_bottom_tables": filter_none(m_bot) if m_bot else None,
             "avoid_target": {"title": f"{avoid_age} {avoid_gender} 성과 분석"} if avoid_age and avoid_gender else None,
-            "avoid_top_tables": [
-                {"title": "table_title_test", "headers": [], "rows": [[]], "footnote": "table_footnote_test"}
-            ] if avoid_age and avoid_gender else None,
+            "avoid_top_tables":filter_none(a_top) if a_top else None,
             "avoid_combo_pages": [
                 {
                     "note": f"*3개 이상의 콘텐츠에 등장한 조합만 표시<br>*업종 필수 키워드: 동일 업종의 상위 브랜드 10개의 웹사이트에서 자주 사용된 단어"
@@ -286,9 +336,7 @@ def run():
                     "cards": cards_avoid,
                 }
             ] if avoid_age and avoid_gender else None,
-            "avoid_bottom_tables": [
-                {"title": "table_title_test", "headers": [], "rows": [[]], "footnote": "table_footnote_test"}
-            ] if avoid_age and avoid_gender else None,
+            "avoid_bottom_tables":filter_none(a_bot) if a_bot else None,
         },
         "appendix_groups": report_json.get("appendix_groups", []),
         # [
@@ -302,10 +350,13 @@ def run():
         "appendix": [],
     }
 
-    html_path = generate_html(context)
+
+
+
+    generate_html(context)
     
     # PDF 변환 추가
-    export_to_pdf(html_path, f"outputs/{acc_name}_리포트.pdf")
+    export_to_pdf("report.html", f"outputs/{acc_name}_리포트.pdf")
     
     print(f"✅ {acc_name} 리포트 생성 완료!")
 
@@ -319,3 +370,4 @@ def run():
 
 if __name__ == "__main__":
     run()
+
