@@ -74,8 +74,11 @@
   </div>
   {% endmacro %}
 
-  {% macro simple_table(headers, rows, footnote=None) %}
-  <div class="span-12">
+  {% macro simple_table(headers, rows, footnote=None, title=None, span_class='span-12') %}
+  <div class="{{ span_class }}">
+    {% if title %}
+      <div class="table-title">{{ title }}</div>
+    {% endif %}
     <table class="table">
       <thead>
         <tr>
@@ -402,34 +405,31 @@
     {{ page_header('타겟별 키워드') }}
     {{ big_title('전체 연령/성별<br>키워드별 CTR 상위 10개') }}
 
-    <div class="page-body">
+    <div class="page-body keyword-quad">
       {% if keywords.overall_top_note %}
         <div class="span-12 footnote">{{ keywords.overall_top_note }}</div>
       {% endif %}
 
       {% if charts.keyword_overall_top_noun is defined or charts.keyword_overall_top_verb_adj is defined %}
         {% if charts.keyword_overall_top_noun is defined %}
-          <div class="span-12">
+          <div class="span-3">
             {{ figure(charts.keyword_overall_top_noun, alt='keyword overall top (noun)') }}
           </div>
         {% endif %}
         {% if charts.keyword_overall_top_verb_adj is defined %}
-          <div class="span-12">
+          <div class="span-3">
             {{ figure(charts.keyword_overall_top_verb_adj, alt='keyword overall top (verb/adj)') }}
           </div>
         {% endif %}
       {% else %}
-        <div class="span-12">
+        <div class="span-3">
           {{ figure(charts.keyword_overall_top, alt='keyword overall top') }}
         </div>
       {% endif %}
 
       {% if keywords.overall_top_tables is defined and keywords.overall_top_tables %}
-        {% for t in keywords.overall_top_tables %}
-          {% if t.title %}
-            <div class="span-12 subtitle">{{ t.title }}</div>
-          {% endif %}
-          {{ simple_table(t.headers, t.rows, t.footnote) }}
+        {% for t in keywords.overall_top_tables[:2] %}
+          {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
         {% endfor %}
       {% endif %}
     </div>
@@ -478,34 +478,31 @@
     {{ page_header('타겟별 키워드') }}
     {{ big_title('전체 연령/성별<br>키워드별 CTR 하위 10개') }}
 
-    <div class="page-body">
+    <div class="page-body keyword-quad">
       {% if keywords.overall_bottom_note %}
         <div class="span-12 footnote">{{ keywords.overall_bottom_note }}</div>
       {% endif %}
 
       {% if charts.keyword_overall_bottom_noun is defined or charts.keyword_overall_bottom_verb_adj is defined %}
         {% if charts.keyword_overall_bottom_noun is defined %}
-          <div class="span-12">
+          <div class="span-3">
             {{ figure(charts.keyword_overall_bottom_noun, alt='keyword overall bottom (noun)') }}
           </div>
         {% endif %}
         {% if charts.keyword_overall_bottom_verb_adj is defined %}
-          <div class="span-12">
+          <div class="span-3">
             {{ figure(charts.keyword_overall_bottom_verb_adj, alt='keyword overall bottom (verb/adj)') }}
           </div>
         {% endif %}
       {% else %}
-        <div class="span-12">
+        <div class="span-3">
           {{ figure(charts.keyword_overall_bottom, alt='keyword overall bottom') }}
         </div>
       {% endif %}
 
       {% if keywords.overall_bottom_tables is defined and keywords.overall_bottom_tables %}
-        {% for t in keywords.overall_bottom_tables %}
-          {% if t.title %}
-            <div class="span-12 subtitle">{{ t.title }}</div>
-          {% endif %}
-          {{ simple_table(t.headers, t.rows, t.footnote) }}
+        {% for t in keywords.overall_bottom_tables[:2] %}
+          {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
         {% endfor %}
       {% endif %}
     </div>
@@ -521,30 +518,27 @@
       {{ page_header('타겟별 키워드 - 메인 타겟') }}
       {{ big_title(keywords.main_target.title ~ '<br>키워드별 CTR 상위 10개') }}
 
-      <div class="page-body">
+      <div class="page-body keyword-quad">
         {% if charts.keyword_main_top_noun is defined or charts.keyword_main_top_verb_adj is defined %}
           {% if charts.keyword_main_top_noun is defined %}
-            <div class="span-12">
+            <div class="span-3">
               {{ figure(charts.keyword_main_top_noun, alt='keyword main top (noun)') }}
             </div>
           {% endif %}
           {% if charts.keyword_main_top_verb_adj is defined %}
-            <div class="span-12">
+            <div class="span-3">
               {{ figure(charts.keyword_main_top_verb_adj, alt='keyword main top (verb/adj)') }}
             </div>
           {% endif %}
         {% else %}
-          <div class="span-12">
+          <div class="span-3">
             {{ figure(charts.keyword_main_top, alt='keyword main top') }}
           </div>
         {% endif %}
 
         {% if keywords.main_top_tables is defined and keywords.main_top_tables %}
-          {% for t in keywords.main_top_tables %}
-            {% if t.title %}
-              <div class="span-12 subtitle">{{ t.title }}</div>
-            {% endif %}
-            {{ simple_table(t.headers, t.rows, t.footnote) }}
+          {% for t in keywords.main_top_tables[:2] %}
+            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -583,30 +577,27 @@
       {{ page_header('타겟별 키워드 - 메인 타겟') }}
       {{ big_title(keywords.main_target.title ~ '<br>키워드별 CTR 하위 10개') }}
 
-      <div class="page-body">
+      <div class="page-body keyword-quad">
         {% if charts.keyword_main_bottom_noun is defined or charts.keyword_main_bottom_verb_adj is defined %}
           {% if charts.keyword_main_bottom_noun is defined %}
-            <div class="span-12">
+            <div class="span-3">
               {{ figure(charts.keyword_main_bottom_noun, alt='keyword main bottom (noun)') }}
             </div>
           {% endif %}
           {% if charts.keyword_main_bottom_verb_adj is defined %}
-            <div class="span-12">
+            <div class="span-3">
               {{ figure(charts.keyword_main_bottom_verb_adj, alt='keyword main bottom (verb/adj)') }}
             </div>
           {% endif %}
         {% else %}
-          <div class="span-12">
+          <div class="span-3">
             {{ figure(charts.keyword_main_bottom, alt='keyword main bottom') }}
           </div>
         {% endif %}
 
         {% if keywords.main_bottom_tables is defined and keywords.main_bottom_tables %}
-          {% for t in keywords.main_bottom_tables %}
-            {% if t.title %}
-              <div class="span-12 subtitle">{{ t.title }}</div>
-            {% endif %}
-            {{ simple_table(t.headers, t.rows, t.footnote) }}
+          {% for t in keywords.main_bottom_tables[:2] %}
+            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -623,30 +614,27 @@
       {{ page_header('타겟별 키워드 - 기피 타겟') }}
       {{ big_title(keywords.avoid_target.title ~ '<br>키워드별 CTR 상위 10개') }}
 
-      <div class="page-body">
+      <div class="page-body keyword-quad">
         {% if charts.keyword_avoid_top_noun is defined or charts.keyword_avoid_top_verb_adj is defined %}
           {% if charts.keyword_avoid_top_noun is defined %}
-            <div class="span-12">
+            <div class="span-3">
               {{ figure(charts.keyword_avoid_top_noun, alt='keyword avoid top (noun)') }}
             </div>
           {% endif %}
           {% if charts.keyword_avoid_top_verb_adj is defined %}
-            <div class="span-12">
+            <div class="span-3">
               {{ figure(charts.keyword_avoid_top_verb_adj, alt='keyword avoid top (verb/adj)') }}
             </div>
           {% endif %}
         {% else %}
-          <div class="span-12">
+          <div class="span-3">
             {{ figure(charts.keyword_avoid_top, alt='keyword avoid top') }}
           </div>
         {% endif %}
 
         {% if keywords.avoid_top_tables is defined and keywords.avoid_top_tables %}
-          {% for t in keywords.avoid_top_tables %}
-            {% if t.title %}
-              <div class="span-12 subtitle">{{ t.title }}</div>
-            {% endif %}
-            {{ simple_table(t.headers, t.rows, t.footnote) }}
+          {% for t in keywords.avoid_top_tables[:2] %}
+            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -685,30 +673,27 @@
       {{ page_header('타겟별 키워드 - 기피 타겟') }}
       {{ big_title(keywords.avoid_target.title ~ '<br>키워드별 CTR 하위 10개') }}
 
-      <div class="page-body">
+      <div class="page-body keyword-quad">
         {% if charts.keyword_avoid_bottom_noun is defined or charts.keyword_avoid_bottom_verb_adj is defined %}
           {% if charts.keyword_avoid_bottom_noun is defined %}
-            <div class="span-12">
+            <div class="span-3">
               {{ figure(charts.keyword_avoid_bottom_noun, alt='keyword avoid bottom (noun)') }}
             </div>
           {% endif %}
           {% if charts.keyword_avoid_bottom_verb_adj is defined %}
-            <div class="span-12">
+            <div class="span-3">
               {{ figure(charts.keyword_avoid_bottom_verb_adj, alt='keyword avoid bottom (verb/adj)') }}
             </div>
           {% endif %}
         {% else %}
-          <div class="span-12">
+          <div class="span-3">
             {{ figure(charts.keyword_avoid_bottom, alt='keyword avoid bottom') }}
           </div>
         {% endif %}
 
         {% if keywords.avoid_bottom_tables is defined and keywords.avoid_bottom_tables %}
-          {% for t in keywords.avoid_bottom_tables %}
-            {% if t.title %}
-              <div class="span-12 subtitle">{{ t.title }}</div>
-            {% endif %}
-            {{ simple_table(t.headers, t.rows, t.footnote) }}
+          {% for t in keywords.avoid_bottom_tables[:2] %}
+            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>

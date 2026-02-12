@@ -3,7 +3,7 @@ import io
 import math
 import os
 import colorsys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 os.makedirs(os.environ["MPLCONFIGDIR"], exist_ok=True)
@@ -116,13 +116,16 @@ def _fig_to_svg(fig) -> str:
     return svg
 
 
-def _style_axes(ax, color_map: Dict[str, Any]) -> None:
+def _style_axes(ax, color_map: Dict[str, Any], grid_axis: Optional[str] = "y") -> None:
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_color("#dddddd")
     ax.spines["bottom"].set_color("#dddddd")
     ax.tick_params(colors="#666666", labelsize=8)
-    ax.grid(True, axis="y", color=color_map["grid"], linewidth=0.8)
+    if grid_axis in ("x", "y", "both"):
+        ax.grid(True, axis=grid_axis, color=color_map["grid"], linewidth=0.8)
+    else:
+        ax.grid(False)
 
 
 def _value_colors(values: List[float], color_map: Dict[str, Any]):
@@ -181,7 +184,13 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
     return _fig_to_svg(fig)
 
 
-def render_bar_h_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compact: bool = False) -> str:
+def render_bar_h_chart(
+    dataset: Dict[str, Any],
+    color_map: Dict[str, Any],
+    compact: bool = False,
+    chart_width: float = None,
+    chart_height: float = None,
+) -> str:
     if not dataset:
         return ""
     labels = dataset.get("labels") or []
@@ -195,7 +204,12 @@ def render_bar_h_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compa
 
     labels = labels[: len(values)]
     y = list(range(len(labels)))
-    fig, ax = plt.subplots(figsize=(6, 3.4) if not compact else (3.2, 1.8))
+    if compact:
+        width, height = 3.2, 1.8
+    else:
+        width = chart_width if isinstance(chart_width, (int, float)) else 6
+        height = chart_height if isinstance(chart_height, (int, float)) else 3.4
+    fig, ax = plt.subplots(figsize=(width, height))
 
     colors = _value_colors(values, color_map)
     ax.barh(y, values, color=colors)
@@ -212,7 +226,46 @@ def render_bar_h_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compa
         unit = dataset.get("unit", "")
         if unit:
             ax.set_xlabel(unit, fontsize=8, color=color_map["muted"])
-        _style_axes(ax, color_map)
+        _style_axes(ax, color_map, grid_axis=None)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+    fig.tight_layout(pad=0.6)
+    return _fig_to_svg(fig)
+
+def render_bar_v_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compact: bool = False) -> str:
+    if not dataset:
+        return ""
+    labels = dataset.get("labels") or []
+    series = dataset.get("series") or []
+    if not labels or not series:
+        return ""
+
+    values = series[0].get("data") or []
+    if not values:
+        return ""
+
+    labels = labels[: len(values)]
+    x = list(range(len(labels)))
+    fig, ax = plt.subplots(figsize=(6, 3.4) if not compact else (3.2, 1.8))
+
+    colors = _value_colors(values, color_map)
+    ax.bar(x, values, color=colors)
+
+    if compact:
+        ax.set_xticks([])
+        ax.set_yticks([])
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+    else:
+        ax.set_xticks(x)
+        ax.set_xticklabels(labels, fontsize=8, rotation=30, ha="right")
+        unit = dataset.get("unit", "")
+        if unit:
+            ax.set_ylabel(unit, fontsize=8, color=color_map["muted"])
+        _style_axes(ax, color_map, grid_axis=None)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
 
     fig.tight_layout(pad=0.6)
     return _fig_to_svg(fig)
@@ -329,12 +382,12 @@ def render_content_card(dataset: Dict[str, Any], color_map: Dict[str, Any]) -> L
                 labels = [f"{row['age']} {row['gender']}" for _, row in detail_df.iterrows()]
                 values = detail_df["ctr"].tolist()
                 mini_ds = {
-                    "kind": "bar_h",
+                    "kind": "bar_v",
                     "labels": labels,
                     "series": [{"name": "ctr", "data": values}],
                     "unit": "%",
                 }
-                chart_svg = render_bar_h_chart(mini_ds, color_map, compact=True)
+                chart_svg = render_bar_v_chart(mini_ds, color_map, compact=True)
 
         new_item["chart"] = chart_svg
         rendered.append(new_item)
@@ -350,6 +403,7 @@ def render_dataset(dataset: Dict[str, Any], color_map: Dict[str, Any], **kwargs)
     renderers = {
         "line": render_line_chart,
         "bar_h": render_bar_h_chart,
+        "bar_v": render_bar_v_chart,
         "table": render_table_chart,
         "content_card": render_content_card,
     }

@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 
 from scripts.visualizer import build_color_map, render_dataset, is_dark_color
@@ -99,8 +100,8 @@ def run():
         "end": "2025-12-31",
         "main_age": "25-34",
         "main_gender": "female",
-        "avoid_age":"",
-        "avoid_gender":""
+        "avoid_age":"35-44",
+        "avoid_gender":"male"
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
     start, end = config["start"], config["end"]
@@ -108,10 +109,17 @@ def run():
     avoid_age, avoid_gender = config["avoid_age"], config["avoid_gender"]
 
     # 3. to_json 실행코드 (수정된 파라미터 방식)
-    generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
-                  start=start, end=end,\
-                   main_age=main_age, main_gender=main_gender,\
-                    avoid_age=avoid_age, avoid_gender=avoid_gender)
+    # DB 접속이 안 되는 환경에서는 기존 integrated_report.json으로 렌더링을 계속 진행한다.
+    if os.getenv("SKIP_GENERATE_JSON", "0") == "1":
+        print("⚠️ SKIP_GENERATE_JSON=1: 기존 json_reports/integrated_report.json 사용")
+    else:
+        try:
+            generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
+                        start=start, end=end,\
+                        main_age=main_age, main_gender=main_gender,\
+                            avoid_age=avoid_age, avoid_gender=avoid_gender)
+        except Exception as e:
+            print(f"⚠️ to_json 실패, 기존 integrated_report.json으로 계속 진행: {e}")
     
     # 사용자 입력
     report_path = "json_reports/integrated_report.json"
@@ -158,20 +166,21 @@ def run():
     if heatmap_ctr:
         charts["heatmap_ctr"] = heatmap_ctr
 
-    add_chart("keyword_overall_top_noun", "overall_top_noun")
-    add_chart("keyword_overall_top_verb_adj", "overall_top_va")
-    add_chart("keyword_overall_bottom_noun", "overall_bottom_noun")
-    add_chart("keyword_overall_bottom_verb_adj", "overall_bottom_va")
+    keyword_chart_size = {"chart_width": 2.4, "chart_height": 5.4}
+    add_chart("keyword_overall_top_noun", "overall_top_noun", **keyword_chart_size)
+    add_chart("keyword_overall_top_verb_adj", "overall_top_va", **keyword_chart_size)
+    add_chart("keyword_overall_bottom_noun", "overall_bottom_noun", **keyword_chart_size)
+    add_chart("keyword_overall_bottom_verb_adj", "overall_bottom_va", **keyword_chart_size)
 
-    add_chart("keyword_main_top_noun", "main_top_noun")
-    add_chart("keyword_main_top_verb_adj", "main_top_va")
-    add_chart("keyword_main_bottom_noun", "main_bottom_noun")
-    add_chart("keyword_main_bottom_verb_adj", "main_bottom_va")
+    add_chart("keyword_main_top_noun", "main_top_noun", **keyword_chart_size)
+    add_chart("keyword_main_top_verb_adj", "main_top_va", **keyword_chart_size)
+    add_chart("keyword_main_bottom_noun", "main_bottom_noun", **keyword_chart_size)
+    add_chart("keyword_main_bottom_verb_adj", "main_bottom_va", **keyword_chart_size)
 
-    add_chart("keyword_avoid_top_noun", "avoid_top_noun")
-    add_chart("keyword_avoid_top_verb_adj", "avoid_top_va")
-    add_chart("keyword_avoid_bottom_noun", "avoid_bottom_noun")
-    add_chart("keyword_avoid_bottom_verb_adj", "avoid_bottom_va")
+    add_chart("keyword_avoid_top_noun", "avoid_top_noun", **keyword_chart_size)
+    add_chart("keyword_avoid_top_verb_adj", "avoid_top_va", **keyword_chart_size)
+    add_chart("keyword_avoid_bottom_noun", "avoid_bottom_noun", **keyword_chart_size)
+    add_chart("keyword_avoid_bottom_verb_adj", "avoid_bottom_va", **keyword_chart_size)
 
     top_items = render_dataset(datasets.get("content_top_analysis"), color_map)
     if not isinstance(top_items, list):
@@ -293,10 +302,10 @@ def run():
         "appendix": [],
     }
 
-    generate_html(context)
+    html_path = generate_html(context)
     
     # PDF 변환 추가
-    export_to_pdf("report.html", f"outputs/{acc_name}_리포트.pdf")
+    export_to_pdf(html_path, f"outputs/{acc_name}_리포트.pdf")
     
     print(f"✅ {acc_name} 리포트 생성 완료!")
 
@@ -310,4 +319,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-

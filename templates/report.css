@@ -132,6 +132,7 @@ body {
 .span-6  { grid-column: span 6; }
 .span-4  { grid-column: span 4; }
 .span-3  { grid-column: span 3; }
+.span-2  { grid-column: span 2; }
 
 /* =========================
    Cover (그리드 끊기)
@@ -524,6 +525,60 @@ body {
 .table + .footnote {
   break-before: avoid;
   page-break-before: avoid;
+}
+
+/* =========================
+   Keyword Top/Bottom Quad Layout
+   (graph, graph, table, table)
+   ========================= */
+.keyword-quad {
+  column-gap: 3.2mm;
+  row-gap: 2.2mm;
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+}
+
+.keyword-quad > .span-3 {
+  min-height: 130mm;
+  display: flex;
+  flex-direction: column;
+}
+
+.keyword-quad > .span-3 .figure {
+  flex: 1;
+  display: flex;
+}
+
+.keyword-quad > .span-3 .figure__svg,
+.keyword-quad > .span-3 .figure__img {
+  height: 100%;
+  max-height: none;
+}
+
+.keyword-quad > .span-3 .figure__svg svg {
+  height: 100% !important;
+}
+
+.keyword-quad > .span-3 .table {
+  height: 100%;
+  table-layout: fixed;
+}
+
+.keyword-quad .table-title {
+  font-size: 8pt;
+  font-weight: 800;
+  color: #444;
+  margin: 0 0 1.2mm 0;
+  line-height: 1.25;
+}
+
+.keyword-quad .table {
+  font-size: 7.8pt;
+}
+
+.keyword-quad .table th,
+.keyword-quad .table td {
+  padding: 1.2mm 1.5mm;
 }
 
 /* =========================
