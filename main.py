@@ -152,9 +152,9 @@ def run():
     add_chart("followers", "insta_followers")
     add_chart("ctr", "ctr_trend")
     add_chart("organic_views_1", "organic_trend")
-    add_chart("organic_views_2", "organic_trend")
+    add_chart("organic_views_2", "organic_trend_monthly")
     add_chart("profile_visits_1", "insta_profile_visits")
-    add_chart("profile_visits_2", "insta_profile_visits")
+    add_chart("profile_visits_2", "insta_profile_visits_monthly")
 
     heatmap_ds = datasets.get("target_heatmap")
     heatmap_imp = render_dataset(heatmap_ds, color_map, metric="impressions")
@@ -179,24 +179,29 @@ def run():
     add_chart("keyword_avoid_bottom_noun", "avoid_bottom_noun")
     add_chart("keyword_avoid_bottom_verb_adj", "avoid_bottom_va")
 
-    # 1. 테이블을 담을 그릇 준비
-    tables = {}
-
-    # 2. add_chart와 똑같은 방식의 add_table 정의
     def add_table(dataset_key: str, title: str, rank_head: str, kw_head: str):
         ds = datasets.get(dataset_key)
-        if not ds or ds.get('data') is None or ds['data'].empty:
-            return []
         
-        # 데이터프레임에서 데이터 추출 및 포맷팅
+        # [수정] 데이터프레임 형식이 아니라 labels/series 형식을 체크합니다.
+        if not ds or "labels" not in ds or "series" not in ds:
+            return None
+        
+        labels = ds.get("labels", [])
+        # series 안의 첫 번째 요소에서 data 리스트를 가져옵니다.
+        series_data = ds.get("series", [{}])[0].get("data", [])
+        
         rows = []
-        for i, row in enumerate(ds['data'].head(10).itertuples(), 1):
+        # labels(키워드)와 series_data(CTR 값)를 매칭
+        for i, (label, value) in enumerate(zip(labels, series_data), 1):
             rows.append([
                 f"{i}위", 
-                getattr(row, 'keyword', '-'), 
-                f"{getattr(row, 'ctr', 0):.2f}%"
+                label, 
+                f"{value:.2f}%"
             ])
         
+        if not rows:
+            return None
+
         return {
             "title": title,
             "headers": [rank_head, kw_head, "평균 CTR"],

@@ -6,8 +6,8 @@ from datetime import datetime
 from scripts.processor import (
     get_account_name, get_active_ad_count, get_total_content_count,
     get_ad_period, get_content_period, get_total_keyword_count,
-    get_instagram_followers, get_ctr_data, get_organic_data, get_imp_threshold, 
-    get_content_ctr_data, get_a_content_target_ctr_data,
+    get_instagram_followers, get_ctr_data, get_organic_data, get_organic_monthly_data, get_imp_threshold, 
+    get_content_ctr_data, get_a_content_target_ctr_data, get_profile_visits_monthly,
     get_target_avg_imp_ctr, get_target_avg_imp_ctr_threshold,
     get_raw_keyword_performance, filter_keywords_by_pos, get_overall_ctr,
     get_strategic_performance,get_essence_target_performance,get_variable_target_performance
@@ -92,9 +92,39 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     
     # 'profile_visit_count' -> 'profile_views'로 수정
     add_ds("insta_profile_visits", "line", "프로필 방문 수", insta_df, "회", "updated_at", ["profile_views"])
+
+    # 월간 프로필 방문수 데이터 로드
+    profile_monthly_df = get_profile_visits_monthly(fb_ad_account_id, start, end)
+
+    add_ds(
+        "insta_profile_visits_monthly",
+        "line",                   # 방문수는 막대 그래프가 보기 편합니다
+        "인스타그램 프로필 방문수 (월간)", 
+        profile_monthly_df, 
+        "회", 
+        "updated_at", 
+        ["profile_views"]
+    )
     
     organic_df = get_organic_data(target_id, start, end)
     add_ds("organic_trend", "line", "오가닉 조회수 추이", organic_df, "회", "date_start", ["organic_impressions"])
+
+
+    # 4주 단위 월간 데이터 바로 가져오기
+    organic_monthly_df = get_organic_monthly_data(target_id, start, end)
+
+    add_ds(
+        "organic_trend_monthly", 
+        "line", 
+        "오가닉 조회수 추이 (월간)", 
+        organic_monthly_df, 
+        "회", 
+        "date_start", 
+        ["organic_impressions"]
+    )
+
+
+
 
     # 2. CTR 추이
     print("CTR 추이 생성 중...")

@@ -206,6 +206,27 @@ def get_instagram_followers(fb_ad_account_id, date_start, date_end):
         
     return df
 
+def get_profile_visits_monthly(fb_ad_account_id, date_start, date_end):
+    # 1. 원본 데일리 데이터 가져오기
+    df = get_instagram_followers(fb_ad_account_id, date_start, date_end)
+    
+    if df is None or df.empty:
+        return None
+
+    # 2. 4행(4일 아님, 데이터가 하루 한 줄일 때 4주) 단위 그룹화
+    # 만약 데이터가 매일 있다면 28행 단위가 맞으나, 주차별 데이터라면 4행 단위가 맞습니다.
+    # 주차별 데이터라고 가정하고 4행씩 묶습니다.
+    df['grp'] = range(len(df))
+    df['grp'] = df['grp'] // 4
+    
+    # 3. 그룹별 합산 (방문수는 sum)
+    monthly_df = df.groupby('grp').agg({
+        'updated_at': 'first',
+        'profile_views': 'sum'
+    }).reset_index(drop=True)
+    
+    return monthly_df
+
 # 주차별 CTR(%) 데이터 가져오기
 def get_ctr_data(account_id, date_start, date_end):
     engine = get_engine()
@@ -256,6 +277,31 @@ def get_organic_data(account_id, date_start, date_end):
         return None
 
     return df
+
+def get_organic_monthly_data(account_id, date_start, date_end):
+    df = get_organic_data(account_id, date_start, date_end)
+    
+    if df is None or df.empty:
+        return None
+
+    # 1. 4개 행씩 같은 그룹 번호를 부여 (0,0,0,0, 1,1,1,1, ...)
+    df['group_idx'] = range(len(df))
+    df['month_grp'] = df['group_idx'] // 4
+    
+    # 2. 그룹별로 집계
+    # 시작일은 그룹의 첫 날, 종료일은 그룹의 마지막 날, 수치는 합산
+    monthly_df = df.groupby('month_grp').agg({
+        'date_start': 'first',
+        'date_end': 'last',
+        'organic_impressions': 'sum'
+    }).reset_index(drop=True)
+    
+    # 3. 레이블 생성 (예: "1개월차 (01.01~01.28)")
+    monthly_df['label'] = monthly_df.apply(
+        lambda x: f"{int(x.name)+1}개월차 ({x.date_start}~{x.date_end})", axis=1
+    )
+    
+    return monthly_df
 
 # 인스타그램 프로필 방문수 데이터 가져오기
 
