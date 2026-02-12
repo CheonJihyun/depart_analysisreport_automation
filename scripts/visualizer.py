@@ -413,3 +413,63 @@ def render_dataset(dataset: Dict[str, Any], color_map: Dict[str, Any], **kwargs)
         return ""
 
     return renderer(dataset, color_map, **kwargs)
+
+
+
+
+
+
+import numpy as np
+
+def render_bubble_chart(dataset, color_map, compact=True):
+    labels = dataset.get("labels") or []
+    series = dataset.get("series") or []
+    ctr_data = series[0]["data"] if series else []
+    if not labels or not ctr_data: return ""
+
+    # 1. 원의 크기 (면적 s와 반지름 r 계산)
+    max_ctr = max(ctr_data) if max(ctr_data) > 0 else 1
+    # 사진처럼 큼직하게 보이도록 면적 대폭 상향
+    sizes = [(c / max_ctr) * 5000 + 1200 for c in ctr_data]
+    radii = [np.sqrt(s / 500) for s in sizes] # 배치용 가상 반지름
+
+    # 2. 수동 밀착 배치 좌표 (원 8개 기준 가장 촘촘한 구조)
+    # [중앙, 상, 하, 좌, 우, 대각선...] 순서로 꽂아버립니다.
+    # r 값을 이용해 서로 '접하게' 좌표를 설정합니다.
+    num = len(labels)
+    x = np.zeros(num)
+    y = np.zeros(num)
+    
+    if num > 0: x[0], y[0] = 0, 0 # 1등은 정중앙
+    if num > 1: x[1], y[1] = 0, radii[0] + radii[1] * 0.7 # 2등은 바로 위
+    if num > 2: x[2], y[2] = -(radii[0] + radii[2]) * 0.8, 0 # 3등은 왼쪽
+    if num > 3: x[3], y[3] = (radii[0] + radii[3]) * 0.8, 0 # 4등은 오른쪽
+    if num > 4: x[4], y[4] = 0, -(radii[0] + radii[4]) * 0.7 # 5등은 아래
+    # 나머지 6, 7, 8등은 빈 구석 대각선에 배치
+    if num > 5: x[5], y[5] = -radii[2], radii[1] 
+    if num > 6: x[6], y[6] = radii[3], radii[1]
+    if num > 7: x[7], y[7] = -radii[2], -radii[4]
+
+    fig, ax = plt.subplots(figsize=(4, 4))
+
+    # 3. 버블 그리기
+    bubble_color = color_map.get("primary") or color_map.get("main") or "#4e73df"
+    
+    # 테두리를 두껍게(linewidth) 주면 원끼리 접한 경계가 선명해서 사진 느낌이 납니다.
+    ax.scatter(x, y, s=sizes, alpha=0.9, color=bubble_color, 
+               edgecolors="white", linewidth=2.5, zorder=2)
+
+    # 4. 텍스트 라벨 (이름\n(수치%))
+    for i, txt in enumerate(labels):
+        display_text = f"{txt}\n({ctr_data[i]:.2f}%)"
+        ax.text(x[i], y[i], display_text, fontsize=9, ha='center', va='center', 
+                fontweight='bold', color='white', zorder=3)
+
+    # 5. 스타일 정리 (범위는 데이터에 맞춰 자동 조절)
+    all_r = max(radii) * 2.5
+    ax.set_xlim(-all_r, all_r)
+    ax.set_ylim(-all_r, all_r)
+    ax.axis('off')
+    
+    fig.tight_layout(pad=0)
+    return _fig_to_svg(fig)

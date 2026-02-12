@@ -166,8 +166,25 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         # to_json.py 내부
         strat_df = get_strategic_performance(target_id, start, end, age, gen)
         if strat_df is not None:
+            # 1. 요약 표용
             top_combos = strat_df[['ess_1', 'ess_2', 'combo_overall_ctr']].drop_duplicates().head(6)
-            add_ds(f"{prefix}_keyword_combo", "table", f"{label} 키워드 조합 상위", top_combos)
+            # add_ds(f"{prefix}_keyword_combo", "table", f"{label} 키워드 조합 상위", top_combos)
+
+            # 2. 상세 카드용 (기존 strat_df에서 상위 6개 조합에 해당하는 행들만 필터링)
+            # 안전하게 loc와 isin을 사용합니다.
+            top_keys = list(zip(top_combos['ess_1'], top_combos['ess_2']))
+            final_strat_df = strat_df[strat_df.apply(lambda x: (x['ess_1'], x['ess_2']) in top_keys, axis=1)].copy()
+
+            # 3. ★ 핵심: 각 조합별로 성과(with_var_ctr) 상위 8개 변수 행만 남깁니다.
+            final_strat_df = final_strat_df.sort_values(by=['ess_1', 'ess_2', 'with_var_ctr'], ascending=[True, True, False])
+            final_strat_df = final_strat_df.groupby(['ess_1', 'ess_2']).head(8)
+
+
+            # 4. 데이터가 잘 만들어졌는지 로그 확인 (선택)
+            # ... 앞선 필터링 로직 (head(8) 등) 동일 ...
+
+            # 핵심: 데이터프레임을 dict 리스트로 변환해서 넘깁니다.
+            add_ds(f"{prefix}_keyword_combo_detail", "table", f"{label} 상세 분석", final_strat_df)
 
     # 5. 콘텐츠별 타겟 성과 (상/하위)
     print("콘텐츠별 타겟 성과 (상/하위) 생성 중...")

@@ -457,7 +457,7 @@
               <div class="combo-card__sub">{{ card.sub }}</div>
               <div class="combo-card__viz">
                 {% if card.image %}
-                  <img src="{{ card.image }}" alt="combo viz">
+                  {{ card.image | safe }}
                 {% else %}
                   <div class="combo-placeholder">VIZ</div>
                 {% endif %}
@@ -561,7 +561,7 @@
                 <div class="combo-card__sub">{{ card.sub }}</div>
                 <div class="combo-card__viz">
                   {% if card.image %}
-                    <img src="{{ card.image }}" alt="combo viz">
+                    {{ card.image | safe }}
                   {% else %}
                     <div class="combo-placeholder">VIZ</div>
                   {% endif %}
@@ -657,7 +657,7 @@
                 <div class="combo-card__sub">{{ card.sub }}</div>
                 <div class="combo-card__viz">
                   {% if card.image %}
-                    <img src="{{ card.image }}" alt="combo viz">
+                    {{ card.image | safe }}
                   {% else %}
                     <div class="combo-placeholder">VIZ</div>
                   {% endif %}

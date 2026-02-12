@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
-
-from scripts.visualizer import build_color_map, render_dataset, is_dark_color
+import pandas as pd
+from scripts.visualizer import build_color_map, render_dataset, is_dark_color, render_bar_v_chart
 from scripts.reporter import generate_html
 from to_json import run as generate_json
 import time
@@ -44,22 +44,58 @@ def _average_series(dataset: dict):
     return sum(data) / len(data)
 
 
+import pandas as pd
+from scripts.visualizer import build_color_map, render_bubble_chart
+
 def _combo_cards(dataset: dict):
     rows = (dataset or {}).get("rows") or []
+    if not rows:
+        return []
+
+    import pandas as pd
+    from scripts.visualizer import build_color_map, render_bubble_chart
+
+    df = pd.DataFrame(rows)
+    color_map = build_color_map("#4e73df")
+    
+    # 필수 조합별로 그룹화
+    grouped = df.groupby(['ess_1', 'ess_2', 'combo_overall_ctr'], sort=False)
+
     cards = []
-    for i, row in enumerate(rows[:6], 1):
-        e1 = row.get("ess_1", "")
-        e2 = row.get("ess_2", "")
-        ctr = row.get("combo_overall_ctr")
+    for i, ((e1, e2, ctr), group_df) in enumerate(grouped, 1):
+        if i > 6: break
+        
+        # 1. 버블 차트용 데이터셋 구성
+        mini_ds = {
+            "kind": "bubble",
+            "labels": group_df['var_keyword'].tolist(),
+            "series": [
+                {"name": "CTR", "data": group_df['with_var_ctr'].tolist()},
+                {"name": "Imps", "data": group_df.get('var_imps', group_df['with_var_ctr']).tolist()}
+            ],
+            "unit": "%"
+        }
+
+        # 2. 차트 생성 및 정제 (타임스탬프 등 제거)
+        chart_svg = render_bubble_chart(mini_ds, color_map, compact=True)
+        if chart_svg and "<svg" in chart_svg:
+            chart_svg = chart_svg[chart_svg.find("<svg"):]
+
+        # 3. [형식 수정] 첫 번째 함수와 동일한 ctr_text 로직 적용
         if isinstance(ctr, (int, float)):
             ctr_text = f"{ctr:.2f}"
         else:
             ctr_text = str(ctr) if ctr is not None else "-"
+
+        # 4. 카드 데이터 구성 (요청하신 Title 형식 적용)
         cards.append({
-            "title": f"업종 필수 키워드 조합 {i}위<br>{e1} {e2} ({ctr_text}%)",
+            "rank": i,
+            "title": f"조합 {i}위 : {e1} + {e2} ({ctr_text}%)",
             "sub": "함께 쓰인 브랜드 변수 키워드별 성과",
-            "image": ""
+            "image": chart_svg,
+            "ctr_text": f"{ctr_text}%"  # 혹시 다른 곳에서 쓸까봐 남겨둡니다
         })
+        
     return cards
 
 
@@ -267,9 +303,11 @@ def run():
     avoid_ctr_val = _find_metric(target_rows, avoid_age, avoid_gender, "ctr") if avoid_age and avoid_gender else None
     avoid_ctr = f"{avoid_ctr_val:.2f}" if isinstance(avoid_ctr_val, (int, float)) else "-"
 
-    cards = _combo_cards(datasets.get("overall_keyword_combo"))
-    cards_main = _combo_cards(datasets.get("main_keyword_combo")) if main_age and main_gender else []
-    cards_avoid = _combo_cards(datasets.get("avoid_keyword_combo")) if avoid_age and avoid_gender else []
+
+
+    cards = _combo_cards(datasets.get("overall_keyword_combo_detail"))
+    cards_main = _combo_cards(datasets.get("main_keyword_combo_detail")) if main_age and main_gender else []
+    cards_avoid = _combo_cards(datasets.get("avoid_keyword_combo_detail")) if avoid_age and avoid_gender else []
 
 
 
