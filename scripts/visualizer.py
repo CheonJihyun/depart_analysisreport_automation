@@ -427,49 +427,72 @@ def render_bubble_chart(dataset, color_map, compact=True):
     ctr_data = series[0]["data"] if series else []
     if not labels or not ctr_data: return ""
 
-    # 1. 원의 크기 (면적 s와 반지름 r 계산)
-    max_ctr = max(ctr_data) if max(ctr_data) > 0 else 1
-    # 사진처럼 큼직하게 보이도록 면적 대폭 상향
-    sizes = [(c / max_ctr) * 5000 + 1200 for c in ctr_data]
-    radii = [np.sqrt(s / 500) for s in sizes] # 배치용 가상 반지름
+    # 1. 크기순 정렬 및 반지름 설정
+    data = sorted(zip(ctr_data, labels), key=lambda x: x[0], reverse=True)
+    sorted_ctrs, sorted_labels = zip(*data)
+    radii = [np.sqrt(c) * 10 for c in sorted_ctrs]
 
-    # 2. 수동 밀착 배치 좌표 (원 8개 기준 가장 촘촘한 구조)
-    # [중앙, 상, 하, 좌, 우, 대각선...] 순서로 꽂아버립니다.
-    # r 값을 이용해 서로 '접하게' 좌표를 설정합니다.
-    num = len(labels)
-    x = np.zeros(num)
-    y = np.zeros(num)
-    
-    if num > 0: x[0], y[0] = 0, 0 # 1등은 정중앙
-    if num > 1: x[1], y[1] = 0, radii[0] + radii[1] * 0.7 # 2등은 바로 위
-    if num > 2: x[2], y[2] = -(radii[0] + radii[2]) * 0.8, 0 # 3등은 왼쪽
-    if num > 3: x[3], y[3] = (radii[0] + radii[3]) * 0.8, 0 # 4등은 오른쪽
-    if num > 4: x[4], y[4] = 0, -(radii[0] + radii[4]) * 0.7 # 5등은 아래
-    # 나머지 6, 7, 8등은 빈 구석 대각선에 배치
-    if num > 5: x[5], y[5] = -radii[2], radii[1] 
-    if num > 6: x[6], y[6] = radii[3], radii[1]
-    if num > 7: x[7], y[7] = -radii[2], -radii[4]
+    # 2. 위치 계산 (삼각측량 원리 이용)
+    pos = [np.array([0.0, 0.0])] # 첫 번째 원: 중앙
+    if len(radii) > 1:
+        pos.append(np.array([radii[0] + radii[1], 0.0])) # 두 번째 원: 첫 번째 원 우측에 접함
 
+    for i in range(2, len(radii)):
+        r_new = radii[i]
+        placed = False
+        # 이미 배치된 원들 중 두 개(j, k)를 골라 그 사이에 끼워넣기 시 시도
+        for j in range(len(pos)):
+            for k in range(j + 1, len(pos)):
+                r1, r2 = radii[j], radii[k]
+                p1, p2 = pos[j], pos[k]
+                d = np.linalg.norm(p1 - p2)
+                
+                # 두 원 사이의 거리가 너무 멀면 그 사이에 낄 수 없음
+                if d > (r1 + r_new) + (r2 + r_new): continue
+                
+                # 두 원 p1, p2와 동시에 접하는 점 p_new 계산 (교점 공식)
+                d1 = r1 + r_new
+                d2 = r2 + r_new
+                a = (d1**2 - d2**2 + d**2) / (2 * d)
+                h = np.sqrt(max(0, d1**2 - a**2))
+                p3 = p1 + a * (p2 - p1) / d
+                
+                # 후보점 2개 (좌/우)
+                for sign in [-1, 1]:
+                    test_pos = np.array([
+                        p3[0] + sign * h * (p2[1] - p1[1]) / d,
+                        p3[1] - sign * h * (p2[0] - p1[0]) / d
+                    ])
+                    
+                    # 다른 원들과 겹치는지 엄격하게 체크 (공통현 방지: 0.99)
+                    if all(np.linalg.norm(test_pos - p) >= (radii[idx] + r_new) * 0.99 for idx, p in enumerate(pos)):
+                        pos.append(test_pos)
+                        placed = True; break
+                if placed: break
+            if placed: break
+        if not placed: # 끼워넣기 실패 시 비상용 배치
+            pos.append(np.array([radii[0] + r_new, r_new * i]))
+
+    # 3. 시각화
     fig, ax = plt.subplots(figsize=(4, 4))
-
-    # 3. 버블 그리기
-    bubble_color = color_map.get("primary") or color_map.get("main") or "#4e73df"
+    x_coords, y_coords = zip(*pos)
     
-    # 테두리를 두껍게(linewidth) 주면 원끼리 접한 경계가 선명해서 사진 느낌이 납니다.
-    ax.scatter(x, y, s=sizes, alpha=0.9, color=bubble_color, 
-               edgecolors="white", linewidth=2.5, zorder=2)
+    # 테두리 두께를 주어 접점을 명확하게 표시
+    bubble_color = color_map.get("primary") or color_map.get("main") or "#4e73df"
+    for i in range(len(pos)):
+        circle = plt.Circle(pos[i], radii[i], color=bubble_color, ec='white', lw=1.5, alpha=0.9)
+        ax.add_patch(circle)
+        
+        # 텍스트 추가
+        ax.text(pos[i][0], pos[i][1], f"{sorted_labels[i]}\n({sorted_ctrs[i]:.2f}%)",
+                fontsize=8, ha='center', va='center', color='white', fontweight='bold')
 
-    # 4. 텍스트 라벨 (이름\n(수치%))
-    for i, txt in enumerate(labels):
-        display_text = f"{txt}\n({ctr_data[i]:.2f}%)"
-        ax.text(x[i], y[i], display_text, fontsize=9, ha='center', va='center', 
-                fontweight='bold', color='white', zorder=3)
-
-    # 5. 스타일 정리 (범위는 데이터에 맞춰 자동 조절)
-    all_r = max(radii) * 2.5
-    ax.set_xlim(-all_r, all_r)
-    ax.set_ylim(-all_r, all_r)
+    # 축 범위 자동 설정
+    all_points = np.array([p + np.array([r, r]) for p, r in zip(pos, radii)] + 
+                          [p - np.array([r, r]) for p, r in zip(pos, radii)])
+    ax.set_xlim(min(all_points[:, 0]), max(all_points[:, 0]))
+    ax.set_ylim(min(all_points[:, 1]), max(all_points[:, 1]))
+    ax.set_aspect('equal')
     ax.axis('off')
     
-    fig.tight_layout(pad=0)
     return _fig_to_svg(fig)
