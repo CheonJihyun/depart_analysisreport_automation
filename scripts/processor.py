@@ -348,6 +348,7 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
     JOIN campaign c ON ad.account_id = c.account_id
     LEFT JOIN ad_performance_daily apd ON apd.ad_id = ad.ad_id
     WHERE ad.account_id = {account_id}
+        AND ad.ig_timestamp IS NOT NULL
         AND ad.created_time >= '{date_start}'
         -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
         AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
