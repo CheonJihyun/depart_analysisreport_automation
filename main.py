@@ -58,6 +58,11 @@ def _combo_cards(dataset: dict):
     df = pd.DataFrame(rows)
     color_map = build_color_map("#4e73df")
     
+    # [수정 핵심] 1. 전체 데이터를 combo_overall_ctr 기준으로 먼저 정렬합니다.
+    # (높은 CTR이 위로 오도록 내림차순 정렬)
+    if 'combo_overall_ctr' in df.columns:
+        df = df.sort_values(by='combo_overall_ctr', ascending=False)
+
     # 필수 조합별로 그룹화
     grouped = df.groupby(['ess_1', 'ess_2', 'combo_overall_ctr'], sort=False)
 
