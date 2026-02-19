@@ -134,14 +134,14 @@ def run():
     start_time = time.time()
 
     config = {
-        "target_id": 3,
-        "fb_ad_account_id":"act_4204029286499182",
+        "target_id": 8,
+        "fb_ad_account_id":"act_618278251632554",
         "start":"2025-02-13",
-        "end": "2025-12-31",
-        "main_age": "25-34",
+        "end": "2026-02-19",
+        "main_age": "35-44",
         "main_gender": "female",
         "avoid_age":"",
-        "avoid_gender":""
+        "avoid_gender":"male"
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
     start, end = config["start"], config["end"]
@@ -162,7 +162,7 @@ def run():
     # 3. JSON 안에 담긴 datasets 꺼내기
     # 주의: JSON에서 불러오면 데이터프레임이 아니라 '리스트' 형태이므로 그에 맞춰 처리합니다.
     raw_datasets = full_data.get("datasets", {})
-    theme_color = "#4e73df"
+    theme_color = "#2A3D1E"
 
     report_json = _load_report(report_path)
     meta = report_json.get("meta", {})

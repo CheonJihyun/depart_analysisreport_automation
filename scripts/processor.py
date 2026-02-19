@@ -25,7 +25,8 @@ def get_active_ad_count(account_id, date_start, date_end):
     query = f"""
         SELECT COUNT(DISTINCT ad_id) as ad_count
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
@@ -47,7 +48,8 @@ def get_total_content_count(account_id, date_start, date_end):
     query = f"""
         SELECT COUNT(DISTINCT ad.ig_permalink) as content_count
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
@@ -70,7 +72,8 @@ def get_ad_period(account_id, date_start, date_end):
             -- 필터 조건에서 사용한 '직전 일요일'의 바로 다음 날(월요일)을 고정적으로 반환
             DATE_TRUNC('week', '{date_end}'::date)::date AS end_date
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
@@ -93,7 +96,8 @@ def get_content_period(account_id, date_start, date_end):
             -- 가장 늦은 날짜의 직후 월요일 계산
             MAX(ig_timestamp) AS end_date
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
             -- date_end가 무슨 요일이든, 그 주의 월요일에서 하루를 뺀 '일요일'까지 조회
@@ -113,7 +117,8 @@ def get_total_keyword_count(account_id, date_start, date_end):
     query = f"""
         SELECT DISTINCT ak.essential_keywords, ak.variable_keywords
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         LEFT JOIN ad_keyword ak ON ad.ad_id = ak.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
@@ -240,7 +245,8 @@ def get_ctr_data(account_id, date_start, date_end):
             SUM(impressions) as total_impressions,
             ROUND((SUM(clicks)::numeric / NULLIF(SUM(impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
@@ -313,7 +319,8 @@ def get_imp_threshold(account_id, date_start, date_end):
     total_stats_query = f"""
         SELECT SUM(impressions) as total_site_imp
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
@@ -345,7 +352,8 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
         ad.ig_permalink as thumbnail, -- 썸네일 경로로 사용
         ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
     FROM ad
-    JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
     LEFT JOIN ad_performance_daily apd ON apd.ad_id = ad.ad_id
     WHERE ad.account_id = {account_id}
         AND ad.ig_timestamp IS NOT NULL
@@ -387,7 +395,8 @@ def get_a_content_target_ctr_data(ad_id, date_start, date_end):
             apd.age, apd.gender,
             ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.ad_id = {ad_id}
             AND ad.created_time >= '{date_start}'
@@ -425,7 +434,8 @@ def get_target_avg_imp_ctr(account_id, date_start, date_end):
             2
         ) AS ctr
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
@@ -459,7 +469,8 @@ def get_target_avg_imp_ctr_threshold(account_id, date_start, date_end, threshold
             2
         ) AS ctr
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
@@ -509,7 +520,8 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
                 SUM(apd.clicks) as ad_clk
             FROM ad_performance_daily apd
             INNER JOIN ad a ON apd.ad_id = a.ad_id
-            INNER JOIN campaign c ON a.account_id = c.account_id
+            INNER JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+            INNER JOIN campaign c ON ads.campaign_id = c.campaign_id
             WHERE a.account_id = {account_id}
             AND a.created_time >= '{date_start}'::date
             AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -590,7 +602,8 @@ def get_overall_ctr(account_id, date_start, date_end):
     query = f"""
         SELECT ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
-        JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
@@ -630,7 +643,8 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
                 SUM(apd.impressions) as ad_imps,
                 SUM(apd.clicks) as ad_clicks
             FROM ad
-            JOIN campaign c ON ad.account_id = c.account_id
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
             JOIN ad_keyword ak ON ad.ad_id = ak.ad_id
             LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
             WHERE ad.account_id = {account_id}
@@ -737,7 +751,8 @@ def get_essence_target_performance(account_id, date_start, date_end):
                     SUM(apd.impressions) as imp, SUM(apd.clicks) as clk
                 FROM ad_performance_daily apd
                 INNER JOIN ad a ON apd.ad_id = a.ad_id
-                INNER JOIN campaign c ON a.account_id = c.account_id
+            INNER JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+            INNER JOIN campaign c ON ads.campaign_id = c.campaign_id
                 WHERE a.account_id = {account_id}
                 AND a.created_time >= '{date_start}'::date
                 AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -754,7 +769,8 @@ def get_essence_target_performance(account_id, date_start, date_end):
                 COUNT(DISTINCT ak.ad_id) as total_ad_count
             FROM ad_keyword ak
             INNER JOIN ad a ON ak.ad_id = a.ad_id
-            INNER JOIN campaign c ON a.account_id = c.account_id
+            INNER JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+            INNER JOIN campaign c ON ads.campaign_id = c.campaign_id
             WHERE a.account_id = {account_id}
             AND a.created_time >= '{date_start}'::date
             AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -812,7 +828,8 @@ def get_variable_target_performance(account_id, date_start, date_end):
                     SUM(apd.impressions) as imp, SUM(apd.clicks) as clk
                 FROM ad_performance_daily apd
                 INNER JOIN ad a ON apd.ad_id = a.ad_id
-                INNER JOIN campaign c ON a.account_id = c.account_id
+            INNER JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+            INNER JOIN campaign c ON ads.campaign_id = c.campaign_id
                 WHERE a.account_id = {account_id}
                 AND a.created_time >= '{date_start}'::date
                 AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
@@ -829,7 +846,8 @@ def get_variable_target_performance(account_id, date_start, date_end):
                 COUNT(DISTINCT ak.ad_id) as total_ad_count
             FROM ad_keyword ak
             INNER JOIN ad a ON ak.ad_id = a.ad_id
-            INNER JOIN campaign c ON a.account_id = c.account_id
+            INNER JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+            INNER JOIN campaign c ON ads.campaign_id = c.campaign_id
             WHERE a.account_id = {account_id}
             AND a.created_time >= '{date_start}'::date
             AND a.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
