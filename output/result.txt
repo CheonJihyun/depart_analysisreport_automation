@@ -1,4 +1,4 @@
-generated_at=2026-02-20 12:31:23
+generated_at=2026-02-20 12:49:00
 json_path=/Users/fuchsia/Desktop/code/depart_analysis_report/json_reports/integrated_report.json
 dataset_count=24
 
@@ -7,7 +7,7 @@ account_name=네츄럴굿띵스
 period=2025-02-13 ~ 2026-02-19
 period_ads=2025-08-21 ~ 2026-02-16
 period_contents=2025-08-19 ~ 2026-02-08
-generated_at=2026-02-20 12:31:04
+generated_at=2026-02-20 12:48:26
 
 [SUMMARY]
 total_ads=173
@@ -220,7 +220,7 @@ label=공유 | avg_ctr=5.02
 label=박스 | avg_ctr=4.98
 label=처음 | avg_ctr=4.82
 label=부모 | avg_ctr=4.77
-label=고소하 | avg_ctr=4.71
+label=인형 | avg_ctr=4.7
 
 [DATASET:overall_top_va]
 kind=bar_h
@@ -264,11 +264,11 @@ labels_count=10
 series_count=1
 label=쓰이 | avg_ctr=1.51
 label=빠지 | avg_ctr=1.59
-label=유해 | avg_ctr=1.79
+label=유하 | avg_ctr=1.79
 label=빠르 | avg_ctr=1.79
 label=깨우 | avg_ctr=2.14
 label=쌓이 | avg_ctr=2.23
-label=어렵 | avg_ctr=2.34
+label=어리 | avg_ctr=2.34
 label=약하 | avg_ctr=2.35
 label=드리 | avg_ctr=2.37
 label=지키 | avg_ctr=2.39
@@ -348,11 +348,11 @@ label=구매 | avg_ctr=1.24
 label=예전 | avg_ctr=1.33
 label=운동 | avg_ctr=1.55
 label=대사 | avg_ctr=1.55
-label=아무리 | avg_ctr=1.74
 label=호박씨 | avg_ctr=1.8
 label=새해 | avg_ctr=1.92
 label=변화 | avg_ctr=1.93
 label=이제 | avg_ctr=1.98
+label=나이 | avg_ctr=2.03
 
 [DATASET:main_bottom_va]
 kind=bar_h
@@ -366,8 +366,8 @@ label=강하 | avg_ctr=1.75
 label=빠르 | avg_ctr=1.87
 label=깨우 | avg_ctr=1.99
 label=쌓이 | avg_ctr=2.08
-label=유해 | avg_ctr=2.12
-label=어렵 | avg_ctr=2.17
+label=유하 | avg_ctr=2.12
+label=어리 | avg_ctr=2.17
 label=꺼내 | avg_ctr=2.35
 label=일어나 | avg_ctr=2.36
 
@@ -415,7 +415,7 @@ label=정답 | avg_ctr=4.74
 label=스푼 | avg_ctr=4.74
 label=비타민 | avg_ctr=4.61
 label=레시피 | avg_ctr=4.46
-label=조사 | avg_ctr=4.42
+label=설문 | avg_ctr=4.42
 
 [DATASET:avoid_top_va]
 kind=bar_h
@@ -445,9 +445,9 @@ label=계속 | avg_ctr=1.08
 label=피넛 | avg_ctr=1.17
 label=크랜베리 | avg_ctr=1.2
 label=의욕 | avg_ctr=1.29
-label=이너케어 | avg_ctr=1.4
 label=신경 | avg_ctr=1.4
 label=유해 | avg_ctr=1.42
+label=이너 | avg_ctr=1.46
 label=구매 | avg_ctr=1.49
 label=화장실 | avg_ctr=1.5
 
@@ -458,15 +458,15 @@ unit=%
 labels_count=10
 series_count=1
 label=쓰이 | avg_ctr=0.84
-label=유해 | avg_ctr=1.42
+label=유하 | avg_ctr=1.42
 label=빠지 | avg_ctr=1.57
 label=빠르 | avg_ctr=1.63
 label=기다리 | avg_ctr=1.64
 label=여기 | avg_ctr=1.66
-label=그러 | avg_ctr=1.68
 label=만나 | avg_ctr=1.7
 label=비우 | avg_ctr=1.7
 label=망설이 | avg_ctr=1.86
+label=무너지 | avg_ctr=1.96
 
 [DATASET:avoid_keyword_combo_detail]
 kind=table
