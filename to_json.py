@@ -141,14 +141,43 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
 
     # 4. 키워드 분석 (전체/메인/기피 + 명사/형용사)
     print("키워드 분석 (전체/메인/기피 + 명사/형용사) 생성 중...")
+    def _normalize_age_selection(age_value):
+        if age_value is None:
+            return None
+        if isinstance(age_value, str):
+            age_value = age_value.strip()
+            return age_value if age_value else None
+        if isinstance(age_value, (list, tuple, set, np.ndarray, pd.Series)):
+            ages = [str(v).strip() for v in age_value if v is not None and str(v).strip()]
+            return ages if ages else None
+        age_value = str(age_value).strip()
+        return age_value if age_value else None
+
+    def _normalize_gender_selection(gender_value):
+        if gender_value is None:
+            return None
+        if isinstance(gender_value, str):
+            gender_value = gender_value.strip()
+            return gender_value if gender_value else None
+        if isinstance(gender_value, (list, tuple, set, np.ndarray, pd.Series)):
+            genders = [str(v).strip() for v in gender_value if v is not None and str(v).strip()]
+            return genders if genders else None
+        gender_value = str(gender_value).strip()
+        return gender_value if gender_value else None
+
     target_configs = [
         ("overall", None, None, "전체"),
         ("main", main_age, main_gender, "메인 타겟"),
         ("avoid", avoid_age, avoid_gender, "기피 타겟")
     ]
 
-    for prefix, age, gen, label in target_configs:
-        if prefix != "overall" and not (age and gen): continue
+    for prefix, age_raw, gen_raw, label in target_configs:
+        age = _normalize_age_selection(age_raw)
+        gen = _normalize_gender_selection(gen_raw)
+
+        # main/avoid는 성별이 있어야 생성. age가 없으면 해당 성별의 전체 연령 대상으로 조회.
+        if prefix != "overall" and not gen:
+            continue
         
         # 상위/하위 키워드 성과
         for is_top in [True, False]:

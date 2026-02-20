@@ -250,9 +250,9 @@ def get_ctr_data(account_id, date_start, date_end):
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
-            AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND ad.created_time <= ('{date_end}'::date - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
-            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+            AND apd.date <= ('{date_end}'::date - INTERVAL '1 day')::date
             AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY week_start
         ORDER BY week_start;
@@ -417,7 +417,7 @@ def get_a_content_target_ctr_data(ad_id, date_start, date_end):
     return df
 
 
-# 타겟별 평균 노출, ctr
+# 타겟별 노출/클릭 합계, ctr
 def get_target_avg_imp_ctr(account_id, date_start, date_end):
     engine = get_engine()
     
@@ -425,8 +425,8 @@ def get_target_avg_imp_ctr(account_id, date_start, date_end):
         SELECT 
         apd.age, 
         apd.gender, 
-        AVG(apd.impressions) AS impressions, 
-        AVG(apd.clicks) AS clicks,
+        SUM(apd.impressions) AS impressions, 
+        SUM(apd.clicks) AS clicks,
         -- NULLIF를 사용하여 분모(impressions)가 0이면 NULL로 처리
         -- CTR 공식은 (클릭 / 노출) * 100입니다.
         ROUND(
@@ -460,8 +460,8 @@ def get_target_avg_imp_ctr_threshold(account_id, date_start, date_end, threshold
         SELECT 
         apd.age, 
         apd.gender, 
-        AVG(apd.impressions) AS impressions, 
-        AVG(apd.clicks) AS clicks,
+        SUM(apd.impressions) AS impressions, 
+        SUM(apd.clicks) AS clicks,
         -- NULLIF를 사용하여 분모(impressions)가 0이면 NULL로 처리
         -- CTR 공식은 (클릭 / 노출) * 100입니다.
         ROUND(
@@ -493,6 +493,51 @@ def get_target_avg_imp_ctr_threshold(account_id, date_start, date_end, threshold
 
 
 # 키워드 마다의 imp, click, ctr
+def _to_str_list(value):
+    if value is None:
+        return []
+    if isinstance(value, str):
+        s = value.strip()
+        return [s] if s else []
+    if isinstance(value, (list, tuple, set, np.ndarray, pd.Series)):
+        out = []
+        for v in value:
+            if v is None:
+                continue
+            s = str(v).strip()
+            if s:
+                out.append(s)
+        return out
+    s = str(value).strip()
+    return [s] if s else []
+
+
+def _sql_quote(value: str) -> str:
+    return "'" + str(value).replace("'", "''") + "'"
+
+
+def _build_target_filter(target_age=None, target_gender=None):
+    clauses = []
+
+    ages = _to_str_list(target_age)
+    if ages:
+        if len(ages) == 1:
+            clauses.append(f"apd.age = {_sql_quote(ages[0])}")
+        else:
+            age_list = ", ".join(_sql_quote(a) for a in ages)
+            clauses.append(f"apd.age IN ({age_list})")
+
+    genders = _to_str_list(target_gender)
+    if genders:
+        if len(genders) == 1:
+            clauses.append(f"apd.gender = {_sql_quote(genders[0])}")
+        else:
+            gender_list = ", ".join(_sql_quote(g) for g in genders)
+            clauses.append(f"apd.gender IN ({gender_list})")
+
+    return "".join(f" AND {c}" for c in clauses)
+
+
 def get_raw_keyword_performance(account_id, date_start, date_end, target_age=None, target_gender=None, is_top=True):
     engine = get_engine()
     
@@ -501,14 +546,12 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
     order_direction = "DESC" if is_top else "ASC"
     
     # 2. 타겟 필터링 조건
-    target_filter = ""
-    if target_age: target_filter += f" AND apd.age = '{target_age}'"
-    if target_gender: target_filter += f" AND apd.gender = '{target_gender}'"
+    target_filter = _build_target_filter(target_age, target_gender)
 
     query = f"""
         SELECT 
             ek.keyword,
-            COUNT(DISTINCT perf.ad_id) as doc_freq,
+            COUNT(DISTINCT perf.ad_body) as doc_freq,
             SUM(perf.ad_imp) as total_impressions,
             SUM(perf.ad_clk) as total_clicks,
             ROUND((SUM(perf.ad_clk)::numeric / NULLIF(SUM(perf.ad_imp), 0)) * 100, 2) as avg_ctr
@@ -516,6 +559,7 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
             -- [1단계] 조건에 맞는 광고의 성과 데이터를 ad_id별로 먼저 합산
             SELECT 
                 apd.ad_id,
+                MAX(a.body) as ad_body,
                 SUM(apd.impressions) as ad_imp,
                 SUM(apd.clicks) as ad_clk
             FROM ad_performance_daily apd
@@ -535,11 +579,20 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
         ) perf
         INNER JOIN (
             -- [2단계] 키워드만 따로 추출 (필요한 광고 ID에 대해서만)
-            SELECT ad_id, UNNEST(COALESCE(essential_keywords, ARRAY[]::text[]) || COALESCE(variable_keywords, ARRAY[]::text[])) as keyword
-            FROM ad_keyword
+            SELECT DISTINCT
+                ak.ad_id,
+                CASE
+                    WHEN REPLACE(REPLACE(TRIM(k.keyword), ' ', ''), ',', '') IN ('브라키오', '브라', '키오') THEN '브라키오'
+                    ELSE TRIM(k.keyword)
+                END AS keyword
+            FROM ad_keyword ak
+            CROSS JOIN LATERAL UNNEST(
+                COALESCE(ak.essential_keywords, ARRAY[]::text[]) ||
+                COALESCE(ak.variable_keywords, ARRAY[]::text[])
+            ) AS k(keyword)
         ) ek ON perf.ad_id = ek.ad_id
         GROUP BY ek.keyword
-        HAVING COUNT(DISTINCT perf.ad_id) >= 3
+        HAVING COUNT(DISTINCT perf.ad_body) >= 3
         ORDER BY avg_ctr {order_direction}, total_impressions DESC
     """
     return pd.read_sql(query, engine)
@@ -547,7 +600,105 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
 
 # get_raw_keyword_performance로부터 얻은 df를 원하는 type(명,형동)으로 구분하여 나누는 함수 (10개 단어)
 from kiwipiepy import Kiwi
+from functools import lru_cache
 kiwi = Kiwi()
+
+NOUN_TAGS = {"NNG", "NNP"}
+VERB_ADJ_TAGS = {"VA", "VV"}
+VALID_KEYWORD_TAGS = NOUN_TAGS | VERB_ADJ_TAGS
+
+
+@lru_cache(maxsize=50000)
+def _keyword_pos_candidates(raw_text):
+    """
+    키워드 문자열에 대해 형태소 분석 후보(형태, 태그, 점수)를 반환.
+    """
+    text = str(raw_text).strip()
+    if not text:
+        return tuple()
+
+    candidates = []
+    for tokens, score in kiwi.analyze(text, top_n=5):
+        first = next((tok for tok in tokens if tok.tag in VALID_KEYWORD_TAGS), None)
+        if first is None:
+            continue
+        form = first.form.strip()
+        if len(form) < 2 or form.isdigit():
+            continue
+        candidates.append((form, first.tag, float(score)))
+    return tuple(candidates)
+
+
+def _pick_best_candidate(candidates, allowed_tags):
+    """
+    허용 태그 집합에서 점수가 가장 높은 후보 1개를 고른다.
+    """
+    best = None
+    for form, tag, score in candidates:
+        if tag not in allowed_tags:
+            continue
+        if best is None or score > best[2]:
+            best = (form, tag, score)
+    return best
+
+
+@lru_cache(maxsize=50000)
+def _looks_like_predicate_stem(form):
+    """
+    '강하'처럼 명사/용언 어간이 겹치는 경우를 분리하기 위한 보조 판별.
+    form + '다'를 재분석해 동일 어형이 VA/VV로 해석되면 용언 어간으로 본다.
+    """
+    stem = str(form).strip()
+    if not stem:
+        return False
+
+    for tokens, _ in kiwi.analyze(f"{stem}다", top_n=3):
+        if not tokens:
+            continue
+
+        first = next((tok for tok in tokens if tok.tag in VALID_KEYWORD_TAGS), None)
+        if first and first.form == stem and first.tag in VERB_ADJ_TAGS:
+            return True
+
+        # 예: 강/XR + 하/XSA + 다/EF
+        if len(tokens) >= 2 and tokens[0].form + tokens[1].form == stem:
+            if tokens[0].tag == "XR" and tokens[1].tag in {"XSA", "XSV"}:
+                return True
+
+    return False
+
+def _normalize_keyword_by_pos(text, pos_type='noun'):
+    """
+    텍스트를 형태소 분석해 지정한 품사(noun / verb_adj)에 맞는 원형 토큰만 반환.
+    """
+    candidates = _keyword_pos_candidates(text)
+    if not candidates:
+        return None
+
+    noun_best = _pick_best_candidate(candidates, NOUN_TAGS)
+    verb_adj_best = _pick_best_candidate(candidates, VERB_ADJ_TAGS)
+
+    if pos_type == "noun":
+        if noun_best is None:
+            return None
+        # 용언 후보가 더 우세하면 명사로 강제 변환하지 않는다.
+        if verb_adj_best is not None and verb_adj_best[2] >= noun_best[2]:
+            return None
+        noun_form = noun_best[0]
+        # 어간형(예: 강하)이 명사로 오인되는 케이스를 차단
+        if _looks_like_predicate_stem(noun_form):
+            return None
+        return noun_form
+
+    if pos_type == "verb_adj":
+        if verb_adj_best is not None:
+            return verb_adj_best[0]
+        # 분석 후보에 VA/VV가 없어도, +다 재분석에서 용언 어간으로 판별되면 허용
+        if noun_best is not None and _looks_like_predicate_stem(noun_best[0]):
+            return noun_best[0]
+        return None
+
+    return None
 
 def filter_keywords_by_pos(df, pos_type='noun'):
     """
@@ -556,42 +707,51 @@ def filter_keywords_by_pos(df, pos_type='noun'):
     if df is None or df.empty:
         return None
 
-    def get_cleaned_keyword(text):
-        # 1. 형태소 분석
-        tokens = kiwi.tokenize(str(text))
-        if not tokens: return None
-        
-        # 기존 로직: 첫 번째 유효한 토큰의 형태와 태그를 가져옴
-        # (보통 단어 하나가 들어오므로 tokens[0]으로 충분함)
-        t = tokens[0]
-        
-        # 2. 태그 필터링 (기존 로직 반영)
-        valid_tags = {"NNG", "NNP", "VA", "VV"}
-        if t.tag not in valid_tags:
-            return None
-        
-        # 3. 길이 및 숫자 조건 (기존 로직 반영)
-        tok = t.form
-        if len(tok) < 2 or tok.isdigit():
-            return None
-            
-        # 4. 타입 매칭
-        cur_type = "noun" if t.tag in {"NNG", "NNP"} else "verb_adj"
-        
-        # 요청한 타입과 일치하면 해당 형태(원형) 반환
-        if cur_type == pos_type:
-            return tok
-        return None
-
     # 새로운 컬럼에 정제된 키워드 할당
-    df['cleaned_kw'] = df['keyword'].apply(get_cleaned_keyword)
+    df['cleaned_kw'] = df['keyword'].apply(lambda x: _normalize_keyword_by_pos(x, pos_type))
     
-    # 필터링 후 상위 10개 추출
+    # 필터링 후 원형 키워드로 치환
     filtered_df = df.dropna(subset=['cleaned_kw']).copy()
-    
-    # 중복된 원형이 있을 경우(예: '예뻐서', '예쁘니' -> '예쁘') 성과를 합쳐주는 것이 좋지만,
-    # 일단 가장 간단하게 상위 10개를 뽑으려면 아래와 같이 처리합니다.
-    return filtered_df.head(10).drop(columns=['cleaned_kw'])
+    if filtered_df.empty:
+        return None
+    filtered_df['keyword'] = filtered_df['cleaned_kw']
+    filtered_df = filtered_df.drop(columns=['cleaned_kw'])
+
+    # 같은 원형 키워드는 합산 집계
+    agg_map = {}
+    if 'doc_freq' in filtered_df.columns:
+        agg_map['doc_freq'] = 'sum'
+    if 'total_impressions' in filtered_df.columns:
+        agg_map['total_impressions'] = 'sum'
+    if 'total_clicks' in filtered_df.columns:
+        agg_map['total_clicks'] = 'sum'
+    if 'avg_ctr' in filtered_df.columns and 'total_impressions' not in filtered_df.columns:
+        agg_map['avg_ctr'] = 'mean'
+
+    if agg_map:
+        filtered_df = filtered_df.groupby('keyword', as_index=False).agg(agg_map)
+
+    # 노출/클릭 합계가 있으면 CTR 재계산
+    if {'total_clicks', 'total_impressions'}.issubset(filtered_df.columns):
+        filtered_df['avg_ctr'] = np.where(
+            filtered_df['total_impressions'] > 0,
+            np.round((filtered_df['total_clicks'] / filtered_df['total_impressions']) * 100, 2),
+            np.nan
+        )
+
+    # 입력 정렬 방향(top/bottom)을 최대한 유지
+    if 'avg_ctr' in filtered_df.columns and len(filtered_df) > 1:
+        orig_avg = pd.to_numeric(df.get('avg_ctr'), errors='coerce')
+        orig_avg = orig_avg.dropna()
+        is_ascending = False
+        if len(orig_avg) >= 2:
+            is_ascending = bool(orig_avg.iloc[0] <= orig_avg.iloc[-1])
+        filtered_df = filtered_df.sort_values(
+            by=['avg_ctr', 'total_impressions'] if 'total_impressions' in filtered_df.columns else ['avg_ctr'],
+            ascending=[is_ascending, False] if 'total_impressions' in filtered_df.columns else [is_ascending]
+        )
+
+    return filtered_df.head(10)
 
 # 전체 기간 CTR
 def get_overall_ctr(account_id, date_start, date_end):
@@ -629,15 +789,14 @@ def get_overall_ctr(account_id, date_start, date_end):
 def get_strategic_performance(account_id, date_start, date_end, target_age=None, target_gender=None):
     engine = get_engine()
     
-    target_filter = ""
-    if target_age: target_filter += f" AND apd.age = '{target_age}'"
-    if target_gender: target_filter += f" AND apd.gender = '{target_gender}'"
+    target_filter = _build_target_filter(target_age, target_gender)
 
     query = f"""
         WITH ad_raw AS (
             -- 1. 광고별 필수/변수 키워드와 기초 성과를 가져옴
             SELECT 
                 ad.ad_id,
+                MAX(ad.body) as ad_body,
                 ak.essential_keywords,
                 ak.variable_keywords,
                 SUM(apd.impressions) as ad_imps,
@@ -663,6 +822,7 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
             -- SNS, 브랜드, 채널 -> (SNS, 브랜드), (SNS, 채널), (브랜드, 채널)로 확장
             SELECT 
                 ad_id,
+                ad_body,
                 ad_imps,
                 ad_clicks,
                 variable_keywords,
@@ -687,12 +847,22 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
             -- 4. 해당 조합이 포함된 광고들 내에서 변수 키워드별 성과 계산
             SELECT 
                 cp.ess_1, cp.ess_2,
-                UNNEST(cp.variable_keywords) as var_keyword,
+                vk.var_keyword,
+                COUNT(DISTINCT cp.ad_body) as var_body_doc_freq,
                 SUM(cp.ad_imps) as v_imps,
                 SUM(cp.ad_clicks) as v_clicks
             FROM combo_pairs cp
             INNER JOIN essential_agg ea ON cp.ess_1 = ea.ess_1 AND cp.ess_2 = ea.ess_2
-            GROUP BY cp.ess_1, cp.ess_2, var_keyword
+            CROSS JOIN LATERAL (
+                SELECT DISTINCT
+                    CASE
+                        WHEN REPLACE(REPLACE(TRIM(v.keyword), ' ', ''), ',', '') IN ('브라키오', '브라', '키오') THEN '브라키오'
+                        ELSE TRIM(v.keyword)
+                    END AS var_keyword
+                FROM UNNEST(COALESCE(cp.variable_keywords, ARRAY[]::text[])) AS v(keyword)
+            ) vk
+            GROUP BY cp.ess_1, cp.ess_2, vk.var_keyword
+            HAVING COUNT(DISTINCT cp.ad_body) >= 3
         )
         -- 5. 최종 결합 및 정렬
         SELECT 
@@ -700,13 +870,38 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
             ea.combo_doc_freq,
             ea.combo_overall_ctr,
             va.var_keyword,
+            va.v_clicks,
             ROUND((va.v_clicks::numeric / NULLIF(va.v_imps, 0)::numeric) * 100, 2) as with_var_ctr,
             va.v_imps as var_imps
         FROM essential_agg ea
         JOIN variable_agg va ON ea.ess_1 = va.ess_1 AND ea.ess_2 = va.ess_2
         ORDER BY ea.combo_overall_ctr DESC, with_var_ctr DESC
     """
-    return pd.read_sql(query, engine)
+    df = pd.read_sql(query, engine)
+    if df is None or df.empty:
+        return df
+
+    # 버블차트용 변수 키워드는 명사(NNG/NNP)만 남긴다.
+    df = df.copy()
+    df["noun_keyword"] = df["var_keyword"].apply(lambda x: _normalize_keyword_by_pos(x, "noun"))
+    df = df.dropna(subset=["noun_keyword"])
+    if df.empty:
+        return pd.DataFrame(columns=["ess_1", "ess_2", "combo_doc_freq", "combo_overall_ctr", "var_keyword", "with_var_ctr", "var_imps"])
+
+    # 형태소 정규화로 동일 명사가 합쳐질 수 있으므로 합산 후 CTR 재계산
+    df["var_keyword"] = df["noun_keyword"]
+    grouped = (
+        df.groupby(["ess_1", "ess_2", "combo_doc_freq", "combo_overall_ctr", "var_keyword"], as_index=False)
+        .agg(v_clicks=("v_clicks", "sum"), var_imps=("var_imps", "sum"))
+    )
+    grouped["with_var_ctr"] = np.where(
+        grouped["var_imps"] > 0,
+        np.round((grouped["v_clicks"] / grouped["var_imps"]) * 100, 2),
+        np.nan
+    )
+
+    grouped = grouped.sort_values(by=["combo_overall_ctr", "with_var_ctr"], ascending=[False, False])
+    return grouped[["ess_1", "ess_2", "combo_doc_freq", "combo_overall_ctr", "var_keyword", "with_var_ctr", "var_imps"]]
 
 
 # 별첨 필수키워드

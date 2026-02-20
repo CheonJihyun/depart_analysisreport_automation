@@ -140,7 +140,7 @@ def run():
         "end": "2026-02-19",
         "main_age": "35-44",
         "main_gender": "female",
-        "avoid_age":"",
+        "avoid_age": "",
         "avoid_gender":"male"
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]

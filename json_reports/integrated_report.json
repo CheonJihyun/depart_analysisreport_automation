@@ -4,7 +4,7 @@
         "period": "2025-02-13 ~ 2026-02-19",
         "period_ads": "2025-08-21 ~ 2026-02-16",
         "period_contents": "2025-08-19 ~ 2026-02-08",
-        "generated_at": "2026-02-19 12:19:10"
+        "generated_at": "2026-02-20 12:31:04"
     },
     "summary": {
         "total_ads": 173,
@@ -176,7 +176,10 @@
                 "2025-12-29",
                 "2026-01-05",
                 "2026-01-12",
-                "2026-01-19"
+                "2026-01-19",
+                "2026-01-26",
+                "2026-02-02",
+                "2026-02-09"
             ],
             "series": [
                 {
@@ -203,7 +206,10 @@
                         10801,
                         15250,
                         6076,
-                        4765
+                        4765,
+                        4657,
+                        5229,
+                        11582
                     ]
                 }
             ]
@@ -218,7 +224,8 @@
                 "2025-10-20",
                 "2025-11-17",
                 "2025-12-15",
-                "2026-01-12"
+                "2026-01-12",
+                "2026-02-09"
             ],
             "series": [
                 {
@@ -229,7 +236,8 @@
                         130421,
                         100596,
                         91874,
-                        10841
+                        20727,
+                        11582
                     ]
                 }
             ]
@@ -263,7 +271,8 @@
                 "2026-01-12",
                 "2026-01-19",
                 "2026-01-26",
-                "2026-02-02"
+                "2026-02-02",
+                "2026-02-09"
             ],
             "series": [
                 {
@@ -293,6 +302,7 @@
                         1.82,
                         3.74,
                         4.34,
+                        0.0,
                         0.0
                     ]
                 }
@@ -306,85 +316,85 @@
                 {
                     "age": "18-24",
                     "gender": "female",
-                    "impressions": 76.25667752442996,
-                    "clicks": 1.8716612377850164,
+                    "impressions": 117054,
+                    "clicks": 2873,
                     "ctr": 2.45
                 },
                 {
                     "age": "18-24",
                     "gender": "male",
-                    "impressions": 43.04716981132076,
-                    "clicks": 0.8140161725067385,
+                    "impressions": 63882,
+                    "clicks": 1208,
                     "ctr": 1.89
                 },
                 {
                     "age": "25-34",
                     "gender": "female",
-                    "impressions": 133.10784939374602,
-                    "clicks": 3.729419272495214,
+                    "impressions": 208580,
+                    "clicks": 5844,
                     "ctr": 2.8
                 },
                 {
                     "age": "25-34",
                     "gender": "male",
-                    "impressions": 48.76038961038961,
-                    "clicks": 1.1474025974025974,
+                    "impressions": 75091,
+                    "clicks": 1767,
                     "ctr": 2.35
                 },
                 {
                     "age": "35-44",
                     "gender": "female",
-                    "impressions": 68.36753246753247,
-                    "clicks": 2.101298701298701,
+                    "impressions": 105286,
+                    "clicks": 3236,
                     "ctr": 3.07
                 },
                 {
                     "age": "35-44",
                     "gender": "male",
-                    "impressions": 21.005964214711728,
-                    "clicks": 0.5864811133200796,
+                    "impressions": 31698,
+                    "clicks": 885,
                     "ctr": 2.79
                 },
                 {
                     "age": "45-54",
                     "gender": "female",
-                    "impressions": 22.165458141067898,
-                    "clicks": 0.982201713909031,
+                    "impressions": 33625,
+                    "clicks": 1490,
                     "ctr": 4.43
                 },
                 {
                     "age": "45-54",
                     "gender": "male",
-                    "impressions": 9.666422823701536,
-                    "clicks": 0.3013899049012436,
+                    "impressions": 13214,
+                    "clicks": 412,
                     "ctr": 3.12
                 },
                 {
                     "age": "55-64",
                     "gender": "female",
-                    "impressions": 8.502186588921283,
-                    "clicks": 0.40160349854227406,
+                    "impressions": 11665,
+                    "clicks": 551,
                     "ctr": 4.72
                 },
                 {
                     "age": "55-64",
                     "gender": "male",
-                    "impressions": 9.309644670050762,
-                    "clicks": 0.3637901861252115,
+                    "impressions": 11004,
+                    "clicks": 430,
                     "ctr": 3.91
                 },
                 {
                     "age": "65+",
                     "gender": "female",
-                    "impressions": 6.158572844400396,
-                    "clicks": 0.2398414271555996,
+                    "impressions": 6214,
+                    "clicks": 242,
                     "ctr": 3.89
                 },
                 {
                     "age": "65+",
                     "gender": "male",
-                    "impressions": 7.628668171557562,
-                    "clicks": 0.23589164785553046,
+                    "impressions": 6759,
+                    "clicks": 209,
                     "ctr": 3.09
                 }
             ]
@@ -394,31 +404,31 @@
             "title": "전체 TOP 10 (명사)",
             "unit": "%",
             "labels": [
-                "행동",
-                "배려",
                 "독소",
-                "밤새",
                 "얼굴",
                 "진심",
                 "사랑",
-                "단계",
                 "구성",
-                "공유"
+                "공유",
+                "박스",
+                "처음",
+                "부모",
+                "고소하"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        9.42,
-                        8.81,
                         7.61,
-                        7.08,
                         6.63,
                         6.4,
                         5.66,
-                        5.34,
                         5.16,
-                        5.02
+                        5.02,
+                        4.98,
+                        4.82,
+                        4.77,
+                        4.71
                     ]
                 }
             ]
@@ -428,31 +438,31 @@
             "title": "전체 TOP 10 (형용사)",
             "unit": "%",
             "labels": [
-                "옮기",
-                "움츠러들",
-                "떨어지",
                 "바라",
                 "떠오르",
                 "바쁘",
-                "지나가",
                 "건네",
                 "고르",
-                "고소하"
+                "고소하",
+                "전하",
+                "풍부하",
+                "모두",
+                "곁들이"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        9.42,
-                        7.08,
-                        5.7,
                         5.58,
                         5.43,
                         5.19,
-                        5.07,
                         4.98,
                         4.73,
-                        4.71
+                        4.71,
+                        4.69,
+                        4.63,
+                        4.52,
+                        4.3
                     ]
                 }
             ]
@@ -462,31 +472,31 @@
             "title": "전체 BOTTOM 10 (명사)",
             "unit": "%",
             "labels": [
-                "호박",
+                "계속",
                 "호박씨",
-                "머리",
-                "계획",
-                "의지",
                 "예전",
-                "혈관",
                 "공감",
                 "구매",
-                "유해"
+                "유해",
+                "대사",
+                "과정",
+                "운동",
+                "숫자"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.44,
+                        1.43,
                         1.46,
-                        1.49,
-                        1.49,
-                        1.49,
-                        1.71,
                         1.71,
                         1.72,
                         1.73,
-                        1.79
+                        1.79,
+                        1.82,
+                        1.85,
+                        1.92,
+                        1.92
                     ]
                 }
             ]
@@ -496,14 +506,14 @@
             "title": "전체 BOTTOM 10 (형용사)",
             "unit": "%",
             "labels": [
-                "되돌아보",
                 "쓰이",
                 "빠지",
+                "유해",
                 "빠르",
                 "깨우",
                 "쌓이",
+                "어렵",
                 "약하",
-                "과하",
                 "드리",
                 "지키"
             ],
@@ -511,14 +521,14 @@
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.43,
                         1.51,
                         1.59,
                         1.79,
+                        1.79,
                         2.14,
                         2.23,
+                        2.34,
                         2.35,
-                        2.36,
                         2.37,
                         2.39
                     ]
@@ -532,435 +542,228 @@
             "rows": [
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
-                    "var_keyword": "이미",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 11,
+                    "combo_overall_ctr": 3.38,
+                    "var_keyword": "오늘",
+                    "with_var_ctr": 3.99,
+                    "var_imps": 13274.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
-                    "var_keyword": "이하",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 11,
+                    "combo_overall_ctr": 3.38,
+                    "var_keyword": "시작",
+                    "with_var_ctr": 3.78,
+                    "var_imps": 16542.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
-                    "var_keyword": "일상",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 11,
+                    "combo_overall_ctr": 3.38,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 3.43,
+                    "var_imps": 12442.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
-                    "var_keyword": "전하",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 11,
+                    "combo_overall_ctr": 3.38,
+                    "var_keyword": "선물",
+                    "with_var_ctr": 3.43,
+                    "var_imps": 12442.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
-                    "var_keyword": "제외",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 11,
+                    "combo_overall_ctr": 3.38,
+                    "var_keyword": "연말",
+                    "with_var_ctr": 3.43,
+                    "var_imps": 12442.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
-                    "var_keyword": "클린",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
-                    "var_keyword": "풍미",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
-                    "var_keyword": "곁들이",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "비타민",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.07,
-                    "var_keyword": "곁들이",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "비타민",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.07,
-                    "var_keyword": "올리브",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "비타민",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.07,
-                    "var_keyword": "부모",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "비타민",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.07,
-                    "var_keyword": "성인",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "비타민",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.07,
-                    "var_keyword": "바쁘",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "비타민",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.07,
-                    "var_keyword": "도움",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "비타민",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.07,
-                    "var_keyword": "보내",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "비타민",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.07,
-                    "var_keyword": "레몬",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.95,
-                    "var_keyword": "아침",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.95,
-                    "var_keyword": "식사",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.95,
-                    "var_keyword": "식단",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.95,
-                    "var_keyword": "지나가",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.95,
-                    "var_keyword": "시간",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.95,
-                    "var_keyword": "성인",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.95,
-                    "var_keyword": "성분",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.95,
-                    "var_keyword": "연간",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.46,
-                    "var_keyword": "너무",
-                    "with_var_ctr": 8.8,
-                    "var_imps": 1466.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.46,
-                    "var_keyword": "식욕",
-                    "with_var_ctr": 8.8,
-                    "var_imps": 1466.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.46,
-                    "var_keyword": "식초",
-                    "with_var_ctr": 8.8,
-                    "var_imps": 1466.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.46,
-                    "var_keyword": "신호",
-                    "with_var_ctr": 8.8,
-                    "var_imps": 1466.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.46,
-                    "var_keyword": "애사비",
-                    "with_var_ctr": 8.8,
-                    "var_imps": 1466.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.46,
-                    "var_keyword": "발사믹",
-                    "with_var_ctr": 8.8,
-                    "var_imps": 1466.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.46,
-                    "var_keyword": "간단",
-                    "with_var_ctr": 8.8,
-                    "var_imps": 1466.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.46,
-                    "var_keyword": "쌓이",
-                    "with_var_ctr": 8.8,
-                    "var_imps": 1466.0
-                },
-                {
-                    "ess_1": "피로회복",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.59,
-                    "var_keyword": "소중하",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "피로회복",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.59,
-                    "var_keyword": "슬로우",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "피로회복",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.59,
-                    "var_keyword": "에이징",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "피로회복",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.59,
-                    "var_keyword": "올리브",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "피로회복",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.59,
-                    "var_keyword": "지나가",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "피로회복",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.59,
-                    "var_keyword": "풍부하",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "피로회복",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.59,
-                    "var_keyword": "아침",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "피로회복",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.59,
-                    "var_keyword": "30",
-                    "with_var_ctr": 5.55,
-                    "var_imps": 3765.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.25,
-                    "var_keyword": "생생",
-                    "with_var_ctr": 4.25,
-                    "var_imps": 1389.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.25,
-                    "var_keyword": "고급",
-                    "with_var_ctr": 4.25,
-                    "var_imps": 1389.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.25,
-                    "var_keyword": "당신",
-                    "with_var_ctr": 4.25,
-                    "var_imps": 1389.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.25,
-                    "var_keyword": "도움",
-                    "with_var_ctr": 4.25,
-                    "var_imps": 1389.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.25,
-                    "var_keyword": "초코라떼",
-                    "with_var_ctr": 4.25,
-                    "var_imps": 1389.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.25,
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 11,
+                    "combo_overall_ctr": 3.38,
                     "var_keyword": "루틴",
-                    "with_var_ctr": 4.25,
-                    "var_imps": 1389.0
+                    "with_var_ctr": 3.35,
+                    "var_imps": 24818.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 11,
+                    "combo_overall_ctr": 3.38,
+                    "var_keyword": "고민",
+                    "with_var_ctr": 3.32,
+                    "var_imps": 16238.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 11,
+                    "combo_overall_ctr": 3.38,
+                    "var_keyword": "조구맣",
+                    "with_var_ctr": 3.22,
+                    "var_imps": 13601.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.02,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 4.11,
+                    "var_imps": 11040.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.02,
+                    "var_keyword": "균형",
+                    "with_var_ctr": 3.41,
+                    "var_imps": 9430.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역력",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.57,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 3.57,
+                    "var_imps": 7780.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역력",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.57,
+                    "var_keyword": "하루",
+                    "with_var_ctr": 3.57,
+                    "var_imps": 7780.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.62,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 3.86,
+                    "var_imps": 9798.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.62,
+                    "var_keyword": "성분",
+                    "with_var_ctr": 3.62,
+                    "var_imps": 13504.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.62,
+                    "var_keyword": "슬로우",
+                    "with_var_ctr": 3.62,
+                    "var_imps": 13504.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.62,
+                    "var_keyword": "에이징",
+                    "with_var_ctr": 3.62,
+                    "var_imps": 13504.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.62,
+                    "var_keyword": "오일",
+                    "with_var_ctr": 3.61,
+                    "var_imps": 9937.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.62,
+                    "var_keyword": "올리브",
+                    "with_var_ctr": 3.61,
+                    "var_imps": 9937.0
+                },
+                {
+                    "ess_1": "다이어트",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.48,
+                    "var_keyword": "잉여",
+                    "with_var_ctr": 3.48,
+                    "var_imps": 7222.0
+                },
+                {
+                    "ess_1": "다이어트",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.48,
+                    "var_keyword": "탄수화물",
+                    "with_var_ctr": 3.48,
+                    "var_imps": 7222.0
                 },
                 {
                     "ess_1": "효소",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.25,
-                    "var_keyword": "에너지",
-                    "with_var_ctr": 4.25,
-                    "var_imps": 1389.0
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.58,
+                    "var_keyword": "마음",
+                    "with_var_ctr": 4.33,
+                    "var_imps": 11939.0
                 },
                 {
                     "ess_1": "효소",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.25,
-                    "var_keyword": "맛있",
-                    "with_var_ctr": 4.25,
-                    "var_imps": 1389.0
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.58,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 3.54,
+                    "var_imps": 11041.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.58,
+                    "var_keyword": "케어",
+                    "with_var_ctr": 3.46,
+                    "var_imps": 9484.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.58,
+                    "var_keyword": "고민",
+                    "with_var_ctr": 3.42,
+                    "var_imps": 12970.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.58,
+                    "var_keyword": "필요",
+                    "with_var_ctr": 2.98,
+                    "var_imps": 13844.0
                 }
             ]
         },
@@ -969,31 +772,31 @@
             "title": "메인 타겟 TOP 10 (명사)",
             "unit": "%",
             "labels": [
-                "행동",
                 "얼굴",
                 "사랑",
-                "배려",
                 "진심",
                 "공유",
                 "구성",
                 "박스",
-                "브라",
-                "키오"
+                "인형",
+                "스푼",
+                "모두",
+                "파우치"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        15.63,
                         8.54,
                         7.79,
-                        7.75,
                         7.17,
                         6.87,
                         6.82,
                         6.81,
-                        6.76,
-                        6.76
+                        6.37,
+                        6.32,
+                        6.14,
+                        6.13
                     ]
                 }
             ]
@@ -1003,7 +806,6 @@
             "title": "메인 타겟 TOP 10 (형용사)",
             "unit": "%",
             "labels": [
-                "옮기",
                 "바쁘",
                 "바라",
                 "건네",
@@ -1011,14 +813,14 @@
                 "곁들이",
                 "떠오르",
                 "고르",
-                "지나가",
+                "지치",
+                "모두",
                 "풍부하"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        15.63,
                         7.73,
                         7.41,
                         6.81,
@@ -1026,7 +828,8 @@
                         6.63,
                         6.62,
                         6.61,
-                        6.34,
+                        6.31,
+                        6.14,
                         6.11
                     ]
                 }
@@ -1037,31 +840,31 @@
             "title": "메인 타겟 BOTTOM 10 (명사)",
             "unit": "%",
             "labels": [
-                "호박",
-                "의지",
-                "계획",
-                "머리",
+                "계속",
                 "구매",
                 "예전",
-                "밤새",
-                "모습",
                 "운동",
-                "대사"
+                "대사",
+                "아무리",
+                "호박씨",
+                "새해",
+                "변화",
+                "이제"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        0.61,
-                        1.18,
-                        1.18,
-                        1.18,
+                        1.11,
                         1.24,
                         1.33,
-                        1.38,
-                        1.52,
                         1.55,
-                        1.55
+                        1.55,
+                        1.74,
+                        1.8,
+                        1.92,
+                        1.93,
+                        1.98
                     ]
                 }
             ]
@@ -1071,31 +874,31 @@
             "title": "메인 타겟 BOTTOM 10 (형용사)",
             "unit": "%",
             "labels": [
-                "되돌아보",
-                "떨어지",
                 "빠지",
-                "움츠러들",
-                "버리",
-                "허기지",
                 "버티",
+                "강하",
                 "빠르",
                 "깨우",
-                "쌓이"
+                "쌓이",
+                "유해",
+                "어렵",
+                "꺼내",
+                "일어나"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.13,
-                        1.2,
                         1.31,
-                        1.38,
-                        1.56,
-                        1.56,
                         1.69,
+                        1.75,
                         1.87,
                         1.99,
-                        2.08
+                        2.08,
+                        2.12,
+                        2.17,
+                        2.35,
+                        2.36
                     ]
                 }
             ]
@@ -1110,432 +913,512 @@
                     "ess_2": "면역",
                     "combo_doc_freq": 6,
                     "combo_overall_ctr": 5.51,
-                    "var_keyword": "성분",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 5.82,
+                    "var_imps": 1219.0
                 },
                 {
                     "ess_1": "건강",
                     "ess_2": "면역",
                     "combo_doc_freq": 6,
                     "combo_overall_ctr": 5.51,
-                    "var_keyword": "30",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "var_keyword": "균형",
+                    "with_var_ctr": 2.94,
+                    "var_imps": 646.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "곁들이",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "ess_2": "체지방",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.33,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 6.28,
+                    "var_imps": 1641.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "슬로우",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "ess_2": "체지방",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.33,
+                    "var_keyword": "도움",
+                    "with_var_ctr": 5.53,
+                    "var_imps": 1701.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "가장",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "ess_2": "체지방",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.33,
+                    "var_keyword": "탄수화물",
+                    "with_var_ctr": 4.46,
+                    "var_imps": 897.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "풍부하",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "ess_2": "체지방",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.33,
+                    "var_keyword": "밸런스",
+                    "with_var_ctr": 4.22,
+                    "var_imps": 734.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "에이징",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "ess_2": "체지방",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.33,
+                    "var_keyword": "완성",
+                    "with_var_ctr": 3.92,
+                    "var_imps": 715.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "지나가",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
+                    "ess_2": "프로바이오틱스",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "그럼",
-                    "with_var_ctr": 9.02,
-                    "var_imps": 255.0
+                    "combo_overall_ctr": 4.85,
+                    "var_keyword": "고민",
+                    "with_var_ctr": 4.85,
+                    "var_imps": 701.0
                 },
                 {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
+                    "ess_1": "건강",
+                    "ess_2": "프로바이오틱스",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "망설이",
-                    "with_var_ctr": 9.02,
-                    "var_imps": 255.0
+                    "combo_overall_ctr": 4.85,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 4.85,
+                    "var_imps": 701.0
                 },
                 {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
+                    "ess_1": "건강",
+                    "ess_2": "프로바이오틱스",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "조건",
-                    "with_var_ctr": 9.02,
-                    "var_imps": 255.0
+                    "combo_overall_ctr": 4.85,
+                    "var_keyword": "케어",
+                    "with_var_ctr": 4.85,
+                    "var_imps": 701.0
                 },
                 {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "필요",
-                    "with_var_ctr": 9.02,
-                    "var_imps": 255.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "훨씬",
-                    "with_var_ctr": 9.02,
-                    "var_imps": 255.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "스트레스",
-                    "with_var_ctr": 9.02,
-                    "var_imps": 255.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "이제",
-                    "with_var_ctr": 9.02,
-                    "var_imps": 255.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "비우",
-                    "with_var_ctr": 9.02,
-                    "var_imps": 255.0
-                },
-                {
-                    "ess_1": "비타민",
+                    "ess_1": "건강",
                     "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.76,
-                    "var_keyword": "공복",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 4.96,
+                    "var_keyword": "아침",
+                    "with_var_ctr": 6.18,
+                    "var_imps": 1295.0
                 },
                 {
-                    "ess_1": "비타민",
+                    "ess_1": "건강",
                     "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.76,
-                    "var_keyword": "계시",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 4.96,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 5.84,
+                    "var_imps": 1216.0
                 },
                 {
-                    "ess_1": "비타민",
+                    "ess_1": "건강",
                     "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.76,
-                    "var_keyword": "성분",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 4.96,
+                    "var_keyword": "사실",
+                    "with_var_ctr": 5.73,
+                    "var_imps": 1973.0
                 },
                 {
-                    "ess_1": "비타민",
+                    "ess_1": "건강",
                     "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.76,
-                    "var_keyword": "가장",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 4.96,
+                    "var_keyword": "마음",
+                    "with_var_ctr": 5.61,
+                    "var_imps": 1819.0
                 },
                 {
-                    "ess_1": "비타민",
+                    "ess_1": "건강",
                     "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.76,
-                    "var_keyword": "바쁘",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.76,
-                    "var_keyword": "보내",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.76,
-                    "var_keyword": "부모",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.76,
-                    "var_keyword": "사람",
-                    "with_var_ctr": 7.67,
-                    "var_imps": 769.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.7,
-                    "var_keyword": "레몬즙",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.7,
-                    "var_keyword": "디톡스",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.7,
-                    "var_keyword": "드레싱",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.7,
-                    "var_keyword": "돌아오",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.7,
-                    "var_keyword": "혈당",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.7,
-                    "var_keyword": "평소",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.7,
-                    "var_keyword": "취향",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "비타민",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.7,
-                    "var_keyword": "위하",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "항산화",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.83,
-                    "var_keyword": "배려",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "항산화",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.83,
-                    "var_keyword": "배출",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "항산화",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.83,
-                    "var_keyword": "벌주",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "항산화",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.83,
-                    "var_keyword": "함께",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "항산화",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.83,
-                    "var_keyword": "보내",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "항산화",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.83,
-                    "var_keyword": "알룰로스",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "항산화",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.83,
-                    "var_keyword": "혈당",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "항산화",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.83,
-                    "var_keyword": "돌아오",
-                    "with_var_ctr": 7.75,
-                    "var_imps": 374.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 4.96,
                     "var_keyword": "선물",
-                    "with_var_ctr": 8.03,
-                    "var_imps": 299.0
+                    "with_var_ctr": 5.41,
+                    "var_imps": 1700.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "피로회복",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 4.96,
+                    "var_keyword": "일상",
+                    "with_var_ctr": 5.19,
+                    "var_imps": 1983.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "피로회복",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 4.96,
+                    "var_keyword": "기분",
+                    "with_var_ctr": 4.42,
+                    "var_imps": 1447.0
+                },
+                {
+                    "ess_1": "다이어트",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 6.28,
+                    "var_keyword": "잉여",
+                    "with_var_ctr": 6.28,
+                    "var_imps": 605.0
+                },
+                {
+                    "ess_1": "다이어트",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 6.28,
+                    "var_keyword": "탄수화물",
+                    "with_var_ctr": 6.28,
+                    "var_imps": 605.0
                 },
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
                     "combo_doc_freq": 5,
                     "combo_overall_ctr": 5.51,
-                    "var_keyword": "예쁘",
-                    "with_var_ctr": 8.03,
-                    "var_imps": 299.0
+                    "var_keyword": "케어",
+                    "with_var_ctr": 6.22,
+                    "var_imps": 724.0
                 },
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
                     "combo_doc_freq": 5,
                     "combo_overall_ctr": 5.51,
-                    "var_keyword": "아쉽",
-                    "with_var_ctr": 8.03,
-                    "var_imps": 299.0
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 5.9,
+                    "var_imps": 644.0
                 },
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
                     "combo_doc_freq": 5,
                     "combo_overall_ctr": 5.51,
+                    "var_keyword": "마음",
+                    "with_var_ctr": 5.73,
+                    "var_imps": 1135.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.51,
+                    "var_keyword": "고민",
+                    "with_var_ctr": 4.95,
+                    "var_imps": 1070.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.51,
+                    "var_keyword": "필요",
+                    "with_var_ctr": 4.3,
+                    "var_imps": 976.0
+                }
+            ]
+        },
+        "avoid_top_noun": {
+            "kind": "bar_h",
+            "title": "기피 타겟 TOP 10 (명사)",
+            "unit": "%",
+            "labels": [
+                "독소",
+                "처음",
+                "상태",
+                "식습관",
+                "포로",
+                "정답",
+                "스푼",
+                "비타민",
+                "레시피",
+                "조사"
+            ],
+            "series": [
+                {
+                    "name": "avg_ctr",
+                    "data": [
+                        9.96,
+                        6.57,
+                        5.17,
+                        5.05,
+                        4.98,
+                        4.74,
+                        4.74,
+                        4.61,
+                        4.46,
+                        4.42
+                    ]
+                }
+            ]
+        },
+        "avoid_top_va": {
+            "kind": "bar_h",
+            "title": "기피 타겟 TOP 10 (형용사)",
+            "unit": "%",
+            "labels": [
+                "돌아오",
+                "나가",
+                "꺼내",
+                "떠오르",
+                "지나",
+                "괜찮",
+                "쏟아지",
+                "곁들이",
+                "버티",
+                "풍부하"
+            ],
+            "series": [
+                {
+                    "name": "avg_ctr",
+                    "data": [
+                        5.54,
+                        5.43,
+                        5.08,
+                        4.95,
+                        4.73,
+                        4.4,
+                        4.12,
+                        3.84,
+                        3.78,
+                        3.68
+                    ]
+                }
+            ]
+        },
+        "avoid_bottom_noun": {
+            "kind": "bar_h",
+            "title": "기피 타겟 BOTTOM 10 (명사)",
+            "unit": "%",
+            "labels": [
+                "호박씨",
+                "계속",
+                "피넛",
+                "크랜베리",
+                "의욕",
+                "이너케어",
+                "신경",
+                "유해",
+                "구매",
+                "화장실"
+            ],
+            "series": [
+                {
+                    "name": "avg_ctr",
+                    "data": [
+                        0.96,
+                        1.08,
+                        1.17,
+                        1.2,
+                        1.29,
+                        1.4,
+                        1.4,
+                        1.42,
+                        1.49,
+                        1.5
+                    ]
+                }
+            ]
+        },
+        "avoid_bottom_va": {
+            "kind": "bar_h",
+            "title": "기피 타겟 BOTTOM 10 (형용사)",
+            "unit": "%",
+            "labels": [
+                "쓰이",
+                "유해",
+                "빠지",
+                "빠르",
+                "기다리",
+                "여기",
+                "그러",
+                "만나",
+                "비우",
+                "망설이"
+            ],
+            "series": [
+                {
+                    "name": "avg_ctr",
+                    "data": [
+                        0.84,
+                        1.42,
+                        1.57,
+                        1.63,
+                        1.64,
+                        1.66,
+                        1.68,
+                        1.7,
+                        1.7,
+                        1.86
+                    ]
+                }
+            ]
+        },
+        "avoid_keyword_combo_detail": {
+            "kind": "table",
+            "title": "기피 타겟 상세 분석",
+            "unit": "",
+            "rows": [
+                {
+                    "ess_1": "건강",
+                    "ess_2": "기능성",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 2.92,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 2.92,
+                    "var_imps": 4889.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "기능성",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 2.92,
+                    "var_keyword": "시작",
+                    "with_var_ctr": 2.92,
+                    "var_imps": 4889.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.31,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 3.33,
+                    "var_imps": 5653.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.31,
+                    "var_keyword": "균형",
+                    "with_var_ctr": 3.17,
+                    "var_imps": 5685.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역력",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.11,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 3.11,
+                    "var_imps": 5082.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역력",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.11,
                     "var_keyword": "하루",
-                    "with_var_ctr": 8.03,
-                    "var_imps": 299.0
+                    "with_var_ctr": 3.11,
+                    "var_imps": 5082.0
                 },
                 {
-                    "ess_1": "효소",
-                    "ess_2": "다이어트",
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "전하",
-                    "with_var_ctr": 8.03,
-                    "var_imps": 299.0
+                    "combo_overall_ctr": 3.22,
+                    "var_keyword": "오일",
+                    "with_var_ctr": 3.34,
+                    "var_imps": 1648.0
                 },
                 {
-                    "ess_1": "효소",
-                    "ess_2": "다이어트",
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "칭찬",
-                    "with_var_ctr": 8.03,
-                    "var_imps": 299.0
+                    "combo_overall_ctr": 3.22,
+                    "var_keyword": "올리브",
+                    "with_var_ctr": 3.34,
+                    "var_imps": 1648.0
                 },
                 {
-                    "ess_1": "효소",
-                    "ess_2": "다이어트",
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "기억",
-                    "with_var_ctr": 8.03,
-                    "var_imps": 299.0
+                    "combo_overall_ctr": 3.22,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 3.27,
+                    "var_imps": 1867.0
                 },
                 {
-                    "ess_1": "효소",
-                    "ess_2": "다이어트",
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "순이",
-                    "with_var_ctr": 8.03,
-                    "var_imps": 299.0
+                    "combo_overall_ctr": 3.22,
+                    "var_keyword": "성분",
+                    "with_var_ctr": 3.22,
+                    "var_imps": 2238.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.22,
+                    "var_keyword": "슬로우",
+                    "with_var_ctr": 3.22,
+                    "var_imps": 2238.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.22,
+                    "var_keyword": "에이징",
+                    "with_var_ctr": 3.22,
+                    "var_imps": 2238.0
+                },
+                {
+                    "ess_1": "다이어트",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.41,
+                    "var_keyword": "잉여",
+                    "with_var_ctr": 3.41,
+                    "var_imps": 2289.0
+                },
+                {
+                    "ess_1": "다이어트",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.41,
+                    "var_keyword": "탄수화물",
+                    "with_var_ctr": 3.41,
+                    "var_imps": 2289.0
+                },
+                {
+                    "ess_1": "유산균",
+                    "ess_2": "건강",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.06,
+                    "var_keyword": "낙산",
+                    "with_var_ctr": 3.06,
+                    "var_imps": 4023.0
+                },
+                {
+                    "ess_1": "유산균",
+                    "ess_2": "건강",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.06,
+                    "var_keyword": "위산",
+                    "with_var_ctr": 3.06,
+                    "var_imps": 4023.0
+                },
+                {
+                    "ess_1": "유산균",
+                    "ess_2": "건강",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.06,
+                    "var_keyword": "환경",
+                    "with_var_ctr": 3.06,
+                    "var_imps": 4023.0
                 }
             ]
         },
