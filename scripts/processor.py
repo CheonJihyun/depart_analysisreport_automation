@@ -692,6 +692,13 @@ def _normalize_keyword_by_pos(text, pos_type='noun'):
 
     if pos_type == "verb_adj":
         if verb_adj_best is not None:
+            # 명사가 동급/우세한 경우엔 용언으로 쉽게 분류하지 않는다.
+            # 단, 같은 어형(예: 강하)이고 실제 용언 어간으로 판별되면 허용.
+            if noun_best is not None and noun_best[2] >= verb_adj_best[2]:
+                if noun_best[0] != verb_adj_best[0]:
+                    return None
+                if not _looks_like_predicate_stem(verb_adj_best[0]):
+                    return None
             return verb_adj_best[0]
         # 분석 후보에 VA/VV가 없어도, +다 재분석에서 용언 어간으로 판별되면 허용
         if noun_best is not None and _looks_like_predicate_stem(noun_best[0]):
