@@ -4,7 +4,7 @@
         "period": "2025-02-13 ~ 2026-02-19",
         "period_ads": "2025-08-21 ~ 2026-02-16",
         "period_contents": "2025-08-19 ~ 2026-02-08",
-        "generated_at": "2026-02-20 12:48:26"
+        "generated_at": "2026-02-23 12:40:41"
     },
     "summary": {
         "total_ads": 173,
@@ -272,7 +272,8 @@
                 "2026-01-19",
                 "2026-01-26",
                 "2026-02-02",
-                "2026-02-09"
+                "2026-02-09",
+                "2026-02-16"
             ],
             "series": [
                 {
@@ -301,7 +302,8 @@
                         3.75,
                         1.82,
                         3.74,
-                        4.34,
+                        2.99,
+                        3.45,
                         0.0,
                         0.0
                     ]
@@ -316,86 +318,86 @@
                 {
                     "age": "18-24",
                     "gender": "female",
-                    "impressions": 117054,
-                    "clicks": 2873,
+                    "impressions": 118343,
+                    "clicks": 2899,
                     "ctr": 2.45
                 },
                 {
                     "age": "18-24",
                     "gender": "male",
-                    "impressions": 63882,
-                    "clicks": 1208,
+                    "impressions": 64402,
+                    "clicks": 1219,
                     "ctr": 1.89
                 },
                 {
                     "age": "25-34",
                     "gender": "female",
-                    "impressions": 208580,
-                    "clicks": 5844,
-                    "ctr": 2.8
+                    "impressions": 214451,
+                    "clicks": 5935,
+                    "ctr": 2.77
                 },
                 {
                     "age": "25-34",
                     "gender": "male",
-                    "impressions": 75091,
-                    "clicks": 1767,
-                    "ctr": 2.35
+                    "impressions": 76457,
+                    "clicks": 1830,
+                    "ctr": 2.39
                 },
                 {
                     "age": "35-44",
                     "gender": "female",
-                    "impressions": 105286,
-                    "clicks": 3236,
-                    "ctr": 3.07
+                    "impressions": 111062,
+                    "clicks": 3363,
+                    "ctr": 3.03
                 },
                 {
                     "age": "35-44",
                     "gender": "male",
-                    "impressions": 31698,
-                    "clicks": 885,
-                    "ctr": 2.79
+                    "impressions": 32788,
+                    "clicks": 928,
+                    "ctr": 2.83
                 },
                 {
                     "age": "45-54",
                     "gender": "female",
-                    "impressions": 33625,
-                    "clicks": 1490,
-                    "ctr": 4.43
+                    "impressions": 36338,
+                    "clicks": 1573,
+                    "ctr": 4.33
                 },
                 {
                     "age": "45-54",
                     "gender": "male",
-                    "impressions": 13214,
-                    "clicks": 412,
-                    "ctr": 3.12
+                    "impressions": 13862,
+                    "clicks": 478,
+                    "ctr": 3.45
                 },
                 {
                     "age": "55-64",
                     "gender": "female",
-                    "impressions": 11665,
-                    "clicks": 551,
-                    "ctr": 4.72
+                    "impressions": 12324,
+                    "clicks": 595,
+                    "ctr": 4.83
                 },
                 {
                     "age": "55-64",
                     "gender": "male",
-                    "impressions": 11004,
-                    "clicks": 430,
-                    "ctr": 3.91
+                    "impressions": 11528,
+                    "clicks": 465,
+                    "ctr": 4.03
                 },
                 {
                     "age": "65+",
                     "gender": "female",
-                    "impressions": 6214,
-                    "clicks": 242,
-                    "ctr": 3.89
+                    "impressions": 6351,
+                    "clicks": 252,
+                    "ctr": 3.97
                 },
                 {
                     "age": "65+",
                     "gender": "male",
-                    "impressions": 6759,
-                    "clicks": 209,
-                    "ctr": 3.09
+                    "impressions": 6947,
+                    "clicks": 235,
+                    "ctr": 3.38
                 }
             ]
         },
@@ -404,14 +406,14 @@
             "title": "전체 TOP 10 (명사)",
             "unit": "%",
             "labels": [
-                "독소",
                 "얼굴",
                 "진심",
                 "사랑",
                 "구성",
                 "공유",
                 "박스",
-                "처음",
+                "독소",
+                "스푼",
                 "부모",
                 "인형"
             ],
@@ -419,14 +421,14 @@
                 {
                     "name": "avg_ctr",
                     "data": [
-                        7.61,
                         6.63,
                         6.4,
                         5.66,
                         5.16,
-                        5.02,
                         4.98,
-                        4.82,
+                        4.98,
+                        4.84,
+                        4.8,
                         4.77,
                         4.7
                     ]
@@ -439,14 +441,14 @@
             "unit": "%",
             "labels": [
                 "바라",
-                "떠오르",
                 "바쁘",
+                "떠오르",
                 "건네",
                 "고르",
                 "고소하",
                 "전하",
                 "풍부하",
-                "모두",
+                "돌아오",
                 "곁들이"
             ],
             "series": [
@@ -454,14 +456,14 @@
                     "name": "avg_ctr",
                     "data": [
                         5.58,
-                        5.43,
                         5.19,
+                        5.09,
                         4.98,
                         4.73,
                         4.71,
                         4.69,
-                        4.63,
-                        4.52,
+                        4.43,
+                        4.33,
                         4.3
                     ]
                 }
@@ -480,14 +482,14 @@
                 "유해",
                 "대사",
                 "과정",
-                "운동",
-                "숫자"
+                "숫자",
+                "운동"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.43,
+                        1.42,
                         1.46,
                         1.71,
                         1.72,
@@ -496,7 +498,7 @@
                         1.82,
                         1.85,
                         1.92,
-                        1.92
+                        1.99
                     ]
                 }
             ]
@@ -506,31 +508,31 @@
             "title": "전체 BOTTOM 10 (형용사)",
             "unit": "%",
             "labels": [
-                "쓰이",
                 "빠지",
+                "쓰이",
                 "유하",
-                "빠르",
                 "깨우",
                 "쌓이",
+                "빠르",
                 "어리",
                 "약하",
-                "드리",
+                "올라가",
                 "지키"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.51,
-                        1.59,
+                        1.63,
+                        1.74,
                         1.79,
-                        1.79,
-                        2.14,
-                        2.23,
-                        2.34,
+                        2.16,
+                        2.27,
+                        2.28,
                         2.35,
-                        2.37,
-                        2.39
+                        2.35,
+                        2.36,
+                        2.37
                     ]
                 }
             ]
@@ -541,82 +543,145 @@
             "unit": "",
             "rows": [
                 {
-                    "ess_1": "건강",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 11,
-                    "combo_overall_ctr": 3.38,
-                    "var_keyword": "오늘",
-                    "with_var_ctr": 3.99,
-                    "var_imps": 13274.0
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.81,
+                    "var_keyword": "레몬",
+                    "with_var_ctr": 5.81,
+                    "var_imps": 6093.0
                 },
                 {
-                    "ess_1": "건강",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 11,
-                    "combo_overall_ctr": 3.38,
-                    "var_keyword": "시작",
-                    "with_var_ctr": 3.78,
-                    "var_imps": 16542.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 11,
-                    "combo_overall_ctr": 3.38,
-                    "var_keyword": "사람",
-                    "with_var_ctr": 3.43,
-                    "var_imps": 12442.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 11,
-                    "combo_overall_ctr": 3.38,
-                    "var_keyword": "선물",
-                    "with_var_ctr": 3.43,
-                    "var_imps": 12442.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 11,
-                    "combo_overall_ctr": 3.38,
-                    "var_keyword": "연말",
-                    "with_var_ctr": 3.43,
-                    "var_imps": 12442.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 11,
-                    "combo_overall_ctr": 3.38,
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.81,
                     "var_keyword": "루틴",
-                    "with_var_ctr": 3.35,
-                    "var_imps": 24818.0
+                    "with_var_ctr": 5.81,
+                    "var_imps": 6093.0
+                },
+                {
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.81,
+                    "var_keyword": "오일",
+                    "with_var_ctr": 5.81,
+                    "var_imps": 6093.0
+                },
+                {
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.81,
+                    "var_keyword": "올리브",
+                    "with_var_ctr": 5.81,
+                    "var_imps": 6093.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 11,
-                    "combo_overall_ctr": 3.38,
-                    "var_keyword": "고민",
-                    "with_var_ctr": 3.32,
-                    "var_imps": 16238.0
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.54,
+                    "var_keyword": "식사",
+                    "with_var_ctr": 4.72,
+                    "var_imps": 10730.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 11,
-                    "combo_overall_ctr": 3.38,
-                    "var_keyword": "조구맣",
-                    "with_var_ctr": 3.22,
-                    "var_imps": 13601.0
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.54,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 4.54,
+                    "var_imps": 11736.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.54,
+                    "var_keyword": "시작",
+                    "with_var_ctr": 4.06,
+                    "var_imps": 7971.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.64,
+                    "var_keyword": "식사",
+                    "with_var_ctr": 5.32,
+                    "var_imps": 8798.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.64,
+                    "var_keyword": "일상",
+                    "with_var_ctr": 5.32,
+                    "var_imps": 8798.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.64,
+                    "var_keyword": "샐러드",
+                    "with_var_ctr": 5.02,
+                    "var_imps": 8937.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.64,
+                    "var_keyword": "풍미",
+                    "with_var_ctr": 5.02,
+                    "var_imps": 8937.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.64,
+                    "var_keyword": "레몬",
+                    "with_var_ctr": 4.9,
+                    "var_imps": 7697.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.64,
+                    "var_keyword": "올레",
+                    "with_var_ctr": 4.9,
+                    "var_imps": 7697.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.64,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 4.5,
+                    "var_imps": 11264.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.64,
+                    "var_keyword": "오일",
+                    "with_var_ctr": 4.28,
+                    "var_imps": 11403.0
                 },
                 {
                     "ess_1": "건강",
                     "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 3.61,
                     "var_keyword": "루틴",
                     "with_var_ctr": 4.11,
                     "var_imps": 11040.0
@@ -624,107 +689,80 @@
                 {
                     "ess_1": "건강",
                     "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.02,
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 3.61,
                     "var_keyword": "균형",
                     "with_var_ctr": 3.41,
                     "var_imps": 9430.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역력",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.57,
-                    "var_keyword": "루틴",
-                    "with_var_ctr": 3.57,
-                    "var_imps": 7780.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "면역력",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.57,
+                    "ess_2": "면역",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 3.61,
                     "var_keyword": "하루",
-                    "with_var_ctr": 3.57,
-                    "var_imps": 7780.0
+                    "with_var_ctr": 2.98,
+                    "var_imps": 11505.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.62,
-                    "var_keyword": "루틴",
-                    "with_var_ctr": 3.86,
-                    "var_imps": 9798.0
+                    "ess_2": "면역",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 3.61,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 2.88,
+                    "var_imps": 10679.0
                 },
                 {
-                    "ess_1": "건강",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.62,
-                    "var_keyword": "성분",
-                    "with_var_ctr": 3.62,
-                    "var_imps": 13504.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.62,
-                    "var_keyword": "슬로우",
-                    "with_var_ctr": 3.62,
-                    "var_imps": 13504.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.62,
-                    "var_keyword": "에이징",
-                    "with_var_ctr": 3.62,
-                    "var_imps": 13504.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.62,
-                    "var_keyword": "오일",
-                    "with_var_ctr": 3.61,
-                    "var_imps": 9937.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.62,
-                    "var_keyword": "올리브",
-                    "with_var_ctr": 3.61,
-                    "var_imps": 9937.0
-                },
-                {
-                    "ess_1": "다이어트",
+                    "ess_1": "원료",
                     "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.48,
-                    "var_keyword": "잉여",
-                    "with_var_ctr": 3.48,
-                    "var_imps": 7222.0
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "고민",
+                    "with_var_ctr": 3.77,
+                    "var_imps": 5040.0
                 },
                 {
-                    "ess_1": "다이어트",
+                    "ess_1": "원료",
                     "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.48,
-                    "var_keyword": "탄수화물",
-                    "with_var_ctr": 3.48,
-                    "var_imps": 7222.0
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "땅콩",
+                    "with_var_ctr": 3.73,
+                    "var_imps": 5288.0
+                },
+                {
+                    "ess_1": "원료",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "매일",
+                    "with_var_ctr": 3.73,
+                    "var_imps": 5288.0
+                },
+                {
+                    "ess_1": "원료",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "발효",
+                    "with_var_ctr": 3.73,
+                    "var_imps": 5288.0
                 },
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.58,
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.48,
+                    "var_keyword": "습관",
+                    "with_var_ctr": 4.51,
+                    "var_imps": 6626.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.48,
                     "var_keyword": "마음",
                     "with_var_ctr": 4.33,
                     "var_imps": 11939.0
@@ -732,38 +770,56 @@
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.58,
-                    "var_keyword": "루틴",
-                    "with_var_ctr": 3.54,
-                    "var_imps": 11041.0
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.48,
+                    "var_keyword": "매일",
+                    "with_var_ctr": 4.25,
+                    "var_imps": 13150.0
                 },
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.58,
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.48,
+                    "var_keyword": "시작",
+                    "with_var_ctr": 3.71,
+                    "var_imps": 10299.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.48,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 3.54,
+                    "var_imps": 17809.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.48,
+                    "var_keyword": "탄수화물",
+                    "with_var_ctr": 3.53,
+                    "var_imps": 13668.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.48,
+                    "var_keyword": "식후",
+                    "with_var_ctr": 3.48,
+                    "var_imps": 10084.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.48,
                     "var_keyword": "케어",
                     "with_var_ctr": 3.46,
                     "var_imps": 9484.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.58,
-                    "var_keyword": "고민",
-                    "with_var_ctr": 3.42,
-                    "var_imps": 12970.0
-                },
-                {
-                    "ess_1": "효소",
-                    "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.58,
-                    "var_keyword": "필요",
-                    "with_var_ctr": 2.98,
-                    "var_imps": 13844.0
                 }
             ]
         },
@@ -775,13 +831,13 @@
                 "얼굴",
                 "사랑",
                 "진심",
-                "공유",
                 "구성",
                 "박스",
                 "인형",
-                "스푼",
-                "모두",
-                "파우치"
+                "공유",
+                "파우치",
+                "클린",
+                "추천"
             ],
             "series": [
                 {
@@ -790,13 +846,13 @@
                         8.54,
                         7.79,
                         7.17,
-                        6.87,
                         6.82,
                         6.81,
                         6.37,
-                        6.32,
-                        6.14,
-                        6.13
+                        6.18,
+                        6.13,
+                        6.06,
+                        5.98
                     ]
                 }
             ]
@@ -811,11 +867,11 @@
                 "건네",
                 "망설이",
                 "곁들이",
-                "떠오르",
                 "고르",
+                "떠오르",
                 "지치",
-                "모두",
-                "풍부하"
+                "고소하",
+                "전하"
             ],
             "series": [
                 {
@@ -826,11 +882,11 @@
                         6.81,
                         6.7,
                         6.63,
-                        6.62,
                         6.61,
-                        6.31,
+                        6.17,
                         6.14,
-                        6.11
+                        6.05,
+                        5.91
                     ]
                 }
             ]
@@ -843,8 +899,8 @@
                 "계속",
                 "구매",
                 "예전",
-                "운동",
                 "대사",
+                "운동",
                 "호박씨",
                 "새해",
                 "변화",
@@ -855,14 +911,14 @@
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.11,
+                        1.16,
                         1.24,
                         1.33,
                         1.55,
-                        1.55,
+                        1.63,
                         1.8,
-                        1.92,
-                        1.93,
+                        1.82,
+                        1.94,
                         1.98,
                         2.03
                     ]
@@ -875,30 +931,30 @@
             "unit": "%",
             "labels": [
                 "빠지",
-                "버티",
+                "올라가",
                 "강하",
-                "빠르",
-                "깨우",
-                "쌓이",
-                "유하",
-                "어리",
                 "꺼내",
-                "일어나"
+                "깨우",
+                "유하",
+                "쌓이",
+                "빠르",
+                "어리",
+                "바꾸"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.31,
-                        1.69,
-                        1.75,
-                        1.87,
+                        1.33,
+                        1.8,
+                        1.9,
+                        1.93,
                         1.99,
-                        2.08,
                         2.12,
-                        2.17,
-                        2.35,
-                        2.36
+                        2.13,
+                        2.13,
+                        2.19,
+                        2.31
                     ]
                 }
             ]
@@ -909,181 +965,64 @@
             "unit": "",
             "rows": [
                 {
-                    "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 5.51,
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.52,
+                    "var_keyword": "레몬",
+                    "with_var_ctr": 6.52,
+                    "var_imps": 1456.0
+                },
+                {
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.52,
                     "var_keyword": "루틴",
-                    "with_var_ctr": 5.82,
-                    "var_imps": 1219.0
+                    "with_var_ctr": 6.52,
+                    "var_imps": 1456.0
                 },
                 {
-                    "ess_1": "건강",
-                    "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "균형",
-                    "with_var_ctr": 2.94,
-                    "var_imps": 646.0
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.52,
+                    "var_keyword": "오일",
+                    "with_var_ctr": 6.52,
+                    "var_imps": 1456.0
                 },
                 {
-                    "ess_1": "건강",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 5.33,
-                    "var_keyword": "루틴",
-                    "with_var_ctr": 6.28,
-                    "var_imps": 1641.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 5.33,
-                    "var_keyword": "도움",
-                    "with_var_ctr": 5.53,
-                    "var_imps": 1701.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 5.33,
-                    "var_keyword": "탄수화물",
-                    "with_var_ctr": 4.46,
-                    "var_imps": 897.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 5.33,
-                    "var_keyword": "밸런스",
-                    "with_var_ctr": 4.22,
-                    "var_imps": 734.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "체지방",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 5.33,
-                    "var_keyword": "완성",
-                    "with_var_ctr": 3.92,
-                    "var_imps": 715.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "프로바이오틱스",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.85,
-                    "var_keyword": "고민",
-                    "with_var_ctr": 4.85,
-                    "var_imps": 701.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "프로바이오틱스",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.85,
-                    "var_keyword": "루틴",
-                    "with_var_ctr": 4.85,
-                    "var_imps": 701.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "프로바이오틱스",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.85,
-                    "var_keyword": "케어",
-                    "with_var_ctr": 4.85,
-                    "var_imps": 701.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.96,
-                    "var_keyword": "아침",
-                    "with_var_ctr": 6.18,
-                    "var_imps": 1295.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.96,
-                    "var_keyword": "루틴",
-                    "with_var_ctr": 5.84,
-                    "var_imps": 1216.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.96,
-                    "var_keyword": "사실",
-                    "with_var_ctr": 5.73,
-                    "var_imps": 1973.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.96,
-                    "var_keyword": "마음",
-                    "with_var_ctr": 5.61,
-                    "var_imps": 1819.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.96,
-                    "var_keyword": "선물",
-                    "with_var_ctr": 5.41,
-                    "var_imps": 1700.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.96,
-                    "var_keyword": "일상",
-                    "with_var_ctr": 5.19,
-                    "var_imps": 1983.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "피로회복",
-                    "combo_doc_freq": 7,
-                    "combo_overall_ctr": 4.96,
-                    "var_keyword": "기분",
-                    "with_var_ctr": 4.42,
-                    "var_imps": 1447.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "잉여",
-                    "with_var_ctr": 6.28,
-                    "var_imps": 605.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 6.28,
-                    "var_keyword": "탄수화물",
-                    "with_var_ctr": 6.28,
-                    "var_imps": 605.0
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.52,
+                    "var_keyword": "올리브",
+                    "with_var_ctr": 6.52,
+                    "var_imps": 1456.0
                 },
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.36,
+                    "var_keyword": "매일",
+                    "with_var_ctr": 7.46,
+                    "var_imps": 979.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.36,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 6.61,
+                    "var_imps": 1119.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.36,
                     "var_keyword": "케어",
                     "with_var_ctr": 6.22,
                     "var_imps": 724.0
@@ -1091,17 +1030,26 @@
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "루틴",
-                    "with_var_ctr": 5.9,
-                    "var_imps": 644.0
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.36,
+                    "var_keyword": "부담",
+                    "with_var_ctr": 6.02,
+                    "var_imps": 615.0
                 },
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.36,
+                    "var_keyword": "식후",
+                    "with_var_ctr": 5.77,
+                    "var_imps": 659.0
+                },
+                {
+                    "ess_1": "효소",
+                    "ess_2": "다이어트",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.36,
                     "var_keyword": "마음",
                     "with_var_ctr": 5.73,
                     "var_imps": 1135.0
@@ -1109,20 +1057,182 @@
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "고민",
-                    "with_var_ctr": 4.95,
-                    "var_imps": 1070.0
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.36,
+                    "var_keyword": "탄수화물",
+                    "with_var_ctr": 5.7,
+                    "var_imps": 1316.0
                 },
                 {
                     "ess_1": "효소",
                     "ess_2": "다이어트",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.51,
-                    "var_keyword": "필요",
-                    "with_var_ctr": 4.3,
-                    "var_imps": 976.0
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.36,
+                    "var_keyword": "시작",
+                    "with_var_ctr": 5.37,
+                    "var_imps": 1136.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 5.17,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 5.82,
+                    "var_imps": 1219.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 5.17,
+                    "var_keyword": "균형",
+                    "with_var_ctr": 2.94,
+                    "var_imps": 646.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 5.17,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 2.82,
+                    "var_imps": 817.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "면역",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 5.17,
+                    "var_keyword": "하루",
+                    "with_var_ctr": 2.8,
+                    "var_imps": 679.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.0,
+                    "var_keyword": "샐러드",
+                    "with_var_ctr": 6.93,
+                    "var_imps": 1414.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.0,
+                    "var_keyword": "풍미",
+                    "with_var_ctr": 6.93,
+                    "var_imps": 1414.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.0,
+                    "var_keyword": "식사",
+                    "with_var_ctr": 6.46,
+                    "var_imps": 1717.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.0,
+                    "var_keyword": "일상",
+                    "with_var_ctr": 6.46,
+                    "var_imps": 1717.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.0,
+                    "var_keyword": "레몬",
+                    "with_var_ctr": 5.81,
+                    "var_imps": 1651.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.0,
+                    "var_keyword": "올레",
+                    "with_var_ctr": 5.81,
+                    "var_imps": 1651.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.0,
+                    "var_keyword": "오일",
+                    "with_var_ctr": 5.52,
+                    "var_imps": 1922.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 5.0,
+                    "var_keyword": "올리브",
+                    "with_var_ctr": 5.52,
+                    "var_imps": 1922.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.91,
+                    "var_keyword": "식사",
+                    "with_var_ctr": 5.45,
+                    "var_imps": 2203.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.91,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 4.91,
+                    "var_imps": 2545.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.91,
+                    "var_keyword": "시작",
+                    "with_var_ctr": 3.72,
+                    "var_imps": 1776.0
+                },
+                {
+                    "ess_1": "관리",
+                    "ess_2": "여성",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.49,
+                    "var_keyword": "일상",
+                    "with_var_ctr": 5.69,
+                    "var_imps": 439.0
+                },
+                {
+                    "ess_1": "관리",
+                    "ess_2": "여성",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.49,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 4.12,
+                    "var_imps": 364.0
+                },
+                {
+                    "ess_1": "관리",
+                    "ess_2": "여성",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.49,
+                    "var_keyword": "이너",
+                    "with_var_ctr": 3.38,
+                    "var_imps": 355.0
                 }
             ]
         },
@@ -1131,31 +1241,31 @@
             "title": "기피 타겟 TOP 10 (명사)",
             "unit": "%",
             "labels": [
+                "유난",
                 "독소",
                 "처음",
                 "상태",
-                "식습관",
-                "포로",
-                "정답",
+                "설문",
+                "조사",
                 "스푼",
-                "비타민",
-                "레시피",
-                "설문"
+                "정답",
+                "링크",
+                "이야기"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        9.96,
-                        6.57,
-                        5.17,
-                        5.05,
-                        4.98,
-                        4.74,
-                        4.74,
-                        4.61,
-                        4.46,
-                        4.42
+                        7.13,
+                        6.54,
+                        6.3,
+                        5.86,
+                        5.58,
+                        5.58,
+                        5.52,
+                        5.43,
+                        5.26,
+                        5.11
                     ]
                 }
             ]
@@ -1166,30 +1276,30 @@
             "unit": "%",
             "labels": [
                 "돌아오",
-                "나가",
                 "꺼내",
+                "나가",
                 "떠오르",
+                "버티",
                 "지나",
                 "괜찮",
                 "쏟아지",
-                "곁들이",
-                "버티",
-                "풍부하"
+                "따르",
+                "심하"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        5.54,
-                        5.43,
-                        5.08,
-                        4.95,
-                        4.73,
-                        4.4,
+                        6.39,
+                        6.09,
+                        5.48,
+                        4.82,
+                        4.6,
+                        4.47,
+                        4.34,
                         4.12,
-                        3.84,
-                        3.78,
-                        3.68
+                        3.92,
+                        3.84
                     ]
                 }
             ]
@@ -1204,25 +1314,25 @@
                 "피넛",
                 "크랜베리",
                 "의욕",
-                "신경",
                 "유해",
                 "이너",
                 "구매",
-                "화장실"
+                "화장실",
+                "과정"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
                         0.96,
-                        1.08,
+                        1.1,
                         1.17,
                         1.2,
-                        1.29,
-                        1.4,
+                        1.35,
                         1.42,
                         1.46,
                         1.49,
+                        1.5,
                         1.5
                     ]
                 }
@@ -1235,29 +1345,29 @@
             "labels": [
                 "쓰이",
                 "유하",
-                "빠지",
-                "빠르",
                 "기다리",
-                "여기",
                 "만나",
                 "비우",
+                "빠지",
                 "망설이",
-                "무너지"
+                "무너지",
+                "모이",
+                "올라가"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        0.84,
+                        1.04,
                         1.42,
-                        1.57,
-                        1.63,
                         1.64,
-                        1.66,
                         1.7,
                         1.7,
+                        1.71,
                         1.86,
-                        1.96
+                        1.96,
+                        2.04,
+                        2.04
                     ]
                 }
             ]
@@ -1268,28 +1378,181 @@
             "unit": "",
             "rows": [
                 {
-                    "ess_1": "건강",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 2.92,
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.85,
+                    "var_keyword": "레몬",
+                    "with_var_ctr": 5.85,
+                    "var_imps": 1401.0
+                },
+                {
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.85,
                     "var_keyword": "루틴",
-                    "with_var_ctr": 2.92,
-                    "var_imps": 4889.0
+                    "with_var_ctr": 5.85,
+                    "var_imps": 1401.0
+                },
+                {
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.85,
+                    "var_keyword": "오일",
+                    "with_var_ctr": 5.85,
+                    "var_imps": 1401.0
+                },
+                {
+                    "ess_1": "비타민",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.85,
+                    "var_keyword": "올리브",
+                    "with_var_ctr": 5.85,
+                    "var_imps": 1401.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "기능성",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 2.92,
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.63,
                     "var_keyword": "시작",
-                    "with_var_ctr": 2.92,
-                    "var_imps": 4889.0
+                    "with_var_ctr": 4.85,
+                    "var_imps": 1834.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "식사",
+                    "with_var_ctr": 4.67,
+                    "var_imps": 2593.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "비타민",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "루틴",
+                    "with_var_ctr": 4.63,
+                    "var_imps": 2765.0
+                },
+                {
+                    "ess_1": "원료",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.27,
+                    "var_keyword": "고민",
+                    "with_var_ctr": 3.68,
+                    "var_imps": 1358.0
+                },
+                {
+                    "ess_1": "원료",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.27,
+                    "var_keyword": "땅콩",
+                    "with_var_ctr": 3.34,
+                    "var_imps": 1197.0
+                },
+                {
+                    "ess_1": "원료",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.27,
+                    "var_keyword": "매일",
+                    "with_var_ctr": 3.34,
+                    "var_imps": 1197.0
+                },
+                {
+                    "ess_1": "원료",
+                    "ess_2": "효소",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.27,
+                    "var_keyword": "발효",
+                    "with_var_ctr": 3.34,
+                    "var_imps": 1197.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.24,
+                    "var_keyword": "샐러드",
+                    "with_var_ctr": 5.47,
+                    "var_imps": 1644.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.24,
+                    "var_keyword": "풍미",
+                    "with_var_ctr": 5.47,
+                    "var_imps": 1644.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.24,
+                    "var_keyword": "레몬",
+                    "with_var_ctr": 5.19,
+                    "var_imps": 1619.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.24,
+                    "var_keyword": "올레",
+                    "with_var_ctr": 5.19,
+                    "var_imps": 1619.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.24,
+                    "var_keyword": "식사",
+                    "with_var_ctr": 5.15,
+                    "var_imps": 1863.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.24,
+                    "var_keyword": "일상",
+                    "with_var_ctr": 5.15,
+                    "var_imps": 1863.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.24,
+                    "var_keyword": "오일",
+                    "with_var_ctr": 4.77,
+                    "var_imps": 1990.0
+                },
+                {
+                    "ess_1": "건강",
+                    "ess_2": "항산화",
+                    "combo_doc_freq": 8,
+                    "combo_overall_ctr": 3.24,
+                    "var_keyword": "올리브",
+                    "with_var_ctr": 4.77,
+                    "var_imps": 1990.0
                 },
                 {
                     "ess_1": "건강",
                     "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 3.31,
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 3.04,
                     "var_keyword": "루틴",
                     "with_var_ctr": 3.33,
                     "var_imps": 5653.0
@@ -1297,128 +1560,65 @@
                 {
                     "ess_1": "건강",
                     "ess_2": "면역",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 3.31,
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 3.04,
                     "var_keyword": "균형",
                     "with_var_ctr": 3.17,
                     "var_imps": 5685.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "면역력",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.11,
-                    "var_keyword": "루틴",
-                    "with_var_ctr": 3.11,
-                    "var_imps": 5082.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "면역력",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.11,
+                    "ess_2": "면역",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 3.04,
                     "var_keyword": "하루",
-                    "with_var_ctr": 3.11,
-                    "var_imps": 5082.0
+                    "with_var_ctr": 2.86,
+                    "var_imps": 6924.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.22,
-                    "var_keyword": "오일",
-                    "with_var_ctr": 3.34,
-                    "var_imps": 1648.0
+                    "ess_2": "면역",
+                    "combo_doc_freq": 7,
+                    "combo_overall_ctr": 3.04,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 2.6,
+                    "var_imps": 5346.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "항산화",
+                    "ess_2": "면역력",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.22,
-                    "var_keyword": "올리브",
-                    "with_var_ctr": 3.34,
-                    "var_imps": 1648.0
+                    "combo_overall_ctr": 2.9,
+                    "var_keyword": "균형",
+                    "with_var_ctr": 3.02,
+                    "var_imps": 4667.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "항산화",
+                    "ess_2": "면역력",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.22,
+                    "combo_overall_ctr": 2.9,
                     "var_keyword": "루틴",
-                    "with_var_ctr": 3.27,
-                    "var_imps": 1867.0
+                    "with_var_ctr": 2.85,
+                    "var_imps": 6245.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "항산화",
+                    "ess_2": "면역력",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.22,
-                    "var_keyword": "성분",
-                    "with_var_ctr": 3.22,
-                    "var_imps": 2238.0
+                    "combo_overall_ctr": 2.9,
+                    "var_keyword": "하루",
+                    "with_var_ctr": 2.85,
+                    "var_imps": 6245.0
                 },
                 {
                     "ess_1": "건강",
-                    "ess_2": "항산화",
+                    "ess_2": "면역력",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.22,
-                    "var_keyword": "슬로우",
-                    "with_var_ctr": 3.22,
-                    "var_imps": 2238.0
-                },
-                {
-                    "ess_1": "건강",
-                    "ess_2": "항산화",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 3.22,
-                    "var_keyword": "에이징",
-                    "with_var_ctr": 3.22,
-                    "var_imps": 2238.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.41,
-                    "var_keyword": "잉여",
-                    "with_var_ctr": 3.41,
-                    "var_imps": 2289.0
-                },
-                {
-                    "ess_1": "다이어트",
-                    "ess_2": "효소",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.41,
-                    "var_keyword": "탄수화물",
-                    "with_var_ctr": 3.41,
-                    "var_imps": 2289.0
-                },
-                {
-                    "ess_1": "유산균",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.06,
-                    "var_keyword": "낙산",
-                    "with_var_ctr": 3.06,
-                    "var_imps": 4023.0
-                },
-                {
-                    "ess_1": "유산균",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.06,
-                    "var_keyword": "위산",
-                    "with_var_ctr": 3.06,
-                    "var_imps": 4023.0
-                },
-                {
-                    "ess_1": "유산균",
-                    "ess_2": "건강",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.06,
-                    "var_keyword": "환경",
-                    "with_var_ctr": 3.06,
-                    "var_imps": 4023.0
+                    "combo_overall_ctr": 2.9,
+                    "var_keyword": "습관",
+                    "with_var_ctr": 2.38,
+                    "var_imps": 3704.0
                 }
             ]
         },
@@ -1588,70 +1788,65 @@
                     ]
                 },
                 {
-                    "ad_id": 3802,
-                    "uploaded_at": "2026-01-15",
-                    "thumbnail": "S19-4 우리, 툭 터놓고 이야기해요",
-                    "ctr": 7.14,
+                    "ad_id": 4875,
+                    "uploaded_at": "2026-01-27",
+                    "thumbnail": "21-2 내 몸에도 연말정산이 필요해요",
+                    "ctr": 7.18,
                     "target_details": [
                         {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 28.17
+                        },
+                        {
                             "age": "65+",
                             "gender": "female",
-                            "ctr": 42.86
+                            "ctr": 22.22
                         },
                         {
                             "age": "55-64",
                             "gender": "male",
-                            "ctr": 16.13
+                            "ctr": 16.07
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 14.29
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 8.41
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "female",
+                            "ctr": 7.89
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 6.58
                         },
                         {
                             "age": "18-24",
                             "gender": "male",
-                            "ctr": 15.22
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "male",
-                            "ctr": 13.95
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "male",
-                            "ctr": 8.97
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "female",
-                            "ctr": 7.58
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "female",
-                            "ctr": 7.14
+                            "ctr": 6.06
                         },
                         {
                             "age": "55-64",
                             "gender": "female",
-                            "ctr": 6.12
+                            "ctr": 5.26
                         },
                         {
                             "age": "25-34",
                             "gender": "female",
-                            "ctr": 5.0
+                            "ctr": 3.06
                         },
                         {
-                            "age": "25-34",
+                            "age": "35-44",
                             "gender": "male",
-                            "ctr": 4.81
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "female",
-                            "ctr": 1.49
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "unknown",
-                            "ctr": 0.0
+                            "ctr": 1.33
                         },
                         {
                             "age": "35-44",
@@ -1659,8 +1854,23 @@
                             "ctr": 0.0
                         },
                         {
-                            "age": "65+",
-                            "gender": "male",
+                            "age": "18-24",
+                            "gender": "unknown",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "unknown",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "unknown",
                             "ctr": 0.0
                         }
                     ]
@@ -1770,6 +1980,79 @@
                     ]
                 },
                 {
+                    "ad_id": 4874,
+                    "uploaded_at": "2025-08-19",
+                    "thumbnail": "구매전환 조구만 식후 루틴 - 생생효소",
+                    "ctr": 1.12,
+                    "target_details": [
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 3.7
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 1.69
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "female",
+                            "ctr": 1.29
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 0.92
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "unknown",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 0.0
+                        }
+                    ]
+                },
+                {
                     "ad_id": 2233,
                     "uploaded_at": "2025-09-14",
                     "thumbnail": "다이어트, 왜 점점 어려워질까요?",
@@ -1866,89 +2149,6 @@
                             "ctr": 0.0
                         }
                     ]
-                },
-                {
-                    "ad_id": 3523,
-                    "uploaded_at": "2025-12-31",
-                    "thumbnail": "S17-1 올해 당신의 몸은 어땠나요?",
-                    "ctr": 1.36,
-                    "target_details": [
-                        {
-                            "age": "55-64",
-                            "gender": "male",
-                            "ctr": 11.11
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "female",
-                            "ctr": 5.41
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "male",
-                            "ctr": 3.37
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "female",
-                            "ctr": 1.53
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "female",
-                            "ctr": 1.24
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "female",
-                            "ctr": 1.12
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "male",
-                            "ctr": 0.78
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "female",
-                            "ctr": 0.78
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "male",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "male",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "female",
-                            "ctr": 0.0
-                        }
-                    ]
                 }
             ]
         }
@@ -1958,7 +2158,7 @@
             "title": "",
             "items": [
                 {
-                    "title": "많이 사용한 업종 필수 키워드 - 노출",
+                    "title": "많이 사용한 업종 필수 키워드 - 노출 (전체)",
                     "subtitle": "키워드가 가장 많이 노출된 타겟",
                     "headers": [
                         "랭킹",
@@ -1975,63 +2175,63 @@
                             "건강",
                             99,
                             "25-34 female",
-                            118840,
+                            121633,
                             "31.0%",
-                            382929
+                            392763
                         ],
                         [
                             2,
                             "다이어트",
                             42,
                             "25-34 female",
-                            58102,
-                            "34.1%",
-                            170322
+                            59819,
+                            "34.0%",
+                            176035
                         ],
                         [
                             3,
                             "피로회복",
                             36,
                             "25-34 female",
-                            52639,
-                            "27.7%",
-                            189811
+                            53835,
+                            "27.8%",
+                            193784
                         ],
                         [
                             4,
                             "효소",
                             34,
                             "25-34 female",
-                            30363,
-                            "30.5%",
-                            99703
+                            31791,
+                            "30.6%",
+                            103847
                         ],
                         [
                             5,
                             "체지방",
                             33,
                             "25-34 female",
-                            47122,
-                            "33.0%",
-                            142791
+                            48015,
+                            "32.9%",
+                            146089
                         ],
                         [
                             6,
                             "관리",
                             26,
                             "25-34 female",
-                            51791,
-                            "33.3%",
-                            155306
+                            52362,
+                            "33.1%",
+                            157959
                         ],
                         [
                             7,
                             "항산화",
                             13,
                             "25-34 female",
-                            22039,
-                            "28.4%",
-                            77595
+                            22304,
+                            "28.3%",
+                            78708
                         ],
                         [
                             8,
@@ -2046,10 +2246,10 @@
                             9,
                             "영양",
                             13,
-                            "18-24 male",
-                            5951,
-                            "20.3%",
-                            29344
+                            "25-34 female",
+                            6418,
+                            "20.7%",
+                            30985
                         ],
                         [
                             10,
@@ -2059,12 +2259,147 @@
                             7383,
                             "18.2%",
                             40490
+                        ],
+                        [
+                            11,
+                            "프로바이오틱스",
+                            10,
+                            "25-34 female",
+                            6495,
+                            "24.2%",
+                            26821
+                        ],
+                        [
+                            12,
+                            "기능성",
+                            10,
+                            "25-34 female",
+                            5601,
+                            "24.6%",
+                            22810
+                        ],
+                        [
+                            13,
+                            "면역력",
+                            8,
+                            "25-34 female",
+                            18091,
+                            "26.1%",
+                            69418
+                        ],
+                        [
+                            14,
+                            "원료",
+                            8,
+                            "25-34 female",
+                            6199,
+                            "29.9%",
+                            20698
+                        ],
+                        [
+                            15,
+                            "비타민",
+                            8,
+                            "25-34 female",
+                            4067,
+                            "30.6%",
+                            13310
+                        ],
+                        [
+                            16,
+                            "체내흡수",
+                            7,
+                            "18-24 female",
+                            5067,
+                            "21.9%",
+                            23113
+                        ],
+                        [
+                            17,
+                            "면역",
+                            7,
+                            "18-24 male",
+                            4069,
+                            "23.4%",
+                            17425
+                        ],
+                        [
+                            18,
+                            "피부",
+                            4,
+                            "18-24 female",
+                            4286,
+                            "35.5%",
+                            12072
+                        ],
+                        [
+                            19,
+                            "장건강",
+                            4,
+                            "25-34 female",
+                            2942,
+                            "25.6%",
+                            11481
+                        ],
+                        [
+                            20,
+                            "건강기능식품",
+                            3,
+                            "25-34 female",
+                            2664,
+                            "30.4%",
+                            8767
+                        ],
+                        [
+                            21,
+                            "식이섬유",
+                            2,
+                            "25-34 female",
+                            4076,
+                            "51.0%",
+                            7995
+                        ],
+                        [
+                            22,
+                            "맞춤형",
+                            2,
+                            "18-24 female",
+                            1700,
+                            "28.9%",
+                            5882
+                        ],
+                        [
+                            23,
+                            "영양제",
+                            2,
+                            "25-34 female",
+                            853,
+                            "34.7%",
+                            2459
+                        ],
+                        [
+                            24,
+                            "콜라겐",
+                            1,
+                            "18-24 female",
+                            1082,
+                            "28.9%",
+                            3740
+                        ],
+                        [
+                            25,
+                            "고함량",
+                            1,
+                            "25-34 female",
+                            564,
+                            "38.8%",
+                            1453
                         ]
                     ],
-                    "footnote": "*등장 광고 수 상위 10개 기준"
+                    "footnote": "*등장한 전체 키워드 기준"
                 },
                 {
-                    "title": "많이 사용한 업종 필수 키워드 - 클릭",
+                    "title": "많이 사용한 업종 필수 키워드 - 클릭 (전체)",
                     "subtitle": "키워드가 가장 많이 노출된 타겟",
                     "headers": [
                         "랭킹",
@@ -2081,63 +2416,63 @@
                             "건강",
                             99,
                             "25-34 female",
-                            3640,
-                            "32.7%",
-                            11143
+                            3680,
+                            "32.2%",
+                            11439
                         ],
                         [
                             2,
                             "다이어트",
                             42,
                             "25-34 female",
-                            1504,
-                            "34.8%",
-                            4323
+                            1525,
+                            "34.6%",
+                            4413
                         ],
                         [
                             3,
                             "피로회복",
                             36,
                             "25-34 female",
-                            1264,
-                            "25.9%",
-                            4877
+                            1275,
+                            "25.8%",
+                            4948
                         ],
                         [
                             4,
                             "효소",
                             34,
                             "25-34 female",
-                            1062,
-                            "36.7%",
-                            2891
+                            1082,
+                            "36.3%",
+                            2979
                         ],
                         [
                             5,
                             "체지방",
                             33,
                             "25-34 female",
-                            1068,
-                            "31.1%",
-                            3439
+                            1082,
+                            "30.7%",
+                            3527
                         ],
                         [
                             6,
                             "관리",
                             26,
                             "25-34 female",
-                            903,
-                            "27.3%",
-                            3308
+                            917,
+                            "26.9%",
+                            3408
                         ],
                         [
                             7,
                             "항산화",
                             13,
                             "25-34 female",
-                            464,
-                            "22.2%",
-                            2093
+                            467,
+                            "22.1%",
+                            2112
                         ],
                         [
                             8,
@@ -2153,9 +2488,9 @@
                             "영양",
                             13,
                             "25-34 female",
-                            218,
-                            "26.6%",
-                            821
+                            229,
+                            "26.5%",
+                            863
                         ],
                         [
                             10,
@@ -2165,12 +2500,147 @@
                             208,
                             "22.3%",
                             931
+                        ],
+                        [
+                            11,
+                            "프로바이오틱스",
+                            10,
+                            "25-34 female",
+                            235,
+                            "31.8%",
+                            740
+                        ],
+                        [
+                            12,
+                            "기능성",
+                            10,
+                            "25-34 female",
+                            206,
+                            "29.3%",
+                            702
+                        ],
+                        [
+                            13,
+                            "면역력",
+                            8,
+                            "25-34 female",
+                            357,
+                            "20.8%",
+                            1716
+                        ],
+                        [
+                            14,
+                            "원료",
+                            8,
+                            "25-34 female",
+                            226,
+                            "36.9%",
+                            613
+                        ],
+                        [
+                            15,
+                            "비타민",
+                            8,
+                            "25-34 female",
+                            147,
+                            "24.6%",
+                            598
+                        ],
+                        [
+                            16,
+                            "체내흡수",
+                            7,
+                            "18-24 female",
+                            140,
+                            "23.3%",
+                            600
+                        ],
+                        [
+                            17,
+                            "면역",
+                            7,
+                            "25-34 female",
+                            145,
+                            "23.1%",
+                            629
+                        ],
+                        [
+                            18,
+                            "피부",
+                            4,
+                            "18-24 female",
+                            126,
+                            "37.3%",
+                            338
+                        ],
+                        [
+                            19,
+                            "장건강",
+                            4,
+                            "25-34 female",
+                            94,
+                            "26.6%",
+                            354
+                        ],
+                        [
+                            20,
+                            "건강기능식품",
+                            3,
+                            "25-34 female",
+                            86,
+                            "32.7%",
+                            263
+                        ],
+                        [
+                            21,
+                            "식이섬유",
+                            2,
+                            "25-34 female",
+                            112,
+                            "47.3%",
+                            237
+                        ],
+                        [
+                            22,
+                            "맞춤형",
+                            2,
+                            "25-34 female",
+                            67,
+                            "30.6%",
+                            219
+                        ],
+                        [
+                            23,
+                            "영양제",
+                            2,
+                            "25-34 female",
+                            42,
+                            "45.2%",
+                            93
+                        ],
+                        [
+                            24,
+                            "콜라겐",
+                            1,
+                            "18-24 female",
+                            29,
+                            "28.7%",
+                            101
+                        ],
+                        [
+                            25,
+                            "고함량",
+                            1,
+                            "25-34 female",
+                            35,
+                            "53.0%",
+                            66
                         ]
                     ],
-                    "footnote": "*등장 광고 수 상위 10개 기준"
+                    "footnote": "*등장한 전체 키워드 기준"
                 },
                 {
-                    "title": "많이 사용한 업종 변수 키워드 - 노출",
+                    "title": "많이 사용한 업종 변수 키워드 - 노출 (1~25위)",
                     "subtitle": "키워드가 가장 많이 노출된 타겟",
                     "headers": [
                         "랭킹",
@@ -2187,96 +2657,472 @@
                             "루틴",
                             108,
                             "25-34 female",
-                            109361,
+                            113140,
                             "29.4%",
-                            371723
+                            384326
                         ],
                         [
                             2,
                             "시작",
                             59,
                             "25-34 female",
-                            91831,
-                            "34.6%",
-                            265157
+                            94342,
+                            "34.4%",
+                            274433
                         ],
                         [
                             3,
                             "하루",
                             52,
                             "25-34 female",
-                            66268,
-                            "30.4%",
-                            217720
+                            68256,
+                            "30.3%",
+                            224898
                         ],
                         [
                             4,
                             "오늘",
                             45,
                             "25-34 female",
-                            65103,
+                            67113,
                             "30.4%",
-                            214297
+                            220639
                         ],
                         [
                             5,
                             "만들",
                             41,
                             "25-34 female",
-                            32814,
-                            "27.6%",
-                            118968
+                            33767,
+                            "27.5%",
+                            122837
                         ],
                         [
                             6,
                             "습관",
                             40,
                             "25-34 female",
-                            63401,
+                            65350,
                             "30.0%",
-                            211390
+                            218130
                         ],
                         [
                             7,
                             "매일",
                             40,
                             "25-34 female",
-                            58538,
+                            59225,
                             "32.8%",
-                            178233
+                            180822
                         ],
                         [
                             8,
                             "위하",
                             39,
                             "25-34 female",
-                            44347,
-                            "27.2%",
-                            162862
+                            45169,
+                            "27.3%",
+                            165646
                         ],
                         [
                             9,
                             "식사",
                             36,
                             "25-34 female",
-                            38083,
+                            39241,
                             "29.9%",
-                            127447
+                            131288
                         ],
                         [
                             10,
                             "중요",
                             35,
                             "25-34 female",
-                            65837,
-                            "32.6%",
-                            202188
+                            66673,
+                            "32.5%",
+                            204835
+                        ],
+                        [
+                            11,
+                            "챙기",
+                            34,
+                            "25-34 female",
+                            52509,
+                            "30.2%",
+                            173785
+                        ],
+                        [
+                            12,
+                            "아니",
+                            34,
+                            "25-34 female",
+                            50264,
+                            "33.4%",
+                            150669
+                        ],
+                        [
+                            13,
+                            "도움",
+                            32,
+                            "25-34 female",
+                            21296,
+                            "26.6%",
+                            80047
+                        ],
+                        [
+                            14,
+                            "필요",
+                            31,
+                            "25-34 female",
+                            43733,
+                            "27.0%",
+                            162085
+                        ],
+                        [
+                            15,
+                            "어떻",
+                            31,
+                            "25-34 female",
+                            31132,
+                            "29.5%",
+                            105447
+                        ],
+                        [
+                            16,
+                            "가볍",
+                            30,
+                            "25-34 female",
+                            25762,
+                            "26.7%",
+                            96455
+                        ],
+                        [
+                            17,
+                            "함께",
+                            30,
+                            "25-34 female",
+                            26377,
+                            "27.7%",
+                            95379
+                        ],
+                        [
+                            18,
+                            "마음",
+                            29,
+                            "25-34 female",
+                            52461,
+                            "32.2%",
+                            162972
+                        ],
+                        [
+                            19,
+                            "아침",
+                            29,
+                            "25-34 female",
+                            42249,
+                            "30.4%",
+                            138805
+                        ],
+                        [
+                            20,
+                            "케어",
+                            29,
+                            "25-34 female",
+                            22847,
+                            "25.7%",
+                            89002
+                        ],
+                        [
+                            21,
+                            "고민",
+                            28,
+                            "25-34 female",
+                            21195,
+                            "22.0%",
+                            96448
+                        ],
+                        [
+                            22,
+                            "그렇",
+                            28,
+                            "25-34 female",
+                            22323,
+                            "26.6%",
+                            83997
+                        ],
+                        [
+                            23,
+                            "어렵",
+                            26,
+                            "25-34 female",
+                            49460,
+                            "35.2%",
+                            140412
+                        ],
+                        [
+                            24,
+                            "부담",
+                            26,
+                            "25-34 female",
+                            31672,
+                            "28.2%",
+                            112286
+                        ],
+                        [
+                            25,
+                            "생생",
+                            26,
+                            "25-34 female",
+                            21861,
+                            "28.9%",
+                            75598
                         ]
                     ],
-                    "footnote": "*등장 광고 수 상위 10개 기준"
+                    "footnote": "*등장 광고 수 상위 50개 기준"
                 },
                 {
-                    "title": "많이 사용한 업종 변수 키워드 - 클릭",
+                    "title": "많이 사용한 업종 변수 키워드 - 노출 (26~50위)",
+                    "subtitle": "키워드가 가장 많이 노출된 타겟",
+                    "headers": [
+                        "랭킹",
+                        "키워드",
+                        "등장 광고 수",
+                        "최다 노출 타겟",
+                        "타겟 노출량",
+                        "노출 비중",
+                        "총 노출량"
+                    ],
+                    "rows": [
+                        [
+                            26,
+                            "밸런스",
+                            25,
+                            "25-34 female",
+                            21322,
+                            "24.7%",
+                            86476
+                        ],
+                        [
+                            27,
+                            "균형",
+                            25,
+                            "25-34 female",
+                            20118,
+                            "25.5%",
+                            78894
+                        ],
+                        [
+                            28,
+                            "우리",
+                            24,
+                            "25-34 female",
+                            22622,
+                            "32.0%",
+                            70684
+                        ],
+                        [
+                            29,
+                            "편안",
+                            24,
+                            "25-34 female",
+                            23016,
+                            "33.3%",
+                            69084
+                        ],
+                        [
+                            30,
+                            "일상",
+                            23,
+                            "25-34 female",
+                            19835,
+                            "28.1%",
+                            70536
+                        ],
+                        [
+                            31,
+                            "하지만",
+                            23,
+                            "25-34 female",
+                            19910,
+                            "32.9%",
+                            60441
+                        ],
+                        [
+                            32,
+                            "지키",
+                            22,
+                            "25-34 female",
+                            26610,
+                            "24.8%",
+                            107481
+                        ],
+                        [
+                            33,
+                            "만나",
+                            22,
+                            "25-34 female",
+                            23937,
+                            "31.2%",
+                            76616
+                        ],
+                        [
+                            34,
+                            "요즘",
+                            22,
+                            "25-34 female",
+                            8868,
+                            "19.1%",
+                            46477
+                        ],
+                        [
+                            35,
+                            "에너지",
+                            21,
+                            "25-34 female",
+                            25462,
+                            "27.7%",
+                            92070
+                        ],
+                        [
+                            36,
+                            "소화",
+                            21,
+                            "25-34 female",
+                            24055,
+                            "33.9%",
+                            70880
+                        ],
+                        [
+                            37,
+                            "탄수화물",
+                            21,
+                            "18-24 female",
+                            18726,
+                            "29.9%",
+                            62721
+                        ],
+                        [
+                            38,
+                            "즐기",
+                            21,
+                            "25-34 female",
+                            18128,
+                            "32.4%",
+                            55934
+                        ],
+                        [
+                            39,
+                            "사람",
+                            21,
+                            "25-34 female",
+                            16464,
+                            "31.5%",
+                            52311
+                        ],
+                        [
+                            40,
+                            "더부룩",
+                            21,
+                            "25-34 female",
+                            14313,
+                            "30.2%",
+                            47457
+                        ],
+                        [
+                            41,
+                            "대신",
+                            20,
+                            "25-34 female",
+                            49179,
+                            "32.0%",
+                            153490
+                        ],
+                        [
+                            42,
+                            "변화",
+                            20,
+                            "25-34 female",
+                            46210,
+                            "34.1%",
+                            135337
+                        ],
+                        [
+                            43,
+                            "쌓이",
+                            20,
+                            "25-34 female",
+                            43885,
+                            "33.6%",
+                            130461
+                        ],
+                        [
+                            44,
+                            "올리브",
+                            20,
+                            "25-34 female",
+                            32335,
+                            "32.5%",
+                            99544
+                        ],
+                        [
+                            45,
+                            "식후",
+                            20,
+                            "25-34 female",
+                            17409,
+                            "22.9%",
+                            76062
+                        ],
+                        [
+                            46,
+                            "지금",
+                            20,
+                            "25-34 female",
+                            13276,
+                            "29.6%",
+                            44885
+                        ],
+                        [
+                            47,
+                            "당신",
+                            20,
+                            "25-34 female",
+                            7594,
+                            "25.2%",
+                            30089
+                        ],
+                        [
+                            48,
+                            "순간",
+                            19,
+                            "25-34 female",
+                            43532,
+                            "29.8%",
+                            145855
+                        ],
+                        [
+                            49,
+                            "이제",
+                            19,
+                            "25-34 female",
+                            43754,
+                            "35.4%",
+                            123712
+                        ],
+                        [
+                            50,
+                            "선물",
+                            19,
+                            "25-34 female",
+                            39867,
+                            "32.4%",
+                            122869
+                        ]
+                    ],
+                    "footnote": "*등장 광고 수 상위 50개 기준"
+                },
+                {
+                    "title": "많이 사용한 업종 변수 키워드 - 클릭 (1~25위)",
                     "subtitle": "키워드가 가장 많이 노출된 타겟",
                     "headers": [
                         "랭킹",
@@ -2293,93 +3139,469 @@
                             "루틴",
                             108,
                             "25-34 female",
-                            3502,
-                            "30.8%",
-                            11370
+                            3556,
+                            "30.5%",
+                            11671
                         ],
                         [
                             2,
                             "시작",
                             59,
                             "25-34 female",
-                            2325,
-                            "32.5%",
-                            7149
+                            2364,
+                            "31.8%",
+                            7431
                         ],
                         [
                             3,
                             "하루",
                             52,
                             "25-34 female",
-                            1907,
-                            "31.0%",
-                            6151
+                            1933,
+                            "30.8%",
+                            6281
                         ],
                         [
                             4,
                             "오늘",
                             45,
                             "25-34 female",
-                            1772,
-                            "29.8%",
-                            5955
+                            1798,
+                            "29.5%",
+                            6103
                         ],
                         [
                             5,
                             "만들",
                             41,
                             "25-34 female",
-                            1163,
-                            "31.3%",
-                            3710
+                            1183,
+                            "30.4%",
+                            3886
                         ],
                         [
                             6,
                             "습관",
                             40,
                             "25-34 female",
-                            1574,
-                            "27.5%",
-                            5733
+                            1603,
+                            "27.1%",
+                            5911
                         ],
                         [
                             7,
                             "매일",
                             40,
                             "25-34 female",
-                            1794,
-                            "30.9%",
-                            5809
+                            1803,
+                            "30.8%",
+                            5858
                         ],
                         [
                             8,
                             "위하",
                             39,
                             "25-34 female",
-                            1024,
-                            "23.2%",
-                            4418
+                            1031,
+                            "23.1%",
+                            4462
                         ],
                         [
                             9,
                             "식사",
                             36,
                             "25-34 female",
-                            1160,
-                            "29.5%",
-                            3938
+                            1175,
+                            "29.3%",
+                            4005
                         ],
                         [
                             10,
                             "중요",
                             35,
                             "25-34 female",
-                            1494,
+                            1505,
+                            "30.5%",
+                            4933
+                        ],
+                        [
+                            11,
+                            "챙기",
+                            34,
+                            "25-34 female",
+                            1515,
+                            "29.6%",
+                            5124
+                        ],
+                        [
+                            12,
+                            "아니",
+                            34,
+                            "25-34 female",
+                            1144,
                             "30.6%",
-                            4884
+                            3737
+                        ],
+                        [
+                            13,
+                            "도움",
+                            32,
+                            "25-34 female",
+                            786,
+                            "30.2%",
+                            2603
+                        ],
+                        [
+                            14,
+                            "필요",
+                            31,
+                            "25-34 female",
+                            1142,
+                            "28.0%",
+                            4085
+                        ],
+                        [
+                            15,
+                            "어떻",
+                            31,
+                            "25-34 female",
+                            824,
+                            "25.7%",
+                            3210
+                        ],
+                        [
+                            16,
+                            "가볍",
+                            30,
+                            "25-34 female",
+                            930,
+                            "31.0%",
+                            2998
+                        ],
+                        [
+                            17,
+                            "함께",
+                            30,
+                            "25-34 female",
+                            1059,
+                            "33.8%",
+                            3130
+                        ],
+                        [
+                            18,
+                            "마음",
+                            29,
+                            "25-34 female",
+                            1581,
+                            "30.8%",
+                            5130
+                        ],
+                        [
+                            19,
+                            "아침",
+                            29,
+                            "25-34 female",
+                            993,
+                            "25.4%",
+                            3909
+                        ],
+                        [
+                            20,
+                            "케어",
+                            29,
+                            "25-34 female",
+                            774,
+                            "33.7%",
+                            2299
+                        ],
+                        [
+                            21,
+                            "고민",
+                            28,
+                            "25-34 female",
+                            732,
+                            "29.0%",
+                            2524
+                        ],
+                        [
+                            22,
+                            "그렇",
+                            28,
+                            "25-34 female",
+                            718,
+                            "29.2%",
+                            2459
+                        ],
+                        [
+                            23,
+                            "어렵",
+                            26,
+                            "25-34 female",
+                            1155,
+                            "35.0%",
+                            3298
+                        ],
+                        [
+                            24,
+                            "부담",
+                            26,
+                            "25-34 female",
+                            768,
+                            "25.4%",
+                            3019
+                        ],
+                        [
+                            25,
+                            "생생",
+                            26,
+                            "25-34 female",
+                            765,
+                            "35.2%",
+                            2172
                         ]
                     ],
-                    "footnote": "*등장 광고 수 상위 10개 기준"
+                    "footnote": "*등장 광고 수 상위 50개 기준"
+                },
+                {
+                    "title": "많이 사용한 업종 변수 키워드 - 클릭 (26~50위)",
+                    "subtitle": "키워드가 가장 많이 노출된 타겟",
+                    "headers": [
+                        "랭킹",
+                        "키워드",
+                        "등장 광고 수",
+                        "최다 클릭 타겟",
+                        "타겟 클릭량",
+                        "클릭 비중",
+                        "총 클릭량"
+                    ],
+                    "rows": [
+                        [
+                            26,
+                            "밸런스",
+                            25,
+                            "25-34 female",
+                            740,
+                            "33.4%",
+                            2213
+                        ],
+                        [
+                            27,
+                            "균형",
+                            25,
+                            "25-34 female",
+                            695,
+                            "32.1%",
+                            2168
+                        ],
+                        [
+                            28,
+                            "우리",
+                            24,
+                            "25-34 female",
+                            874,
+                            "36.6%",
+                            2391
+                        ],
+                        [
+                            29,
+                            "편안",
+                            24,
+                            "25-34 female",
+                            694,
+                            "33.9%",
+                            2046
+                        ],
+                        [
+                            30,
+                            "일상",
+                            23,
+                            "25-34 female",
+                            795,
+                            "34.6%",
+                            2296
+                        ],
+                        [
+                            31,
+                            "하지만",
+                            23,
+                            "25-34 female",
+                            734,
+                            "35.0%",
+                            2097
+                        ],
+                        [
+                            32,
+                            "지키",
+                            22,
+                            "25-34 female",
+                            591,
+                            "23.1%",
+                            2556
+                        ],
+                        [
+                            33,
+                            "만나",
+                            22,
+                            "25-34 female",
+                            694,
+                            "37.7%",
+                            1840
+                        ],
+                        [
+                            34,
+                            "요즘",
+                            22,
+                            "25-34 female",
+                            240,
+                            "16.7%",
+                            1440
+                        ],
+                        [
+                            35,
+                            "에너지",
+                            21,
+                            "25-34 female",
+                            583,
+                            "24.5%",
+                            2377
+                        ],
+                        [
+                            36,
+                            "소화",
+                            21,
+                            "25-34 female",
+                            736,
+                            "37.2%",
+                            1980
+                        ],
+                        [
+                            37,
+                            "탄수화물",
+                            21,
+                            "25-34 female",
+                            633,
+                            "31.5%",
+                            2007
+                        ],
+                        [
+                            38,
+                            "즐기",
+                            21,
+                            "25-34 female",
+                            672,
+                            "39.3%",
+                            1712
+                        ],
+                        [
+                            39,
+                            "사람",
+                            21,
+                            "25-34 female",
+                            766,
+                            "33.3%",
+                            2301
+                        ],
+                        [
+                            40,
+                            "더부룩",
+                            21,
+                            "25-34 female",
+                            460,
+                            "33.0%",
+                            1393
+                        ],
+                        [
+                            41,
+                            "대신",
+                            20,
+                            "25-34 female",
+                            881,
+                            "23.1%",
+                            3807
+                        ],
+                        [
+                            42,
+                            "변화",
+                            20,
+                            "25-34 female",
+                            961,
+                            "34.5%",
+                            2785
+                        ],
+                        [
+                            43,
+                            "쌓이",
+                            20,
+                            "25-34 female",
+                            1000,
+                            "33.8%",
+                            2957
+                        ],
+                        [
+                            44,
+                            "올리브",
+                            20,
+                            "25-34 female",
+                            637,
+                            "22.7%",
+                            2812
+                        ],
+                        [
+                            45,
+                            "식후",
+                            20,
+                            "25-34 female",
+                            594,
+                            "29.6%",
+                            2009
+                        ],
+                        [
+                            46,
+                            "지금",
+                            20,
+                            "25-34 female",
+                            496,
+                            "31.7%",
+                            1565
+                        ],
+                        [
+                            47,
+                            "당신",
+                            20,
+                            "25-34 female",
+                            192,
+                            "19.9%",
+                            967
+                        ],
+                        [
+                            48,
+                            "순간",
+                            19,
+                            "35-44 female",
+                            1081,
+                            "25.1%",
+                            4299
+                        ],
+                        [
+                            49,
+                            "이제",
+                            19,
+                            "25-34 female",
+                            976,
+                            "34.4%",
+                            2838
+                        ],
+                        [
+                            50,
+                            "선물",
+                            19,
+                            "25-34 female",
+                            1074,
+                            "28.1%",
+                            3819
+                        ]
+                    ],
+                    "footnote": "*등장 광고 수 상위 50개 기준"
                 }
             ]
         }

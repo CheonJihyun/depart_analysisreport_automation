@@ -605,7 +605,9 @@ kiwi = Kiwi()
 
 NOUN_TAGS = {"NNG", "NNP"}
 VERB_ADJ_TAGS = {"VA", "VV"}
+ADVERB_TAGS = {"MAG", "MAJ"}
 VALID_KEYWORD_TAGS = NOUN_TAGS | VERB_ADJ_TAGS
+BLOCKED_KEYWORD_FORMS = {"포로"}
 
 
 @lru_cache(maxsize=50000)
@@ -640,6 +642,39 @@ def _pick_best_candidate(candidates, allowed_tags):
         if best is None or score > best[2]:
             best = (form, tag, score)
     return best
+
+
+@lru_cache(maxsize=50000)
+def _best_adverb_score(raw_text):
+    """
+    원문이 부사(MAG/MAJ)로 해석되는 후보 중 최고 점수를 반환.
+    형용사/동사 점수보다 높으면 부사 오분류 가능성이 높다.
+    """
+    text = str(raw_text).strip()
+    if not text:
+        return None
+
+    best_score = None
+    for tokens, score in kiwi.analyze(text, top_n=5):
+        if not tokens:
+            continue
+        first = tokens[0]
+        if first.tag not in ADVERB_TAGS:
+            continue
+        form = first.form.strip()
+        if len(form) < 2 or form.isdigit():
+            continue
+        cur = float(score)
+        if best_score is None or cur > best_score:
+            best_score = cur
+    return best_score
+
+
+def _is_blocked_keyword_form(form):
+    token = str(form).strip()
+    if not token:
+        return True
+    return token in BLOCKED_KEYWORD_FORMS
 
 
 @lru_cache(maxsize=50000)
@@ -685,12 +720,15 @@ def _normalize_keyword_by_pos(text, pos_type='noun'):
         if verb_adj_best is not None and verb_adj_best[2] >= noun_best[2]:
             return None
         noun_form = noun_best[0]
+        if _is_blocked_keyword_form(noun_form):
+            return None
         # 어간형(예: 강하)이 명사로 오인되는 케이스를 차단
         if _looks_like_predicate_stem(noun_form):
             return None
         return noun_form
 
     if pos_type == "verb_adj":
+        adverb_score = _best_adverb_score(text)
         if verb_adj_best is not None:
             # 명사가 동급/우세한 경우엔 용언으로 쉽게 분류하지 않는다.
             # 단, 같은 어형(예: 강하)이고 실제 용언 어간으로 판별되면 허용.
@@ -699,9 +737,18 @@ def _normalize_keyword_by_pos(text, pos_type='noun'):
                     return None
                 if not _looks_like_predicate_stem(verb_adj_best[0]):
                     return None
+            # 부사 해석이 더 우세하면 형용사/동사로 분류하지 않는다.
+            if adverb_score is not None and adverb_score >= verb_adj_best[2]:
+                return None
+            if _is_blocked_keyword_form(verb_adj_best[0]):
+                return None
             return verb_adj_best[0]
         # 분석 후보에 VA/VV가 없어도, +다 재분석에서 용언 어간으로 판별되면 허용
         if noun_best is not None and _looks_like_predicate_stem(noun_best[0]):
+            if adverb_score is not None and adverb_score >= noun_best[2]:
+                return None
+            if _is_blocked_keyword_form(noun_best[0]):
+                return None
             return noun_best[0]
         return None
 
@@ -824,7 +871,7 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
             GROUP BY ad.ad_id, ak.essential_keywords, ak.variable_keywords
             HAVING array_length(ak.essential_keywords, 1) >= 2 -- 필수 키워드가 2개 이상인 것만
         ),
-        combo_pairs AS (
+        raw_pairs AS (
             -- 2. 필수 키워드 리스트 내에서 가능한 모든 2개 조합(Pair) 생성
             -- SNS, 브랜드, 채널 -> (SNS, 브랜드), (SNS, 채널), (브랜드, 채널)로 확장
             SELECT 
@@ -833,14 +880,27 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
                 ad_imps,
                 ad_clicks,
                 variable_keywords,
-                essential_keywords[i] as ess_1,
-                essential_keywords[j] as ess_2
+                NULLIF(TRIM(essential_keywords[i]), '') as ess_a,
+                NULLIF(TRIM(essential_keywords[j]), '') as ess_b
             FROM ad_raw,
             LATERAL generate_series(1, array_length(essential_keywords, 1)) i,
             LATERAL generate_series(i + 1, array_length(essential_keywords, 1)) j
         ),
+        combo_pairs AS (
+            -- 3. 조합 순서를 정규화해 (A,B)와 (B,A)를 동일 조합으로 통합
+            SELECT DISTINCT
+                ad_id,
+                ad_body,
+                ad_imps,
+                ad_clicks,
+                variable_keywords,
+                LEAST(ess_a, ess_b) as ess_1,
+                GREATEST(ess_a, ess_b) as ess_2
+            FROM raw_pairs
+            WHERE ess_a IS NOT NULL AND ess_b IS NOT NULL
+        ),
         essential_agg AS (
-            -- 3. 생성된 [ess_1, ess_2] 쌍을 기준으로 전체 성과 합산
+            -- 4. 생성된 [ess_1, ess_2] 쌍을 기준으로 전체 성과 합산
             SELECT 
                 ess_1, ess_2,
                 COUNT(DISTINCT ad_id) as combo_doc_freq,
@@ -851,7 +911,7 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
             HAVING COUNT(DISTINCT ad_id) >= 3 -- 3개 이상의 광고에서 발견된 조합만
         ),
         variable_agg AS (
-            -- 4. 해당 조합이 포함된 광고들 내에서 변수 키워드별 성과 계산
+            -- 5. 해당 조합이 포함된 광고들 내에서 변수 키워드별 성과 계산
             SELECT 
                 cp.ess_1, cp.ess_2,
                 vk.var_keyword,
@@ -871,7 +931,7 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
             GROUP BY cp.ess_1, cp.ess_2, vk.var_keyword
             HAVING COUNT(DISTINCT cp.ad_body) >= 3
         )
-        -- 5. 최종 결합 및 정렬
+        -- 6. 최종 결합 및 정렬
         SELECT 
             ea.ess_1, ea.ess_2,
             ea.combo_doc_freq,
@@ -981,8 +1041,7 @@ def get_essence_target_performance(account_id, date_start, date_end):
         ) summ ON ts.single_ess = summ.single_ess
     ) res
     GROUP BY res.single_ess, res.total_ad_count
-    ORDER BY "등장 광고 수" DESC, "총 노출량" DESC
-    LIMIT 10;
+    ORDER BY "등장 광고 수" DESC, "총 노출량" DESC;
     """
     
     df = pd.read_sql(query, engine)
@@ -1059,7 +1118,7 @@ def get_variable_target_performance(account_id, date_start, date_end):
     ) res
     GROUP BY res.single_var, res.total_ad_count
     ORDER BY "등장 광고 수" DESC, "총 노출량" DESC
-    LIMIT 10;
+    LIMIT 50;
     """
     
     df = pd.read_sql(query, engine)

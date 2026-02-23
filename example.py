@@ -78,6 +78,26 @@ def parse_args() -> argparse.Namespace:
         default="output",
         help="Directory to save chart png files and result.txt.",
     )
+    parser.add_argument(
+        "--main-age",
+        default="35-44",
+        help="Main target age for CTR summary (empty string means all ages).",
+    )
+    parser.add_argument(
+        "--main-gender",
+        default="female",
+        help="Main target gender for CTR summary (empty string means all genders).",
+    )
+    parser.add_argument(
+        "--avoid-age",
+        default="",
+        help="Avoid target age for CTR summary (empty string means all ages).",
+    )
+    parser.add_argument(
+        "--avoid-gender",
+        default="male",
+        help="Avoid target gender for CTR summary (empty string means all genders).",
+    )
     return parser.parse_args()
 
 
@@ -137,6 +157,58 @@ def _format_point_value(value: float) -> str:
     if abs(float(value) - round(float(value))) < 1e-9:
         return f"{int(round(float(value))):,}"
     return f"{float(value):.2f}"
+
+
+def _normalize_selector(value: str | None) -> str | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    return text if text else None
+
+
+def _format_ctr(value: float | None) -> str:
+    if value is None or pd.isna(value):
+        return "-"
+    return f"{float(value):.2f}"
+
+
+def _avg_ctr_from_trend(dataset: dict | None) -> float | None:
+    if not dataset:
+        return None
+    series = dataset.get("series") or []
+    if not series:
+        return None
+    values = pd.to_numeric(series[0].get("data") or [], errors="coerce")
+    values = pd.Series(values).dropna()
+    if values.empty:
+        return None
+    return float(values.mean())
+
+
+def _target_ctr(rows: list[dict], age: str | None = None, gender: str | None = None) -> float | None:
+    if not rows:
+        return None
+    df = pd.DataFrame(rows)
+    required = {"impressions", "clicks"}
+    if not required.issubset(df.columns):
+        return None
+
+    age_sel = _normalize_selector(age)
+    gender_sel = _normalize_selector(gender)
+    if age_sel:
+        df = df[df["age"].astype(str) == age_sel]
+    if gender_sel:
+        df = df[df["gender"].astype(str) == gender_sel]
+    if df.empty:
+        return None
+
+    imps = pd.to_numeric(df["impressions"], errors="coerce").fillna(0)
+    clicks = pd.to_numeric(df["clicks"], errors="coerce").fillna(0)
+    total_imps = float(imps.sum())
+    total_clicks = float(clicks.sum())
+    if total_imps <= 0:
+        return None
+    return (total_clicks / total_imps) * 100.0
 
 
 def plot_line(dataset_key: str, dataset: dict, writer: OutputWriter, logs: list[str]) -> None:
@@ -505,9 +577,10 @@ def plot_keyword_combo(dataset_key: str, dataset: dict, writer: OutputWriter, lo
     df["combo_overall_ctr_num"] = pd.to_numeric(df["combo_overall_ctr"], errors="coerce")
     df["with_var_ctr"] = pd.to_numeric(df["with_var_ctr"], errors="coerce")
 
+    combo_keys = ["ess_1", "ess_2", "combo_overall_ctr_num"]
+    combo_sizes = df.groupby(combo_keys, dropna=False).size().reset_index(name="item_count")
     combo_rank = (
-        df[["ess_1", "ess_2", "combo_overall_ctr_num"]]
-        .drop_duplicates()
+        combo_sizes[combo_sizes["item_count"] >= 2]
         .dropna(subset=["combo_overall_ctr_num"])
         .sort_values("combo_overall_ctr_num", ascending=False)
         .head(6)
@@ -524,10 +597,11 @@ def plot_keyword_combo(dataset_key: str, dataset: dict, writer: OutputWriter, lo
             & (df["combo_overall_ctr_num"] == combo_ctr)
         ].copy()
         gdf = gdf.sort_values("with_var_ctr", ascending=False).head(8)
-        if gdf.empty:
+        if len(gdf) < 2:
             continue
         title = f"{dataset_key}_{idx}_{e1}+{e2}_{combo_ctr:.2f}"
-        palette = B_CMAP if "avoid" in dataset_key else G_CMAP
+        is_avoid_combo = dataset_key.startswith("avoid_keyword_combo")
+        palette = b_cmap if is_avoid_combo else g_cmap
         _draw_circlepack(gdf, title, writer, palette)
         rendered += 1
     logs.append(f"[OK] table:{dataset_key} groups_rendered={rendered}")
@@ -630,6 +704,15 @@ def main() -> int:
     for path in writer.files:
         logs.append(str(path))
     logs.append(f"chart_count={len(writer.files)}")
+
+    target_rows = (datasets.get("target_heatmap") or {}).get("rows") or []
+    overall_ctr = _avg_ctr_from_trend(datasets.get("ctr_trend"))
+    main_ctr = _target_ctr(target_rows, args.main_age, args.main_gender)
+    avoid_ctr = _target_ctr(target_rows, args.avoid_age, args.avoid_gender)
+    logs.append("")
+    logs.append(f"overall_ctr={_format_ctr(overall_ctr)}")
+    logs.append(f"main_ctr={_format_ctr(main_ctr)}")
+    logs.append(f"avoid_ctr={_format_ctr(avoid_ctr)}")
 
     result_path = output_dir / "result.txt"
     result_path.write_text("\n".join(logs), encoding="utf-8")

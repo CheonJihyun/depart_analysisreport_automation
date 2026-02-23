@@ -61,14 +61,32 @@ def _combo_cards(dataset: dict):
     # [수정 핵심] 1. 전체 데이터를 combo_overall_ctr 기준으로 먼저 정렬합니다.
     # (높은 CTR이 위로 오도록 내림차순 정렬)
     if 'combo_overall_ctr' in df.columns:
+        df["combo_overall_ctr"] = pd.to_numeric(df["combo_overall_ctr"], errors="coerce")
+        df = df.dropna(subset=["combo_overall_ctr"])
         df = df.sort_values(by='combo_overall_ctr', ascending=False)
 
-    # 필수 조합별로 그룹화
-    grouped = df.groupby(['ess_1', 'ess_2', 'combo_overall_ctr'], sort=False)
+    # 항목이 2개 이상인 조합만 순위 후보로 사용
+    combo_keys = ['ess_1', 'ess_2', 'combo_overall_ctr']
+    combo_sizes = df.groupby(combo_keys, sort=False, dropna=False).size().reset_index(name="item_count")
+    combo_rank = (
+        combo_sizes[combo_sizes["item_count"] >= 2]
+        .sort_values(by='combo_overall_ctr', ascending=False)
+        .head(6)
+        .reset_index(drop=True)
+    )
 
     cards = []
-    for i, ((e1, e2, ctr), group_df) in enumerate(grouped, 1):
-        if i > 6: break
+    for i, row in enumerate(combo_rank.itertuples(index=False), 1):
+        e1 = getattr(row, "ess_1")
+        e2 = getattr(row, "ess_2")
+        ctr = getattr(row, "combo_overall_ctr")
+        group_df = df[
+            (df["ess_1"] == e1)
+            & (df["ess_2"] == e2)
+            & (df["combo_overall_ctr"] == ctr)
+        ].copy()
+        if len(group_df) < 2:
+            continue
         
         # 1. 버블 차트용 데이터셋 구성
         mini_ds = {
@@ -418,4 +436,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-

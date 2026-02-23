@@ -195,18 +195,29 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         # to_json.py 내부
         strat_df = get_strategic_performance(target_id, start, end, age, gen)
         if strat_df is not None:
-            # 1. 요약 표용
-            top_combos = strat_df[['ess_1', 'ess_2', 'combo_overall_ctr']].drop_duplicates().head(6)
-            # add_ds(f"{prefix}_keyword_combo", "table", f"{label} 키워드 조합 상위", top_combos)
+            strat_df = strat_df.copy()
+            strat_df["combo_overall_ctr"] = pd.to_numeric(strat_df["combo_overall_ctr"], errors="coerce")
+            strat_df["with_var_ctr"] = pd.to_numeric(strat_df["with_var_ctr"], errors="coerce")
 
-            # 2. 상세 카드용 (기존 strat_df에서 상위 6개 조합에 해당하는 행들만 필터링)
-            # 안전하게 loc와 isin을 사용합니다.
-            top_keys = list(zip(top_combos['ess_1'], top_combos['ess_2']))
-            final_strat_df = strat_df[strat_df.apply(lambda x: (x['ess_1'], x['ess_2']) in top_keys, axis=1)].copy()
+            # 1. 조합별 item_count를 계산한 뒤, item_count>=2 조건에서만 CTR 상위 6개 선정
+            combo_keys = ["ess_1", "ess_2", "combo_overall_ctr"]
+            combo_sizes = strat_df.groupby(combo_keys, dropna=False).size().reset_index(name="item_count")
+            top_combos = (
+                combo_sizes[combo_sizes["item_count"] >= 2]
+                .dropna(subset=["combo_overall_ctr"])
+                .sort_values(by="combo_overall_ctr", ascending=False)
+                .head(6)
+            )
 
-            # 3. ★ 핵심: 각 조합별로 성과(with_var_ctr) 상위 8개 변수 행만 남깁니다.
-            final_strat_df = final_strat_df.sort_values(by=['ess_1', 'ess_2', 'with_var_ctr'], ascending=[True, True, False])
-            final_strat_df = final_strat_df.groupby(['ess_1', 'ess_2']).head(8)
+            # 2. 상세 카드용: 위에서 선별한 상위 6개 조합만 남김
+            final_strat_df = strat_df.merge(top_combos[combo_keys], on=combo_keys, how="inner")
+
+            # 3. 각 조합별 변수 키워드 성과 상위 8개만 유지
+            final_strat_df = final_strat_df.sort_values(
+                by=["combo_overall_ctr", "ess_1", "ess_2", "with_var_ctr"],
+                ascending=[False, True, True, False]
+            )
+            final_strat_df = final_strat_df.groupby(combo_keys, sort=False).head(8)
 
 
             # 4. 데이터가 잘 만들어졌는지 로그 확인 (선택)
@@ -249,38 +260,84 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         temp_df = df.replace({pd.NA: None, pd.NaT: None, np.nan: None})
         return temp_df.iloc[:, col_indices].values.tolist()
 
+    def build_ranked_rows(df, col_indices, start_rank, end_rank):
+        """
+        start_rank~end_rank 구간의 행만 뽑아서 절대 순위 번호를 붙여 반환.
+        """
+        rows = format_rows(df, col_indices)
+        if not rows:
+            return []
+        start_idx = max(start_rank - 1, 0)
+        end_idx = max(end_rank, 0)
+        sliced = rows[start_idx:end_idx]
+        return [[rank] + row for rank, row in enumerate(sliced, start=start_rank)]
+
+    def build_appendix_split_items(base_title, subtitle, headers, df, col_indices):
+        """
+        별첨 표를 1~25위, 26~50위 두 개로 분할 생성.
+        """
+        ranges = [(1, 25), (26, 50)]
+        items = []
+        for start_rank, end_rank in ranges:
+            ranked_rows = build_ranked_rows(df, col_indices, start_rank, end_rank)
+            if not ranked_rows:
+                continue
+            items.append({
+                "title": f"{base_title} ({start_rank}~{end_rank}위)",
+                "subtitle": subtitle,
+                "headers": headers,
+                "rows": ranked_rows,
+                "footnote": "*등장 광고 수 상위 50개 기준"
+            })
+        return items
+
+    def build_appendix_full_item(base_title, subtitle, headers, df, col_indices):
+        """
+        별첨 표를 등장한 전체 키워드(전체 순위)로 1개 생성.
+        """
+        rows = format_rows(df, col_indices)
+        if not rows:
+            return []
+        ranked_rows = [[i + 1] + row for i, row in enumerate(rows)]
+        return [{
+            "title": f"{base_title} (전체)",
+            "subtitle": subtitle,
+            "headers": headers,
+            "rows": ranked_rows,
+            "footnote": "*등장한 전체 키워드 기준"
+        }]
+
     # 가공된 아이템 리스트 생성
     print("아이템 리스트 생성 중...")
-    appendix_items = [
-        {
-            "title": "많이 사용한 업종 필수 키워드 - 노출",
-            "subtitle": "키워드가 가장 많이 노출된 타겟",
-            "headers": ["랭킹", "키워드", "등장 광고 수", "최다 노출 타겟", "타겟 노출량", "노출 비중", "총 노출량"], # '순위' 추가
-            "rows": [[i + 1] + row for i, row in enumerate(format_rows(df_ess, [0, 1, 2, 3, 4, 5]))], # 순위 결합
-            "footnote": "*등장 광고 수 상위 10개 기준"
-        },
-        {
-            "title": "많이 사용한 업종 필수 키워드 - 클릭",
-            "subtitle": "키워드가 가장 많이 노출된 타겟",
-            "headers": ["랭킹", "키워드", "등장 광고 수", "최다 클릭 타겟", "타겟 클릭량", "클릭 비중", "총 클릭량"],
-            "rows": [[i + 1] + row for i, row in enumerate(format_rows(df_ess, [0, 1, 6, 7, 8, 9]))],
-            "footnote": "*등장 광고 수 상위 10개 기준"
-        },
-        {
-            "title": "많이 사용한 업종 변수 키워드 - 노출",
-            "subtitle": "키워드가 가장 많이 노출된 타겟",
-            "headers": ["랭킹", "키워드", "등장 광고 수", "최다 노출 타겟", "타겟 노출량", "노출 비중", "총 노출량"],
-            "rows": [[i + 1] + row for i, row in enumerate(format_rows(df_var, [0, 1, 2, 3, 4, 5]))],
-            "footnote": "*등장 광고 수 상위 10개 기준"
-        },
-        {
-            "title": "많이 사용한 업종 변수 키워드 - 클릭",
-            "subtitle": "키워드가 가장 많이 노출된 타겟",
-            "headers": ["랭킹", "키워드", "등장 광고 수", "최다 클릭 타겟", "타겟 클릭량", "클릭 비중", "총 클릭량"],
-            "rows": [[i + 1] + row for i, row in enumerate(format_rows(df_var, [0, 1, 6, 7, 8, 9]))],
-            "footnote": "*등장 광고 수 상위 10개 기준"
-        }
-    ]
+    appendix_items = []
+    appendix_items.extend(build_appendix_full_item(
+        base_title="많이 사용한 업종 필수 키워드 - 노출",
+        subtitle="키워드가 가장 많이 노출된 타겟",
+        headers=["랭킹", "키워드", "등장 광고 수", "최다 노출 타겟", "타겟 노출량", "노출 비중", "총 노출량"],
+        df=df_ess,
+        col_indices=[0, 1, 2, 3, 4, 5]
+    ))
+    appendix_items.extend(build_appendix_full_item(
+        base_title="많이 사용한 업종 필수 키워드 - 클릭",
+        subtitle="키워드가 가장 많이 노출된 타겟",
+        headers=["랭킹", "키워드", "등장 광고 수", "최다 클릭 타겟", "타겟 클릭량", "클릭 비중", "총 클릭량"],
+        df=df_ess,
+        col_indices=[0, 1, 6, 7, 8, 9]
+    ))
+    appendix_items.extend(build_appendix_split_items(
+        base_title="많이 사용한 업종 변수 키워드 - 노출",
+        subtitle="키워드가 가장 많이 노출된 타겟",
+        headers=["랭킹", "키워드", "등장 광고 수", "최다 노출 타겟", "타겟 노출량", "노출 비중", "총 노출량"],
+        df=df_var,
+        col_indices=[0, 1, 2, 3, 4, 5]
+    ))
+    appendix_items.extend(build_appendix_split_items(
+        base_title="많이 사용한 업종 변수 키워드 - 클릭",
+        subtitle="키워드가 가장 많이 노출된 타겟",
+        headers=["랭킹", "키워드", "등장 광고 수", "최다 클릭 타겟", "타겟 클릭량", "클릭 비중", "총 클릭량"],
+        df=df_var,
+        col_indices=[0, 1, 6, 7, 8, 9]
+    ))
 
     # 최종 리포트 구조에 삽입 (HTML 템플릿의 appendix_groups 구조에 맞춤)
     final_report["appendix_groups"] = [
