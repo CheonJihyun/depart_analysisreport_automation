@@ -139,9 +139,9 @@ def export_to_pdf(html_path, output_pdf_path):
         # 2. PDF 저장 설정
         page.pdf(
             path=output_pdf_path,
-            format="A4",           # 용지 규격
             print_background=True, # 배경 색상/이미지 포함 (중요!)
-            margin={"top": "20px", "bottom": "20px", "left": "20px", "right": "20px"}
+            prefer_css_page_size=True,
+            margin={"top": "0px", "bottom": "0px", "left": "0px", "right": "0px"}
         )
         
         browser.close()

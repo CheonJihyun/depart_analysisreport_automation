@@ -3,7 +3,7 @@
    ========================= */
 @page {
   size: A4 landscape;
-  margin: 12mm 14mm 12mm 14mm;
+  margin: 0;
 
   /* 지원되는 엔진에서만 표시됨 */
   @bottom-right {
@@ -35,8 +35,8 @@ body {
    - body 내부는 12컬럼 그리드
    ========================= */
 .page {
-  width: 297mm;
-  min-height: 210mm;
+  width: 100%;
+  min-height: 0;
 
   break-after: page;
   page-break-after: always;
