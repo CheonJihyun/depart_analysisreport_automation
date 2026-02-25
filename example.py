@@ -6,8 +6,8 @@ Input:
 - json_reports/integrated_report.json (default)
 
 Output:
-- output/*.png
-- output/result.txt
+- static/output/*.png
+- static/output/result.txt
 """
 
 from __future__ import annotations
@@ -66,7 +66,7 @@ DPI_CIRCLEPACK = 120
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Render charts from integrated_report.json into output png files."
+        description="Render charts from integrated_report.json into chart png files."
     )
     parser.add_argument(
         "--json-path",
@@ -75,7 +75,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output-dir",
-        default="output",
+        default="./static/output",
         help="Directory to save chart png files and result.txt.",
     )
     parser.add_argument(
