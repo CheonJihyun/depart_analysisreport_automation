@@ -12,6 +12,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+import numpy as np
 import pandas as pd
 
 DEFAULT_THEME = "#4e73df"
@@ -141,6 +142,12 @@ def _value_colors(values: List[float], color_map: Dict[str, Any]):
     return [cmap((v - vmin) / (vmax - vmin)) for v in values]
 
 
+def _contrast_text_color(rgba, threshold: float = 0.45) -> str:
+    r, g, b = rgba[:3]
+    luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    return "white" if luminance < threshold else "#1a1a1a"
+
+
 def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compact: bool = False) -> str:
     if not dataset:
         return ""
@@ -207,8 +214,9 @@ def render_bar_h_chart(
     if compact:
         width, height = 3.2, 1.8
     else:
-        width = chart_width if isinstance(chart_width, (int, float)) else 6
-        height = chart_height if isinstance(chart_height, (int, float)) else 3.4
+        # Match example.py barh ratio (4:6) so charts are quarter-width and vertically long.
+        width = chart_width if isinstance(chart_width, (int, float)) else 4
+        height = chart_height if isinstance(chart_height, (int, float)) else 6
     fig, ax = plt.subplots(figsize=(width, height))
 
     colors = _value_colors(values, color_map)
@@ -233,7 +241,19 @@ def render_bar_h_chart(
     fig.tight_layout(pad=0.6)
     return _fig_to_svg(fig)
 
-def render_bar_v_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compact: bool = False) -> str:
+def _format_chart_value(value: float) -> str:
+    if abs(value - round(value)) < 1e-9:
+        return f"{int(round(value)):,}"
+    return f"{value:.2f}"
+
+
+def render_bar_v_chart(
+    dataset: Dict[str, Any],
+    color_map: Dict[str, Any],
+    compact: bool = False,
+    show_labels: bool = False,
+    show_values: bool = False,
+) -> str:
     if not dataset:
         return ""
     labels = dataset.get("labels") or []
@@ -241,19 +261,47 @@ def render_bar_v_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compa
     if not labels or not series:
         return ""
 
-    values = series[0].get("data") or []
+    values = pd.Series(pd.to_numeric(series[0].get("data") or [], errors="coerce")).fillna(0.0).tolist()
     if not values:
         return ""
 
     labels = labels[: len(values)]
     x = list(range(len(labels)))
-    fig, ax = plt.subplots(figsize=(6, 3.4) if not compact else (3.2, 1.8))
+    if compact and (show_labels or show_values):
+        fig_size = (3.2, 2.5)
+    else:
+        fig_size = (6, 3.4) if not compact else (3.2, 1.8)
+    fig, ax = plt.subplots(figsize=fig_size)
 
     colors = _value_colors(values, color_map)
-    ax.bar(x, values, color=colors)
+    bars = ax.bar(x, values, color=colors)
+
+    max_val = max(values) if values else 0.0
+    y_pad = max(max_val * 0.2, 0.4)
+    y_top = max(max_val + y_pad, 1.0)
+    ax.set_ylim(0, y_top)
+
+    if show_values:
+        unit = str(dataset.get("unit") or "").strip()
+        suffix = unit if unit in {"%", "회", "명"} else ""
+        for bar, value in zip(bars, values):
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + y_pad * 0.08,
+                f"{_format_chart_value(float(value))}{suffix}",
+                ha="center",
+                va="bottom",
+                fontsize=6 if compact else 7,
+                color=color_map["muted"],
+            )
 
     if compact:
-        ax.set_xticks([])
+        if show_labels:
+            ax.set_xticks(x)
+            ax.set_xticklabels(labels, fontsize=5.5, rotation=30, ha="right")
+            ax.tick_params(axis="x", length=0, pad=1, colors="#666666")
+        else:
+            ax.set_xticks([])
         ax.set_yticks([])
         for spine in ax.spines.values():
             spine.set_visible(False)
@@ -387,7 +435,13 @@ def render_content_card(dataset: Dict[str, Any], color_map: Dict[str, Any]) -> L
                     "series": [{"name": "ctr", "data": values}],
                     "unit": "%",
                 }
-                chart_svg = render_bar_v_chart(mini_ds, color_map, compact=True)
+                chart_svg = render_bar_v_chart(
+                    mini_ds,
+                    color_map,
+                    compact=True,
+                    show_labels=True,
+                    show_values=True,
+                )
 
         new_item["chart"] = chart_svg
         rendered.append(new_item)
@@ -404,6 +458,7 @@ def render_dataset(dataset: Dict[str, Any], color_map: Dict[str, Any], **kwargs)
         "line": render_line_chart,
         "bar_h": render_bar_h_chart,
         "bar_v": render_bar_v_chart,
+        "bubble": render_bubble_chart,
         "table": render_table_chart,
         "content_card": render_content_card,
     }
@@ -414,85 +469,139 @@ def render_dataset(dataset: Dict[str, Any], color_map: Dict[str, Any], **kwargs)
 
     return renderer(dataset, color_map, **kwargs)
 
-
-
-
-
-
-import numpy as np
-
-def render_bubble_chart(dataset, color_map, compact=True):
+def render_bubble_chart(
+    dataset: Dict[str, Any],
+    color_map: Dict[str, Any],
+    compact: bool = True,
+    palette: Optional[List[str]] = None,
+) -> str:
     labels = dataset.get("labels") or []
     series = dataset.get("series") or []
-    ctr_data = series[0]["data"] if series else []
-    if not labels or not ctr_data: return ""
+    if not labels or not series:
+        return ""
 
-    # 1. 크기순 정렬 및 반지름 설정
-    data = sorted(zip(ctr_data, labels), key=lambda x: x[0], reverse=True)
-    sorted_ctrs, sorted_labels = zip(*data)
-    radii = [np.sqrt(c) * 10 for c in sorted_ctrs]
+    ctr_raw = pd.to_numeric(series[0].get("data") or [], errors="coerce")
+    size_raw = ctr_raw
+    if len(series) > 1:
+        size_raw = pd.to_numeric(series[1].get("data") or [], errors="coerce")
 
-    # 2. 위치 계산 (삼각측량 원리 이용)
-    pos = [np.array([0.0, 0.0])] # 첫 번째 원: 중앙
+    n = min(len(labels), len(ctr_raw), len(size_raw))
+    if n == 0:
+        return ""
+
+    rows = []
+    for i in range(n):
+        ctr = ctr_raw[i]
+        size_val = size_raw[i]
+        if pd.isna(ctr) or pd.isna(size_val):
+            continue
+        rows.append({
+            "label": str(labels[i]),
+            "ctr": float(ctr),
+            "size": max(float(size_val), 1.0),
+        })
+    if not rows:
+        return ""
+
+    rows.sort(key=lambda x: x["size"], reverse=True)
+
+    size_values = np.sqrt(np.array([r["size"] for r in rows], dtype=float))
+    size_norm = size_values / size_values.max() if size_values.max() > 0 else np.ones(len(rows))
+    max_r = 0.58 if len(rows) <= 3 else (0.45 if len(rows) <= 6 else 0.36)
+    min_r = max(0.12, max_r * 0.38)
+    radii = (min_r + (max_r - min_r) * size_norm).tolist()
+
+    positions = [np.array([0.0, 0.0])]
     if len(radii) > 1:
-        pos.append(np.array([radii[0] + radii[1], 0.0])) # 두 번째 원: 첫 번째 원 우측에 접함
+        positions.append(np.array([radii[0] + radii[1], 0.0]))
 
     for i in range(2, len(radii)):
         r_new = radii[i]
         placed = False
-        # 이미 배치된 원들 중 두 개(j, k)를 골라 그 사이에 끼워넣기 시 시도
-        for j in range(len(pos)):
-            for k in range(j + 1, len(pos)):
+        for j in range(len(positions)):
+            for k in range(j + 1, len(positions)):
                 r1, r2 = radii[j], radii[k]
-                p1, p2 = pos[j], pos[k]
-                d = np.linalg.norm(p1 - p2)
-                
-                # 두 원 사이의 거리가 너무 멀면 그 사이에 낄 수 없음
-                if d > (r1 + r_new) + (r2 + r_new): continue
-                
-                # 두 원 p1, p2와 동시에 접하는 점 p_new 계산 (교점 공식)
+                p1, p2 = positions[j], positions[k]
+                dist = np.linalg.norm(p1 - p2)
+                if dist <= 1e-9:
+                    continue
+                if dist > (r1 + r_new) + (r2 + r_new):
+                    continue
+
                 d1 = r1 + r_new
                 d2 = r2 + r_new
-                a = (d1**2 - d2**2 + d**2) / (2 * d)
-                h = np.sqrt(max(0, d1**2 - a**2))
-                p3 = p1 + a * (p2 - p1) / d
-                
-                # 후보점 2개 (좌/우)
-                for sign in [-1, 1]:
+                a = (d1**2 - d2**2 + dist**2) / (2 * dist)
+                h = np.sqrt(max(0.0, d1**2 - a**2))
+                p3 = p1 + a * (p2 - p1) / dist
+
+                for sign in (-1, 1):
                     test_pos = np.array([
-                        p3[0] + sign * h * (p2[1] - p1[1]) / d,
-                        p3[1] - sign * h * (p2[0] - p1[0]) / d
+                        p3[0] + sign * h * (p2[1] - p1[1]) / dist,
+                        p3[1] - sign * h * (p2[0] - p1[0]) / dist,
                     ])
-                    
-                    # 다른 원들과 겹치는지 엄격하게 체크 (공통현 방지: 0.99)
-                    if all(np.linalg.norm(test_pos - p) >= (radii[idx] + r_new) * 0.99 for idx, p in enumerate(pos)):
-                        pos.append(test_pos)
-                        placed = True; break
-                if placed: break
-            if placed: break
-        if not placed: # 끼워넣기 실패 시 비상용 배치
-            pos.append(np.array([radii[0] + r_new, r_new * i]))
+                    if all(
+                        np.linalg.norm(test_pos - p) >= (radii[idx] + r_new) * 0.99
+                        for idx, p in enumerate(positions)
+                    ):
+                        positions.append(test_pos)
+                        placed = True
+                        break
+                if placed:
+                    break
+            if placed:
+                break
+        if not placed:
+            positions.append(np.array([radii[0] + r_new, r_new * i]))
 
-    # 3. 시각화
-    fig, ax = plt.subplots(figsize=(4, 4))
-    x_coords, y_coords = zip(*pos)
-    
-    # 테두리 두께를 주어 접점을 명확하게 표시
-    bubble_color = color_map.get("primary") or color_map.get("main") or "#4e73df"
-    for i in range(len(pos)):
-        circle = plt.Circle(pos[i], radii[i], color=bubble_color, ec='white', lw=1.5, alpha=0.9)
+    if palette:
+        bubble_palette = palette
+    else:
+        bubble_palette = [
+            color_map["lighter"],
+            color_map["light"],
+            color_map["base"],
+            color_map["dark"],
+        ]
+    cmap = LinearSegmentedColormap.from_list("bubble_palette", bubble_palette, N=256).reversed()
+
+    ctr_values = [r["ctr"] for r in rows]
+    vmin, vmax = min(ctr_values), max(ctr_values)
+
+    fig_size = (4, 4) if compact else (5.4, 5.4)
+    fig, ax = plt.subplots(figsize=fig_size)
+
+    for idx, pos in enumerate(positions):
+        ctr = rows[idx]["ctr"]
+        label = rows[idx]["label"]
+        radius = radii[idx]
+        norm = 0.5 if abs(vmax - vmin) < 1e-12 else (ctr - vmin) / (vmax - vmin)
+        color = cmap(norm)
+        circle = plt.Circle(pos, radius, facecolor=color, edgecolor="white", linewidth=1.6, alpha=1.0)
         ax.add_patch(circle)
-        
-        # 텍스트 추가
-        ax.text(pos[i][0], pos[i][1], f"{sorted_labels[i]}\n({sorted_ctrs[i]:.2f}%)",
-                fontsize=8, ha='center', va='center', color='white', fontweight='bold')
 
-    # 축 범위 자동 설정
-    all_points = np.array([p + np.array([r, r]) for p, r in zip(pos, radii)] + 
-                          [p - np.array([r, r]) for p, r in zip(pos, radii)])
-    ax.set_xlim(min(all_points[:, 0]), max(all_points[:, 0]))
-    ax.set_ylim(min(all_points[:, 1]), max(all_points[:, 1]))
-    ax.set_aspect('equal')
-    ax.axis('off')
-    
+        font_size = max(6, min(11, 4 + radius * 10))
+        ax.text(
+            pos[0],
+            pos[1],
+            f"{label}\n({ctr:.2f}%)",
+            fontsize=font_size,
+            ha="center",
+            va="center",
+            color=_contrast_text_color(color, threshold=0.45),
+            fontweight="bold",
+        )
+
+    all_points = np.array(
+        [p + np.array([r, r]) for p, r in zip(positions, radii)] +
+        [p - np.array([r, r]) for p, r in zip(positions, radii)]
+    )
+    x_min, x_max = float(all_points[:, 0].min()), float(all_points[:, 0].max())
+    y_min, y_max = float(all_points[:, 1].min()), float(all_points[:, 1].max())
+    x_pad = max((x_max - x_min) * 0.05, 0.08)
+    y_pad = max((y_max - y_min) * 0.05, 0.08)
+    ax.set_xlim(x_min - x_pad, x_max + x_pad)
+    ax.set_ylim(y_min - y_pad, y_max + y_pad)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
     return _fig_to_svg(fig)

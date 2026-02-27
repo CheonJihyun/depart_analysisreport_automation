@@ -1,10 +1,16 @@
 import json
 from datetime import datetime
 import pandas as pd
-from scripts.visualizer import build_color_map, render_dataset, is_dark_color, render_bar_v_chart
+from scripts.visualizer import build_color_map, render_dataset, is_dark_color, render_bubble_chart
 from scripts.reporter import generate_html
 from to_json import run as generate_json
 import time
+
+
+G_CMAP = ["#0B3D02", "#659348", "#E3CC97"]
+B_CMAP = ["#EE8C8C", "#D7A9A9", "#E3CC97"]
+
+
 def _load_report(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -23,13 +29,58 @@ def _top_targets(rows, metric: str, limit: int = 2):
     return results
 
 
-def _find_metric(rows, age: str, gender: str, metric: str):
+def _normalize_selector(value: str | None) -> str | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    return text if text else None
+
+
+def _target_ctr(rows, age: str | None = None, gender: str | None = None):
     if not rows:
         return None
-    for row in rows:
-        if row.get("age") == age and row.get("gender") == gender:
-            return row.get(metric)
+
+    df = pd.DataFrame(rows)
+    if df.empty or "impressions" not in df.columns:
+        return None
+
+    age_sel = _normalize_selector(age)
+    gender_sel = _normalize_selector(gender)
+    if age_sel:
+        df = df[df["age"].astype(str) == age_sel]
+    if gender_sel:
+        df = df[df["gender"].astype(str) == gender_sel]
+    if df.empty:
+        return None
+
+    impressions = pd.to_numeric(df["impressions"], errors="coerce").fillna(0.0)
+    total_impressions = float(impressions.sum())
+    if total_impressions <= 0:
+        return None
+
+    if "clicks" in df.columns:
+        clicks = pd.to_numeric(df["clicks"], errors="coerce").fillna(0.0)
+        total_clicks = float(clicks.sum())
+        return (total_clicks / total_impressions) * 100.0
+
+    if "ctr" in df.columns:
+        ctr = pd.to_numeric(df["ctr"], errors="coerce").fillna(0.0)
+        estimated_clicks = impressions * ctr / 100.0
+        return (float(estimated_clicks.sum()) / total_impressions) * 100.0
+
     return None
+
+
+def _target_label(age: str | None, gender: str | None) -> str:
+    age_sel = _normalize_selector(age)
+    gender_sel = _normalize_selector(gender)
+    if age_sel and gender_sel:
+        return f"{age_sel} {gender_sel}"
+    if gender_sel:
+        return f"전체연령 {gender_sel}"
+    if age_sel:
+        return f"{age_sel} 전체성별"
+    return "전체연령 전체성별"
 
 
 def _average_series(dataset: dict):
@@ -44,33 +95,34 @@ def _average_series(dataset: dict):
     return sum(data) / len(data)
 
 
-import pandas as pd
-from scripts.visualizer import build_color_map, render_bubble_chart
-
-def _combo_cards(dataset: dict):
+def _combo_cards(dataset: dict, palette: list[str] | None = None):
     rows = (dataset or {}).get("rows") or []
     if not rows:
         return []
 
-    import pandas as pd
-    from scripts.visualizer import build_color_map, render_bubble_chart
-
     df = pd.DataFrame(rows)
-    color_map = build_color_map("#4e73df")
+    base_color = palette[0] if palette else "#4e73df"
+    color_map = build_color_map(base_color)
+
+    if "with_var_ctr" not in df.columns:
+        return []
+    df["with_var_ctr"] = pd.to_numeric(df["with_var_ctr"], errors="coerce")
+    df = df.dropna(subset=["with_var_ctr"])
+    if df.empty:
+        return []
     
-    # [수정 핵심] 1. 전체 데이터를 combo_overall_ctr 기준으로 먼저 정렬합니다.
-    # (높은 CTR이 위로 오도록 내림차순 정렬)
-    if 'combo_overall_ctr' in df.columns:
+    if "combo_overall_ctr" in df.columns:
         df["combo_overall_ctr"] = pd.to_numeric(df["combo_overall_ctr"], errors="coerce")
         df = df.dropna(subset=["combo_overall_ctr"])
-        df = df.sort_values(by='combo_overall_ctr', ascending=False)
+        df = df.sort_values(by="combo_overall_ctr", ascending=False)
+    else:
+        return []
 
-    # 항목이 2개 이상인 조합만 순위 후보로 사용
-    combo_keys = ['ess_1', 'ess_2', 'combo_overall_ctr']
+    combo_keys = ["ess_1", "ess_2", "combo_overall_ctr"]
     combo_sizes = df.groupby(combo_keys, sort=False, dropna=False).size().reset_index(name="item_count")
     combo_rank = (
         combo_sizes[combo_sizes["item_count"] >= 2]
-        .sort_values(by='combo_overall_ctr', ascending=False)
+        .sort_values(by="combo_overall_ctr", ascending=False)
         .head(6)
         .reset_index(drop=True)
     )
@@ -88,41 +140,43 @@ def _combo_cards(dataset: dict):
         if len(group_df) < 2:
             continue
         
-        # 1. 버블 차트용 데이터셋 구성
+        group_df["with_var_ctr"] = pd.to_numeric(group_df["with_var_ctr"], errors="coerce")
+        group_df = group_df.dropna(subset=["with_var_ctr"])
+        if group_df.empty:
+            continue
+
+        imps_series = pd.to_numeric(group_df.get("var_imps"), errors="coerce").fillna(1.0)
+
         mini_ds = {
             "kind": "bubble",
-            "labels": group_df['var_keyword'].tolist(),
+            "labels": group_df["var_keyword"].astype(str).tolist(),
             "series": [
-                {"name": "CTR", "data": group_df['with_var_ctr'].tolist()},
-                {"name": "Imps", "data": group_df.get('var_imps', group_df['with_var_ctr']).tolist()}
+                {"name": "CTR", "data": group_df["with_var_ctr"].tolist()},
+                {"name": "Imps", "data": imps_series.tolist()},
             ],
-            "unit": "%"
+            "unit": "%",
         }
 
-        # 2. 차트 생성 및 정제 (타임스탬프 등 제거)
-        chart_svg = render_bubble_chart(mini_ds, color_map, compact=True)
+        chart_svg = render_bubble_chart(mini_ds, color_map, compact=True, palette=palette)
         if chart_svg and "<svg" in chart_svg:
             chart_svg = chart_svg[chart_svg.find("<svg"):]
 
-        # 3. [형식 수정] 첫 번째 함수와 동일한 ctr_text 로직 적용
         if isinstance(ctr, (int, float)):
             ctr_text = f"{ctr:.2f}"
         else:
             ctr_text = str(ctr) if ctr is not None else "-"
 
-        # 4. 카드 데이터 구성 (요청하신 Title 형식 적용)
         cards.append({
             "rank": i,
             "title": f"조합 {i}위 : {e1} + {e2} ({ctr_text}%)",
             "sub": "함께 쓰인 브랜드 변수 키워드별 성과",
             "image": chart_svg,
-            "ctr_text": f"{ctr_text}%"  # 혹시 다른 곳에서 쓸까봐 남겨둡니다
+            "ctr_text": f"{ctr_text}%",
         })
         
     return cards
 
 
-import asyncio
 from playwright.sync_api import sync_playwright
 # pdf 변환 함수
 def export_to_pdf(html_path, output_pdf_path):
@@ -152,19 +206,23 @@ def run():
     start_time = time.time()
 
     config = {
-        "target_id": 8,
-        "fb_ad_account_id":"act_618278251632554",
+        "target_id": 3,
+        "fb_ad_account_id":"act_4204029286499182",
         "start":"2025-02-13",
-        "end": "2026-02-19",
+        "end": "2026-02-26",
         "main_age": "35-44",
-        "main_gender": "female",
+        "main_gender": "male",
         "avoid_age": "",
-        "avoid_gender":"male"
+        "avoid_gender": ""
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
     start, end = config["start"], config["end"]
     main_age, main_gender = config["main_age"], config["main_gender"]
     avoid_age, avoid_gender = config["avoid_age"], config["avoid_gender"]
+    has_main_target = bool(_normalize_selector(main_gender))
+    has_avoid_target = bool(_normalize_selector(avoid_gender))
+    main_label = _target_label(main_age, main_gender)
+    avoid_label = _target_label(avoid_age, avoid_gender)
 
     # 3. to_json 실행코드 (수정된 파라미터 방식)
     generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
@@ -172,14 +230,7 @@ def run():
                    main_age=main_age, main_gender=main_gender,\
                     avoid_age=avoid_age, avoid_gender=avoid_gender)
     
-    # 사용자 입력
     report_path = "json_reports/integrated_report.json"
-    with open(report_path, 'r', encoding='utf-8') as f:
-        full_data = json.load(f)
-
-    # 3. JSON 안에 담긴 datasets 꺼내기
-    # 주의: JSON에서 불러오면 데이터프레임이 아니라 '리스트' 형태이므로 그에 맞춰 처리합니다.
-    raw_datasets = full_data.get("datasets", {})
     theme_color = "#2A3D1E"
 
     report_json = _load_report(report_path)
@@ -281,26 +332,26 @@ def run():
 
     # [Main Target] - 조건부 생성
     m_top, m_bot = [], []
-    if main_age and main_gender:
+    if has_main_target:
         m_top = [
-            add_table("main_top_noun", f"{main_age} {main_gender} TOP 10 (명사)", "순위(상위)", "키워드(명사)"),
-            add_table("main_top_va", f"{main_age} {main_gender} TOP 10 (형용사/동사)", "순위(상위)", "키워드(형용사/동사)")
+            add_table("main_top_noun", f"{main_label} TOP 10 (명사)", "순위(상위)", "키워드(명사)"),
+            add_table("main_top_va", f"{main_label} TOP 10 (형용사/동사)", "순위(상위)", "키워드(형용사/동사)")
         ]
         m_bot = [
-            add_table("main_bottom_noun", f"{main_age} {main_gender} BOTTOM 10 (명사)", "순위(하위)", "키워드(명사)"),
-            add_table("main_bottom_va", f"{main_age} {main_gender} BOTTOM 10 (형용사/동사)", "순위(하위)", "키워드(형용사/동사)")
+            add_table("main_bottom_noun", f"{main_label} BOTTOM 10 (명사)", "순위(하위)", "키워드(명사)"),
+            add_table("main_bottom_va", f"{main_label} BOTTOM 10 (형용사/동사)", "순위(하위)", "키워드(형용사/동사)")
         ]
 
     # [Avoid Target] - 조건부 생성
     a_top, a_bot = [], []
-    if avoid_age and avoid_gender:
+    if has_avoid_target:
         a_top = [
-            add_table("avoid_top_noun", f"{avoid_age} {avoid_gender} TOP 10 (명사)", "순위(상위)", "키워드(명사)"),
-            add_table("avoid_top_va", f"{avoid_age} {avoid_gender} TOP 10 (형용사/동사)", "순위(상위)", "키워드(형용사/동사)")
+            add_table("avoid_top_noun", f"{avoid_label} TOP 10 (명사)", "순위(상위)", "키워드(명사)"),
+            add_table("avoid_top_va", f"{avoid_label} TOP 10 (형용사/동사)", "순위(상위)", "키워드(형용사/동사)")
         ]
         a_bot = [
-            add_table("avoid_bottom_noun", f"{avoid_age} {avoid_gender} BOTTOM 10 (명사)", "순위(하위)", "키워드(명사)"),
-            add_table("avoid_bottom_va", f"{avoid_age} {avoid_gender} BOTTOM 10 (형용사/동사)", "순위(하위)", "키워드(형용사/동사)")
+            add_table("avoid_bottom_noun", f"{avoid_label} BOTTOM 10 (명사)", "순위(하위)", "키워드(명사)"),
+            add_table("avoid_bottom_va", f"{avoid_label} BOTTOM 10 (형용사/동사)", "순위(하위)", "키워드(형용사/동사)")
         ]
 
     # 3. None 값(데이터 없음) 필터링 함수
@@ -320,17 +371,17 @@ def run():
     overall_ctr_val = _average_series(datasets.get("ctr_trend"))
     overall_ctr = f"{overall_ctr_val:.2f}" if isinstance(overall_ctr_val, (int, float)) else "-"
 
-    main_ctr_val = _find_metric(target_rows, main_age, main_gender, "ctr") if main_age and main_gender else None
+    main_ctr_val = _target_ctr(target_rows, main_age, main_gender) if has_main_target else None
     main_ctr = f"{main_ctr_val:.2f}" if isinstance(main_ctr_val, (int, float)) else "-"
 
-    avoid_ctr_val = _find_metric(target_rows, avoid_age, avoid_gender, "ctr") if avoid_age and avoid_gender else None
+    avoid_ctr_val = _target_ctr(target_rows, avoid_age, avoid_gender) if has_avoid_target else None
     avoid_ctr = f"{avoid_ctr_val:.2f}" if isinstance(avoid_ctr_val, (int, float)) else "-"
 
 
 
-    cards = _combo_cards(datasets.get("overall_keyword_combo_detail"))
-    cards_main = _combo_cards(datasets.get("main_keyword_combo_detail")) if main_age and main_gender else []
-    cards_avoid = _combo_cards(datasets.get("avoid_keyword_combo_detail")) if avoid_age and avoid_gender else []
+    cards = _combo_cards(datasets.get("overall_keyword_combo_detail"), palette=G_CMAP)
+    cards_main = _combo_cards(datasets.get("main_keyword_combo_detail"), palette=G_CMAP) if has_main_target else []
+    cards_avoid = _combo_cards(datasets.get("avoid_keyword_combo_detail"), palette=B_CMAP) if has_avoid_target else []
 
 
 
@@ -383,7 +434,7 @@ def run():
             ],
             "overall_bottom_note": "*3개 이상의 콘텐츠에 등장한 단어만 표시",
             "overall_bottom_tables": filter_none(o_bot),
-            "main_target": {"title": f"{main_age} {main_gender} 성과 분석"} if main_age and main_gender else None,
+            "main_target": {"title": f"{main_label} 성과 분석"} if has_main_target else None,
             "main_top_tables": filter_none(m_top) if m_top else None,
             "main_combo_pages": [
                 {
@@ -391,9 +442,9 @@ def run():
                     f"<br>*브랜드 변수 키워드: 필수 키워드 외 콘텐츠에 활용된 단어<br><br>*계정 전체 평균 CTR: {main_ctr}%",
                     "cards": cards_main,
                 }
-            ] if main_age and main_gender else None,
+            ] if has_main_target else None,
             "main_bottom_tables": filter_none(m_bot) if m_bot else None,
-            "avoid_target": {"title": f"{avoid_age} {avoid_gender} 성과 분석"} if avoid_age and avoid_gender else None,
+            "avoid_target": {"title": f"{avoid_label} 성과 분석"} if has_avoid_target else None,
             "avoid_top_tables":filter_none(a_top) if a_top else None,
             "avoid_combo_pages": [
                 {
@@ -401,7 +452,7 @@ def run():
                     f"<br>*브랜드 변수 키워드: 필수 키워드 외 콘텐츠에 활용된 단어<br><br>*계정 전체 평균 CTR: {avoid_ctr}%",
                     "cards": cards_avoid,
                 }
-            ] if avoid_age and avoid_gender else None,
+            ] if has_avoid_target else None,
             "avoid_bottom_tables":filter_none(a_bot) if a_bot else None,
         },
         "appendix_groups": report_json.get("appendix_groups", []),

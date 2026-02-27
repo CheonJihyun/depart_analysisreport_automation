@@ -302,6 +302,19 @@ body {
   background: transparent !important;
 }
 
+/* 모든 차트 래퍼/내부 SVG 배경 투명화 */
+.figure,
+.figure__svg,
+.figure__img,
+.mini-chart-svg,
+.mini-chart-svg svg,
+.content-card__chart,
+.content-card__chart svg,
+.combo-card__viz,
+.combo-card__viz svg {
+  background: transparent !important;
+}
+
 /* Matplotlib SVG 배경(흰색 patch) 제거 */
 .figure__svg svg #patch_1 path,
 .figure__svg svg #patch_2 path,
@@ -311,13 +324,31 @@ body {
 }
 
 .figure--heatmap {
-  justify-self: start;
+  justify-self: center;
   align-self: start;
+  margin: 0 auto;
 }
 
 .figure--heatmap .figure__svg,
 .figure--heatmap .figure__img {
-  max-height: 60mm;
+  max-height: 90mm; /* 1.5x from previous 60mm */
+}
+
+.heatmap-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3mm;
+}
+
+.heatmap-panel .figure--heatmap {
+  width: 100%;
+  max-width: 170mm;
+}
+
+.heatmap-note {
+  text-align: center;
 }
 
 .figure__placeholder {
@@ -372,21 +403,22 @@ body {
 }
 
 .content-card__thumb {
-  grid-column: span 7;
-  border: 1px solid #f0f0f0;
-  border-radius: 12px;
-  background: #fafafa;
-  min-height: 65mm;
+  grid-column: span 4;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  aspect-ratio: 4 / 5;
+  min-height: 0;
   overflow: hidden;
   display: grid;
   place-items: center;
 }
 
 .content-card__chart {
-  grid-column: span 5;
-  border: 1px solid #f0f0f0;
-  border-radius: 12px;
-  background: #fafafa;
+  grid-column: span 8;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   min-height: 65mm;
   overflow: hidden;
   display: grid;
@@ -403,8 +435,12 @@ body {
 .content-card__chart svg,
 .mini-chart-svg svg {
   width: 100% !important;
-  height: 100% !important;
+  height: auto !important;
   display: block;
+}
+
+.content-card__chart .mini-chart-svg {
+  width: 100%;
 }
 
 .thumb-placeholder,
@@ -442,7 +478,7 @@ body {
 .combo-card__viz {
   border: 1px solid #f0f0f0;
   border-radius: 12px;
-  background: #fafafa;
+  background: transparent;
   min-height: 90mm;
   display: grid;
   place-items: center;
@@ -495,6 +531,11 @@ body {
 
 .rank-block__line {
   margin: 1mm 0;
+}
+
+.rank-block--center {
+  width: 100%;
+  text-align: center;
 }
 
 /* =========================

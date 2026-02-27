@@ -357,17 +357,16 @@
     {{ big_title('타겟별 평균 노출') }}
 
     <div class="page-body">
-      <div class="span-4">
+      <div class="span-12 heatmap-panel">
         {{ figure(charts.heatmap_impressions, alt='heatmap impressions', class_name='figure--heatmap') }}
+        {% if target.impressions_rank %}
+          <div class="rank-block rank-block--center">
+            {% for line in target.impressions_rank %}
+              <div class="rank-block__line">{{ line }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
       </div>
-
-      {% if target.impressions_rank %}
-        <div class="span-8 rank-block">
-          {% for line in target.impressions_rank %}
-            <div class="rank-block__line">{{ line }}</div>
-          {% endfor %}
-        </div>
-      {% endif %}
     </div>
   </section>
 
@@ -381,15 +380,19 @@
     {{ big_title('타겟별 평균 CTR') }}
 
     <div class="page-body">
-      {{ keep_block(target.ctr_note, charts.heatmap_ctr, alt='heatmap ctr', class_name='figure--heatmap', span_class='span-4') }}
-
-      {% if target.ctr_rank %}
-        <div class="span-8 rank-block">
-          {% for line in target.ctr_rank %}
-            <div class="rank-block__line">{{ line }}</div>
-          {% endfor %}
-        </div>
-      {% endif %}
+      <div class="span-12 heatmap-panel">
+        {{ figure(charts.heatmap_ctr, alt='heatmap ctr', class_name='figure--heatmap') }}
+        {% if target.ctr_note %}
+          <div class="footnote heatmap-note">{{ target.ctr_note }}</div>
+        {% endif %}
+        {% if target.ctr_rank %}
+          <div class="rank-block rank-block--center">
+            {% for line in target.ctr_rank %}
+              <div class="rank-block__line">{{ line }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
     </div>
   </section>
 

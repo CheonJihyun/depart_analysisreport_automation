@@ -62,6 +62,7 @@ FIGSIZE_BARV = (10, 4)
 FIGSIZE_HEATMAP = (10, 4)
 FIGSIZE_CIRCLEPACK = (9, 7)
 DPI_CIRCLEPACK = 120
+FIXED_OUTPUT_DIR = Path("./static/output").resolve()
 
 
 def parse_args() -> argparse.Namespace:
@@ -76,7 +77,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         default="./static/output",
-        help="Directory to save chart png files and result.txt.",
+        help="Deprecated. Charts are always saved to ./static/output.",
     )
     parser.add_argument(
         "--main-age",
@@ -650,7 +651,13 @@ def plot_content_cards(dataset_key: str, dataset: dict, writer: OutputWriter, lo
 def main() -> int:
     args = parse_args()
     json_path = Path(args.json_path).resolve()
-    output_dir = Path(args.output_dir).resolve()
+    requested_output_dir = Path(args.output_dir).resolve()
+    output_dir = FIXED_OUTPUT_DIR
+    if requested_output_dir != output_dir:
+        print(
+            f"[INFO] Ignoring --output-dir={requested_output_dir}. "
+            f"Using fixed output dir: {output_dir}"
+        )
     writer = OutputWriter(output_dir)
     logs: list[str] = []
 
