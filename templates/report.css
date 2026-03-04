@@ -1,8 +1,8 @@
 /* =========================
-   Paged Media (A4 Landscape)
+   Paged Media (1920 x 1080)
    ========================= */
 @page {
-  size: A4 landscape;
+  size: 1920pt 1080pt;
   margin: 0;
 
   /* 지원되는 엔진에서만 표시됨 */
@@ -36,10 +36,10 @@ body {
    ========================= */
 .page {
   width: 100%;
-  min-height: 0;
+  min-height: 1080pt;
 
-  break-after: page;
-  page-break-after: always;
+  break-after: auto;
+  page-break-after: auto;
 
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -51,6 +51,7 @@ body {
     "header header header header header header header header header header header header"
     "title  title  title  title  title  title  title  title  title  title  title  title"
     "body   body   body   body   body   body   body   body   body   body   body   body";
+  grid-template-rows: auto auto minmax(0, 1fr);
 
   /* ✅ page-note 같은 absolute 요소의 기준 */
   position: relative;
@@ -59,9 +60,14 @@ body {
   padding: 12mm 14mm 24mm 14mm;
 }
 
-.page:last-child {
-  break-after: auto;
-  page-break-after: auto;
+.page + .page {
+  break-before: page;
+  page-break-before: always;
+}
+
+/* Heatmap pages: keep header/title fixed and center content in body area */
+.page--target-heatmap {
+  grid-template-rows: auto auto minmax(0, 1fr);
 }
 
 /* =========================
@@ -75,14 +81,14 @@ body {
 }
 
 .page-header__section {
-  font-size: 10.5pt;
+  font-size: 16.5pt;
   font-weight: 800;
   color: #6b8e23;
   letter-spacing: -0.2px;
 }
 
 .page-header__brand {
-  font-size: 9pt;
+  font-size: 14pt;
   color: #888;
   white-space: nowrap;
 }
@@ -97,7 +103,7 @@ body {
 
 .title-block__title {
   margin: 0;
-  font-size: 34pt;
+  font-size: 56pt;
   line-height: 1.08;
   letter-spacing: -0.8px;
   word-break: keep-all;
@@ -106,7 +112,7 @@ body {
 
 .title-block__subtitle {
   margin-top: 4mm;
-  font-size: 12pt;
+  font-size: 18.5pt;
   color: #444;
 }
 
@@ -120,10 +126,111 @@ body {
   grid-template-columns: repeat(12, 1fr);
   column-gap: 8mm;
   row-gap: 6mm;
+  min-height: 100%;
+  align-content: center;
 
   /* 프린트 엔진에서 재배치 최소화 */
   grid-auto-flow: row;
   grid-auto-rows: min-content;
+}
+
+.page--overview .page-body {
+  min-height: 100%;
+}
+
+.page-body--overview {
+  align-content: center;
+  grid-template-rows: auto auto;
+  row-gap: 6.4mm;
+  transform: translateY(-6mm);
+}
+
+.overview-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  column-gap: 4.4mm;
+  align-self: center;
+  margin: 4mm auto 0 auto;
+  max-width: 1320pt;
+  width: 100%;
+}
+
+.overview-kpi {
+  text-align: center;
+}
+
+.overview-kpi__value {
+  font-size: 72pt;
+  line-height: 1;
+  letter-spacing: -1.1px;
+  font-weight: 900;
+  color: #202947;
+}
+
+.overview-kpi__label {
+  margin-top: 1.8mm;
+  font-size: 26pt;
+  font-weight: 900;
+  color: #202947;
+}
+
+.overview-periods {
+  max-width: 1040pt;
+  width: 100%;
+  margin: 32mm auto 3mm auto;
+  display: grid;
+  row-gap: 3.8mm;
+  justify-items: center;
+}
+
+.overview-period {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  justify-content: center;
+  column-gap: 14mm;
+}
+
+.overview-period__label {
+  text-align: center;
+  font-size: 27pt;
+  font-weight: 900;
+  color: #202947;
+}
+
+.overview-period__value {
+  text-align: center;
+  font-size: 27pt;
+  color: #2f385a;
+}
+
+.page-body--heatmap {
+  align-content: stretch;
+  grid-auto-rows: 1fr;
+  min-height: 100%;
+}
+
+.page-body--heatmap > .span-12 {
+  min-height: 100%;
+}
+
+/* Appendix pages: keep header/title spacing consistent with other sections */
+.page--appendix .page-header__section {
+  white-space: nowrap;
+}
+
+.page--appendix {
+  padding-bottom: 16mm;
+}
+
+.page--appendix .page-body {
+  row-gap: 1.4mm;
+}
+
+.page--appendix .subtitle {
+  font-size: 10pt;
+  margin: 0;
 }
 
 /* Span utilities */
@@ -144,13 +251,13 @@ body {
 
 .page--cover .cover {
   width: 100%;
-  min-height: 210mm;
+  min-height: 1080pt;
   padding: 30mm 24mm;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: center;
   position: relative;
 
   writing-mode: horizontal-tb !important;
@@ -160,29 +267,29 @@ body {
 }
 
 .cover__client {
-  font-size: 18pt;
+  font-size: 28pt;
   font-weight: 800;
   margin: 0 0 4mm 0;
+  text-align: left;
 }
 
 .cover__title {
-  font-size: 36pt;
+  font-size: 56pt;
   font-weight: 900;
   line-height: 1.1;
   margin: 0;
+  text-align: left;
 }
 
 .cover__date {
-  font-size: 11pt;
+  font-size: 17.5pt;
   color: var(--cover-text-color, #111);
-  margin: 0;
-  position: absolute;
-  left: 24mm;
-  bottom: 18mm;
+  margin: 8mm 0 0 0;
+  text-align: left;
 }
 
 .cover__brand {
-  font-size: 22pt;
+  font-size: 35pt;
   font-weight: 900;
   position: absolute;
   right: 24mm;
@@ -203,21 +310,21 @@ body {
 }
 
 .kpi-card__label {
-  font-size: 10pt;
+  font-size: 16pt;
   color: #666;
   font-weight: 800;
 }
 
 .kpi-card__value {
   margin-top: 4mm;
-  font-size: 18pt;
+  font-size: 42pt;
   font-weight: 900;
   letter-spacing: -0.3px;
 }
 
 .kpi-card__note {
   margin-top: 3mm;
-  font-size: 9.5pt;
+  font-size: 14pt;
   color: #777;
 }
 
@@ -225,7 +332,7 @@ body {
    Notes / Footnotes
    ========================= */
 .note-block {
-  font-size: 10pt;
+  font-size: 16pt;
   color: #333;
 }
 
@@ -234,7 +341,7 @@ body {
 }
 
 .subtitle {
-  font-size: 11pt;
+  font-size: 16pt;
   color: #444;
   margin: 0;
 }
@@ -246,7 +353,7 @@ body {
   bottom: 10mm;
   z-index: 2;
 
-  font-size: 9.5pt;
+  font-size: 14.5pt;
   color: #555;
   margin: 0;
 
@@ -263,7 +370,7 @@ body {
 
 /* 일반 footnote (차트 아래/표 아래 등) */
 .footnote {
-  font-size: 9.5pt;
+  font-size: 14.5pt;
   color: #555;
   margin: 1mm 0 0 0;
 
@@ -325,26 +432,65 @@ body {
 
 .figure--heatmap {
   justify-self: center;
-  align-self: start;
+  align-self: center;
   margin: 0 auto;
 }
 
 .figure--heatmap .figure__svg,
 .figure--heatmap .figure__img {
-  max-height: 90mm; /* 1.5x from previous 60mm */
+  max-height: 170mm;
+}
+
+/* Primary line charts (followers / ctr): keep room for notes/chips */
+.figure--line-primary .figure__svg,
+.figure--line-primary .figure__img {
+  max-height: 213mm;
+}
+
+.figure--line-primary .figure__svg svg {
+  max-height: 213mm !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Split line charts (organic pair): tighter height to avoid overlap */
+.figure--line-split .figure__svg,
+.figure--line-split .figure__img {
+  max-height: 118mm;
+}
+
+.figure--line-split .figure__svg svg {
+  max-height: 118mm !important;
+  width: 100% !important;
+  height: auto !important;
 }
 
 .heatmap-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 3mm;
+  justify-content: center;
+  gap: 2.2mm;
+  min-height: 100%;
+  height: 100%;
+}
+
+/* Heatmap pages: move chart/rank block upward and tighten their vertical gap */
+.page--target-heatmap .heatmap-panel {
+  transform: translateY(-9mm);
+}
+
+.heatmap-center {
+  width: 100%;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .heatmap-panel .figure--heatmap {
   width: 100%;
-  max-width: 170mm;
+  max-width: 340mm;
 }
 
 .heatmap-note {
@@ -364,7 +510,7 @@ body {
 
 .figure__caption {
   margin-top: 2mm;
-  font-size: 9.5pt;
+  font-size: 14pt;
   color: #555;
 }
 
@@ -398,7 +544,7 @@ body {
 
 .content-card__meta {
   grid-column: span 12;
-  font-size: 9.5pt;
+  font-size: 16pt;
   color: #555;
 }
 
@@ -419,7 +565,7 @@ body {
   border: 0;
   border-radius: 0;
   background: transparent;
-  min-height: 65mm;
+  min-height: 90mm;
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -452,26 +598,36 @@ body {
 /* =========================
    Keyword combo cards
    ========================= */
+.combo-page-body {
+  align-content: center;
+  row-gap: 3mm;
+}
+
+.combo-page-body > .span-4 {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
 .combo-card {
   border: 1px solid #eee;
   border-radius: 14px;
-  padding: 7mm;
+  padding: 5.5mm;
 
   break-inside: avoid;
   page-break-inside: avoid;
 
   display: grid;
   grid-template-rows: min-content min-content 1fr;
-  row-gap: 3mm;
+  row-gap: 2mm;
 }
 
 .combo-card__title {
-  font-size: 11pt;
+  font-size: 17pt;
   font-weight: 900;
 }
 
 .combo-card__sub {
-  font-size: 9.5pt;
+  font-size: 14pt;
   color: #666;
 }
 
@@ -479,27 +635,51 @@ body {
   border: 1px solid #f0f0f0;
   border-radius: 12px;
   background: transparent;
-  min-height: 90mm;
-  display: grid;
-  place-items: center;
+  height: 136mm;
+  min-height: 136mm;
+  max-height: 136mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
 .combo-card__viz img {
+  max-width: none;
+  max-height: none;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
 }
 
 .combo-card__viz svg {
+  max-width: none !important;
+  max-height: none !important;
   width: 100% !important;
   height: 100% !important;
   display: block;
+  margin: 0;
 }
 
 .combo-placeholder {
   color: #aaa;
   font-weight: 900;
+}
+
+.page--combo {
+  padding-bottom: 18mm;
+}
+
+.page--combo .combo-page-note {
+  position: static;
+  left: auto;
+  bottom: auto;
+  z-index: auto;
+  grid-column: 1 / -1;
+  width: 100%;
+  line-height: 1.3;
+  margin-top: 1mm;
 }
 
 /* =========================
@@ -516,7 +696,7 @@ body {
   padding: 1.6mm 3mm;
   border-radius: 999px;
   border: 1px solid #e7e7e7;
-  font-size: 9pt;
+  font-size: 13.8pt;
   color: #555;
 }
 
@@ -524,7 +704,7 @@ body {
    Rank block
    ========================= */
 .rank-block {
-  font-size: 11pt;
+  font-size: 17pt;
   font-weight: 900;
   color: #6b8e23;
 }
@@ -538,13 +718,30 @@ body {
   text-align: center;
 }
 
+.rank-block--heatmap {
+  font-size: 38pt;
+  margin: 0;
+}
+
+.rank-block--heatmap-inline {
+  margin-top: 0;
+}
+
+.page-note--heatmap-center {
+  left: 0;
+  right: 0;
+  bottom: 18mm;
+  width: auto;
+  text-align: center;
+}
+
 /* =========================
    Tables (Appendix + Keyword tables)
    ========================= */
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 9.5pt;
+  font-size: 13.5pt;
 
   break-inside: avoid;
   page-break-inside: avoid;
@@ -554,18 +751,51 @@ body {
   border: 1px solid #e8e8e8;
   padding: 2.5mm 2.8mm;
   vertical-align: middle;
+  text-align: center;
 }
 
 .table th {
   background: #fafafa;
   font-weight: 900;
-  text-align: left;
 }
 
 /* 표 바로 아래 footnote 안정화 */
 .table + .footnote {
   break-before: avoid;
   page-break-before: avoid;
+}
+
+/* Appendix table compaction to stay within a single page */
+.appendix-table-wrap .table {
+  font-size: 12.5pt;
+  table-layout: fixed;
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.appendix-table-wrap .table th,
+.appendix-table-wrap .table td {
+  padding: 2mm 2.2mm;
+  line-height: 1.22;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
+.appendix-table-wrap .table-title {
+  font-size: 12.5pt;
+  margin-bottom: 0.8mm;
+}
+
+.appendix-table-wrap .footnote {
+  font-size: 11pt;
+  margin-top: 0.7mm;
+}
+
+.appendix-table-wrap {
+  break-inside: auto;
+  page-break-inside: auto;
 }
 
 /* =========================
@@ -577,6 +807,15 @@ body {
   row-gap: 2.2mm;
   align-items: stretch;
   grid-auto-rows: 1fr;
+}
+
+/* 전체 하위 10개 섹션의 타이틀-차트 간격 보정 */
+.keyword-quad--overall-bottom {
+  margin-top: -3mm;
+}
+
+.keyword-quad--overall-bottom > .span-3 {
+  min-height: 124mm;
 }
 
 .keyword-quad > .span-3 {
@@ -606,7 +845,7 @@ body {
 }
 
 .keyword-quad .table-title {
-  font-size: 8pt;
+  font-size: 12.2pt;
   font-weight: 800;
   color: #444;
   margin: 0 0 1.2mm 0;
@@ -614,7 +853,7 @@ body {
 }
 
 .keyword-quad .table {
-  font-size: 7.8pt;
+  font-size: 22.4pt;
 }
 
 .keyword-quad .table th,
@@ -630,7 +869,7 @@ body {
   align-items: center !important;
   justify-content: center !important;
   padding: 0 !important;
-  min-height: 210mm;
+  min-height: 1080pt;
 }
 
 .page--eod .eod {

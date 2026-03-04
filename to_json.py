@@ -175,21 +175,22 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         age = _normalize_age_selection(age_raw)
         gen = _normalize_gender_selection(gen_raw)
 
-        # main/avoid는 성별이 있어야 생성. age가 없으면 해당 성별의 전체 연령 대상으로 조회.
-        if prefix != "overall" and not gen:
+        # main/avoid는 연령/성별 중 하나라도 있어야 생성.
+        if prefix != "overall" and not age and not gen:
             continue
         
         # 상위/하위 키워드 성과
         for is_top in [True, False]:
             suffix = "top" if is_top else "bottom"
             raw_kw_df = get_raw_keyword_performance(target_id, start, end, age, gen, is_top=is_top)
+            exclude_zero_ctr = not is_top
             
             # 명사 필터링
-            nouns = filter_keywords_by_pos(raw_kw_df, 'noun')
+            nouns = filter_keywords_by_pos(raw_kw_df, 'noun', exclude_zero_ctr=exclude_zero_ctr)
             add_ds(f"{prefix}_{suffix}_noun", "bar_h", f"{label} {suffix.upper()} 10 (명사)", nouns, "%", "keyword", ["ctr"])
             
             # 형용사 필터링
-            vas = filter_keywords_by_pos(raw_kw_df, 'verb_adj')
+            vas = filter_keywords_by_pos(raw_kw_df, 'verb_adj', exclude_zero_ctr=exclude_zero_ctr)
             add_ds(f"{prefix}_{suffix}_va", "bar_h", f"{label} {suffix.upper()} 10 (형용사)", vas, "%", "keyword", ["ctr"])
 
         # to_json.py 내부
@@ -325,14 +326,14 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         col_indices=[0, 1, 6, 7, 8, 9]
     ))
     appendix_items.extend(build_appendix_split_items(
-        base_title="많이 사용한 업종 변수 키워드 - 노출",
+        base_title="많이 사용한 브랜드 변수 키워드 - 노출",
         subtitle="키워드가 가장 많이 노출된 타겟",
         headers=["랭킹", "키워드", "등장 광고 수", "최다 노출 타겟", "타겟 노출량", "노출 비중", "총 노출량"],
         df=df_var,
         col_indices=[0, 1, 2, 3, 4, 5]
     ))
     appendix_items.extend(build_appendix_split_items(
-        base_title="많이 사용한 업종 변수 키워드 - 클릭",
+        base_title="많이 사용한 브랜드 변수 키워드 - 클릭",
         subtitle="키워드가 가장 많이 노출된 타겟",
         headers=["랭킹", "키워드", "등장 광고 수", "최다 클릭 타겟", "타겟 클릭량", "클릭 비중", "총 클릭량"],
         df=df_var,

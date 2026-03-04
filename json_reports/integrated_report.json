@@ -4,7 +4,7 @@
         "period": "2025-02-13 ~ 2026-02-26",
         "period_ads": "2025-02-13 ~ 2026-02-23",
         "period_contents": "2024-03-15 ~ 2025-03-02",
-        "generated_at": "2026-02-26 15:57:05"
+        "generated_at": "2026-03-04 17:31:17"
     },
     "summary": {
         "total_ads": 37,
@@ -861,10 +861,10 @@
                 "감정",
                 "기능",
                 "도구",
-                "구매",
                 "스타일",
-                "진짜",
                 "중심",
+                "구매",
+                "진짜",
                 "제공",
                 "경험"
             ],
@@ -872,16 +872,16 @@
                 {
                     "name": "avg_ctr",
                     "data": [
-                        6.62,
-                        6.43,
-                        6.33,
-                        6.22,
-                        6.04,
-                        6.03,
-                        5.89,
-                        5.85,
-                        5.6,
-                        5.57
+                        6.4,
+                        6.19,
+                        6.15,
+                        5.93,
+                        5.58,
+                        5.56,
+                        5.48,
+                        5.37,
+                        5.26,
+                        5.03
                     ]
                 }
             ]
@@ -895,27 +895,27 @@
                 "만들",
                 "그러",
                 "힘들",
+                "느끼",
                 "맞추",
-                "나누",
-                "어리",
-                "가지",
                 "빠지",
-                "대하"
+                "멋지",
+                "빠르",
+                "커지"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        4.84,
-                        4.55,
-                        4.51,
-                        4.45,
+                        4.98,
+                        4.71,
                         4.35,
-                        4.33,
-                        4.23,
-                        4.21,
-                        3.84,
-                        3.8
+                        4.31,
+                        4.22,
+                        4.16,
+                        3.76,
+                        3.66,
+                        3.48,
+                        3.48
                     ]
                 }
             ]
@@ -925,31 +925,31 @@
             "title": "메인 타겟 BOTTOM 10 (명사)",
             "unit": "%",
             "labels": [
-                "내부",
-                "인력",
-                "핵심",
-                "방법",
-                "능력",
-                "본질",
-                "이해",
+                "진단",
                 "링크",
                 "버튼",
-                "상단"
+                "상단",
+                "비용",
+                "지금",
+                "필수",
+                "현실",
+                "모두",
+                "구조"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.38,
-                        1.38,
-                        1.38
+                        1.33,
+                        1.34,
+                        1.34,
+                        1.34,
+                        1.72,
+                        1.79,
+                        2.19,
+                        2.2,
+                        2.24,
+                        2.33
                     ]
                 }
             ]
@@ -959,31 +959,31 @@
             "title": "메인 타겟 BOTTOM 10 (형용사)",
             "unit": "%",
             "labels": [
-                "움직이",
                 "이러",
-                "위하",
                 "시키",
+                "위하",
                 "보이",
-                "괜찮",
                 "통하",
-                "멋지",
-                "대하",
-                "빠지"
+                "괜찮",
+                "어리",
+                "가지",
+                "나누",
+                "대하"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        0.0,
-                        2.3,
                         2.31,
-                        2.47,
-                        2.58,
+                        2.5,
+                        2.52,
+                        2.59,
+                        2.65,
                         2.89,
-                        2.97,
-                        3.59,
-                        3.8,
-                        3.84
+                        3.28,
+                        3.32,
+                        3.35,
+                        3.45
                     ]
                 }
             ]
@@ -994,184 +994,615 @@
             "unit": "",
             "rows": [
                 {
-                    "ess_1": "광고",
-                    "ess_2": "콘텐츠",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.36,
-                    "var_keyword": "사람",
-                    "with_var_ctr": 3.46,
-                    "var_imps": 463.0
-                },
-                {
-                    "ess_1": "광고",
-                    "ess_2": "콘텐츠",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.36,
-                    "var_keyword": "우리",
-                    "with_var_ctr": 3.46,
-                    "var_imps": 463.0
-                },
-                {
                     "ess_1": "분석",
                     "ess_2": "성장",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.33,
+                    "combo_overall_ctr": 4.14,
                     "var_keyword": "디자인",
-                    "with_var_ctr": 4.33,
-                    "var_imps": 1362.0
+                    "with_var_ctr": 4.14,
+                    "var_imps": 1668.0
                 },
                 {
                     "ess_1": "분석",
                     "ess_2": "성장",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.33,
+                    "combo_overall_ctr": 4.14,
                     "var_keyword": "정말",
-                    "with_var_ctr": 4.33,
-                    "var_imps": 1362.0
+                    "with_var_ctr": 4.14,
+                    "var_imps": 1668.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.11,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 3.39,
+                    "var_imps": 531.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.11,
+                    "var_keyword": "우리",
+                    "with_var_ctr": 3.39,
+                    "var_imps": 531.0
                 },
                 {
                     "ess_1": "광고",
                     "ess_2": "브랜드",
                     "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.2,
+                    "combo_overall_ctr": 3.89,
                     "var_keyword": "해결",
-                    "with_var_ctr": 5.32,
-                    "var_imps": 432.0
+                    "with_var_ctr": 4.78,
+                    "var_imps": 544.0
                 },
                 {
                     "ess_1": "광고",
                     "ess_2": "브랜드",
                     "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.2,
-                    "var_keyword": "가장",
-                    "with_var_ctr": 4.94,
-                    "var_imps": 162.0
-                },
-                {
-                    "ess_1": "광고",
-                    "ess_2": "브랜드",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.2,
-                    "var_keyword": "강점",
-                    "with_var_ctr": 4.94,
-                    "var_imps": 162.0
-                },
-                {
-                    "ess_1": "광고",
-                    "ess_2": "브랜드",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.2,
+                    "combo_overall_ctr": 3.89,
                     "var_keyword": "매출",
-                    "with_var_ctr": 4.8,
-                    "var_imps": 562.0
+                    "with_var_ctr": 4.26,
+                    "var_imps": 704.0
                 },
                 {
                     "ess_1": "광고",
                     "ess_2": "브랜드",
                     "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.2,
+                    "combo_overall_ctr": 3.89,
                     "var_keyword": "제품",
-                    "with_var_ctr": 4.75,
-                    "var_imps": 568.0
+                    "with_var_ctr": 4.22,
+                    "var_imps": 711.0
                 },
                 {
                     "ess_1": "광고",
                     "ess_2": "브랜드",
                     "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.2,
+                    "combo_overall_ctr": 3.89,
+                    "var_keyword": "가장",
+                    "with_var_ctr": 4.17,
+                    "var_imps": 192.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.89,
+                    "var_keyword": "강점",
+                    "with_var_ctr": 4.17,
+                    "var_imps": 192.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.89,
                     "var_keyword": "고민",
-                    "with_var_ctr": 4.1,
-                    "var_imps": 926.0
+                    "with_var_ctr": 3.86,
+                    "var_imps": 1113.0
                 },
                 {
                     "ess_1": "광고",
                     "ess_2": "브랜드",
                     "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.2,
+                    "combo_overall_ctr": 3.89,
                     "var_keyword": "사람",
-                    "with_var_ctr": 3.61,
-                    "var_imps": 526.0
+                    "with_var_ctr": 3.49,
+                    "var_imps": 601.0
                 },
                 {
                     "ess_1": "광고",
                     "ess_2": "브랜드",
                     "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.2,
+                    "combo_overall_ctr": 3.89,
                     "var_keyword": "우리",
-                    "with_var_ctr": 3.46,
-                    "var_imps": 463.0
+                    "with_var_ctr": 3.39,
+                    "var_imps": 531.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.39,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 3.39,
+                    "var_imps": 531.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.39,
+                    "var_keyword": "우리",
+                    "with_var_ctr": 3.39,
+                    "var_imps": 531.0
                 },
                 {
                     "ess_1": "고객",
                     "ess_2": "소비자",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.47,
+                    "combo_overall_ctr": 2.92,
                     "var_keyword": "단순",
-                    "with_var_ctr": 3.47,
-                    "var_imps": 202.0
+                    "with_var_ctr": 2.92,
+                    "var_imps": 240.0
                 },
                 {
                     "ess_1": "고객",
                     "ess_2": "소비자",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.47,
+                    "combo_overall_ctr": 2.92,
                     "var_keyword": "제품",
-                    "with_var_ctr": 3.47,
-                    "var_imps": 202.0
-                },
-                {
-                    "ess_1": "광고",
-                    "ess_2": "SNS",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.46,
-                    "var_keyword": "사람",
-                    "with_var_ctr": 3.46,
-                    "var_imps": 463.0
-                },
-                {
-                    "ess_1": "광고",
-                    "ess_2": "SNS",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.46,
-                    "var_keyword": "우리",
-                    "with_var_ctr": 3.46,
-                    "var_imps": 463.0
+                    "with_var_ctr": 2.92,
+                    "var_imps": 240.0
                 },
                 {
                     "ess_1": "고객",
                     "ess_2": "광고",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.41,
+                    "combo_overall_ctr": 2.87,
                     "var_keyword": "단순",
-                    "with_var_ctr": 3.41,
-                    "var_imps": 205.0
+                    "with_var_ctr": 2.87,
+                    "var_imps": 244.0
                 },
                 {
                     "ess_1": "고객",
                     "ess_2": "광고",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.41,
+                    "combo_overall_ctr": 2.87,
                     "var_keyword": "문제",
-                    "with_var_ctr": 3.41,
-                    "var_imps": 205.0
+                    "with_var_ctr": 2.87,
+                    "var_imps": 244.0
                 },
                 {
                     "ess_1": "고객",
                     "ess_2": "광고",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.41,
+                    "combo_overall_ctr": 2.87,
                     "var_keyword": "서비스",
-                    "with_var_ctr": 3.41,
-                    "var_imps": 205.0
+                    "with_var_ctr": 2.87,
+                    "var_imps": 244.0
                 },
                 {
                     "ess_1": "고객",
                     "ess_2": "광고",
                     "combo_doc_freq": 3,
-                    "combo_overall_ctr": 3.41,
+                    "combo_overall_ctr": 2.87,
                     "var_keyword": "제품",
-                    "with_var_ctr": 3.41,
-                    "var_imps": 205.0
+                    "with_var_ctr": 2.87,
+                    "var_imps": 244.0
+                }
+            ]
+        },
+        "avoid_top_noun": {
+            "kind": "bar_h",
+            "title": "기피 타겟 TOP 10 (명사)",
+            "unit": "%",
+            "labels": [
+                "본질",
+                "성과",
+                "채용",
+                "데이터",
+                "의미",
+                "효율",
+                "상담",
+                "제작",
+                "사실",
+                "매력"
+            ],
+            "series": [
+                {
+                    "name": "avg_ctr",
+                    "data": [
+                        6.76,
+                        6.02,
+                        6.02,
+                        6.0,
+                        6.0,
+                        5.97,
+                        5.88,
+                        5.83,
+                        5.82,
+                        5.79
+                    ]
+                }
+            ]
+        },
+        "avoid_top_va": {
+            "kind": "bar_h",
+            "title": "기피 타겟 TOP 10 (형용사)",
+            "unit": "%",
+            "labels": [
+                "드리",
+                "멋지",
+                "빠지",
+                "원하",
+                "그러",
+                "힘들",
+                "맞추",
+                "느끼",
+                "가지",
+                "만들"
+            ],
+            "series": [
+                {
+                    "name": "avg_ctr",
+                    "data": [
+                        6.01,
+                        5.7,
+                        5.23,
+                        4.88,
+                        4.77,
+                        4.75,
+                        4.74,
+                        4.6,
+                        4.41,
+                        4.26
+                    ]
+                }
+            ]
+        },
+        "avoid_bottom_noun": {
+            "kind": "bar_h",
+            "title": "기피 타겟 BOTTOM 10 (명사)",
+            "unit": "%",
+            "labels": [
+                "방법",
+                "진단",
+                "비용",
+                "지금",
+                "소비자",
+                "클라이언트",
+                "이유",
+                "단순",
+                "커뮤니케이션",
+                "모두"
+            ],
+            "series": [
+                {
+                    "name": "avg_ctr",
+                    "data": [
+                        0.67,
+                        0.78,
+                        0.85,
+                        0.93,
+                        1.41,
+                        1.58,
+                        1.89,
+                        2.15,
+                        2.2,
+                        2.7
+                    ]
+                }
+            ]
+        },
+        "avoid_bottom_va": {
+            "kind": "bar_h",
+            "title": "기피 타겟 BOTTOM 10 (형용사)",
+            "unit": "%",
+            "labels": [
+                "통하",
+                "이러",
+                "시키",
+                "위하",
+                "보이",
+                "대하",
+                "빠르",
+                "커지",
+                "나누",
+                "어리"
+            ],
+            "series": [
+                {
+                    "name": "avg_ctr",
+                    "data": [
+                        1.32,
+                        3.1,
+                        3.18,
+                        3.28,
+                        3.6,
+                        3.6,
+                        3.67,
+                        3.67,
+                        3.77,
+                        3.79
+                    ]
+                }
+            ]
+        },
+        "avoid_keyword_combo_detail": {
+            "kind": "table",
+            "title": "기피 타겟 상세 분석",
+            "unit": "",
+            "rows": [
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.02,
+                    "var_keyword": "기획",
+                    "with_var_ctr": 3.3,
+                    "var_imps": 91.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.02,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 3.3,
+                    "var_imps": 91.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.02,
+                    "var_keyword": "효과",
+                    "with_var_ctr": 3.3,
+                    "var_imps": 91.0
+                },
+                {
+                    "ess_1": "성과",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.02,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 5.65,
+                    "var_imps": 336.0
+                },
+                {
+                    "ess_1": "성과",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.02,
+                    "var_keyword": "필수",
+                    "with_var_ctr": 5.65,
+                    "var_imps": 336.0
+                },
+                {
+                    "ess_1": "성과",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 6.02,
+                    "var_keyword": "핵심",
+                    "with_var_ctr": 5.65,
+                    "var_imps": 336.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 6.0,
+                    "var_keyword": "효과",
+                    "with_var_ctr": 3.3,
+                    "var_imps": 91.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 6.0,
+                    "var_keyword": "운영",
+                    "with_var_ctr": 2.97,
+                    "var_imps": 370.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 6.0,
+                    "var_keyword": "기획",
+                    "with_var_ctr": 2.93,
+                    "var_imps": 376.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 6.0,
+                    "var_keyword": "단순",
+                    "with_var_ctr": 2.93,
+                    "var_imps": 375.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 6.0,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 2.93,
+                    "var_imps": 376.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 6.0,
+                    "var_keyword": "기반",
+                    "with_var_ctr": 2.74,
+                    "var_imps": 292.0
+                },
+                {
+                    "ess_1": "데이터",
+                    "ess_2": "마케팅",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 6.0,
+                    "var_keyword": "기업",
+                    "with_var_ctr": 2.74,
+                    "var_imps": 292.0
+                },
+                {
+                    "ess_1": "마케팅",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 5.86,
+                    "var_keyword": "제작",
+                    "with_var_ctr": 5.87,
+                    "var_imps": 51939.0
+                },
+                {
+                    "ess_1": "마케팅",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 5.86,
+                    "var_keyword": "경험",
+                    "with_var_ctr": 4.49,
+                    "var_imps": 5170.0
+                },
+                {
+                    "ess_1": "마케팅",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 5.86,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 4.48,
+                    "var_imps": 5248.0
+                },
+                {
+                    "ess_1": "마케팅",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 5.86,
+                    "var_keyword": "시작",
+                    "with_var_ctr": 4.48,
+                    "var_imps": 5248.0
+                },
+                {
+                    "ess_1": "마케팅",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 5.86,
+                    "var_keyword": "기획",
+                    "with_var_ctr": 4.47,
+                    "var_imps": 5254.0
+                },
+                {
+                    "ess_1": "마케팅",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 5.86,
+                    "var_keyword": "효과",
+                    "with_var_ctr": 3.3,
+                    "var_imps": 91.0
+                },
+                {
+                    "ess_1": "마케팅",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 5.86,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 3.26,
+                    "var_imps": 92.0
+                },
+                {
+                    "ess_1": "마케팅",
+                    "ess_2": "콘텐츠",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 5.86,
+                    "var_keyword": "개월",
+                    "with_var_ctr": 0.0,
+                    "var_imps": 8.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "인지도",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 5.7,
+                    "var_keyword": "문제",
+                    "with_var_ctr": 5.7,
+                    "var_imps": 7523.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "인지도",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 5.7,
+                    "var_keyword": "운영",
+                    "with_var_ctr": 5.7,
+                    "var_imps": 7523.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "인지도",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 5.7,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 5.7,
+                    "var_imps": 7523.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.25,
+                    "var_keyword": "문제",
+                    "with_var_ctr": 5.79,
+                    "var_imps": 7275.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.25,
+                    "var_keyword": "중요",
+                    "with_var_ctr": 5.78,
+                    "var_imps": 7281.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.25,
+                    "var_keyword": "시작",
+                    "with_var_ctr": 5.27,
+                    "var_imps": 12401.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.25,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 5.25,
+                    "var_imps": 12437.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.25,
+                    "var_keyword": "우리",
+                    "with_var_ctr": 5.25,
+                    "var_imps": 12437.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.25,
+                    "var_keyword": "경험",
+                    "with_var_ctr": 4.49,
+                    "var_imps": 5170.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.25,
+                    "var_keyword": "기획",
+                    "with_var_ctr": 4.49,
+                    "var_imps": 5170.0
+                },
+                {
+                    "ess_1": "광고",
+                    "ess_2": "SNS",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.25,
+                    "var_keyword": "가장",
+                    "with_var_ctr": 4.46,
+                    "var_imps": 5201.0
                 }
             ]
         },
@@ -1202,11 +1633,6 @@
                         },
                         {
                             "age": "25-34",
-                            "gender": "unknown",
-                            "ctr": 6.45
-                        },
-                        {
-                            "age": "25-34",
                             "gender": "female",
                             "ctr": 6.22
                         },
@@ -1231,11 +1657,6 @@
                             "ctr": 4.23
                         },
                         {
-                            "age": "18-24",
-                            "gender": "unknown",
-                            "ctr": 4.17
-                        },
-                        {
                             "age": "35-44",
                             "gender": "male",
                             "ctr": 3.02
@@ -1246,33 +1667,13 @@
                             "ctr": 2.8
                         },
                         {
-                            "age": "35-44",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
                             "age": "55-64",
                             "gender": "male",
                             "ctr": 0.0
                         },
                         {
-                            "age": "45-54",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
                             "age": "65+",
                             "gender": "male",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "unknown",
                             "ctr": 0.0
                         }
                     ]
@@ -1283,11 +1684,6 @@
                     "thumbnail": "작은 브랜드가 할 수 있는 마케팅",
                     "ctr": 5.13,
                     "target_details": [
-                        {
-                            "age": "18-24",
-                            "gender": "unknown",
-                            "ctr": 75.0
-                        },
                         {
                             "age": "35-44",
                             "gender": "female",
@@ -1319,8 +1715,8 @@
                             "ctr": 3.48
                         },
                         {
-                            "age": "25-34",
-                            "gender": "unknown",
+                            "age": "65+",
+                            "gender": "male",
                             "ctr": 0.0
                         },
                         {
@@ -1346,11 +1742,6 @@
                         {
                             "age": "65+",
                             "gender": "female",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "male",
                             "ctr": 0.0
                         }
                     ]
@@ -1377,11 +1768,6 @@
                             "ctr": 6.75
                         },
                         {
-                            "age": "25-34",
-                            "gender": "unknown",
-                            "ctr": 6.53
-                        },
-                        {
                             "age": "45-54",
                             "gender": "female",
                             "ctr": 6.35
@@ -1390,21 +1776,6 @@
                             "age": "55-64",
                             "gender": "male",
                             "ctr": 6.15
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "unknown",
-                            "ctr": 5.91
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "unknown",
-                            "ctr": 5.88
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "unknown",
-                            "ctr": 5.62
                         },
                         {
                             "age": "25-34",
@@ -1427,11 +1798,6 @@
                             "ctr": 4.84
                         },
                         {
-                            "age": "35-44",
-                            "gender": "unknown",
-                            "ctr": 4.22
-                        },
-                        {
                             "age": "18-24",
                             "gender": "female",
                             "ctr": 3.93
@@ -1440,11 +1806,6 @@
                             "age": "25-34",
                             "gender": "male",
                             "ctr": 3.9
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "unknown",
-                            "ctr": 3.23
                         },
                         {
                             "age": "18-24",
@@ -1481,11 +1842,6 @@
                             "ctr": 1.66
                         },
                         {
-                            "age": "18-24",
-                            "gender": "unknown",
-                            "ctr": 1.08
-                        },
-                        {
                             "age": "45-54",
                             "gender": "female",
                             "ctr": 1.06
@@ -1501,12 +1857,12 @@
                             "ctr": 0.88
                         },
                         {
-                            "age": "25-34",
+                            "age": "65+",
                             "gender": "male",
                             "ctr": 0.76
                         },
                         {
-                            "age": "65+",
+                            "age": "25-34",
                             "gender": "male",
                             "ctr": 0.76
                         },
@@ -1526,33 +1882,8 @@
                             "ctr": 0.52
                         },
                         {
-                            "age": "35-44",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
                             "age": "65+",
                             "gender": "female",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "unknown",
                             "ctr": 0.0
                         }
                     ]
@@ -1575,17 +1906,7 @@
                         },
                         {
                             "age": "25-34",
-                            "gender": "female",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "25-34",
                             "gender": "male",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "unknown",
                             "ctr": 0.0
                         },
                         {
@@ -1624,8 +1945,8 @@
                             "ctr": 0.0
                         },
                         {
-                            "age": "18-24",
-                            "gender": "unknown",
+                            "age": "25-34",
+                            "gender": "female",
                             "ctr": 0.0
                         }
                     ]
@@ -1682,28 +2003,8 @@
                             "ctr": 0.96
                         },
                         {
-                            "age": "35-44",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "unknown",
-                            "ctr": 0.0
-                        },
-                        {
                             "age": "18-24",
                             "gender": "female",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "unknown",
                             "ctr": 0.0
                         },
                         {
@@ -2154,7 +2455,7 @@
                     "footnote": "*등장한 전체 키워드 기준"
                 },
                 {
-                    "title": "많이 사용한 업종 변수 키워드 - 노출 (1~25위)",
+                    "title": "많이 사용한 브랜드 변수 키워드 - 노출 (1~25위)",
                     "subtitle": "키워드가 가장 많이 노출된 타겟",
                     "headers": [
                         "랭킹",
@@ -2395,7 +2696,7 @@
                     "footnote": "*등장 광고 수 상위 50개 기준"
                 },
                 {
-                    "title": "많이 사용한 업종 변수 키워드 - 노출 (26~50위)",
+                    "title": "많이 사용한 브랜드 변수 키워드 - 노출 (26~50위)",
                     "subtitle": "키워드가 가장 많이 노출된 타겟",
                     "headers": [
                         "랭킹",
@@ -2636,7 +2937,7 @@
                     "footnote": "*등장 광고 수 상위 50개 기준"
                 },
                 {
-                    "title": "많이 사용한 업종 변수 키워드 - 클릭 (1~25위)",
+                    "title": "많이 사용한 브랜드 변수 키워드 - 클릭 (1~25위)",
                     "subtitle": "키워드가 가장 많이 노출된 타겟",
                     "headers": [
                         "랭킹",
@@ -2877,7 +3178,7 @@
                     "footnote": "*등장 광고 수 상위 50개 기준"
                 },
                 {
-                    "title": "많이 사용한 업종 변수 키워드 - 클릭 (26~50위)",
+                    "title": "많이 사용한 브랜드 변수 키워드 - 클릭 (26~50위)",
                     "subtitle": "키워드가 가장 많이 노출된 타겟",
                     "headers": [
                         "랭킹",

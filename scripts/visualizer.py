@@ -12,6 +12,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
 
@@ -122,23 +123,30 @@ def _style_axes(ax, color_map: Dict[str, Any], grid_axis: Optional[str] = "y") -
     ax.spines["right"].set_visible(False)
     ax.spines["left"].set_color("#dddddd")
     ax.spines["bottom"].set_color("#dddddd")
-    ax.tick_params(colors="#666666", labelsize=8)
+    ax.tick_params(colors="#666666", labelsize=10)
     if grid_axis in ("x", "y", "both"):
         ax.grid(True, axis=grid_axis, color=color_map["grid"], linewidth=0.8)
     else:
         ax.grid(False)
 
 
-def _value_colors(values: List[float], color_map: Dict[str, Any]):
+def _value_colors(
+    values: List[float],
+    color_map: Dict[str, Any],
+    palette: Optional[List[str]] = None,
+):
     if not values:
         return [color_map["base"]]
     vmin, vmax = min(values), max(values)
     if vmax == vmin:
         return [color_map["base"] for _ in values]
-    cmap = LinearSegmentedColormap.from_list(
-        "theme",
-        [color_map["lighter"], color_map["light"], color_map["base"], color_map["dark"]],
-    )
+    if palette:
+        cmap = LinearSegmentedColormap.from_list("theme", palette, N=256).reversed()
+    else:
+        cmap = LinearSegmentedColormap.from_list(
+            "theme",
+            [color_map["lighter"], color_map["light"], color_map["base"], color_map["dark"]],
+        )
     return [cmap((v - vmin) / (vmax - vmin)) for v in values]
 
 
@@ -157,14 +165,54 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         return ""
 
     x = list(range(len(labels)))
-    fig, ax = plt.subplots(figsize=(6, 3) if not compact else (3.2, 1.6))
+    fig, ax = plt.subplots(figsize=(6.8, 3.6) if not compact else (3.6, 2.0))
+    unit = str(dataset.get("unit") or "").strip()
+    plotted_values: List[float] = []
 
     for idx, s in enumerate(series):
-        data = s.get("data") or []
-        if not data:
+        raw_data = s.get("data") or []
+        if not raw_data:
             continue
+        data = pd.to_numeric(pd.Series(raw_data), errors="coerce").tolist()
+        x_values = x[: len(data)]
+        if not x_values:
+            continue
+
         color = color_map["series"][idx % len(color_map["series"])]
-        ax.plot(x[: len(data)], data, color=color, linewidth=2)
+        ax.plot(x_values, data, color=color, linewidth=2, marker="o", markersize=3.8)
+
+        for x_val, y_val in zip(x_values, data):
+            if pd.isna(y_val):
+                continue
+
+            y_num = float(y_val)
+            plotted_values.append(y_num)
+            label = _format_chart_value(y_num)
+
+            ax.annotate(
+                label,
+                (x_val, y_num),
+                textcoords="offset points",
+                xytext=(0, 5 if compact else 7),
+                ha="center",
+                va="bottom",
+                fontsize=6 if compact else 8,
+                color=color,
+                clip_on=False,
+            )
+
+    if not plotted_values:
+        return ""
+
+    y_min = min(plotted_values)
+    y_max = max(plotted_values)
+    y_span = y_max - y_min
+    y_pad = max(y_span * 0.22, 0.3)
+    y_low = y_min - (y_pad * 0.35 if y_span < 1e-12 else y_pad * 0.20)
+    y_high = y_max + y_pad
+    if abs(y_high - y_low) < 1e-12:
+        y_high = y_low + 1.0
+    ax.set_ylim(y_low, y_high)
 
     if compact:
         ax.set_xticks([])
@@ -172,19 +220,34 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         for spine in ax.spines.values():
             spine.set_visible(False)
     else:
-        tick_count = min(6, len(labels))
-        if tick_count > 1:
-            step = max(1, math.floor(len(labels) / (tick_count - 1)))
-            idxs = list(range(0, len(labels), step))
-            if idxs[-1] != len(labels) - 1:
-                idxs.append(len(labels) - 1)
-        else:
-            idxs = [0]
+        idxs: List[int] = []
+        parsed_labels = pd.to_datetime(pd.Series(labels), errors="coerce")
+        if parsed_labels.notna().any():
+            month_keys = parsed_labels.dt.to_period("M")
+            seen_months = set()
+            for i, month_key in enumerate(month_keys):
+                if pd.isna(month_key):
+                    continue
+                month_str = str(month_key)
+                if month_str in seen_months:
+                    continue
+                seen_months.add(month_str)
+                idxs.append(i)
+
+        if not idxs:
+            tick_count = min(6, len(labels))
+            if tick_count > 1:
+                step = max(1, math.floor(len(labels) / (tick_count - 1)))
+                idxs = list(range(0, len(labels), step))
+                if idxs[-1] != len(labels) - 1:
+                    idxs.append(len(labels) - 1)
+            else:
+                idxs = [0]
+
         ax.set_xticks(idxs)
-        ax.set_xticklabels([labels[i] for i in idxs], rotation=30, ha="right", fontsize=8)
-        unit = dataset.get("unit", "")
+        ax.set_xticklabels([labels[i] for i in idxs], rotation=30, ha="right", fontsize=9.5)
         if unit:
-            ax.set_ylabel(unit, fontsize=8, color=color_map["muted"])
+            ax.set_ylabel(unit, fontsize=9.5, color=color_map["muted"])
         _style_axes(ax, color_map)
 
     fig.tight_layout(pad=0.6)
@@ -197,6 +260,7 @@ def render_bar_h_chart(
     compact: bool = False,
     chart_width: float = None,
     chart_height: float = None,
+    palette: Optional[List[str]] = None,
 ) -> str:
     if not dataset:
         return ""
@@ -215,11 +279,11 @@ def render_bar_h_chart(
         width, height = 3.2, 1.8
     else:
         # Match example.py barh ratio (4:6) so charts are quarter-width and vertically long.
-        width = chart_width if isinstance(chart_width, (int, float)) else 4
-        height = chart_height if isinstance(chart_height, (int, float)) else 6
+        width = chart_width if isinstance(chart_width, (int, float)) else 4.4
+        height = chart_height if isinstance(chart_height, (int, float)) else 6.2
     fig, ax = plt.subplots(figsize=(width, height))
 
-    colors = _value_colors(values, color_map)
+    colors = _value_colors(values, color_map, palette=palette)
     ax.barh(y, values, color=colors)
     ax.invert_yaxis()
 
@@ -230,10 +294,10 @@ def render_bar_h_chart(
             spine.set_visible(False)
     else:
         ax.set_yticks(y)
-        ax.set_yticklabels(labels, fontsize=8)
+        ax.set_yticklabels(labels, fontsize=9.5)
         unit = dataset.get("unit", "")
         if unit:
-            ax.set_xlabel(unit, fontsize=8, color=color_map["muted"])
+            ax.set_xlabel(unit, fontsize=9.5, color=color_map["muted"])
         _style_axes(ax, color_map, grid_axis=None)
         for spine in ax.spines.values():
             spine.set_visible(False)
@@ -268,9 +332,9 @@ def render_bar_v_chart(
     labels = labels[: len(values)]
     x = list(range(len(labels)))
     if compact and (show_labels or show_values):
-        fig_size = (3.2, 2.5)
+        fig_size = (3.4, 2.7)
     else:
-        fig_size = (6, 3.4) if not compact else (3.2, 1.8)
+        fig_size = (6.8, 3.8) if not compact else (3.4, 2.0)
     fig, ax = plt.subplots(figsize=fig_size)
 
     colors = _value_colors(values, color_map)
@@ -291,14 +355,15 @@ def render_bar_v_chart(
                 f"{_format_chart_value(float(value))}{suffix}",
                 ha="center",
                 va="bottom",
-                fontsize=6 if compact else 7,
+                fontsize=7 if compact else 8.5,
                 color=color_map["muted"],
             )
 
     if compact:
         if show_labels:
+            display_labels = [str(label).replace("<br>", "\n") for label in labels]
             ax.set_xticks(x)
-            ax.set_xticklabels(labels, fontsize=5.5, rotation=30, ha="right")
+            ax.set_xticklabels(display_labels, fontsize=6.5, rotation=0, ha="center")
             ax.tick_params(axis="x", length=0, pad=1, colors="#666666")
         else:
             ax.set_xticks([])
@@ -307,10 +372,10 @@ def render_bar_v_chart(
             spine.set_visible(False)
     else:
         ax.set_xticks(x)
-        ax.set_xticklabels(labels, fontsize=8, rotation=30, ha="right")
+        ax.set_xticklabels(labels, fontsize=9.5, rotation=30, ha="right")
         unit = dataset.get("unit", "")
         if unit:
-            ax.set_ylabel(unit, fontsize=8, color=color_map["muted"])
+            ax.set_ylabel(unit, fontsize=9.5, color=color_map["muted"])
         _style_axes(ax, color_map, grid_axis=None)
         for spine in ax.spines.values():
             spine.set_visible(False)
@@ -327,6 +392,9 @@ def _render_heatmap(rows: List[Dict[str, Any]], metric: str, color_map: Dict[str
         return ""
 
     pivot = df.pivot_table(index="gender", columns="age", values=metric, aggfunc="mean")
+    imp_pivot = None
+    if metric == "ctr" and "impressions" in df.columns:
+        imp_pivot = df.pivot_table(index="gender", columns="age", values="impressions", aggfunc="mean")
 
     age_order = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
     gender_order = ["female", "male"]
@@ -334,27 +402,56 @@ def _render_heatmap(rows: List[Dict[str, Any]], metric: str, color_map: Dict[str
         index=[g for g in gender_order if g in pivot.index],
         columns=[a for a in age_order if a in pivot.columns],
     )
+    if imp_pivot is not None:
+        imp_pivot = imp_pivot.reindex(index=pivot.index, columns=pivot.columns)
     if pivot.empty:
         return ""
 
-    fig, ax = plt.subplots(figsize=(6, 3.2))
+    fig, ax = plt.subplots(figsize=(10.5, 5.2))
     cmap = LinearSegmentedColormap.from_list(
         "theme",
         [color_map["lighter"], color_map["light"], color_map["base"], color_map["dark"]],
     )
-    im = ax.imshow(pivot.values, cmap=cmap)
+    heat_values = pivot.values.astype(float)
+    vmin = float(np.nanmin(heat_values))
+    vmax = float(np.nanmax(heat_values))
+    im = ax.imshow(heat_values, cmap=cmap)
+    cbar = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.035)
+    cbar.outline.set_visible(False)
+    cbar.ax.tick_params(labelsize=10, colors="#666666")
+    if metric == "impressions":
+        cbar.formatter = FuncFormatter(lambda x, _: f"{int(round(float(x))):,}")
+        cbar.update_ticks()
 
     for i in range(pivot.shape[0]):
         for j in range(pivot.shape[1]):
             val = pivot.iloc[i, j]
             if pd.isna(val):
                 continue
-            ax.text(j, i, f"{val:.2f}", ha="center", va="center", fontsize=7, color="#111111")
+            norm = 0.5 if abs(vmax - vmin) < 1e-12 else (float(val) - vmin) / (vmax - vmin)
+            cell_color = cmap(norm)
+            if metric == "impressions":
+                label = f"{int(round(float(val))):,}"
+            else:
+                label = f"{float(val):.2f}"
+                if imp_pivot is not None:
+                    imp_val = imp_pivot.iloc[i, j]
+                    if pd.notna(imp_val):
+                        label += f"\n({int(round(float(imp_val))):,})"
+            ax.text(
+                j,
+                i,
+                label,
+                ha="center",
+                va="center",
+                fontsize=11,
+                color=_contrast_text_color(cell_color, threshold=0.45),
+            )
 
     ax.set_xticks(range(len(pivot.columns)))
-    ax.set_xticklabels([str(c) for c in pivot.columns], fontsize=8)
+    ax.set_xticklabels([str(c) for c in pivot.columns], fontsize=11)
     ax.set_yticks(range(len(pivot.index)))
-    ax.set_yticklabels([str(c) for c in pivot.index], fontsize=8)
+    ax.set_yticklabels([str(c) for c in pivot.index], fontsize=11)
     ax.tick_params(axis="x", bottom=True, top=False)
 
     for spine in ax.spines.values():
@@ -384,7 +481,7 @@ def _render_simple_table(rows: List[Dict[str, Any]]) -> str:
         cellLoc="center",
     )
     table.auto_set_font_size(False)
-    table.set_fontsize(7)
+    table.set_fontsize(8.2)
     table.scale(1, 1.2)
 
     fig.tight_layout(pad=0.6)
@@ -425,9 +522,31 @@ def render_content_card(dataset: Dict[str, Any], color_map: Dict[str, Any]) -> L
 
         if details:
             detail_df = pd.DataFrame(details)
-            if not detail_df.empty and "ctr" in detail_df.columns:
+            if (
+                not detail_df.empty
+                and {"age", "gender", "ctr"}.issubset(detail_df.columns)
+            ):
+                detail_df["gender"] = detail_df["gender"].astype(str).str.strip()
+                detail_df = detail_df[detail_df["gender"].str.lower() != "unknown"]
+                detail_df["ctr"] = pd.to_numeric(detail_df["ctr"], errors="coerce")
+                detail_df = detail_df.dropna(subset=["ctr"])
+                detail_df = detail_df[detail_df["ctr"] > 0]
+                if detail_df.empty:
+                    new_item["chart"] = chart_svg
+                    rendered.append(new_item)
+                    continue
+
                 detail_df = detail_df.sort_values("ctr", ascending=False).head(6)
-                labels = [f"{row['age']} {row['gender']}" for _, row in detail_df.iterrows()]
+                labels = []
+                for _, row in detail_df.iterrows():
+                    age_text = str(row["age"]).strip()
+                    gender_text = str(row["gender"]).strip()
+                    gender_low = gender_text.lower()
+                    if gender_low == "female":
+                        gender_text = "여성"
+                    elif gender_low == "male":
+                        gender_text = "남성"
+                    labels.append(f"{age_text}<br>{gender_text}")
                 values = detail_df["ctr"].tolist()
                 mini_ds = {
                     "kind": "bar_v",
@@ -579,7 +698,7 @@ def render_bubble_chart(
         circle = plt.Circle(pos, radius, facecolor=color, edgecolor="white", linewidth=1.6, alpha=1.0)
         ax.add_patch(circle)
 
-        font_size = max(6, min(11, 4 + radius * 10))
+        font_size = max(7, min(13, 5 + radius * 11))
         ax.text(
             pos[0],
             pos[1],

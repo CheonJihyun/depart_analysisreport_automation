@@ -1,6 +1,9 @@
 import json
+import re
 from datetime import datetime
+from typing import Any
 import pandas as pd
+from scripts.processor import _normalize_keyword_by_pos, _best_adverb_score, kiwi, VERB_ADJ_TAGS
 from scripts.visualizer import build_color_map, render_dataset, is_dark_color, render_bubble_chart
 from scripts.reporter import generate_html
 from to_json import run as generate_json
@@ -9,6 +12,7 @@ import time
 
 G_CMAP = ["#0B3D02", "#659348", "#E3CC97"]
 B_CMAP = ["#EE8C8C", "#D7A9A9", "#E3CC97"]
+_KOREAN_RE = re.compile(r"[가-힣]")
 
 
 def _load_report(path: str) -> dict:
@@ -36,7 +40,87 @@ def _normalize_selector(value: str | None) -> str | None:
     return text if text else None
 
 
-def _target_ctr(rows, age: str | None = None, gender: str | None = None):
+def _has_selector(value: Any) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, (list, tuple, set)):
+        return any(str(v).strip() for v in value if v is not None)
+    return bool(str(value).strip())
+
+
+def _append_da_if_predicate(value: Any) -> Any:
+    if not isinstance(value, str):
+        return value
+
+    token = value.strip()
+    if not token or token.endswith("다"):
+        return value
+    if len(token) < 2:
+        return value
+    if " " in token or not _KOREAN_RE.search(token):
+        return value
+
+    if not _is_predicate_for_display(token):
+        return value
+    return f"{token}다"
+
+
+def _is_predicate_for_display(token: str) -> bool:
+    if _normalize_keyword_by_pos(token, "verb_adj") is not None:
+        return True
+
+    adverb_score = _best_adverb_score(token)
+    best_pred_score = None
+    for tokens, score in kiwi.analyze(f"{token}다", top_n=3):
+        if not tokens:
+            continue
+        cand_score = float(score)
+        first = next((tok for tok in tokens if tok.tag in VERB_ADJ_TAGS), None)
+        if first and first.form == token:
+            if best_pred_score is None or cand_score > best_pred_score:
+                best_pred_score = cand_score
+        if len(tokens) >= 2 and tokens[0].form + tokens[1].form == token:
+            if tokens[1].tag in {"XSA", "XSV"}:
+                if best_pred_score is None or cand_score > best_pred_score:
+                    best_pred_score = cand_score
+    if best_pred_score is None:
+        return False
+    if adverb_score is not None and adverb_score >= best_pred_score:
+        return False
+    return True
+
+
+def _transform_rows_labels(value: Any) -> Any:
+    if isinstance(value, list):
+        return [_transform_rows_labels(item) for item in value]
+    if isinstance(value, dict):
+        return {k: _transform_rows_labels(v) for k, v in value.items()}
+    return _append_da_if_predicate(value)
+
+
+def _apply_display_predicate_suffix(report_json: dict) -> None:
+    for key in ("datasets", "appendix_groups", "appendix"):
+        block = report_json.get(key)
+        if not isinstance(block, (dict, list)):
+            continue
+        report_json[key] = _walk_display_blocks(block)
+
+
+def _walk_display_blocks(value: Any) -> Any:
+    if isinstance(value, list):
+        return [_walk_display_blocks(item) for item in value]
+    if isinstance(value, dict):
+        transformed = {}
+        for key, item in value.items():
+            if key in {"labels", "rows"}:
+                transformed[key] = _transform_rows_labels(item)
+            else:
+                transformed[key] = _walk_display_blocks(item)
+        return transformed
+    return value
+
+
+def _target_ctr(rows, age: Any = None, gender: Any = None):
     if not rows:
         return None
 
@@ -44,12 +128,21 @@ def _target_ctr(rows, age: str | None = None, gender: str | None = None):
     if df.empty or "impressions" not in df.columns:
         return None
 
-    age_sel = _normalize_selector(age)
-    gender_sel = _normalize_selector(gender)
-    if age_sel:
-        df = df[df["age"].astype(str) == age_sel]
-    if gender_sel:
-        df = df[df["gender"].astype(str) == gender_sel]
+    def _selector_values(value: Any) -> list[str]:
+        if value is None:
+            return []
+        if isinstance(value, (list, tuple, set)):
+            vals = [str(v).strip() for v in value if str(v).strip()]
+            return vals
+        text = str(value).strip()
+        return [text] if text else []
+
+    age_values = _selector_values(age)
+    gender_values = _selector_values(gender)
+    if age_values:
+        df = df[df["age"].astype(str).isin(age_values)]
+    if gender_values:
+        df = df[df["gender"].astype(str).isin(gender_values)]
     if df.empty:
         return None
 
@@ -72,15 +165,18 @@ def _target_ctr(rows, age: str | None = None, gender: str | None = None):
 
 
 def _target_label(age: str | None, gender: str | None) -> str:
-    age_sel = _normalize_selector(age)
-    gender_sel = _normalize_selector(gender)
-    if age_sel and gender_sel:
-        return f"{age_sel} {gender_sel}"
-    if gender_sel:
-        return f"전체연령 {gender_sel}"
-    if age_sel:
-        return f"{age_sel} 전체성별"
-    return "전체연령 전체성별"
+    def _format_part(value: Any, default_text: str) -> str:
+        if value is None:
+            return default_text
+        if isinstance(value, (list, tuple, set)):
+            items = [str(v).strip() for v in value if str(v).strip()]
+            return ", ".join(items) if items else default_text
+        text = str(value).strip()
+        return text if text else default_text
+
+    age_text = _format_part(age, "전체 연령")
+    gender_text = _format_part(gender, "전체 성별")
+    return f"{age_text} {gender_text}".strip()
 
 
 def _average_series(dataset: dict):
@@ -210,17 +306,17 @@ def run():
         "fb_ad_account_id":"act_4204029286499182",
         "start":"2025-02-13",
         "end": "2026-02-26",
-        "main_age": "35-44",
+        "main_age": ["35-44", "45-54"],
         "main_gender": "male",
         "avoid_age": "",
-        "avoid_gender": ""
+        "avoid_gender": "female",
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
     start, end = config["start"], config["end"]
     main_age, main_gender = config["main_age"], config["main_gender"]
     avoid_age, avoid_gender = config["avoid_age"], config["avoid_gender"]
-    has_main_target = bool(_normalize_selector(main_gender))
-    has_avoid_target = bool(_normalize_selector(avoid_gender))
+    has_main_target = _has_selector(main_age) or _has_selector(main_gender)
+    has_avoid_target = _has_selector(avoid_age) or _has_selector(avoid_gender)
     main_label = _target_label(main_age, main_gender)
     avoid_label = _target_label(avoid_age, avoid_gender)
 
@@ -234,6 +330,7 @@ def run():
     theme_color = "#2A3D1E"
 
     report_json = _load_report(report_path)
+    _apply_display_predicate_suffix(report_json)
     meta = report_json.get("meta", {})
     summary = report_json.get("summary", {})
     datasets = report_json.get("datasets", {})
@@ -254,10 +351,30 @@ def run():
 
     charts = {}
 
+    keyword_b_palette_keys = {
+        "overall_bottom_noun",
+        "overall_bottom_va",
+        "main_bottom_noun",
+        "main_bottom_va",
+        "avoid_top_noun",
+        "avoid_top_va",
+    }
+
     def add_chart(key: str, dataset_key: str, **kwargs):
-        svg = render_dataset(datasets.get(dataset_key), color_map, **kwargs)
+        ds = datasets.get(dataset_key)
+        if dataset_key in keyword_b_palette_keys and (ds or {}).get("kind") == "bar_h":
+            kwargs.setdefault("palette", B_CMAP)
+        svg = render_dataset(ds, color_map, **kwargs)
         if isinstance(svg, str) and svg:
             charts[key] = svg
+
+    def _count_text(value):
+        if value is None:
+            return "-"
+        txt = str(value).strip()
+        if not txt or txt == "-":
+            return "-"
+        return f"{txt}개"
 
     add_chart("followers", "insta_followers")
     add_chart("ctr", "ctr_trend")
@@ -312,9 +429,15 @@ def run():
         if not rows:
             return None
 
+        def _header_with_break(text: str) -> str:
+            head = str(text)
+            if "<br>" in head:
+                return head
+            return head.replace("(", "<br>(") if "(" in head else head
+
         return {
             "title": title,
-            "headers": [rank_head, kw_head, "평균 CTR"],
+            "headers": [_header_with_break(rank_head), _header_with_break(kw_head), "평균 CTR"],
             "rows": rows,
             "footnote": ""
         }
@@ -401,6 +524,9 @@ def run():
             "period_ads": period_ads or "-",
             "period_contents": period_contents or "-",
             "keyword_count": f"{summary.get('total_keywords', '-') }개",
+            "ads_count": _count_text(summary.get("total_ads")),
+            "contents_count": _count_text(summary.get("total_contents")),
+            "keywords_count": _count_text(summary.get("total_keywords")),
             "overview_notes": [
                 f"광고 {summary.get('total_ads', '-') }개",
                 f"콘텐츠 {summary.get('total_contents', '-') }개",
@@ -439,7 +565,7 @@ def run():
             "main_combo_pages": [
                 {
                     "note": f"*3개 이상의 콘텐츠에 등장한 조합만 표시<br>*업종 필수 키워드: 동일 업종의 상위 브랜드 10개의 웹사이트에서 자주 사용된 단어"
-                    f"<br>*브랜드 변수 키워드: 필수 키워드 외 콘텐츠에 활용된 단어<br><br>*계정 전체 평균 CTR: {main_ctr}%",
+                    f"<br>*브랜드 변수 키워드: 필수 키워드 외 콘텐츠에 활용된 단어<br><br>*{main_label} 평균 CTR: {main_ctr}%",
                     "cards": cards_main,
                 }
             ] if has_main_target else None,
@@ -449,7 +575,7 @@ def run():
             "avoid_combo_pages": [
                 {
                     "note": f"*3개 이상의 콘텐츠에 등장한 조합만 표시<br>*업종 필수 키워드: 동일 업종의 상위 브랜드 10개의 웹사이트에서 자주 사용된 단어"
-                    f"<br>*브랜드 변수 키워드: 필수 키워드 외 콘텐츠에 활용된 단어<br><br>*계정 전체 평균 CTR: {avoid_ctr}%",
+                    f"<br>*브랜드 변수 키워드: 필수 키워드 외 콘텐츠에 활용된 단어<br><br>*{avoid_label} 평균 CTR: {avoid_ctr}%",
                     "cards": cards_avoid,
                 }
             ] if has_avoid_target else None,

@@ -404,6 +404,7 @@ def get_a_content_target_ctr_data(ad_id, date_start, date_end):
             AND ad.created_time <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND apd.date >= '{date_start}'
             AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+            AND apd.gender != 'unknown'
             AND (c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY apd.age, apd.gender
         ORDER BY ctr DESC;
@@ -754,9 +755,10 @@ def _normalize_keyword_by_pos(text, pos_type='noun'):
 
     return None
 
-def filter_keywords_by_pos(df, pos_type='noun'):
+def filter_keywords_by_pos(df, pos_type='noun', exclude_zero_ctr=False):
     """
     pos_type: 'noun' (NNG, NNP), 'verb_adj' (VV, VA)
+    exclude_zero_ctr: True면 avg_ctr <= 0 항목 제외
     """
     if df is None or df.empty:
         return None
@@ -804,6 +806,10 @@ def filter_keywords_by_pos(df, pos_type='noun'):
             by=['avg_ctr', 'total_impressions'] if 'total_impressions' in filtered_df.columns else ['avg_ctr'],
             ascending=[is_ascending, False] if 'total_impressions' in filtered_df.columns else [is_ascending]
         )
+
+    if exclude_zero_ctr and 'avg_ctr' in filtered_df.columns:
+        ctr_vals = pd.to_numeric(filtered_df['avg_ctr'], errors='coerce')
+        filtered_df = filtered_df[ctr_vals > 0]
 
     return filtered_df.head(10)
 
