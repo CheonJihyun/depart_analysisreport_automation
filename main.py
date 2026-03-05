@@ -560,7 +560,7 @@ def run():
             ],
             "overall_bottom_note": "*3개 이상의 콘텐츠에 등장한 단어만 표시",
             "overall_bottom_tables": filter_none(o_bot),
-            "main_target": {"title": f"{main_label} 성과 분석"} if has_main_target else None,
+            "main_target": {"title": main_label} if has_main_target else None,
             "main_top_tables": filter_none(m_top) if m_top else None,
             "main_combo_pages": [
                 {
@@ -570,7 +570,7 @@ def run():
                 }
             ] if has_main_target else None,
             "main_bottom_tables": filter_none(m_bot) if m_bot else None,
-            "avoid_target": {"title": f"{avoid_label} 성과 분석"} if has_avoid_target else None,
+            "avoid_target": {"title": avoid_label} if has_avoid_target else None,
             "avoid_top_tables":filter_none(a_top) if a_top else None,
             "avoid_combo_pages": [
                 {

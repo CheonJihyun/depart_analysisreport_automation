@@ -418,7 +418,7 @@
      ========================================================= #}
   <section class="page">
     {{ page_header('타겟별 키워드') }}
-    {{ big_title('전체 연령/성별<br>키워드별 CTR 상위 10개') }}
+    {{ big_title('<span class="title-target-highlight title-target-highlight--overall">전체 연령/성별</span><br>키워드별 CTR 상위 10개') }}
 
     <div class="page-body keyword-quad keyword-quad--overall-bottom">
       {% if charts.keyword_overall_top_noun is defined or charts.keyword_overall_top_verb_adj is defined %}
@@ -460,7 +460,7 @@
     {% for card_group in grouped_cards %}
       <section class="page page--combo">
         {{ page_header('타겟별 키워드') }}
-        {{ big_title('전체 연령/성별<br>CTR 상위 키워드 조합 + 함께 쓰인 단어') }}
+        {{ big_title('<span class="title-target-highlight title-target-highlight--overall">전체 연령/성별</span><br>CTR 상위 키워드 조합 + 함께 쓰인 단어') }}
 
         <div class="page-body combo-page-body">
           {% for card in card_group %}
@@ -495,7 +495,7 @@
      ========================================================= #}
   <section class="page">
     {{ page_header('타겟별 키워드') }}
-    {{ big_title('전체 연령/성별<br>키워드별 CTR 하위 10개') }}
+    {{ big_title('<span class="title-target-highlight title-target-highlight--overall">전체 연령/성별</span><br>키워드별 CTR 하위 10개') }}
 
     <div class="page-body keyword-quad keyword-quad--overall-bottom">
       {% if charts.keyword_overall_bottom_noun is defined or charts.keyword_overall_bottom_verb_adj is defined %}
@@ -535,7 +535,7 @@
   {% if keywords.main_target %}
     <section class="page">
       {{ page_header('타겟별 키워드 - 메인 타겟') }}
-      {{ big_title(keywords.main_target.title ~ '<br>키워드별 CTR 상위 10개') }}
+      {{ big_title('<span class="title-target-highlight title-target-highlight--main">' ~ keywords.main_target.title ~ '</span><br>키워드별 CTR 상위 10개') }}
 
       <div class="page-body keyword-quad">
         {% if charts.keyword_main_top_noun is defined or charts.keyword_main_top_verb_adj is defined %}
@@ -568,7 +568,7 @@
       {% for card_group in grouped_cards %}
         <section class="page page--combo">
           {{ page_header('타겟별 키워드 - 메인 타겟') }}
-          {{ big_title(keywords.main_target.title ~ '<br>CTR 상위 키워드 조합 + 함께 쓰인 단어') }}
+          {{ big_title('<span class="title-target-highlight title-target-highlight--main">' ~ keywords.main_target.title ~ '</span><br>CTR 상위 키워드 조합 + 함께 쓰인 단어') }}
 
           <div class="page-body combo-page-body">
             {% for card in card_group %}
@@ -598,7 +598,7 @@
 
     <section class="page">
       {{ page_header('타겟별 키워드 - 메인 타겟') }}
-      {{ big_title(keywords.main_target.title ~ '<br>키워드별 CTR 하위 10개') }}
+      {{ big_title('<span class="title-target-highlight title-target-highlight--main">' ~ keywords.main_target.title ~ '</span><br>키워드별 CTR 하위 10개') }}
 
       <div class="page-body keyword-quad">
         {% if charts.keyword_main_bottom_noun is defined or charts.keyword_main_bottom_verb_adj is defined %}
@@ -635,7 +635,7 @@
   {% if keywords.avoid_target %}
     <section class="page">
       {{ page_header('타겟별 키워드 - 기피 타겟') }}
-      {{ big_title(keywords.avoid_target.title ~ '<br>키워드별 CTR 상위 10개') }}
+      {{ big_title('<span class="title-target-highlight title-target-highlight--avoid">' ~ keywords.avoid_target.title ~ '</span><br>키워드별 CTR 상위 10개') }}
 
       <div class="page-body keyword-quad">
         {% if charts.keyword_avoid_top_noun is defined or charts.keyword_avoid_top_verb_adj is defined %}
@@ -668,7 +668,7 @@
       {% for card_group in grouped_cards %}
         <section class="page page--combo">
           {{ page_header('타겟별 키워드 - 기피 타겟') }}
-          {{ big_title(keywords.avoid_target.title ~ '<br>CTR 상위 키워드 조합 + 함께 쓰인 단어') }}
+          {{ big_title('<span class="title-target-highlight title-target-highlight--avoid">' ~ keywords.avoid_target.title ~ '</span><br>CTR 상위 키워드 조합 + 함께 쓰인 단어') }}
 
           <div class="page-body combo-page-body">
             {% for card in card_group %}
@@ -698,7 +698,7 @@
 
     <section class="page">
       {{ page_header('타겟별 키워드 - 기피 타겟') }}
-      {{ big_title(keywords.avoid_target.title ~ '<br>키워드별 CTR 하위 10개') }}
+      {{ big_title('<span class="title-target-highlight title-target-highlight--avoid">' ~ keywords.avoid_target.title ~ '</span><br>키워드별 CTR 하위 10개') }}
 
       <div class="page-body keyword-quad">
         {% if charts.keyword_avoid_bottom_noun is defined or charts.keyword_avoid_bottom_verb_adj is defined %}

@@ -81,7 +81,7 @@ body {
 }
 
 .page-header__section {
-  font-size: 16.5pt;
+  font-size: 19.8pt;
   font-weight: 800;
   color: #6b8e23;
   letter-spacing: -0.2px;
@@ -114,6 +114,27 @@ body {
   margin-top: 4mm;
   font-size: 18.5pt;
   color: #444;
+}
+
+.title-target-highlight {
+  display: inline-block;
+  line-height: 0.94;
+  padding: 0.01em 0.11em 0;
+  border-radius: 0.06em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.title-target-highlight--overall {
+  background-color: rgba(255, 240, 140, 0.72);
+}
+
+.title-target-highlight--main {
+  background-color: rgba(194, 237, 160, 0.72);
+}
+
+.title-target-highlight--avoid {
+  background-color: rgba(255, 204, 222, 0.72);
 }
 
 /* =========================
