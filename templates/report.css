@@ -78,6 +78,12 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  padding: 0 8mm;
+}
+
+.page-header__right {
+  position: relative;
+  top: 8mm;
 }
 
 .page-header__section {
@@ -85,6 +91,8 @@ body {
   font-weight: 800;
   color: #6b8e23;
   letter-spacing: -0.2px;
+  position: relative;
+  top: 8mm;
 }
 
 .page-header__brand {
@@ -98,7 +106,7 @@ body {
    ========================= */
 .title-block {
   grid-area: title;
-  margin: 0;
+  margin: 8mm 8mm 0;
 }
 
 .title-block__title {
@@ -574,11 +582,12 @@ body {
   border: 0;
   border-radius: 0;
   background: transparent;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   min-height: 0;
   overflow: hidden;
   display: grid;
   place-items: center;
+  align-self: center;
 }
 
 .content-card__chart {
@@ -590,6 +599,7 @@ body {
   overflow: hidden;
   display: grid;
   place-items: center;
+  align-self: center;
 }
 
 .content-card__thumb img,

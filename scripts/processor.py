@@ -348,8 +348,9 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
     SELECT 
         ad.ad_id, 
         ad.ad_name,
+        ad.fb_ad_id,
         ad.ig_timestamp as uploaded_at, -- 업로드일로 사용
-        ad.ig_permalink as thumbnail, -- 썸네일 경로로 사용
+        NULLIF(ad.thumb_link, '') as thumbnail, -- S3 썸네일 링크
         ROUND((SUM(apd.clicks)::numeric / NULLIF(SUM(apd.impressions), 0)::numeric) * 100, 2) as ctr
     FROM ad
         JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
@@ -376,10 +377,16 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
     # 2. 결과 가공 (딕셔너리 리스트 형태로 3개 모두 저장)
     results = []
     for _, row in ads_df.iterrows():
+        thumb_val = row.get('thumbnail')
+        if pd.isna(thumb_val):
+            thumb_val = None
+        else:
+            thumb_val = str(thumb_val).strip() or None
         results.append({
             'ad_id': row['ad_id'],
+            'fb_ad_id': row.get('fb_ad_id'),
             'uploaded_at': row['uploaded_at'].date(),
-            'thumbnail': row['ad_name'], 
+            'thumbnail': thumb_val,
             'ctr': row['ctr']
         })
 

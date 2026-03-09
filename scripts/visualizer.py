@@ -1,6 +1,5 @@
 # scripts/visualizer.py
 import io
-import math
 import os
 import colorsys
 from typing import Any, Dict, List, Optional
@@ -12,6 +11,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.patches import Rectangle
 from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
@@ -156,6 +156,79 @@ def _contrast_text_color(rgba, threshold: float = 0.45) -> str:
     return "white" if luminance < threshold else "#1a1a1a"
 
 
+def _extract_month_spans(labels: List[Any]) -> List[Dict[str, Any]]:
+    parsed = pd.to_datetime(pd.Series(labels), errors="coerce")
+    if parsed.isna().all():
+        return []
+
+    month_keys = parsed.dt.to_period("M")
+    spans: List[Dict[str, Any]] = []
+    current_month = None
+    start_idx = None
+
+    for idx, month_key in enumerate(month_keys):
+        if pd.isna(month_key):
+            if current_month is not None and start_idx is not None:
+                spans.append({"month": current_month, "start": start_idx, "end": idx - 1})
+            current_month = None
+            start_idx = None
+            continue
+
+        if current_month is None:
+            current_month = month_key
+            start_idx = idx
+            continue
+
+        if month_key != current_month and start_idx is not None:
+            spans.append({"month": current_month, "start": start_idx, "end": idx - 1})
+            current_month = month_key
+            start_idx = idx
+
+    if current_month is not None and start_idx is not None:
+        spans.append({"month": current_month, "start": start_idx, "end": len(month_keys) - 1})
+
+    return spans
+
+
+def _line_label_indices(values: List[Any]) -> List[int]:
+    valid_points: List[tuple[int, float]] = []
+    for idx, value in enumerate(values):
+        if pd.isna(value):
+            continue
+        valid_points.append((idx, float(value)))
+
+    if not valid_points:
+        return []
+
+    first_idx, first_value = valid_points[0]
+    label_idxs: List[int] = [first_idx]
+    ref_peak_idx = first_idx
+    ref_peak_value = first_value
+    prev_value = first_value
+    decline_found = False
+
+    for idx, value in valid_points[1:]:
+        if not decline_found:
+            if value >= ref_peak_value:
+                ref_peak_value = value
+                ref_peak_idx = idx
+            if value < prev_value:
+                decline_found = True
+                if ref_peak_idx not in label_idxs:
+                    label_idxs.append(ref_peak_idx)
+        elif value > ref_peak_value:
+            ref_peak_value = value
+            label_idxs.append(idx)
+
+        prev_value = value
+
+    if not decline_found and ref_peak_idx not in label_idxs:
+        label_idxs.append(ref_peak_idx)
+
+    label_idxs.sort()
+    return label_idxs
+
+
 def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compact: bool = False) -> str:
     if not dataset:
         return ""
@@ -166,6 +239,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
 
     x = list(range(len(labels)))
     fig, ax = plt.subplots(figsize=(6.8, 3.6) if not compact else (3.6, 2.0))
+    has_bottom_month_band = False
     unit = str(dataset.get("unit") or "").strip()
     plotted_values: List[float] = []
 
@@ -180,6 +254,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
 
         color = color_map["series"][idx % len(color_map["series"])]
         ax.plot(x_values, data, color=color, linewidth=2, marker="o", markersize=3.8)
+        label_idx_set = set(_line_label_indices(data))
 
         for x_val, y_val in zip(x_values, data):
             if pd.isna(y_val):
@@ -187,6 +262,8 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
 
             y_num = float(y_val)
             plotted_values.append(y_num)
+            if x_val not in label_idx_set:
+                continue
             label = _format_chart_value(y_num)
 
             ax.annotate(
@@ -220,37 +297,62 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         for spine in ax.spines.values():
             spine.set_visible(False)
     else:
-        idxs: List[int] = []
-        parsed_labels = pd.to_datetime(pd.Series(labels), errors="coerce")
-        if parsed_labels.notna().any():
-            month_keys = parsed_labels.dt.to_period("M")
-            seen_months = set()
-            for i, month_key in enumerate(month_keys):
-                if pd.isna(month_key):
-                    continue
-                month_str = str(month_key)
-                if month_str in seen_months:
-                    continue
-                seen_months.add(month_str)
-                idxs.append(i)
+        month_spans = _extract_month_spans(labels)
+        if month_spans:
+            if len(labels) > 1:
+                ax.set_xlim(-0.5, len(labels) - 0.5)
 
-        if not idxs:
-            tick_count = min(6, len(labels))
-            if tick_count > 1:
-                step = max(1, math.floor(len(labels) / (tick_count - 1)))
-                idxs = list(range(0, len(labels), step))
-                if idxs[-1] != len(labels) - 1:
-                    idxs.append(len(labels) - 1)
-            else:
-                idxs = [0]
+            month_band_ymin, month_band_ymax = -0.12, 0.0
+            for span_idx, span in enumerate(month_spans):
+                start = span["start"]
+                end = span["end"]
+                period = span["month"]
 
-        ax.set_xticks(idxs)
-        ax.set_xticklabels([labels[i] for i in idxs], rotation=30, ha="right", fontsize=9.5)
+                ax.add_patch(
+                    Rectangle(
+                        (start - 0.5, month_band_ymin),
+                        (end - start) + 1.0,
+                        month_band_ymax - month_band_ymin,
+                        transform=ax.get_xaxis_transform(),
+                        facecolor="#f5f5f5" if span_idx % 2 == 0 else "#fafafa",
+                        edgecolor="none",
+                        zorder=0,
+                        clip_on=False,
+                    )
+                )
+                ax.text(
+                    (start + end) / 2,
+                    (month_band_ymin + month_band_ymax) / 2,
+                    f"{period.year}.{period.month:02d}",
+                    transform=ax.get_xaxis_transform(),
+                    ha="center",
+                    va="center",
+                    fontsize=7.5,
+                    color="#7a7a7a",
+                    zorder=1,
+                    clip_on=False,
+                )
+            has_bottom_month_band = True
+
+            for span in month_spans[1:]:
+                ax.axvline(
+                    span["start"] - 0.5,
+                    color="#d9d9d9",
+                    linestyle=(0, (2, 3)),
+                    linewidth=0.9,
+                    zorder=1.5,
+                )
+
+        ax.set_xticks([])
         if unit:
             ax.set_ylabel(unit, fontsize=9.5, color=color_map["muted"])
-        _style_axes(ax, color_map)
+        _style_axes(ax, color_map, grid_axis=None)
+        ax.tick_params(axis="x", which="both", length=0, labelbottom=False)
 
-    fig.tight_layout(pad=0.6)
+    if not compact and has_bottom_month_band:
+        fig.tight_layout(pad=0.6, rect=(0, 0.10, 1, 1))
+    else:
+        fig.tight_layout(pad=0.6)
     return _fig_to_svg(fig)
 
 

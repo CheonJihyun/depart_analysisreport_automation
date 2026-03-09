@@ -4,7 +4,7 @@
         "period": "2025-02-13 ~ 2026-02-26",
         "period_ads": "2025-02-13 ~ 2026-02-23",
         "period_contents": "2024-03-15 ~ 2025-03-02",
-        "generated_at": "2026-03-05 09:36:57"
+        "generated_at": "2026-03-09 09:21:08"
     },
     "summary": {
         "total_ads": 37,
@@ -1612,8 +1612,9 @@
             "items": [
                 {
                     "ad_id": 4347,
+                    "fb_ad_id": "120218654250770586",
                     "uploaded_at": "2024-12-02",
-                    "thumbnail": "항상 너무 잘하려다 망하는 SNS 운영",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120218654250770586.jpg",
                     "ctr": 5.16,
                     "target_details": [
                         {
@@ -1680,8 +1681,9 @@
                 },
                 {
                     "ad_id": 4336,
+                    "fb_ad_id": "120219436188580586",
                     "uploaded_at": "2025-01-25",
-                    "thumbnail": "작은 브랜드가 할 수 있는 마케팅",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120219436188580586.jpg",
                     "ctr": 5.13,
                     "target_details": [
                         {
@@ -1748,8 +1750,9 @@
                 },
                 {
                     "ad_id": 4124,
+                    "fb_ad_id": "120218172348700586",
                     "uploaded_at": "2024-11-21",
-                    "thumbnail": "숏폼 영상 월 30개",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120218172348700586.jpg",
                     "ctr": 4.84,
                     "target_details": [
                         {
@@ -1822,8 +1825,9 @@
             "items": [
                 {
                     "ad_id": 4151,
+                    "fb_ad_id": "120228709647280586",
                     "uploaded_at": "2024-03-15",
-                    "thumbnail": "대표님! 1년에 마케팅 비용 얼마나 쓰세요?",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120228709647280586.jpg",
                     "ctr": 0.64,
                     "target_details": [
                         {
@@ -1890,8 +1894,9 @@
                 },
                 {
                     "ad_id": 4335,
+                    "fb_ad_id": "120219438680180586",
                     "uploaded_at": "2025-01-09",
-                    "thumbnail": "대표님, 디자인 비용 낮춰드려요",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120219438680180586.jpg",
                     "ctr": 1.47,
                     "target_details": [
                         {
@@ -1953,8 +1958,9 @@
                 },
                 {
                     "ad_id": 4349,
+                    "fb_ad_id": "120218172175830586",
                     "uploaded_at": "2024-03-15",
-                    "thumbnail": "대표님! 1년에 마케팅 비용 얼마나 쓰세요?",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120218172175830586.jpg",
                     "ctr": 2.39,
                     "target_details": [
                         {

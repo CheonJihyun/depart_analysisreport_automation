@@ -1,7 +1,11 @@
 import json
+import os
 import re
+import hashlib
 from datetime import datetime
+from pathlib import Path
 from typing import Any
+from urllib.parse import unquote, urlparse
 import pandas as pd
 from scripts.processor import _normalize_keyword_by_pos, _best_adverb_score, kiwi, VERB_ADJ_TAGS
 from scripts.visualizer import build_color_map, render_dataset, is_dark_color, render_bubble_chart
@@ -13,6 +17,122 @@ import time
 G_CMAP = ["#0B3D02", "#659348", "#E3CC97"]
 B_CMAP = ["#EE8C8C", "#D7A9A9", "#E3CC97"]
 _KOREAN_RE = re.compile(r"[가-힣]")
+
+
+def _load_env_file(env_path: Path) -> None:
+    if not env_path.exists() or not env_path.is_file():
+        return
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[7:].strip()
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if not key:
+            continue
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        os.environ.setdefault(key, value)
+
+
+def _parse_s3_location(url: str) -> tuple[str, str] | None:
+    text = str(url or "").strip()
+    if not text:
+        return None
+    if text.startswith("s3://"):
+        rest = text[5:]
+        if "/" not in rest:
+            return None
+        bucket, key = rest.split("/", 1)
+        bucket, key = bucket.strip(), key.strip()
+        return (bucket, key) if bucket and key else None
+
+    parsed = urlparse(text)
+    host = parsed.netloc.lower()
+    path = unquote(parsed.path.lstrip("/"))
+    if not host or not path:
+        return None
+
+    if not host.endswith("amazonaws.com"):
+        return None
+
+    host_parts = host.split(".")
+    if "s3" in host_parts and host_parts[0] != "s3":
+        s3_idx = host_parts.index("s3")
+        bucket = ".".join(host_parts[:s3_idx]).strip()
+        key = path.strip()
+        return (bucket, key) if bucket and key else None
+
+    if host_parts[0] == "s3":
+        if "/" not in path:
+            return None
+        bucket, key = path.split("/", 1)
+        bucket, key = bucket.strip(), key.strip()
+        return (bucket, key) if bucket and key else None
+
+    return None
+
+
+def _safe_name(token: Any) -> str:
+    text = str(token or "").strip()
+    if not text:
+        return ""
+    return re.sub(r"[^0-9A-Za-z_.-]", "_", text)
+
+
+def _materialize_content_thumbnails(items: list[dict[str, Any]], output_dir: str = "static/thumbnail") -> None:
+    if not items:
+        return
+
+    _load_env_file(Path("db_update/.env"))
+    try:
+        import boto3
+    except Exception:
+        print("thumbnail download skipped: boto3 not installed")
+        return
+
+    out_dir = Path(output_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    s3 = boto3.client("s3")
+    cache: dict[str, str] = {}
+    valid_exts = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp"}
+
+    for item in items:
+        src = str(item.get("thumbnail") or "").strip()
+        if not src:
+            continue
+
+        if src in cache:
+            item["thumbnail"] = cache[src]
+            continue
+
+        s3_loc = _parse_s3_location(src)
+        if not s3_loc:
+            continue
+        bucket, key = s3_loc
+
+        key_ext = Path(key).suffix.lower()
+        ext = ".jpg" if key_ext == ".jpeg" else (key_ext if key_ext in valid_exts else ".jpg")
+        name_seed = _safe_name(item.get("fb_ad_id")) or hashlib.sha1(src.encode("utf-8")).hexdigest()[:16]
+        filename = f"{name_seed}{ext}"
+        local_file = out_dir / filename
+
+        try:
+            s3.download_file(bucket, key, str(local_file))
+        except Exception as exc:
+            if not local_file.exists() or local_file.stat().st_size == 0:
+                print(f"thumbnail download failed: bucket={bucket} key={key} err={exc}")
+                continue
+
+        local_src = f"./{local_file.as_posix()}"
+        item["thumbnail"] = local_src
+        cache[src] = local_src
 
 
 def _load_report(path: str) -> dict:
@@ -486,6 +606,7 @@ def run():
     bottom_items = render_dataset(datasets.get("content_bottom_analysis"), color_map)
     if not isinstance(bottom_items, list):
         bottom_items = []
+    _materialize_content_thumbnails(top_items + bottom_items)
 
     target_rows = (datasets.get("target_heatmap") or {}).get("rows") or []
     impressions_rank = _top_targets(target_rows, "impressions")
