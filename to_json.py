@@ -2,6 +2,7 @@ import json
 import pandas as pd
 import numpy as np
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
 # 기존에 사용하시던 스크립트 임포트 (경로에 맞춰 유지)
 from scripts.processor import (
     get_account_name, get_active_ad_count, get_total_content_count,
@@ -171,30 +172,53 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         ("avoid", avoid_age, avoid_gender, "기피 타겟")
     ]
 
+    # 유효한 타겟 설정만 필터
+    active_configs = []
     for prefix, age_raw, gen_raw, label in target_configs:
         age = _normalize_age_selection(age_raw)
         gen = _normalize_gender_selection(gen_raw)
-
-        # main/avoid는 연령/성별 중 하나라도 있어야 생성.
         if prefix != "overall" and not age and not gen:
             continue
-        
-        # 상위/하위 키워드 성과
+        active_configs.append((prefix, age, gen, label))
+
+    # 병렬로 raw_kw (타겟별 1회) + strategic 쿼리 실행
+    kw_futures = {}
+    strat_futures = {}
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        for prefix, age, gen, label in active_configs:
+            # raw_kw: top/bottom 공용 (1회만 조회 후 Python에서 정렬)
+            kw_futures[prefix] = executor.submit(
+                get_raw_keyword_performance, target_id, start, end, age, gen
+            )
+            strat_futures[prefix] = executor.submit(
+                get_strategic_performance, target_id, start, end, age, gen
+            )
+        # 결과 수집 (executor 블록 종료 시 모두 완료)
+        kw_results   = {k: f.result() for k, f in kw_futures.items()}
+        strat_results = {k: f.result() for k, f in strat_futures.items()}
+
+    for prefix, age, gen, label in active_configs:
+        raw_kw_df = kw_results[prefix]
+
+        # 상위/하위: 같은 데이터를 Python에서 정렬만 달리 적용
         for is_top in [True, False]:
             suffix = "top" if is_top else "bottom"
-            raw_kw_df = get_raw_keyword_performance(target_id, start, end, age, gen, is_top=is_top)
             exclude_zero_ctr = not is_top
-            
+            # CTR 기준 정렬 (top=내림차순, bottom=오름차순)
+            sorted_df = raw_kw_df.sort_values(
+                by=["avg_ctr", "total_impressions"],
+                ascending=[not is_top, False]
+            )
+
             # 명사 필터링
-            nouns = filter_keywords_by_pos(raw_kw_df, 'noun', exclude_zero_ctr=exclude_zero_ctr)
+            nouns = filter_keywords_by_pos(sorted_df, 'noun', exclude_zero_ctr=exclude_zero_ctr)
             add_ds(f"{prefix}_{suffix}_noun", "bar_h", f"{label} {suffix.upper()} 10 (명사)", nouns, "%", "keyword", ["ctr"])
-            
+
             # 형용사 필터링
-            vas = filter_keywords_by_pos(raw_kw_df, 'verb_adj', exclude_zero_ctr=exclude_zero_ctr)
+            vas = filter_keywords_by_pos(sorted_df, 'verb_adj', exclude_zero_ctr=exclude_zero_ctr)
             add_ds(f"{prefix}_{suffix}_va", "bar_h", f"{label} {suffix.upper()} 10 (형용사)", vas, "%", "keyword", ["ctr"])
 
-        # to_json.py 내부
-        strat_df = get_strategic_performance(target_id, start, end, age, gen)
+        strat_df = strat_results[prefix]
         if strat_df is not None:
             strat_df = strat_df.copy()
             strat_df["combo_overall_ctr"] = pd.to_numeric(strat_df["combo_overall_ctr"], errors="coerce")
@@ -220,11 +244,6 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             )
             final_strat_df = final_strat_df.groupby(combo_keys, sort=False).head(8)
 
-
-            # 4. 데이터가 잘 만들어졌는지 로그 확인 (선택)
-            # ... 앞선 필터링 로직 (head(8) 등) 동일 ...
-
-            # 핵심: 데이터프레임을 dict 리스트로 변환해서 넘깁니다.
             add_ds(f"{prefix}_keyword_combo_detail", "table", f"{label} 상세 분석", final_strat_df)
 
     # 5. 콘텐츠별 타겟 성과 (상/하위)

@@ -132,14 +132,14 @@
      ========================================================= #}
   <section class="page page--cover">
     <div class="cover" style="writing-mode:horizontal-tb; text-orientation:mixed;">
-      <div class="cover__client">{{ report.client }}</div>
+      <div class="cover__client">{{ report.quarter_label }}</div>
       <div class="cover__title">
         {% if report.year and report.quarter_label and report.quarter_label.startswith(report.year) %}
-          {{ report.quarter_label }} 분석 보고서
+          {{ report.client }} 분석 보고서
         {% elif report.year and report.quarter_label %}
-          {{ report.year }} {{ report.quarter_label }} 분석 보고서
+          {{ report.year }} {{ report.client }} 분석 보고서
         {% else %}
-          {{ report.quarter_label }} 분석 보고서
+          {{ report.client }} 분석 보고서
         {% endif %}
       </div>
       <div class="cover__date">{{ report.generated_at }}</div>

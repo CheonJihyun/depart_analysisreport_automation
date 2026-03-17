@@ -798,7 +798,7 @@ body {
 
 /* Appendix table compaction to stay within a single page */
 .appendix-table-wrap .table {
-  font-size: 12.5pt;
+  font-size: 10.5pt;
   table-layout: fixed;
   break-inside: auto;
   page-break-inside: auto;
@@ -806,8 +806,8 @@ body {
 
 .appendix-table-wrap .table th,
 .appendix-table-wrap .table td {
-  padding: 2mm 2.2mm;
-  line-height: 1.22;
+  padding: 1.3mm 2mm;
+  line-height: 1.15;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -815,13 +815,13 @@ body {
 }
 
 .appendix-table-wrap .table-title {
-  font-size: 12.5pt;
-  margin-bottom: 0.8mm;
+  font-size: 10.5pt;
+  margin-bottom: 0.6mm;
 }
 
 .appendix-table-wrap .footnote {
-  font-size: 11pt;
-  margin-top: 0.7mm;
+  font-size: 9.5pt;
+  margin-top: 0.5mm;
 }
 
 .appendix-table-wrap {

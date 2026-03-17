@@ -90,16 +90,25 @@ def _materialize_content_thumbnails(items: list[dict[str, Any]], output_dir: str
         return
 
     _load_env_file(Path("db_update/.env"))
-    try:
-        import boto3
-    except Exception:
-        print("thumbnail download skipped: boto3 not installed")
-        return
 
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    s3 = boto3.client("s3")
+    try:
+        import boto3
+        s3 = boto3.client(
+            "s3",
+            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+            aws_session_token=os.environ.get("AWS_SESSION_TOKEN"),
+            region_name=os.environ.get("AWS_REGION", "ap-northeast-2"),
+        )
+        has_boto3 = True
+    except Exception:
+        print("boto3 not installed: will use local cache only")
+        s3 = None
+        has_boto3 = False
+
     cache: dict[str, str] = {}
     valid_exts = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp"}
 
@@ -122,6 +131,17 @@ def _materialize_content_thumbnails(items: list[dict[str, Any]], output_dir: str
         name_seed = _safe_name(item.get("fb_ad_id")) or hashlib.sha1(src.encode("utf-8")).hexdigest()[:16]
         filename = f"{name_seed}{ext}"
         local_file = out_dir / filename
+
+        # 로컬에 파일이 이미 있으면 S3 다운로드 없이 바로 사용
+        if local_file.exists() and local_file.stat().st_size > 0:
+            local_src = f"./{local_file.as_posix()}"
+            item["thumbnail"] = local_src
+            cache[src] = local_src
+            continue
+
+        if not has_boto3:
+            print(f"thumbnail skipped (no boto3, no local cache): {filename}")
+            continue
 
         try:
             s3.download_file(bucket, key, str(local_file))
@@ -398,7 +418,7 @@ from playwright.sync_api import sync_playwright
 def export_to_pdf(html_path, output_pdf_path):
     with sync_playwright() as p:
         # 브라우저 실행 (백그라운드)
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(args=["--allow-file-access-from-files", "--disable-web-security"])
         page = browser.new_page()
         
         # 1. HTML 파일 로드 (절대 경로 권장)
