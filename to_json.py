@@ -11,7 +11,9 @@ from scripts.processor import (
     get_content_ctr_data, get_a_content_target_ctr_data, get_profile_visits_monthly,
     get_target_avg_imp_ctr, get_target_avg_imp_ctr_threshold,
     get_raw_keyword_performance, filter_keywords_by_pos, get_overall_ctr,
-    get_strategic_performance,get_essence_target_performance,get_variable_target_performance
+    get_strategic_performance,get_essence_target_performance,get_variable_target_performance,
+    has_purchase_data, get_purchase_roas_weekly, get_purchase_roas_monthly,  # 구매 데이터 추가 부분
+    get_purchase_count_weekly, get_purchase_count_monthly
 )
 
 def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", avoid_age="", avoid_gender=""):
@@ -82,6 +84,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             
         final_report["datasets"][key] = data_obj
 
+
     # --- 데이터 수집 및 변환 시작 ---
 
     # 1. 인스타그램 및 오가닉 추이
@@ -125,13 +128,38 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     )
 
 
-
-
     # 2. CTR 추이
     print("CTR 추이 생성 중...")
     ctr_df = get_ctr_data(target_id, start, end)
     add_ds("ctr_trend", "line", "주차별 CTR 추이", ctr_df, "%", "week_start", ["ctr"])
 
+    #  --- [추가] 구매 데이터 분석 (2페이지 분량) ---
+
+    if has_purchase_data(target_id, start, end):
+        print("구매 데이터 있음 - 생성 중...")
+        roas_weekly_df = get_purchase_roas_weekly(target_id, start, end)
+        roas_monthly_df = get_purchase_roas_monthly(target_id, start, end)
+        purchase_weekly_df = get_purchase_count_weekly(target_id, start, end)
+        purchase_monthly_df = get_purchase_count_monthly(target_id, start, end)
+
+        add_ds("purchase_roas_weekly", "line", "평균 ROAS (주별)", roas_weekly_df, "%", "week_start", ["avg_roas"])
+        add_ds("purchase_roas_monthly", "line", "평균 ROAS (월별)", roas_monthly_df, "%", "month_start", ["avg_roas"])
+        add_ds("purchase_count_weekly", "line", "구매전환 (주별)", purchase_weekly_df, "건", "week_start", ["purchases"])
+        add_ds("purchase_count_monthly", "line", "구매전환 (월별)", purchase_monthly_df, "건", "month_start", ["purchases"])
+
+        final_report["purchase_analysis_pages"] = {
+            "is_visible": True,
+            "titles": {
+                "section_title": "전체 매출 데이터 분석",
+                "page_1_title": "평균 ROAS",
+                "page_2_title": "구매전환 건수"
+            }
+        }
+    else:
+        print("구매 데이터 없음...")
+        final_report["purchase_analysis_pages"] = {
+            "is_visible": False
+        }
 
     _, threshold = get_imp_threshold(target_id, start, end)
     # 3. 타겟 히트맵 데이터 (노출/CTR)
