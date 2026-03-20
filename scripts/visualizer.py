@@ -346,6 +346,13 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         ax.set_xticks([])
         if unit:
             ax.set_ylabel(unit, fontsize=9.5, color=color_map["muted"])
+
+        ax.yaxis.set_major_formatter(
+            FuncFormatter(
+                lambda v, _: f"{int(round(v)):,}" if abs(v - round(v)) < 1e-9 else f"{v:,.2f}"
+            )
+        )
+
         _style_axes(ax, color_map, grid_axis=None)
         ax.tick_params(axis="x", which="both", length=0, labelbottom=False)
 
@@ -410,7 +417,7 @@ def render_bar_h_chart(
 def _format_chart_value(value: float) -> str:
     if abs(value - round(value)) < 1e-9:
         return f"{int(round(value)):,}"
-    return f"{value:.2f}"
+    return f"{value:,.2f}"
 
 
 def render_bar_v_chart(
