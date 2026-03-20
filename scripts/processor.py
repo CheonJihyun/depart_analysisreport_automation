@@ -1115,3 +1115,126 @@ def get_variable_target_performance(account_id, date_start, date_end):
     
     df = pd.read_sql(query, engine)
     return df
+
+# ----------------------------------
+# 구매 데이터 분석 페이지용 함수들
+
+def has_purchase_data(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT 1
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= '{date_end}'::date
+          AND apd.purchases IS NOT NULL
+          AND apd.purchases > 0
+        LIMIT 1
+    """
+
+    df = pd.read_sql(query, engine)
+    return not df.empty
+
+
+def get_purchase_roas_weekly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('week', apd.date)::date AS week_start,
+            ROUND(AVG(apd.purchase_roas)::numeric, 2) AS avg_roas
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchase_roas IS NOT NULL
+        GROUP BY DATE_TRUNC('week', apd.date)::date
+        ORDER BY week_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+def get_purchase_roas_monthly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('month', apd.date)::date AS month_start,
+            ROUND(AVG(apd.purchase_roas)::numeric, 2) AS avg_roas
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchase_roas IS NOT NULL
+        GROUP BY DATE_TRUNC('month', apd.date)::date
+        ORDER BY month_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+def get_purchase_count_weekly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('week', apd.date)::date AS week_start,
+            COALESCE(SUM(apd.purchases), 0) AS purchases
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchases IS NOT NULL
+        GROUP BY DATE_TRUNC('week', apd.date)::date
+        ORDER BY week_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+def get_purchase_count_monthly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('month', apd.date)::date AS month_start,
+            COALESCE(SUM(apd.purchases), 0) AS purchases
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchases IS NOT NULL
+        GROUP BY DATE_TRUNC('month', apd.date)::date
+        ORDER BY month_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+def get_purchase_analysis_pages_data(account_id, date_start, date_end):
+    if not has_purchase_data(account_id, date_start, date_end):
+        return None
+
+    return {
+        "roas_page": {
+            "title": "평균 ROAS",
+            "weekly": get_purchase_roas_weekly(account_id, date_start, date_end),
+            "monthly": get_purchase_roas_monthly(account_id, date_start, date_end),
+        },
+        "purchase_page": {
+            "title": "구매전환 건수",
+            "weekly": get_purchase_count_weekly(account_id, date_start, date_end),
+            "monthly": get_purchase_count_monthly(account_id, date_start, date_end),
+        }
+    }
