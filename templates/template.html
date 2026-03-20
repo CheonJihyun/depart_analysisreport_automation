@@ -261,7 +261,41 @@
     </div>
   </section>
 
+  {# =========================================================
+     (6-1) Purchase Analysis - ROAS
+     ========================================================= #}
+  {% if purchase_analysis_pages and purchase_analysis_pages.is_visible %}
+  <section class="page">
+    {{ page_header(purchase_analysis_pages.titles.section_title) }}
+    {{ big_title(purchase_analysis_pages.titles.page_1_title) }}
 
+    <div class="page-body">
+      <div class="span-6">
+        {{ figure(charts.purchase_roas_weekly, alt='purchase roas weekly') }}
+      </div>
+      <div class="span-6">
+        {{ figure(charts.purchase_roas_monthly, alt='purchase roas monthly') }}
+      </div>
+    </div>
+  </section>
+
+  {# =========================================================
+     (6-2) Purchase Analysis - Purchase Count
+     ========================================================= #}
+  <section class="page">
+    {{ page_header(purchase_analysis_pages.titles.section_title) }}
+    {{ big_title(purchase_analysis_pages.titles.page_2_title) }}
+
+    <div class="page-body">
+      <div class="span-6">
+        {{ figure(charts.purchase_count_weekly, alt='purchase count weekly') }}
+      </div>
+      <div class="span-6">
+        {{ figure(charts.purchase_count_monthly, alt='purchase count monthly') }}
+      </div>
+    </div>
+  </section>
+  {% endif %}
 
   {# =========================================================
      (7) Content Performance - Top CTR
