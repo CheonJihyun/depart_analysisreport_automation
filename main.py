@@ -437,13 +437,14 @@ def export_to_pdf(html_path, output_pdf_path):
         browser.close()
     print(f" PDF 저장 완료: {output_pdf_path}")
 
-
+# 변수 지정 함수
+# target_id 에 account_id
 def run():
     start_time = time.time()
 
     config = {
-        "target_id": 3,
-        "fb_ad_account_id":"act_4204029286499182",
+        "target_id": 23,
+        "fb_ad_account_id":"act_799496024940107",
         "start":"2025-02-13",
         "end": "2026-02-26",
         "main_age": ["35-44", "45-54"],
@@ -545,6 +546,12 @@ def run():
     add_chart("keyword_avoid_top_verb_adj", "avoid_top_va")
     add_chart("keyword_avoid_bottom_noun", "avoid_bottom_noun")
     add_chart("keyword_avoid_bottom_verb_adj", "avoid_bottom_va")
+
+    # 구매 데이터 추가
+    add_chart("purchase_roas_weekly", "purchase_roas_weekly")
+    add_chart("purchase_roas_monthly", "purchase_roas_monthly")
+    add_chart("purchase_count_weekly", "purchase_count_weekly")
+    add_chart("purchase_count_monthly", "purchase_count_monthly")
 
     def add_table(dataset_key: str, title: str, rank_head: str, kw_head: str):
         ds = datasets.get(dataset_key)
@@ -732,6 +739,10 @@ def run():
         #     }
         # ]
         "appendix": [],
+        "purchase_analysis_pages": report_json.get(
+            "purchase_analysis_pages",
+            {"is_visible": False}
+        ),
     }
 
 
