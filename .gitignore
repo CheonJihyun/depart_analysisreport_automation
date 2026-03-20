@@ -5,3 +5,9 @@
 # Thumbnail cache
 static/thumbnail/*
 !static/thumbnail/.gitkeep
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
