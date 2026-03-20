@@ -318,11 +318,19 @@ body {
 }
 
 .cover__brand {
-  font-size: 35pt;
+  font-size: 46pt;
   font-weight: 900;
   position: absolute;
-  right: 24mm;
-  bottom: 16mm;
+  right: 32mm;
+  bottom: 24mm;
+}
+
+.cover__eod {
+  font-size: 84pt;
+  font-weight: 900;
+  letter-spacing: 0em;
+  color: var(--cover-text-color, #fff);
+  text-align: center;
 }
 
 /* =========================

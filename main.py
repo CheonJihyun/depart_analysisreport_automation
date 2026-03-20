@@ -661,7 +661,7 @@ def run():
             "quarter_label": period,
             "year": year,
             "generated_at": generated_at,
-            "brand": "De:part",
+            "brand": "De;part",
             "period_ads": period_ads or "-",
             "period_contents": period_contents or "-",
             "keyword_count": f"{summary.get('total_keywords', '-') }개",

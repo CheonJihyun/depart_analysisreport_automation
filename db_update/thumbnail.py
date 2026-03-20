@@ -506,7 +506,7 @@ def _image_dimensions(data: bytes) -> Optional[Tuple[int, int]]:
 def _download_best_image(
     urls: List[str],
     timeout: int = 30,
-    min_short_side: int = 720,
+    min_short_side: int = 300,
 ) -> Tuple[bytes, str, str, int, int]:
     if not urls:
         raise RuntimeError("No candidate image URLs")
@@ -517,7 +517,13 @@ def _download_best_image(
     best_width = 0
     best_height = 0
     best_score = (-1, -1, -1)
-    largest_seen = (0, 0)
+
+    fallback_bytes: Optional[bytes] = None
+    fallback_type = ""
+    fallback_url = ""
+    fallback_width = 0
+    fallback_height = 0
+    fallback_score = (-1, -1, -1)
 
     for url in urls:
         try:
@@ -532,7 +538,17 @@ def _download_best_image(
             width, height = dims
             short_side = min(width, height)
             area = width * height
-            largest_seen = max(largest_seen, (short_side, area))
+
+            # 크기 무관하게 가장 큰 후보를 fallback으로 보관
+            fallback_score_candidate = (short_side, area, len(body))
+            if fallback_score_candidate > fallback_score:
+                fallback_score = fallback_score_candidate
+                fallback_bytes = body
+                fallback_type = resp.headers.get("Content-Type", "")
+                fallback_url = url
+                fallback_width = width
+                fallback_height = height
+
             if short_side < min_short_side:
                 continue
 
@@ -547,11 +563,16 @@ def _download_best_image(
         except Exception:
             continue
 
+    # min_short_side 기준을 통과한 이미지가 없으면 가장 큰 후보로 fallback
     if best_bytes is None:
-        raise RuntimeError(
-            "Failed to download high-quality thumbnail candidate "
-            f"(min_short_side={min_short_side}, largest_seen={largest_seen[0]}px)"
+        if fallback_bytes is None:
+            raise RuntimeError("Failed to download any thumbnail candidate")
+        print(
+            f"[WARN] No image met min_short_side={min_short_side}px, "
+            f"using best available ({fallback_width}x{fallback_height})"
         )
+        return fallback_bytes, fallback_type, fallback_url, fallback_width, fallback_height
+
     return best_bytes, best_type, best_url, best_width, best_height
 
 
@@ -672,8 +693,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--min-short-side",
         type=int,
-        default=720,
-        help="Reject images whose shorter side is below this size",
+        default=300,
+        help="Prefer images whose shorter side is at or above this size; falls back to largest available",
     )
     return parser.parse_args()
 
