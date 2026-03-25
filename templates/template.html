@@ -261,8 +261,62 @@
     </div>
   </section>
 
+  {# =========================================================
+     (6-1) Purchase Analysis - ROAS
+     ========================================================= #}
+  {% if purchase_analysis_pages and purchase_analysis_pages.is_visible %}
+  <section class="page">
+    {{ page_header(purchase_analysis_pages.titles.section_title) }}
+    {{ big_title(purchase_analysis_pages.titles.page_1_title) }}
 
+    <div class="page-body">
+      <div class="span-6">
+        {{ figure(charts.purchase_roas_weekly, alt='purchase roas weekly') }}
+      </div>
+      <div class="span-6">
+        {{ figure(charts.purchase_roas_monthly, alt='purchase roas monthly') }}
+      </div>
+    </div>
+  </section>
 
+  {# =========================================================
+     (6-2) Purchase Analysis - Purchase Count
+     ========================================================= #}
+  <section class="page">
+    {{ page_header(purchase_analysis_pages.titles.section_title) }}
+    {{ big_title(purchase_analysis_pages.titles.page_2_title) }}
+
+    <div class="page-body">
+      <div class="span-6">
+        {{ figure(charts.purchase_count_weekly, alt='purchase count weekly') }}
+      </div>
+      <div class="span-6">
+        {{ figure(charts.purchase_count_monthly, alt='purchase count monthly') }}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# =========================================================
+     (6-3) Spend & Revenue Analysis
+     ========================================================= #}
+  {% if spend_revenue_pages and spend_revenue_pages.is_visible %}
+  <section class="page">
+    {{ page_header(spend_revenue_pages.titles.section_title) }}
+    {{ big_title(spend_revenue_pages.titles.page_1_title) }}
+
+    <div class="page-body">
+      <div class="span-6">
+        {{ figure(charts.spend_revenue_weekly, alt='spend and revenue weekly') }}
+      </div>
+      <div class="span-6">
+        {{ figure(charts.spend_revenue_monthly, alt='spend and revenue monthly') }}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  
   {# =========================================================
      (7) Content Performance - Top CTR
      ========================================================= #}
@@ -356,6 +410,52 @@
   </section>
 
 
+
+{# =========================================================
+   (8-1) Followers_demographics
+   ========================================================= #}
+  {% if follower_demographics_pages and follower_demographics_pages.is_visible %}
+    <section class="page page--follower-demographics">
+      {{ page_header(follower_demographics_pages.titles.section_title) }}
+      {{ big_title(follower_demographics_pages.titles.page_1_title) }}
+
+      <div class="page-body follower-demo-body">
+
+        <!-- 1행 -->
+        <div class="row">
+          <div class="span-6 demo-card">
+            <h4>성별 비율 (Unknown 제외)</h4>
+            {{ figure(charts.gender_clean, alt='gender clean') }}
+          </div>
+
+          <div class="span-6 demo-card">
+            <h4>성별 데이터 식별 여부</h4>
+            {{ figure(charts.gender_unknown, alt='gender unknown') }}
+          </div>
+        </div>
+
+        <!-- 2행 -->
+        <div class="row">
+          <div class="span-6 demo-card">
+            <h4>연령대별 성별 분포 (Unknown 제외)</h4>
+            {{ figure(charts.age_clean, alt='age gender clean') }}
+          </div>
+
+          <div class="span-6 demo-card">
+            <h4>연령 데이터 식별 여부</h4>
+            {{ figure(charts.age_unknown, alt='age unknown by age') }}
+          </div>
+        </div>
+
+      </div>
+
+      {% if follower_demographics_pages.latest_date %}
+      <div class="caption" style="margin-top: 2px; font-size: 11px; color: #666;">
+        기준일: {{ follower_demographics_pages.latest_date }}
+      </div>
+      {% endif %}
+    </section>
+  {% endif %}
 
   {# =========================================================
      (9) Target - Avg Impressions Heatmap
@@ -627,8 +727,7 @@
     </section>
   {% endif %}
 
-
-
+  
   {# =========================================================
      (15) Avoiding target keywords (optional)
      ========================================================= #}
@@ -728,6 +827,56 @@
   {% endif %}
 
 
+  {# =========================================================
+      (16) Purchase Contents
+      ========================================================= #}
+  {% if purchase_contents_pages and purchase_contents_pages["is_visible"] %}
+    {% for page_items in purchase_contents_pages["pages"] %}
+    <section class="page page--purchase-contents">
+      {{ page_header('전체 매출 데이터 분석') }}
+      {{ big_title('구매 발생 콘텐츠') }}
+
+      <div class="page-body purchase-contents-body">
+        {% for item in page_items %}
+          <div class="span-3">
+            <div class="purchase-content-card">
+              <div class="purchase-content-card__thumb">
+                {% if item.thumbnail %}
+                  <img src="{{ item.thumbnail }}" alt="thumbnail">
+                {% else %}
+                  <div class="purchase-thumb-placeholder">NO IMAGE</div>
+                {% endif %}
+              </div>
+
+              <div class="purchase-content-card__meta">
+                ({{ item.uploaded_at }} 업로드)
+              </div>
+
+              <div class="purchase-content-card__chart">
+                {% if item.chart %}
+                  {% set _chart = item.chart | trim %}
+                  {% if _chart.startswith('<svg') %}
+                    <div class="purchase-chart-svg">{{ item.chart | safe }}</div>
+                  {% else %}
+                    <img src="{{ item.chart }}" alt="purchase chart">
+                  {% endif %}
+                {% else %}
+                  <div class="purchase-chart-placeholder">CHART</div>
+                {% endif %}
+              </div>
+
+              <div class="purchase-content-card__count">
+                (총 {{ item.purchases }}건)
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+  {% endif %}
+
+
 
   {# =========================================================
      Appendix
@@ -788,5 +937,6 @@
       </section>
     {% endfor %}
   {% endif %}
+
 </body>
 </html>
