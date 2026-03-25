@@ -15,6 +15,10 @@ from matplotlib.patches import Rectangle
 from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
+import base64
+
+# 경고 끄기
+plt.rcParams["figure.max_open_warning"] = 100
 
 DEFAULT_THEME = "#4e73df"
 
@@ -22,10 +26,10 @@ DEFAULT_THEME = "#4e73df"
 def _configure_matplotlib_fonts() -> None:
     # Prefer Korean-capable fonts to avoid broken glyphs in SVG.
     preferred = [
-        "Apple SD Gothic Neo",
+        #"Apple SD Gothic Neo",
         "Noto Sans KR",
         "Malgun Gothic",
-        "Arial Unicode MS",
+        #"Arial Unicode MS",
         "DejaVu Sans",
     ]
     plt.rcParams["font.family"] = preferred
@@ -238,10 +242,18 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         return ""
 
     x = list(range(len(labels)))
-    fig, ax = plt.subplots(figsize=(6.8, 3.6) if not compact else (3.6, 2.0))
+    fig, ax = plt.subplots(figsize=(8.0, 4.4) if not compact else (3.6, 2.0))
     has_bottom_month_band = False
     unit = str(dataset.get("unit") or "").strip()
     plotted_values: List[float] = []
+
+    # ----------추가----------
+    show_legend = bool(dataset.get("show_legend"))
+    label_map = {
+        "spend": "광고비",
+        "revenue": "매출발생",
+    }
+    # ------------------------
 
     for idx, s in enumerate(series):
         raw_data = s.get("data") or []
@@ -253,7 +265,46 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
             continue
 
         color = color_map["series"][idx % len(color_map["series"])]
-        ax.plot(x_values, data, color=color, linewidth=2, marker="o", markersize=3.8)
+        # ----------추가----------
+        series_name = s.get("name") or f"series_{idx}"
+
+        color_map_line = {
+            "spend": "#9E9E9E",     # 광고비 (회색)
+            "revenue": "#2E7D32",   # 매출 (초록)
+        }
+
+        if dataset.get("show_legend"):
+            color = color_map_line.get(
+                series_name,
+                color_map["series"][idx % len(color_map["series"])]
+            )
+        else:
+            color = color_map["series"][idx % len(color_map["series"])]
+        
+
+        plot_label = label_map.get(series_name, series_name)
+
+        if show_legend:
+            ax.plot(
+                x_values,
+                data,
+                color=color,
+                linewidth=2,
+                marker="o",
+                markersize=3.8,
+                label=plot_label,
+            )
+        else:
+            ax.plot(
+                x_values,
+                data,
+                color=color,
+                linewidth=2,
+                marker="o",
+                markersize=3.8,
+            )
+        # ------------------------
+        
         label_idx_set = set(_line_label_indices(data))
 
         for x_val, y_val in zip(x_values, data):
@@ -270,14 +321,23 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
                 label,
                 (x_val, y_num),
                 textcoords="offset points",
-                xytext=(0, 5 if compact else 7),
+                xytext=(0, 5 if compact else 10),
                 ha="center",
                 va="bottom",
                 fontsize=6 if compact else 8,
                 color=color,
                 clip_on=False,
             )
-
+    # ----추가▼----
+    if show_legend and not compact:
+        ax.legend(
+            loc="upper center",
+            bbox_to_anchor=(0.5, 1.14),
+            ncol=len(series),
+            frameon=False,
+            fontsize=9,
+        )
+    #-----순서 변경▼-----
     if not plotted_values:
         return ""
 
@@ -297,7 +357,16 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         for spine in ax.spines.values():
             spine.set_visible(False)
     else:
+        chart_label = None
+        title_text = str(dataset.get("title") or "").strip()
+
+        if "주별" in title_text:
+            chart_label = "주별"
+        elif "월별" in title_text:
+            chart_label = "월별"
+
         month_spans = _extract_month_spans(labels)
+
         if month_spans:
             if len(labels) > 1:
                 ax.set_xlim(-0.5, len(labels) - 0.5)
@@ -346,13 +415,55 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         ax.set_xticks([])
         if unit:
             ax.set_ylabel(unit, fontsize=9.5, color=color_map["muted"])
+
+        ax.yaxis.set_major_formatter(
+            FuncFormatter(
+                lambda v, _: f"{int(round(v)):,}" if abs(v - round(v)) < 1e-9 else f"{v:,.2f}"
+            )
+        )
+
         _style_axes(ax, color_map, grid_axis=None)
         ax.tick_params(axis="x", which="both", length=0, labelbottom=False)
 
+    # layout 먼저
     if not compact and has_bottom_month_band:
         fig.tight_layout(pad=0.6, rect=(0, 0.10, 1, 1))
     else:
         fig.tight_layout(pad=0.6)
+
+    # 주별/월별 라벨
+    if not compact:
+        title_text = str(dataset.get("title") or "").strip()
+        chart_label = None
+        if "주별" in title_text:
+            chart_label = "주별"
+        elif "월별" in title_text:
+            chart_label = "월별"
+
+        if chart_label:
+            fig.text(
+                0.5, 1.17,
+                chart_label,
+                transform=ax.transAxes,
+                ha="center",
+                va="top",
+                fontsize=17,
+                color="#2E2E2E",
+                fontweight="bold"
+            )
+
+    # 범례 layout 뒤에
+    if show_legend and not compact:
+        ax.legend(
+            loc="upper right",
+            bbox_to_anchor=(1.0, 1.10),
+            ncol=len(series),
+            frameon=False,
+            fontsize=9,
+        )
+
+    plt.subplots_adjust(left=0.14, right=0.96)
+
     return _fig_to_svg(fig)
 
 
@@ -410,7 +521,7 @@ def render_bar_h_chart(
 def _format_chart_value(value: float) -> str:
     if abs(value - round(value)) < 1e-9:
         return f"{int(round(value)):,}"
-    return f"{value:.2f}"
+    return f"{value:,.2f}"
 
 
 def render_bar_v_chart(
@@ -826,3 +937,349 @@ def render_bubble_chart(
     ax.axis("off")
 
     return _fig_to_svg(fig)
+
+
+# 구매 콘텐츠 파이차트
+def render_purchase_pie_chart(rows: List[Dict[str, Any]], color_map: Dict[str, Any]) -> str:
+    df = pd.DataFrame(rows)
+    if df.empty or "purchases" not in df.columns:
+        return ""
+
+    df = df.copy()
+    df["purchases"] = pd.to_numeric(df["purchases"], errors="coerce").fillna(0)
+    df = df[df["purchases"] > 0]
+    if df.empty:
+        return ""
+
+    def _gender_label(g):
+        g = str(g).strip().lower()
+        if g == "female":
+            return "여성"
+        if g == "male":
+            return "남성"
+        return str(g)
+
+    labels = [
+        f"{str(row['age']).strip()} {_gender_label(row['gender'])}"
+        for _, row in df.iterrows()
+    ]
+    values = df["purchases"].tolist()
+    total = int(df["purchases"].sum())
+    percentages = [(v / total) * 100 for v in values]
+
+    fig, ax = plt.subplots(figsize=(5.2, 5.0))
+
+    colors = _value_colors(
+        values,
+        color_map,
+        palette=[
+            color_map["dark"],
+            color_map["base"],
+            color_map["light"],
+            color_map["lighter"],
+        ],
+    )
+
+    pie_radius = 1.21
+
+    wedges, _ = ax.pie(
+        values,
+        colors=colors,
+        startangle=90,
+        counterclock=False,
+        radius=pie_radius,
+        wedgeprops=dict(edgecolor="none")
+    )
+
+    label_items = []
+
+    for i, w in enumerate(wedges):
+        angle = (w.theta2 + w.theta1) / 2.0
+        x = np.cos(np.deg2rad(angle))
+        y = np.sin(np.deg2rad(angle))
+
+        label_items.append({
+            "idx": i,
+            "x": x,
+            "y": y,
+            "line_start": (x * pie_radius * 0.96, y * pie_radius * 0.96),
+            "label_x": 1.34 if x >= 0 else -1.34,
+            "label_y": y * 1.08,
+            "ha": "left" if x >= 0 else "right",
+            "side": "right" if x >= 0 else "left",
+        })
+
+    # 한쪽에 라벨이 너무 몰리면 구매건수가 작은 조각부터 반대편으로 분산
+    left_items = [d for d in label_items if d["side"] == "left"]
+    right_items = [d for d in label_items if d["side"] == "right"]
+
+    if len(left_items) - len(right_items) >= 2:
+        move_count = (len(left_items) - len(right_items)) // 2
+        left_items_sorted = sorted(left_items, key=lambda d: values[d["idx"]])  
+        for item in left_items_sorted[:move_count]:
+            item["side"] = "right"
+            item["label_x"] = 1.34
+            item["ha"] = "left"
+
+    elif len(right_items) - len(left_items) >= 2:
+        move_count = (len(right_items) - len(left_items)) // 2
+        right_items_sorted = sorted(right_items, key=lambda d: values[d["idx"]]) 
+        for item in right_items_sorted[:move_count]:
+            item["side"] = "left"
+            item["label_x"] = -1.34
+            item["ha"] = "right"
+
+    # 같은 쪽 라벨끼리 간격 벌려서 겹침 방지
+    def _adjust(items, min_gap=0.32):
+        items = sorted(items, key=lambda d: d["label_y"], reverse=True)
+        for j in range(1, len(items)):
+            upper = items[j - 1]
+            cur = items[j]
+            if upper["label_y"] - cur["label_y"] < min_gap:
+                cur["label_y"] = upper["label_y"] - min_gap
+        return items
+
+    left_items = _adjust([d for d in label_items if d["side"] == "left"], min_gap=0.32)
+    right_items = _adjust([d for d in label_items if d["side"] == "right"], min_gap=0.32)
+
+    adjusted = {d["idx"]: d for d in left_items + right_items}
+
+    for i in range(len(labels)):
+        item = adjusted[i]
+        label_x = item["label_x"]
+        label_y = item["label_y"]
+        ha = item["ha"]
+
+        ax.annotate(
+            "",
+            xy=item["line_start"],
+            xytext=(label_x, label_y),
+            arrowprops=dict(
+                arrowstyle="-",
+                color="#8c8c8c",
+                lw=0.8,
+                shrinkA=0,
+                shrinkB=0,
+                connectionstyle="angle3,angleA=0,angleB=90"
+            )
+        )
+
+        ax.text(
+            label_x,
+            label_y + 0.04,
+            labels[i],
+            ha=ha,
+            va="bottom",
+            fontsize=11,
+            color="#555555"
+        )
+
+        ax.text(
+            label_x,
+            label_y - 0.01,
+            f"{percentages[i]:.1f}%",
+            ha=ha,
+            va="top",
+            fontsize=10,
+            color="#9a9a9a"
+        )
+
+    # 차트 크기 일정하게 보이도록 축 범위 고정
+    ax.set_xlim(-1.65, 1.65)
+    ax.set_ylim(-1.45, 1.45)
+
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    fig.subplots_adjust(left=0.06, right=0.94, top=0.94, bottom=0.08)
+    return _fig_to_svg(fig)
+
+# -----------------------------------
+# 팔로워 인구통계 추가
+
+def fig_to_base64(fig) -> str:
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=200, bbox_inches="tight", facecolor="white")
+    plt.close(fig)
+    buf.seek(0)
+    return "data:image/png;base64," + base64.b64encode(buf.read()).decode("utf-8")
+
+# 팔로워 연령대별 누적 가로막대 차트
+def render_follower_age_gender_stacked_barh_chart(chart_data, color_map):
+    labels = chart_data.get("labels", [])
+    series = chart_data.get("series", [])
+
+    if not labels or not series:
+        return ""
+
+    # 시리즈 이름/데이터 정리
+    parsed = []
+    for s in series:
+        name = str(s.get("name", "")).strip().lower()
+        data = pd.to_numeric(pd.Series(s.get("data", [])), errors="coerce").fillna(0).tolist()
+
+        if name in ["male", "남성"]:
+            parsed.append(("남성", data, color_map["dark"], "white"))
+        elif name in ["female", "여성"]:
+            parsed.append(("여성", data, color_map["base"], "white"))
+        elif name in ["unknown", "알 수 없음"]:
+            parsed.append(("알 수 없음", data, color_map["lighter"], "#333333"))
+        elif name in ["known", "남/여 전체"]:
+            parsed.append(("남/여 전체", data, color_map["dark"], "white"))
+
+    if not parsed:
+        return ""
+
+    # 길이 맞추기
+    n = len(labels)
+    normalized = []
+    for display_name, data, color, text_color in parsed:
+        if len(data) < n:
+            data = data + [0] * (n - len(data))
+        elif len(data) > n:
+            data = data[:n]
+        normalized.append((display_name, data, color, text_color))
+
+    df = pd.DataFrame({"age_range": labels})
+    for i, (display_name, data, color, text_color) in enumerate(normalized):
+        df[f"v{i}"] = data
+
+    value_cols = [f"v{i}" for i in range(len(normalized))]
+    df["total"] = df[value_cols].sum(axis=1)
+    df = df[df["total"] > 0]
+    if df.empty:
+        return ""
+
+    age_order = ["13-17", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
+    df["age_order"] = df["age_range"].apply(lambda x: age_order.index(x) if x in age_order else 99)
+    df = df.sort_values("age_order", ascending=False)
+
+    for i in range(len(normalized)):
+        df[f"p{i}"] = (df[f"v{i}"] / df["total"] * 100).fillna(0)
+
+    y = np.arange(len(df))
+    fig, ax = plt.subplots(figsize=(7.2, 5.8))
+
+    left = np.zeros(len(df))
+    for i, (display_name, data, color, text_color) in enumerate(normalized):
+        vals = df[f"p{i}"].tolist()
+        ax.barh(
+            y, vals, left=left,
+            color=color, edgecolor="none", height=0.62,
+            label=display_name
+        )
+
+        for j, v in enumerate(vals):
+            if v >= 8:
+                ax.text(
+                    left[j] + v / 2, j, f"{v:.0f}%",
+                    ha="center", va="center",
+                    fontsize=15, color=text_color, fontweight="bold"
+                )
+        left += np.array(vals)
+
+    ax.set_yticks(y)
+    ax.set_yticklabels(df["age_range"].astype(str).tolist(), fontsize=12)
+    ax.set_xlim(0, 100)
+    ax.set_xticks([0, 20, 40, 60, 80, 100])
+    ax.set_xticklabels([f"{v}%" for v in [0, 20, 40, 60, 80, 100]], fontsize=11, color="#666666")
+
+    ax.legend(
+        loc="upper right",
+        bbox_to_anchor=(1.0, 1.10),
+        ncol=min(len(normalized), 3),
+        frameon=False,
+        fontsize=15
+    )
+
+    ax.grid(axis="x", linestyle="--", alpha=0.18)
+    ax.set_axisbelow(True)
+
+    for spine in ["top", "right", "left", "bottom"]:
+        ax.spines[spine].set_visible(False)
+
+    ax.tick_params(axis="y", length=0)
+    ax.tick_params(axis="x", length=0)
+
+    plt.tight_layout()
+    return fig_to_base64(fig)
+
+#--------------------------------
+# 팔로워 성별 도넛 차트
+def render_follower_gender_doughnut_chart(chart_data, color_map):
+    labels = chart_data.get("labels", [])
+    series = chart_data.get("series", [])
+
+    if not labels or not series:
+        return ""
+
+    values = series[0].get("data", [])
+    if not values:
+        return ""
+
+    values = [float(v) for v in values]
+
+    def _pick_color(label: str) -> str:
+        label = str(label).strip()
+
+        if label == "여성":
+            return color_map["base"]
+        elif label == "남성":
+            return color_map["dark"]
+        elif label in ["남/여 전체", "연령 확인 가능", "확인 가능", "Known"]:
+            return color_map["dark"]
+        elif label in ["알 수 없음", "Unknown", "unknown"]:
+            return color_map["lighter"]
+        else:
+            return color_map["lighter"]
+
+    colors = [_pick_color(label) for label in labels]
+
+    fig, ax = plt.subplots(figsize=(3.8, 3.8))
+
+    ax.pie(
+        values,
+        colors=colors,
+        startangle=90,
+        counterclock=False,
+        wedgeprops=dict(width=0.4, edgecolor="white")
+    )
+
+    total = sum(values)
+
+    center_text = chart_data.get("center_text")
+    center_subtext = chart_data.get("center_subtext")
+
+    if center_text is not None:
+        center_main = str(center_text)
+        center_sub = str(center_subtext or "")
+    else:
+        is_ratio_chart = 99.5 <= total <= 100.5
+        center_main = "100%" if is_ratio_chart else f"{int(total):,}"
+        center_sub = "비율" if is_ratio_chart else "팔로워"
+
+    ax.text(
+        0, 0.05, center_main,
+        ha="center", va="center",
+        fontsize=13, fontweight="bold"
+    )
+    ax.text(
+        0, -0.12, center_sub,
+        ha="center", va="center",
+        fontsize=12, color="#666"
+    )
+
+    ax.legend(
+        labels,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.01),
+        ncol=min(len(labels), 3),
+        frameon=False,
+        fontsize=12
+    )
+
+    ax.set(aspect="equal")
+    ax.axis("off")
+    plt.tight_layout()
+
+    return fig_to_base64(fig)
