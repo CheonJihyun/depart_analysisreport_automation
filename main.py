@@ -8,7 +8,7 @@ from typing import Any
 from urllib.parse import unquote, urlparse
 import pandas as pd
 from scripts.processor import _normalize_keyword_by_pos, _best_adverb_score, kiwi, VERB_ADJ_TAGS
-from scripts.visualizer import build_color_map, render_dataset, is_dark_color, render_bubble_chart
+from scripts.visualizer import build_color_map, render_dataset, is_dark_color, render_bubble_chart, render_purchase_pie_chart, render_follower_gender_doughnut_chart, render_follower_age_gender_stacked_barh_chart
 from scripts.reporter import generate_html
 from to_json import run as generate_json
 import time
@@ -38,6 +38,7 @@ def _load_env_file(env_path: Path) -> None:
         if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
             value = value[1:-1]
         os.environ.setdefault(key, value)
+
 
 
 def _parse_s3_location(url: str) -> tuple[str, str] | None:
@@ -120,6 +121,12 @@ def _materialize_content_thumbnails(items: list[dict[str, Any]], output_dir: str
         if src in cache:
             item["thumbnail"] = cache[src]
             continue
+
+        # (추가)이미 웹 URL이면 그대로 사용 : 구매 콘텐츠 썸네일 수집 오류
+        # if src.startswith("http://") or src.startswith("https://"):
+        #     item["thumbnail"] = src
+        #     cache[src] = src
+        #     continue
 
         s3_loc = _parse_s3_location(src)
         if not s3_loc:
@@ -437,15 +444,16 @@ def export_to_pdf(html_path, output_pdf_path):
         browser.close()
     print(f" PDF 저장 완료: {output_pdf_path}")
 
-
+# 변수 지정 함수
+# target_id 에 account_id
 def run():
     start_time = time.time()
 
     config = {
-        "target_id": 3,
-        "fb_ad_account_id":"act_4204029286499182",
-        "start":"2025-02-13",
-        "end": "2026-02-26",
+        "target_id": 8,
+        "fb_ad_account_id":"act_618278251632554",
+        "start":"2025-08-01",
+        "end": "2026-03-01",
         "main_age": ["35-44", "45-54"],
         "main_gender": "male",
         "avoid_age": "",
@@ -529,7 +537,7 @@ def run():
         charts["heatmap_impressions"] = heatmap_imp
     heatmap_ctr = render_dataset(heatmap_ds, color_map, metric="ctr")
     if heatmap_ctr:
-        charts["heatmap_ctr"] = heatmap_ctr
+        charts["heatmap_ctr"] = heatmap_ctr    
 
     add_chart("keyword_overall_top_noun", "overall_top_noun")
     add_chart("keyword_overall_top_verb_adj", "overall_top_va")
@@ -545,6 +553,43 @@ def run():
     add_chart("keyword_avoid_top_verb_adj", "avoid_top_va")
     add_chart("keyword_avoid_bottom_noun", "avoid_bottom_noun")
     add_chart("keyword_avoid_bottom_verb_adj", "avoid_bottom_va")
+
+    # 구매 데이터 추가
+    add_chart("purchase_roas_weekly", "purchase_roas_weekly")
+    add_chart("purchase_roas_monthly", "purchase_roas_monthly")
+    add_chart("purchase_count_weekly", "purchase_count_weekly")
+    add_chart("purchase_count_monthly", "purchase_count_monthly")
+
+    # 광고비 & 매출발생 추가
+    add_chart("spend_revenue_weekly", "spend_revenue_weekly")
+    add_chart("spend_revenue_monthly", "spend_revenue_monthly")
+
+    # 팔로워 인구통계학 추가
+    gender_clean_ds = datasets.get("gender_clean")
+
+    if gender_clean_ds and gender_clean_ds.get("labels") and gender_clean_ds.get("series"):
+        charts["gender_clean"] = render_follower_gender_doughnut_chart(
+            gender_clean_ds, color_map
+        )
+
+    age_gender_clean_ds = datasets.get("age_gender_clean")
+    if age_gender_clean_ds and age_gender_clean_ds.get("labels") and age_gender_clean_ds.get("series"):
+        charts["age_clean"] = render_follower_age_gender_stacked_barh_chart(
+            age_gender_clean_ds, color_map
+        )
+
+    gender_unknown_ds = datasets.get("gender_unknown")
+    if gender_unknown_ds and gender_unknown_ds.get("labels") and gender_unknown_ds.get("series"):
+        charts["gender_unknown"] = render_follower_gender_doughnut_chart(
+            gender_unknown_ds, color_map
+        )
+
+    age_known_unknown_ds = datasets.get("age_known_unknown")
+    if age_known_unknown_ds and age_known_unknown_ds.get("labels") and age_known_unknown_ds.get("series"):
+        charts["age_unknown"] = render_follower_age_gender_stacked_barh_chart(
+            age_known_unknown_ds, color_map
+        )
+
 
     def add_table(dataset_key: str, title: str, rank_head: str, kw_head: str):
         ds = datasets.get(dataset_key)
@@ -581,6 +626,7 @@ def run():
             "rows": rows,
             "footnote": ""
         }
+        
 
     # 2. 각 계층별(Overall, Main, Avoid) 테이블 묶음 생성
     # [Overall]
@@ -647,10 +693,16 @@ def run():
     cards_main = _combo_cards(datasets.get("main_keyword_combo_detail"), palette=G_CMAP) if has_main_target else []
     cards_avoid = _combo_cards(datasets.get("avoid_keyword_combo_detail"), palette=B_CMAP) if has_avoid_target else []
 
+    # 추가
+    purchase_contents_pages = report_json.get("purchase_contents_pages", {"is_visible": False})
 
+    if purchase_contents_pages.get("is_visible"):
+        for page_items in purchase_contents_pages.get("pages", []):
+            _materialize_content_thumbnails(page_items)
 
-
-
+            for item in page_items:
+                target_details = item.get("target_details") or []
+                item["chart"] = render_purchase_pie_chart(target_details, color_map) if target_details else ""
 
     context = {
         "css_path": "./templates/report.css",
@@ -720,7 +772,7 @@ def run():
                     "cards": cards_avoid,
                 }
             ] if has_avoid_target else None,
-            "avoid_bottom_tables":filter_none(a_bot) if a_bot else None,
+            "avoid_bottom_tables":filter_none(a_bot) if a_bot else None
         },
         "appendix_groups": report_json.get("appendix_groups", []),
         # [
@@ -732,10 +784,23 @@ def run():
         #     }
         # ]
         "appendix": [],
+        "purchase_analysis_pages": report_json.get(    # ROAS, 구매건수 추가
+            "purchase_analysis_pages",
+            {"is_visible": False}
+        ),
+        "purchase_contents_pages": report_json.get(  # 구매 컨텐츠 추가
+            "purchase_contents_pages",
+            {"is_visible": False}
+        ),
+                "spend_revenue_pages": report_json.get(  # 광고/매출금액 추가
+            "spend_revenue_pages",
+            {"is_visible": False}
+        ),
+                "follower_demographics_pages": report_json.get(  # 팔로워 인구통계 추가
+            "follower_demographics_pages",
+            {"is_visible": False}
+        ),
     }
-
-
-
 
     generate_html(context)
     
@@ -750,7 +815,6 @@ def run():
     print("-" * 50)
     print(f"⏳ 총 소요 시간: {elapsed_time:.2f}초") # 소수점 2자리까지 표시
     print("-" * 50)
-
 
 if __name__ == "__main__":
     run()
