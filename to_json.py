@@ -11,7 +11,12 @@ from scripts.processor import (
     get_content_ctr_data, get_a_content_target_ctr_data, get_profile_visits_monthly,
     get_target_avg_imp_ctr, get_target_avg_imp_ctr_threshold,
     get_raw_keyword_performance, filter_keywords_by_pos, get_overall_ctr,
-    get_strategic_performance,get_essence_target_performance,get_variable_target_performance
+    get_strategic_performance,get_essence_target_performance,get_variable_target_performance,
+    has_purchase_data, get_purchase_roas_weekly, get_purchase_roas_monthly,  # ROAS,구매건수 데이터 추가
+    get_purchase_count_weekly, get_purchase_count_monthly,
+    has_purchase_content_data, get_purchase_contents_pages_data, get_a_content_target_purchase_data,  # 구매 컨텐츠 추가
+    has_revenue_data, get_spend_and_revenue_weekly, get_spend_and_revenue_monthly,  # 광고/매출금액 추가
+    has_follower_demographics_data, get_follower_demographics_latest_date, get_demographics_ratio, get_follower_age_gender_known_only, get_age_known_unknown_by_age  # 팔로워 인구통계 추가
 )
 
 def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", avoid_age="", avoid_gender=""):
@@ -82,6 +87,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             
         final_report["datasets"][key] = data_obj
 
+
     # --- 데이터 수집 및 변환 시작 ---
 
     # 1. 인스타그램 및 오가닉 추이
@@ -92,32 +98,32 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     add_ds("insta_followers", "line", "팔로워 추이", insta_df, "명", "updated_at", ["follower_count"])
     
     # 'profile_visit_count' -> 'profile_views'로 수정
-    add_ds("insta_profile_visits", "line", "프로필 방문 수", insta_df, "회", "updated_at", ["profile_views"])
+    # (주별) 추가
+    add_ds("insta_profile_visits", "line", "프로필 방문 수(주별)", insta_df, "회", "updated_at", ["profile_views"])
 
-    # 월간 프로필 방문수 데이터 로드
+    # 월별 프로필 방문수 데이터 로드
     profile_monthly_df = get_profile_visits_monthly(fb_ad_account_id, start, end)
 
     add_ds(
         "insta_profile_visits_monthly",
         "line",                   # 방문수는 막대 그래프가 보기 편합니다
-        "인스타그램 프로필 방문수 (월간)", 
+        "인스타그램 프로필 방문수 (월별)", 
         profile_monthly_df, 
         "회", 
         "updated_at", 
         ["profile_views"]
     )
     
-    organic_df = get_organic_data(target_id, start, end)
-    add_ds("organic_trend", "line", "오가닉 조회수 추이", organic_df, "회", "date_start", ["organic_impressions"])
+    organic_df = get_organic_data(target_id, start, end)  # (주별) 추가
+    add_ds("organic_trend", "line", "오가닉 조회수 추이 (주별)", organic_df, "회", "date_start", ["organic_impressions"])
 
-
-    # 4주 단위 월간 데이터 바로 가져오기
+    # 4주 단위 월별 데이터 바로 가져오기
     organic_monthly_df = get_organic_monthly_data(target_id, start, end)
 
     add_ds(
         "organic_trend_monthly", 
         "line", 
-        "오가닉 조회수 추이 (월간)", 
+        "오가닉 조회수 추이 (월별)", 
         organic_monthly_df, 
         "회", 
         "date_start", 
@@ -125,13 +131,210 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     )
 
 
+    # --- [추가] 팔로워 인구통계학 페이지 ---
+    datasets = final_report["datasets"]
 
+    followers_df = get_instagram_followers(fb_ad_account_id, start, end)
+    current_followers = None
+    if followers_df is not None and not followers_df.empty:
+        follower_series = followers_df["follower_count"].dropna()
+        if not follower_series.empty:
+            current_followers = int(follower_series.iloc[-1])
+
+    if has_follower_demographics_data(target_id):
+        print("팔로워 인구통계학 데이터 있음 - 생성 중...")
+
+        gender_clean_df = get_demographics_ratio(target_id, "gender", "exclude_unknown")
+        age_gender_clean_df = get_follower_age_gender_known_only(target_id)
+        gender_unknown_df = get_demographics_ratio(target_id, "gender", "unknown_vs_known")
+        age_known_unknown_df = get_age_known_unknown_by_age(target_id)
+
+        follower_demo_latest_date = get_follower_demographics_latest_date(target_id)
+
+        # 좌상: 성별 비율 (알 수 없음 제외) + 가운데 현재 팔로워 수
+        if gender_clean_df is not None:
+            datasets["gender_clean"] = {
+                "chart_type": "doughnut",
+                "title": "성별 비율 (알 수 없음 제외)",
+                "labels": gender_clean_df["category"].astype(str).tolist(),
+                "series": [
+                    {"name": "비율", "data": gender_clean_df["ratio"].astype(float).tolist()}
+                ],
+                "unit": "%",
+                "center_text": f"{current_followers:,}" if current_followers is not None else None,
+                "center_subtext": "팔로워"
+            }
+
+        # 좌하: 연령대별 성별 분포 (알 수 없음 제외)
+        if age_gender_clean_df is not None:
+            datasets["age_gender_clean"] = {
+                "chart_type": "stacked_barh",
+                "title": "연령대별 성별 분포 (알 수 없음 제외)",
+                "labels": age_gender_clean_df["age_range"].astype(str).tolist(),
+                "series": [
+                    {"name": "male", "data": age_gender_clean_df["male"].astype(float).tolist()},
+                    {"name": "female", "data": age_gender_clean_df["female"].astype(float).tolist()}
+                ],
+                "unit": "명"
+            }
+
+        # 우상: 성별 데이터 식별 여부 + 가운데 unknown 비율
+        if gender_unknown_df is not None:
+            unknown_ratio = None
+            unknown_row = gender_unknown_df[
+                gender_unknown_df["category"].isin(["알 수 없음", "Unknown"])
+            ]
+            if not unknown_row.empty:
+                unknown_ratio = float(unknown_row["ratio"].iloc[0])
+
+            datasets["gender_unknown"] = {
+                "chart_type": "doughnut",
+                "title": "성별 데이터 식별 여부",
+                "labels": gender_unknown_df["category"].astype(str).tolist(),
+                "series": [
+                    {"name": "비율", "data": gender_unknown_df["ratio"].astype(float).tolist()}
+                ],
+                "unit": "%",
+                "center_text": f"{unknown_ratio:.1f}%" if unknown_ratio is not None else None,
+                "center_subtext": "알 수 없음 비율"
+            }
+
+        # 우하: 연령 데이터 식별 여부 분포
+        if age_known_unknown_df is not None:
+            datasets["age_known_unknown"] = {
+                "chart_type": "stacked_barh",
+                "title": "연령대별 성별 데이터 식별 여부 분포",
+                "labels": age_known_unknown_df["age_range"].astype(str).tolist(),
+                "series": [
+                    {"name": "known", "data": age_known_unknown_df["known"].astype(float).tolist()},
+                    {"name": "unknown", "data": age_known_unknown_df["unknown"].astype(float).tolist()}
+                ],
+                "unit": "명"
+            }
+
+        final_report["follower_demographics_pages"] = {
+            "is_visible": True,
+            "latest_date": follower_demo_latest_date,
+            "titles": {
+                "section_title": "팔로워 인구통계학 분석",
+                "page_1_title": "성별 및 연령대별 팔로워 분포"
+            }
+        }
+
+    else:
+        print("팔로워 인구통계학 데이터 없음...")
+        final_report["follower_demographics_pages"] = {
+            "is_visible": False
+        }
 
     # 2. CTR 추이
     print("CTR 추이 생성 중...")
     ctr_df = get_ctr_data(target_id, start, end)
     add_ds("ctr_trend", "line", "주차별 CTR 추이", ctr_df, "%", "week_start", ["ctr"])
 
+    #  --- [추가] ROAS, 구매건수 (2페이지 분량) ---
+
+    if has_purchase_data(target_id, start, end):
+        print("구매 데이터 있음 - 생성 중...")
+        roas_weekly_df = get_purchase_roas_weekly(target_id, start, end)
+        roas_monthly_df = get_purchase_roas_monthly(target_id, start, end)
+        purchase_weekly_df = get_purchase_count_weekly(target_id, start, end)
+        purchase_monthly_df = get_purchase_count_monthly(target_id, start, end)
+
+        add_ds("purchase_roas_weekly", "line", "평균 ROAS (주별)", roas_weekly_df, "%", "week_start", ["avg_roas"])
+        add_ds("purchase_roas_monthly", "line", "평균 ROAS (월별)", roas_monthly_df, "%", "month_start", ["avg_roas"])
+        add_ds("purchase_count_weekly", "line", "구매전환 (주별)", purchase_weekly_df, "건", "week_start", ["purchases"])
+        add_ds("purchase_count_monthly", "line", "구매전환 (월별)", purchase_monthly_df, "건", "month_start", ["purchases"])
+
+        final_report["purchase_analysis_pages"] = {
+            "is_visible": True,
+            "titles": {
+                "section_title": "전체 매출 데이터 분석",
+                "page_1_title": "평균 ROAS",
+                "page_2_title": "구매전환 건수"
+            }
+        }
+    else:
+        print("구매 데이터 없음...")
+        final_report["purchase_analysis_pages"] = {
+            "is_visible": False
+        }
+
+    # --- [추가] 광고비 & 매출발생 페이지 ---
+
+    if has_revenue_data(target_id, start, end):
+        print("광고비/매출발생 데이터 있음 - 생성 중...")
+        spend_revenue_weekly_df = get_spend_and_revenue_weekly(target_id, start, end)
+        spend_revenue_monthly_df = get_spend_and_revenue_monthly(target_id, start, end)
+
+        add_ds(
+            "spend_revenue_weekly",
+            "line",
+            "광고비 & 매출발생 (주별)",
+            spend_revenue_weekly_df,
+            "원",
+            "week_start",
+            ["spend", "revenue"],
+            extra_meta={"show_legend": True}
+        )
+
+        add_ds(
+            "spend_revenue_monthly",
+            "line",
+            "광고비 & 매출발생 (월별)",
+            spend_revenue_monthly_df,
+            "원",
+            "month_start",
+            ["spend", "revenue"],
+            extra_meta={"show_legend": True}
+        )
+
+        final_report["spend_revenue_pages"] = {
+            "is_visible": True,
+            "titles": {
+                "section_title": "광고비 & 매출발생 분석",
+                "page_1_title": "광고비 & 매출발생 추이"
+            }
+        }
+    else:
+        print("광고비/매출발생 데이터 없음...")
+        final_report["spend_revenue_pages"] = {
+            "is_visible": False
+        }
+
+     #  --- [추가] 구매 발생 컨텐츠  --
+    print("구매가 발생한 콘텐츠 페이지 확인 중...")
+    purchase_contents_data = get_purchase_contents_pages_data(target_id, start, end)
+
+    if purchase_contents_data:
+        print("구매 발생 콘텐츠 페이지 데이터 있음 → 생성 중...")
+
+        enriched_pages = []
+        for page_items in purchase_contents_data["pages"]:
+            enriched_items = []
+
+            for item in page_items:
+                detail_df = get_a_content_target_purchase_data(item["ad_id"], start, end)
+                if detail_df is not None:
+                    item["target_details"] = detail_df.to_dict(orient="records")
+                else:
+                    item["target_details"] = []
+
+                enriched_items.append(item)
+
+            enriched_pages.append(enriched_items)
+
+        final_report["purchase_contents_pages"] = {
+            "is_visible": True,
+            "title": purchase_contents_data["title"],
+            "pages": enriched_pages,
+            "total_count": purchase_contents_data["total_count"]
+        }
+    else:
+        print("구매 발생 콘텐츠 페이지 데이터 없음 → 생성 스킵...")
+        final_report["purchase_contents_pages"] = {
+            "is_visible": False
+        }
 
     _, threshold = get_imp_threshold(target_id, start, end)
     # 3. 타겟 히트맵 데이터 (노출/CTR)
