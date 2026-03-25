@@ -2,6 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 import os
 
 def generate_html(context):
+
     def translate_gender(data):
         if isinstance(data, dict):
             return {k: translate_gender(v) for k, v in data.items()}
@@ -29,5 +30,5 @@ def generate_html(context):
     output_path = "report.html"
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(output)
-    
+
     return os.path.abspath(output_path)
