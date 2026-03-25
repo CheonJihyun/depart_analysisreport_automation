@@ -9,7 +9,11 @@
   <style>
     :root {
       --theme-color: {{ theme.base }};
+      --theme-dark-color: {{ theme.dark }};
+      --theme-header-color: {{ theme.header }};
       --theme-title-color: {{ theme.title }};
+      --highlight-main-color: {{ theme.highlight_main }};
+      --highlight-avoid-color: {{ theme.highlight_avoid }};
       --cover-text-color: {{ theme.cover_text }};
     }
   </style>
@@ -328,14 +332,11 @@
       {% if content.top_note %}
         <div class="page-note page-note--left">{{ content.top_note }}</div>
       {% endif %}
+      <div class="page-note page-note--right">*전체 평균 CTR: {{ content.overall_ctr }}%</div>
 
       {% for item in content.top %}
         <div class="span-4">
           <div class="content-card">
-            <div class="content-card__meta">
-              ({{ item.uploaded_at }}) (전체 CTR {{ item.ctr }})
-            </div>
-
             <div class="content-card__thumb">
               {% if item.thumbnail %}
                 <img src="{{ item.thumbnail }}" alt="thumbnail">
@@ -356,6 +357,9 @@
                 <div class="mini-chart-placeholder">MINI CHART</div>
               {% endif %}
             </div>
+
+            <div class="content-card__thumb-caption">{{ item.uploaded_at }} 업로드</div>
+            <div class="content-card__chart-caption">CTR {{ item.ctr }}</div>
           </div>
         </div>
       {% endfor %}
@@ -375,14 +379,11 @@
       {% if content.bottom_note %}
         <div class="page-note page-note--left">{{ content.bottom_note }}</div>
       {% endif %}
+      <div class="page-note page-note--right">*전체 평균 CTR: {{ content.overall_ctr }}%</div>
 
       {% for item in content.bottom %}
         <div class="span-4">
           <div class="content-card">
-            <div class="content-card__meta">
-              ({{ item.uploaded_at }}) (전체 CTR {{ item.ctr }})
-            </div>
-
             <div class="content-card__thumb">
               {% if item.thumbnail %}
                 <img src="{{ item.thumbnail }}" alt="thumbnail">
@@ -403,6 +404,9 @@
                 <div class="mini-chart-placeholder">MINI CHART</div>
               {% endif %}
             </div>
+
+            <div class="content-card__thumb-caption">{{ item.uploaded_at }} 업로드</div>
+            <div class="content-card__chart-caption">CTR {{ item.ctr }}</div>
           </div>
         </div>
       {% endfor %}
@@ -474,6 +478,9 @@
             {% for line in target.impressions_rank %}
               <div class="rank-block__line">{{ line }}</div>
             {% endfor %}
+            {% if target.impressions_footnote %}
+              <div class="rank-block__footnote">{{ target.impressions_footnote }}</div>
+            {% endif %}
           </div>
         {% endif %}
       </div>
@@ -502,6 +509,9 @@
             {% for line in target.ctr_rank %}
               <div class="rank-block__line">{{ line }}</div>
             {% endfor %}
+            {% if target.ctr_footnote %}
+              <div class="rank-block__footnote">{{ target.ctr_footnote }}</div>
+            {% endif %}
           </div>
         {% endif %}
       </div>
@@ -540,7 +550,7 @@
 
       {% if keywords.overall_top_tables is defined and keywords.overall_top_tables %}
         {% for t in keywords.overall_top_tables[:2] %}
-          {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+          {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
         {% endfor %}
       {% endif %}
     </div>
@@ -617,7 +627,7 @@
 
       {% if keywords.overall_bottom_tables is defined and keywords.overall_bottom_tables %}
         {% for t in keywords.overall_bottom_tables[:2] %}
-          {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+          {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
         {% endfor %}
       {% endif %}
     </div>
@@ -657,7 +667,7 @@
 
         {% if keywords.main_top_tables is defined and keywords.main_top_tables %}
           {% for t in keywords.main_top_tables[:2] %}
-            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+            {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -720,7 +730,7 @@
 
         {% if keywords.main_bottom_tables is defined and keywords.main_bottom_tables %}
           {% for t in keywords.main_bottom_tables[:2] %}
-            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+            {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -756,7 +766,7 @@
 
         {% if keywords.avoid_top_tables is defined and keywords.avoid_top_tables %}
           {% for t in keywords.avoid_top_tables[:2] %}
-            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+            {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -819,7 +829,7 @@
 
         {% if keywords.avoid_bottom_tables is defined and keywords.avoid_bottom_tables %}
           {% for t in keywords.avoid_bottom_tables[:2] %}
-            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+            {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -937,6 +947,14 @@
       </section>
     {% endfor %}
   {% endif %}
+
+  {# ========================= EOD Page ========================= #}
+  <section class="page page--cover">
+    <div class="cover cover--eod" style="writing-mode:horizontal-tb; text-orientation:mixed; justify-content:center; align-items:center;">
+      <div class="cover__eod">EOD</div>
+    </div>
+  </section>
+
 
 </body>
 </html>
