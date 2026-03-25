@@ -1115,3 +1115,612 @@ def get_variable_target_performance(account_id, date_start, date_end):
     
     df = pd.read_sql(query, engine)
     return df
+
+# ----------------------------------
+# 구매 데이터 분석 페이지용 함수들 (ROAS, 구매건수)
+# ----------------------------------
+
+def has_purchase_data(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT 1
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchases IS NOT NULL
+          AND apd.purchases > 0
+        LIMIT 1
+    """
+
+    df = pd.read_sql(query, engine)
+    return not df.empty
+
+
+def get_purchase_roas_weekly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('week', apd.date)::date AS week_start,
+            ROUND(AVG(apd.purchase_roas)::numeric, 0) AS avg_roas
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchase_roas IS NOT NULL
+        GROUP BY DATE_TRUNC('week', apd.date)::date
+        ORDER BY week_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+def get_purchase_roas_monthly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('month', apd.date)::date AS month_start,
+            ROUND(AVG(apd.purchase_roas)::numeric, 0) AS avg_roas
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchase_roas IS NOT NULL
+        GROUP BY DATE_TRUNC('month', apd.date)::date
+        ORDER BY month_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+def get_purchase_count_weekly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('week', apd.date)::date AS week_start,
+            COALESCE(SUM(apd.purchases), 0) AS purchases
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchases IS NOT NULL
+        GROUP BY DATE_TRUNC('week', apd.date)::date
+        ORDER BY week_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+def get_purchase_count_monthly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('month', apd.date)::date AS month_start,
+            COALESCE(SUM(apd.purchases), 0) AS purchases
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.purchases IS NOT NULL
+        GROUP BY DATE_TRUNC('month', apd.date)::date
+        ORDER BY month_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+# ROAS, 구매건수 페이지 구성
+def get_purchase_analysis_pages_data(account_id, date_start, date_end):
+    if not has_purchase_data(account_id, date_start, date_end):
+        return None
+
+    return {
+        "roas_page": {
+            "title": "평균 ROAS",
+            "weekly": get_purchase_roas_weekly(account_id, date_start, date_end),
+            "monthly": get_purchase_roas_monthly(account_id, date_start, date_end),
+        },
+        "purchase_page": {
+            "title": "구매전환 건수",
+            "weekly": get_purchase_count_weekly(account_id, date_start, date_end),
+            "monthly": get_purchase_count_monthly(account_id, date_start, date_end),
+        }
+    }
+
+# ----------------------------------
+# 광고비 & 매출발생 페이지용 함수들
+# ----------------------------------
+
+def has_revenue_data(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT 1
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.spend IS NOT NULL
+          AND apd.purchase_roas IS NOT NULL
+        LIMIT 1
+    """
+
+    df = pd.read_sql(query, engine)
+    return not df.empty
+
+
+def get_spend_and_revenue_weekly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('week', apd.date)::date AS week_start,
+            ROUND(COALESCE(SUM(apd.spend), 0)::numeric, 0) AS spend,
+            ROUND(COALESCE(SUM(apd.spend * apd.purchase_roas), 0)::numeric, 0) AS revenue
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.spend IS NOT NULL
+          AND apd.purchase_roas IS NOT NULL
+        GROUP BY DATE_TRUNC('week', apd.date)::date
+        ORDER BY week_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+def get_spend_and_revenue_monthly(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('month', apd.date)::date AS month_start,
+            ROUND(COALESCE(SUM(apd.spend), 0)::numeric, 0) AS spend,
+            ROUND(COALESCE(SUM(apd.spend * apd.purchase_roas), 0)::numeric, 0) AS revenue
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.spend IS NOT NULL
+          AND apd.purchase_roas IS NOT NULL
+        GROUP BY DATE_TRUNC('month', apd.date)::date
+        ORDER BY month_start
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+
+# ----------------------------------
+# 구매 발생 콘텐츠 페이지용 함수들
+# ----------------------------------
+
+# 구매 발생 콘텐츠 여부
+def has_purchase_content_data(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT 1
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
+        WHERE a.account_id = {account_id}
+          AND a.ig_timestamp IS NOT NULL
+          AND a.ig_timestamp::date >= '{date_start}'::date
+          AND a.ig_timestamp::date <= '{date_end}'::date
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= '{date_end}'::date
+          AND apd.purchases IS NOT NULL
+          AND apd.purchases > 0
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
+        LIMIT 1
+    """
+
+    df = pd.read_sql(query, engine)
+    return not df.empty
+
+
+# 구매가 발생한 콘텐츠 전체 조회
+def get_purchase_contents_data(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            a.ad_id,
+            a.ad_name,
+            a.fb_ad_id,
+            a.ig_timestamp AS uploaded_at,
+            NULLIF(a.thumb_link, '') AS thumbnail,
+            COALESCE(SUM(apd.purchases), 0) AS purchases
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
+        WHERE a.account_id = {account_id}
+          AND a.ig_timestamp IS NOT NULL
+          AND a.ig_timestamp::date >= '{date_start}'::date
+          AND a.ig_timestamp::date <= '{date_end}'::date
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= '{date_end}'::date
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
+        GROUP BY a.ad_id, a.ad_name, a.fb_ad_id, a.ig_timestamp, a.thumb_link
+        HAVING COALESCE(SUM(apd.purchases), 0) >= 1
+        ORDER BY purchases DESC
+    """
+
+    df = pd.read_sql(query, engine)
+
+    if df.empty:
+        return []
+
+    results = []
+    for _, row in df.iterrows():
+        thumb_val = row.get("thumbnail")
+        if pd.isna(thumb_val):
+            thumb_val = None
+        else:
+            thumb_val = str(thumb_val).strip() or None
+
+        results.append({
+            "ad_id": row["ad_id"],
+            "ad_name": row.get("ad_name"),
+            "fb_ad_id": row.get("fb_ad_id"),
+            "uploaded_at": row["uploaded_at"].date() if pd.notna(row["uploaded_at"]) else None,
+            "thumbnail": thumb_val,
+            "purchases": int(row["purchases"]) if pd.notna(row["purchases"]) else 0
+        })
+
+    return results
+
+# 구매 발생 콘텐츠별 세부 데이터(성별/연령/건수)
+def get_a_content_target_purchase_data(ad_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            apd.age,
+            apd.gender,
+            COALESCE(SUM(apd.purchases), 0) AS purchases
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
+        WHERE a.ad_id = {ad_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= '{date_end}'::date
+          AND apd.gender != 'unknown'
+        GROUP BY apd.age, apd.gender
+        HAVING COALESCE(SUM(apd.purchases), 0) > 0
+        ORDER BY purchases DESC, apd.age
+    """
+
+    df = pd.read_sql(query, engine)
+
+    if df.empty:
+        return None
+
+    return df
+
+# 리스트를 4개씩 나누기
+def chunk_list(data, chunk_size=4):
+    return [data[i:i + chunk_size] for i in range(0, len(data), chunk_size)]
+
+
+# 구매 발생 콘텐츠 페이지 구성
+def get_purchase_contents_pages_data(account_id, date_start, date_end):
+    if not has_purchase_content_data(account_id, date_start, date_end):
+        return {
+            "title": "구매가 발생한 콘텐츠",
+            "pages": [],
+            "items": [],
+            "total_count": 0
+        }
+
+    contents = get_purchase_contents_data(account_id, date_start, date_end)
+
+    if not contents:
+        return {
+            "title": "구매가 발생한 콘텐츠",
+            "pages": [],
+            "items": [],
+            "total_count": 0
+        }
+
+    return {
+        "title": "구매가 발생한 콘텐츠",
+        "pages": chunk_list(contents, 4),
+        "items": contents,
+        "total_count": len(contents)
+    }
+
+# ----------------------------------
+# 팔로워 인구통계학 페이지용 함수들
+# 기준: fb_ad_account_id의 가장 최근 created_at 데이터
+# ----------------------------------
+
+def has_follower_demographics_data(account_id):
+    engine = get_engine()
+
+    query = f"""
+        SELECT 1
+        FROM followers_demographics_daily fdd
+        JOIN ig_account ia
+          ON fdd.ig_id = ia.ig_id
+        JOIN ad_account aa
+          ON ia.business_id = aa.business_id
+        WHERE aa.account_id = {account_id}
+        LIMIT 1
+    """
+
+    df = pd.read_sql(query, engine)
+    return not df.empty
+
+
+def get_follower_demographics_latest_date(account_id):
+    engine = get_engine()
+
+    query = f"""
+        SELECT MAX(fdd.created_at::date) AS latest_date
+        FROM followers_demographics_daily fdd
+        JOIN ig_account ia
+          ON fdd.ig_id = ia.ig_id
+        JOIN ad_account aa
+          ON ia.business_id = aa.business_id
+        WHERE aa.account_id = {account_id}
+    """
+
+    df = pd.read_sql(query, engine)
+
+    if df.empty or pd.isna(df.loc[0, "latest_date"]):
+        return None
+
+    return str(df.loc[0, "latest_date"])
+
+def get_demographics_ratio(account_id, dimension="gender", mode="exclude_unknown"):
+    engine = get_engine()
+
+    if dimension == "gender":
+        category_expr = """
+            CASE
+                WHEN fdd.gender = 'F' THEN '여성'
+                WHEN fdd.gender = 'M' THEN '남성'
+                ELSE '알 수 없음'
+            END
+        """
+        known_condition = "fdd.gender IN ('F', 'M')"
+        unknown_condition = "fdd.gender NOT IN ('F', 'M')"
+
+    elif dimension == "age":
+        category_expr = "COALESCE(fdd.age_range, 'Unknown')"
+        known_condition = "COALESCE(fdd.age_range, 'Unknown') <> 'Unknown'"
+        unknown_condition = "COALESCE(fdd.age_range, 'Unknown') = 'Unknown'"
+
+    else:
+        raise ValueError("dimension must be 'gender' or 'age'")
+
+    if mode == "exclude_unknown":
+        query = f"""
+            WITH latest_dt AS (
+                SELECT MAX(fdd.created_at::date) AS dt
+                FROM followers_demographics_daily fdd
+                JOIN ig_account ia
+                  ON fdd.ig_id = ia.ig_id
+                JOIN ad_account aa
+                  ON ia.business_id = aa.business_id
+                WHERE aa.account_id = %(account_id)s
+            ),
+            base AS (
+                SELECT
+                    {category_expr} AS category,
+                    SUM(fdd.value) AS value
+                FROM followers_demographics_daily fdd
+                JOIN ig_account ia
+                  ON fdd.ig_id = ia.ig_id
+                JOIN ad_account aa
+                  ON ia.business_id = aa.business_id
+                JOIN latest_dt l
+                  ON fdd.created_at::date = l.dt
+                WHERE aa.account_id = %(account_id)s
+                  AND {known_condition}
+                GROUP BY category
+            ),
+            total AS (
+                SELECT SUM(value) AS total FROM base
+            )
+            SELECT
+                category,
+                value,
+                ROUND(value * 100.0 / total, 1) AS ratio
+            FROM base, total
+        """
+
+    elif mode == "unknown_vs_known":
+        known_label = "남/여 전체" if dimension == "gender" else "연령 확인 가능"
+
+        query = f"""
+            WITH latest_dt AS (
+                SELECT MAX(fdd.created_at::date) AS dt
+                FROM followers_demographics_daily fdd
+                JOIN ig_account ia
+                  ON fdd.ig_id = ia.ig_id
+                JOIN ad_account aa
+                  ON ia.business_id = aa.business_id
+                WHERE aa.account_id = %(account_id)s
+            ),
+            base AS (
+                SELECT
+                    CASE
+                        WHEN {unknown_condition} THEN '알 수 없음'
+                        ELSE '{known_label}'
+                    END AS category,
+                    SUM(fdd.value) AS value
+                FROM followers_demographics_daily fdd
+                JOIN ig_account ia
+                  ON fdd.ig_id = ia.ig_id
+                JOIN ad_account aa
+                  ON ia.business_id = aa.business_id
+                JOIN latest_dt l
+                  ON fdd.created_at::date = l.dt
+                WHERE aa.account_id = %(account_id)s
+                GROUP BY category
+            ),
+            total AS (
+                SELECT SUM(value) AS total FROM base
+            )
+            SELECT
+                category,
+                value,
+                ROUND(value * 100.0 / total, 1) AS ratio
+            FROM base, total
+            ORDER BY CASE category
+                WHEN '{known_label}' THEN 1
+                WHEN '알 수 없음' THEN 2
+                ELSE 99
+            END
+        """
+
+    else:
+        raise ValueError("mode must be 'exclude_unknown' or 'unknown_vs_known'")
+
+    df = pd.read_sql(query, engine, params={"account_id": account_id})
+
+    if df.empty:
+        return None
+
+    if dimension == "age" and mode == "exclude_unknown":
+        age_order = {
+            "13-17": 1,
+            "18-24": 2,
+            "25-34": 3,
+            "35-44": 4,
+            "45-54": 5,
+            "55-64": 6,
+            "65+": 7,
+        }
+        df["sort_order"] = df["category"].map(age_order).fillna(99)
+        df = df.sort_values("sort_order").drop(columns=["sort_order"]).reset_index(drop=True)
+
+    return df
+
+
+def get_follower_age_gender_known_only(account_id):
+    engine = get_engine()
+
+    query = """
+        WITH latest_dt AS (
+            SELECT MAX(fdd.created_at::date) AS dt
+            FROM followers_demographics_daily fdd
+            JOIN ig_account ia
+              ON fdd.ig_id = ia.ig_id
+            JOIN ad_account aa
+              ON ia.business_id = aa.business_id
+            WHERE aa.account_id = %(account_id)s
+        ),
+        base AS (
+            SELECT
+                COALESCE(fdd.age_range, 'Unknown') AS age_range,
+                CASE
+                    WHEN fdd.gender = 'M' THEN '남성'
+                    WHEN fdd.gender = 'F' THEN '여성'
+                END AS gender,
+                SUM(fdd.value) AS value
+            FROM followers_demographics_daily fdd
+            JOIN ig_account ia
+              ON fdd.ig_id = ia.ig_id
+            JOIN ad_account aa
+              ON ia.business_id = aa.business_id
+            JOIN latest_dt l
+              ON fdd.created_at::date = l.dt
+            WHERE aa.account_id = %(account_id)s
+              AND fdd.gender IN ('M', 'F')
+              AND COALESCE(fdd.age_range, 'Unknown') <> 'Unknown'
+            GROUP BY COALESCE(fdd.age_range, 'Unknown'), gender
+        )
+        SELECT
+            age_range,
+            COALESCE(SUM(CASE WHEN gender = '남성' THEN value END), 0) AS male,
+            COALESCE(SUM(CASE WHEN gender = '여성' THEN value END), 0) AS female
+        FROM base
+        GROUP BY age_range
+        ORDER BY CASE age_range
+            WHEN '13-17' THEN 1
+            WHEN '18-24' THEN 2
+            WHEN '25-34' THEN 3
+            WHEN '35-44' THEN 4
+            WHEN '45-54' THEN 5
+            WHEN '55-64' THEN 6
+            WHEN '65+' THEN 7
+            ELSE 99
+        END
+    """
+
+    df = pd.read_sql(query, engine, params={"account_id": account_id})
+    return None if df.empty else df
+
+def get_age_known_unknown_by_age(account_id):
+    engine = get_engine()
+
+    query = """
+        WITH latest_dt AS (
+            SELECT MAX(fdd.created_at::date) AS dt
+            FROM followers_demographics_daily fdd
+            JOIN ig_account ia
+              ON fdd.ig_id = ia.ig_id
+            JOIN ad_account aa
+              ON ia.business_id = aa.business_id
+            WHERE aa.account_id = %(account_id)s
+        ),
+        base AS (
+            SELECT
+                COALESCE(fdd.age_range, 'Unknown') AS age_range,
+                SUM(CASE WHEN fdd.gender IN ('M', 'F') THEN fdd.value ELSE 0 END) AS known,
+                SUM(CASE WHEN fdd.gender NOT IN ('M', 'F') OR fdd.gender IS NULL THEN fdd.value ELSE 0 END) AS unknown
+            FROM followers_demographics_daily fdd
+            JOIN ig_account ia
+              ON fdd.ig_id = ia.ig_id
+            JOIN ad_account aa
+              ON ia.business_id = aa.business_id
+            JOIN latest_dt l
+              ON fdd.created_at::date = l.dt
+            WHERE aa.account_id = %(account_id)s
+              AND COALESCE(fdd.age_range, 'Unknown') <> 'Unknown'
+            GROUP BY COALESCE(fdd.age_range, 'Unknown')
+        )
+        SELECT
+            age_range,
+            known,
+            unknown
+        FROM base
+        ORDER BY CASE age_range
+            WHEN '13-17' THEN 1
+            WHEN '18-24' THEN 2
+            WHEN '25-34' THEN 3
+            WHEN '35-44' THEN 4
+            WHEN '45-54' THEN 5
+            WHEN '55-64' THEN 6
+            WHEN '65+' THEN 7
+            ELSE 99
+        END
+    """
+
+    df = pd.read_sql(query, engine, params={"account_id": account_id})
+    return None if df.empty else df
