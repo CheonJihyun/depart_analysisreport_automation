@@ -627,6 +627,112 @@ body {
 }
 
 /* =========================
+   Purchase contents page
+   ========================= */
+.purchase-contents-page {
+  break-after: page;
+  page-break-after: always;
+}
+
+.purchase-contents-title {
+  margin: 0 0 8mm 0;
+}
+
+.purchase-contents-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6mm;
+  align-items: start;
+}
+
+.purchase-content-card {
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 4mm;
+
+  break-inside: avoid;
+  page-break-inside: avoid;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+}
+
+.purchase-content-card__thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: transparent;
+}
+
+.purchase-content-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.purchase-content-card__meta {
+  width: 100%;
+  margin-top: 3mm;
+  font-size: 16pt;
+  color: #555;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.purchase-thumb-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  color: #aaa;
+  font-weight: 900;
+  background: #f7f7f7;
+}
+
+/* 썸네일 영역 */
+.purchase-content-card__thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: transparent;
+}
+
+.purchase-content-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 업로드일자 */
+.purchase-content-card__meta {
+  width: 100%;
+  margin-top: 3mm;
+  font-size: 16pt;
+  color: #555;
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* 이미지 없을 때 */
+.purchase-thumb-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  color: #aaa;
+  font-weight: 900;
+  background: #f7f7f7;
+}
+
+/* =========================
    Keyword combo cards
    ========================= */
 .combo-page-body {
@@ -920,4 +1026,157 @@ body {
   position: static;
   width: auto;
   margin-top: 6mm;
+}
+
+/* =========================
+   구매 전환 콘텐츠
+   ========================= */
+.page--purchase-contents .purchase-contents-body {
+  align-items: flex-start;
+}
+
+.page--purchase-contents .page-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: nowrap; 
+}
+
+.purchase-content-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.purchase-content-card__thumb {
+  width: 400px;
+  height: 520px;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.purchase-content-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.purchase-thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #e9e9e9;
+  color: #777;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.purchase-content-card__meta {
+  margin-top: 6px;
+  font-size: 20px;
+  color: #8d8d8d;
+  font-weight: 600;
+}
+
+.purchase-content-card__chart {
+  margin-top: 8px;
+  width: 450px;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.purchase-content-card__chart svg,
+.purchase-chart-svg svg,
+.purchase-content-card__chart img {
+  width: 100%;
+  height: 100%;
+}
+
+.purchase-chart-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #f1f1f1;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.purchase-content-card__count {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+/* =========================
+   팔로워 인구통계 (최종)
+   ========================= */
+
+/* 카드 제목 (각 차트 제목) */
+.page--follower-demographics .demo-card h4 {
+  margin: 4px 0 6px 0;   
+  font-size: 17px;         
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* 전체 레이아웃 */
+.page--follower-demographics .follower-demo-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 0;
+}
+
+.page--follower-demographics .row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.page--follower-demographics .span-6 {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* 카드 */
+.page--follower-demographics .demo-card {
+  display: flex;
+  padding-top: 2px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* figure 기본 스타일 무력화 */
+.page--follower-demographics .demo-card .figure {
+  width: 100%;
+  margin: 0;
+  display: block;
+}
+
+/* 핵심: 이미지 강제 확장 */
+.page--follower-demographics .demo-card .figure__img {
+  display: block;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  margin: 0 auto;
+}
+
+/* 상단 도넛 */
+.page--follower-demographics .row:first-child .demo-card .figure__img {
+  width: 85% !important;
+  max-height: 400px;
+}
+
+/* 하단 바 차트 */
+.page--follower-demographics .row:last-child .demo-card .figure__img {
+  width: 100% !important;
+  max-height: 580px;
 }
