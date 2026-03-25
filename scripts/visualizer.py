@@ -73,12 +73,32 @@ def _adjust_lightness(hex_color: str, delta: float) -> str:
     return _rgb01_to_hex(r, g, b)
 
 
+def complementary_hex(hex_color: str) -> str:
+    """hue를 180도 회전한 보색 반환"""
+    r, g, b = _hex_to_rgb01(hex_color)
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    h = (h + 0.5) % 1.0
+    r, g, b = colorsys.hls_to_rgb(h, l, s)
+    return _rgb01_to_hex(r, g, b)
+
+
+def _adjust_hls(hex_color: str, delta_l: float, delta_s: float) -> str:
+    r, g, b = _hex_to_rgb01(hex_color)
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    l = max(0.0, min(1.0, l + delta_l))
+    s = max(0.0, min(1.0, s + delta_s))
+    r, g, b = colorsys.hls_to_rgb(h, l, s)
+    return _rgb01_to_hex(r, g, b)
+
+
 def build_color_map(theme_color: str) -> Dict[str, Any]:
     base = _normalize_hex(theme_color)
     light = _adjust_lightness(base, 0.22)
     lighter = _adjust_lightness(base, 0.38)
     dark = _adjust_lightness(base, -0.18)
     darker = _adjust_lightness(base, -0.32)
+    header = _adjust_hls(base, 0.20, -0.45)
+    highlight = _adjust_hls(base, 0.35, -0.50)  # 형광펜용: 매우 밝고 채도 낮춤
     series = [base, dark, light, darker]
     return {
         "base": base,
@@ -86,6 +106,8 @@ def build_color_map(theme_color: str) -> Dict[str, Any]:
         "lighter": lighter,
         "dark": dark,
         "darker": darker,
+        "header": header,
+        "highlight": highlight,
         "series": series,
         "grid": "#e6e6e6",
         "text": "#111111",

@@ -46,7 +46,6 @@ def get_total_content_count(account_id, date_start, date_end):
     """해당 기간 동안 업로드된 광고 콘텐츠(광고별 ig_permalink)의 총 개수를 반환"""
     engine = get_engine()
 
-    # 콘텐츠 업로드일(ig_timestamp) 기준으로 해당 기간에 업로드된 콘텐츠만 집계합니다.
     query = f"""
         SELECT COUNT(DISTINCT ad.ig_permalink) as content_count
         FROM ad
@@ -91,18 +90,20 @@ def get_ad_period(account_id, date_start, date_end):
 # 콘텐츠 진행 기간
 def get_content_period(account_id, date_start, date_end):
     engine = get_engine()
-    # 콘텐츠 업로드일(ig_timestamp) 기준으로 기간 내 콘텐츠의 실제 기간을 반환합니다.
+    # 해당 기간에 실제 노출된 광고들의 ig_timestamp(업로드일) 범위를 반환합니다.
+    # ig_timestamp 날짜로 필터링하지 않고, ad_performance_daily 기준으로 대상 광고를 특정합니다.
     query = f"""
         SELECT
-            MIN(ig_timestamp) AS start_date,
-            MAX(ig_timestamp) AS end_date
+            MIN(ad.ig_timestamp) AS start_date,
+            MAX(ad.ig_timestamp) AS end_date
         FROM ad
         JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
         JOIN campaign c ON ads.campaign_id = c.campaign_id
+        JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND ad.ig_timestamp IS NOT NULL
-            AND ad.ig_timestamp::date >= '{date_start}'::date
-            AND ad.ig_timestamp::date <= '{date_end}'::date
+            AND apd.date >= '{date_start}'
+            AND apd.date <= '{date_end}'::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
     df = pd.read_sql(query, engine)
@@ -213,24 +214,22 @@ def get_instagram_followers(fb_ad_account_id, date_start, date_end):
     return df
 
 def get_profile_visits_monthly(fb_ad_account_id, date_start, date_end):
-    # 1. 원본 데일리 데이터 가져오기
+    # 1. 원본 데이터 가져오기
     df = get_instagram_followers(fb_ad_account_id, date_start, date_end)
-    
+
     if df is None or df.empty:
         return None
 
-    # 2. 4행(4일 아님, 데이터가 하루 한 줄일 때 4주) 단위 그룹화
-    # 만약 데이터가 매일 있다면 28행 단위가 맞으나, 주차별 데이터라면 4행 단위가 맞습니다.
-    # 주차별 데이터라고 가정하고 4행씩 묶습니다.
-    df['grp'] = range(len(df))
-    df['grp'] = df['grp'] // 4
-    
-    # 3. 그룹별 합산 (방문수는 sum)
-    monthly_df = df.groupby('grp').agg({
-        'updated_at': 'first',
-        'profile_views': 'sum'
-    }).reset_index(drop=True)
-    
+    # 2. 실제 달력 연월 기준으로 그룹화 (4개 단위 아님)
+    df['updated_at'] = pd.to_datetime(df['updated_at'])
+    df['year_month'] = df['updated_at'].dt.to_period('M')
+
+    # 3. 연월별 합산 (방문수는 sum, updated_at은 해당 월의 첫 날짜 사용)
+    monthly_df = df.groupby('year_month', sort=True).agg(
+        updated_at=('updated_at', 'first'),
+        profile_views=('profile_views', 'sum')
+    ).reset_index(drop=True)
+
     return monthly_df
 
 # 주차별 CTR(%) 데이터 가져오기
@@ -285,27 +284,21 @@ def get_organic_data(account_id, date_start, date_end):
 
 def get_organic_monthly_data(account_id, date_start, date_end):
     df = get_organic_data(account_id, date_start, date_end)
-    
+
     if df is None or df.empty:
         return None
 
-    # 1. 4개 행씩 같은 그룹 번호를 부여 (0,0,0,0, 1,1,1,1, ...)
-    df['group_idx'] = range(len(df))
-    df['month_grp'] = df['group_idx'] // 4
-    
-    # 2. 그룹별로 집계
-    # 시작일은 그룹의 첫 날, 종료일은 그룹의 마지막 날, 수치는 합산
-    monthly_df = df.groupby('month_grp').agg({
-        'date_start': 'first',
-        'date_end': 'last',
-        'organic_impressions': 'sum'
-    }).reset_index(drop=True)
-    
-    # 3. 레이블 생성 (예: "1개월차 (01.01~01.28)")
-    monthly_df['label'] = monthly_df.apply(
-        lambda x: f"{int(x.name)+1}개월차 ({x.date_start}~{x.date_end})", axis=1
-    )
-    
+    # 실제 달력 연월 기준으로 그룹화 (4개 단위 아님)
+    df['date_start'] = pd.to_datetime(df['date_start'])
+    df['year_month'] = df['date_start'].dt.to_period('M')
+
+    # 연월별 집계: 시작일은 해당 월의 첫 번째 date_start, 종료일은 마지막 date_end, 수치는 합산
+    monthly_df = df.groupby('year_month', sort=True).agg(
+        date_start=('date_start', 'first'),
+        date_end=('date_end', 'last'),
+        organic_impressions=('organic_impressions', 'sum')
+    ).reset_index(drop=True)
+
     return monthly_df
 
 # 인스타그램 프로필 방문수 데이터 가져오기
