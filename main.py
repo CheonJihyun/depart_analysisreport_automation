@@ -483,14 +483,14 @@ def run():
     start_time = time.time()
 
     config = {
-        "target_id": 30,
-        "fb_ad_account_id":"act_434227940322781",
-        "start":"2025-12-29",
-        "end": "2026-03-23",
+        "target_id": 8,
+        "fb_ad_account_id":"act_618278251632554",
+        "start":"2025-08-01",
+        "end": "2026-03-01",
         "main_age": ["35-44", "45-54"],
-        "main_gender": "",
+        "main_gender": "male",
         "avoid_age": "",
-        "avoid_gender": "",
+        "avoid_gender": "female",
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
     start, end = config["start"], config["end"]
@@ -508,7 +508,7 @@ def run():
                     avoid_age=avoid_age, avoid_gender=avoid_gender)
     
     report_path = "json_reports/integrated_report.json"
-    theme_color = "#f76222"
+    theme_color = "#2A3D1E"
 
     report_json = _load_report(report_path)
     _apply_display_predicate_suffix(report_json)
@@ -567,7 +567,8 @@ def run():
         return f"{txt}개"
 
     add_chart("followers", "insta_followers")
-    add_chart("ctr", "ctr_trend")
+    add_chart("ctr_weekly", "ctr_trend_weekly")
+    add_chart("ctr_monthly", "ctr_trend_monthly")
     add_chart("organic_views_1", "organic_trend")
     add_chart("organic_views_2", "organic_trend_monthly")
     add_chart("profile_visits_1", "insta_profile_visits")
@@ -725,7 +726,7 @@ def run():
     impressions_rank, impressions_footnote = _top_targets(target_rows, "impressions")
     ctr_rank, ctr_footnote = _top_targets(target_rows, "ctr", filter_low_imps=True)
 
-    overall_ctr_val = _average_series(datasets.get("ctr_trend"))
+    overall_ctr_val = _average_series(datasets.get("ctr_trend_weekly"))
     overall_ctr = f"{overall_ctr_val:.2f}" if isinstance(overall_ctr_val, (int, float)) else "-"
 
     main_ctr_val = _target_ctr(target_rows, main_age, main_gender) if has_main_target else None

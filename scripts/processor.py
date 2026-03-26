@@ -31,7 +31,7 @@ def get_active_ad_count(account_id, date_start, date_end):
         JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND apd.date >= '{date_start}'
-            AND apd.date <= '{date_end}'::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
@@ -55,7 +55,7 @@ def get_total_content_count(account_id, date_start, date_end):
             AND ad.ig_permalink IS NOT NULL
             AND ad.ig_timestamp IS NOT NULL
             AND ad.ig_timestamp::date >= '{date_start}'::date
-            AND ad.ig_timestamp::date <= '{date_end}'::date
+            AND ad.ig_timestamp::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
@@ -77,7 +77,7 @@ def get_ad_period(account_id, date_start, date_end):
         JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE ad.account_id = {account_id}
             AND ad.created_time >= '{date_start}'
-            AND ad.created_time <= '{date_end}'::date
+            AND ad.created_time <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
     df = pd.read_sql(query, engine)
@@ -103,7 +103,7 @@ def get_content_period(account_id, date_start, date_end):
         WHERE ad.account_id = {account_id}
             AND ad.ig_timestamp IS NOT NULL
             AND apd.date >= '{date_start}'
-            AND apd.date <= '{date_end}'::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
     df = pd.read_sql(query, engine)
@@ -126,7 +126,7 @@ def get_total_keyword_count(account_id, date_start, date_end):
         LEFT JOIN ad_keyword ak ON ad.ad_id = ak.ad_id
         WHERE ad.account_id = {account_id}
             AND apd.date >= '{date_start}'
-            AND apd.date <= '{date_end}'::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
@@ -199,7 +199,7 @@ def get_instagram_followers(fb_ad_account_id, date_start, date_end):
     JOIN campaigns c ON aa.id = c.ad_account_id
     WHERE aa.fb_ad_account_id = '{fb_ad_account_id}'
         AND ig.updated_at >= '{date_start}'
-        AND ig.updated_at <= '{date_end}'
+        AND ig.updated_at <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
     ORDER BY ig.updated_at::date, ig.updated_at ASC
     """
     # 통합시 campaigns테이블명, ad_account_id컬럼명 주의 !!
@@ -235,13 +235,13 @@ def get_profile_visits_monthly(fb_ad_account_id, date_start, date_end):
 # 주차별 CTR(%) 데이터 가져오기
 def get_ctr_data(account_id, date_start, date_end):
     engine = get_engine()
-    
+
     # 1. 쿼리: apd와 ad를 JOIN하여 account_id 기준으로 데이터 추출
 
     query = f"""
-        SELECT 
+        SELECT
             DATE_TRUNC('week', apd.date)::date as week_start, -- 해당 주의 월요일 날짜
-            SUM(clicks) as total_clicks, 
+            SUM(clicks) as total_clicks,
             SUM(impressions) as total_impressions,
             ROUND((SUM(clicks)::numeric / NULLIF(SUM(impressions), 0)::numeric) * 100, 2) as ctr
         FROM ad
@@ -250,14 +250,43 @@ def get_ctr_data(account_id, date_start, date_end):
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND apd.date >= '{date_start}'
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY week_start
         ORDER BY week_start;
     """
 
     df = pd.read_sql(query, engine)
-    
+
+    if df.empty:
+        return None
+
+    return df
+
+
+def get_ctr_monthly_data(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            DATE_TRUNC('month', apd.date)::date as month_start,
+            SUM(clicks) as total_clicks,
+            SUM(impressions) as total_impressions,
+            ROUND((SUM(clicks)::numeric / NULLIF(SUM(impressions), 0)::numeric) * 100, 2) as ctr
+        FROM ad
+        JOIN ad_set ads ON ad.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
+        LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
+        WHERE ad.account_id = {account_id}
+            AND apd.date >= '{date_start}'
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+            AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
+        GROUP BY month_start
+        ORDER BY month_start;
+    """
+
+    df = pd.read_sql(query, engine)
+
     if df.empty:
         return None
 
@@ -272,7 +301,7 @@ def get_organic_data(account_id, date_start, date_end):
         FROM account_organic_weekly
         WHERE account_id = {account_id}
             AND date_start >= '{date_start}'
-            AND date_start <= '{date_end}'
+            AND date_start <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
         ORDER BY date_start ASC
     """
     df = pd.read_sql(query, engine)
@@ -316,7 +345,7 @@ def get_imp_threshold(account_id, date_start, date_end):
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND apd.date >= '{date_start}'
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
@@ -348,9 +377,9 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
     WHERE ad.account_id = {account_id}
         AND ad.ig_timestamp IS NOT NULL
         AND ad.ig_timestamp::date >= '{date_start}'::date
-        AND ad.ig_timestamp::date <= '{date_end}'::date
+        AND ad.ig_timestamp::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
         AND apd.date >= '{date_start}'
-        AND apd.date <= '{date_end}'::date
+        AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
         AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     GROUP BY ad.ad_id
     HAVING SUM(apd.impressions) >= {threshold}
@@ -395,7 +424,7 @@ def get_a_content_target_ctr_data(ad_id, date_start, date_end):
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.ad_id = {ad_id}
             AND apd.date >= '{date_start}'
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND apd.gender != 'unknown'
         GROUP BY apd.age, apd.gender
         ORDER BY ctr DESC;
@@ -431,7 +460,7 @@ def get_target_avg_imp_ctr(account_id, date_start, date_end):
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND apd.date >= '{date_start}'
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY apd.age, apd.gender
     """
@@ -464,7 +493,7 @@ def get_target_avg_imp_ctr_threshold(account_id, date_start, date_end, threshold
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND apd.date >= '{date_start}'
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
             AND apd.gender != 'unknown'
         GROUP BY apd.age, apd.gender
@@ -552,7 +581,7 @@ def get_raw_keyword_performance(account_id, date_start, date_end, target_age=Non
             INNER JOIN campaign c ON ads.campaign_id = c.campaign_id
             WHERE a.account_id = {account_id}
             AND apd.date >= '{date_start}'::date
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             {target_filter}
             AND ({account_id} = 3 OR c.campaign_name ~* 'depart|디파트|de;part')
             AND apd.gender != 'unknown'
@@ -807,7 +836,7 @@ def get_overall_ctr(account_id, date_start, date_end):
         LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
         WHERE ad.account_id = {account_id}
             AND apd.date >= '{date_start}'
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
@@ -845,7 +874,7 @@ def get_strategic_performance(account_id, date_start, date_end, target_age=None,
             LEFT JOIN ad_performance_daily apd ON ad.ad_id = apd.ad_id
             WHERE ad.account_id = {account_id}
                 AND apd.date >= '{date_start}'
-                AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+                AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
                 {target_filter}
                 AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
             GROUP BY ad.ad_id, ak.essential_keywords, ak.variable_keywords
@@ -1004,7 +1033,7 @@ def get_essence_target_performance(account_id, date_start, date_end):
             INNER JOIN campaign c ON ads.campaign_id = c.campaign_id
                 WHERE a.account_id = {account_id}
                 AND apd.date >= '{date_start}'::date
-                AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+                AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
                 AND ({account_id} = 3 OR c.campaign_name ~* 'depart|디파트|de;part')
                 GROUP BY 1, 2, 3
             ) p ON ak_u.ad_id = p.ad_id
@@ -1021,7 +1050,7 @@ def get_essence_target_performance(account_id, date_start, date_end):
             INNER JOIN ad_performance_daily apd ON a.ad_id = apd.ad_id
             WHERE a.account_id = {account_id}
             AND apd.date >= '{date_start}'::date
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ~* 'depart|디파트|de;part')
             GROUP BY 1
         ) summ ON ts.single_ess = summ.single_ess
@@ -1079,7 +1108,7 @@ def get_variable_target_performance(account_id, date_start, date_end):
             INNER JOIN campaign c ON ads.campaign_id = c.campaign_id
                 WHERE a.account_id = {account_id}
                 AND apd.date >= '{date_start}'::date
-                AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+                AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
                 AND ({account_id} = 3 OR c.campaign_name ~* 'depart|디파트|de;part')
                 GROUP BY 1, 2, 3
             ) p ON ak_u.ad_id = p.ad_id
@@ -1096,7 +1125,7 @@ def get_variable_target_performance(account_id, date_start, date_end):
             INNER JOIN ad_performance_daily apd ON a.ad_id = apd.ad_id
             WHERE a.account_id = {account_id}
             AND apd.date >= '{date_start}'::date
-            AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
             AND ({account_id} = 3 OR c.campaign_name ~* 'depart|디파트|de;part')
             GROUP BY 1
         ) summ ON ts.single_var = summ.single_var
@@ -1120,11 +1149,14 @@ def has_purchase_data(account_id, date_start, date_end):
         SELECT 1
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.purchases IS NOT NULL
           AND apd.purchases > 0
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         LIMIT 1
     """
 
@@ -1141,10 +1173,13 @@ def get_purchase_roas_weekly(account_id, date_start, date_end):
             ROUND(AVG(apd.purchase_roas)::numeric, 0) AS avg_roas
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.purchase_roas IS NOT NULL
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY DATE_TRUNC('week', apd.date)::date
         ORDER BY week_start
     """
@@ -1162,10 +1197,13 @@ def get_purchase_roas_monthly(account_id, date_start, date_end):
             ROUND(AVG(apd.purchase_roas)::numeric, 0) AS avg_roas
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.purchase_roas IS NOT NULL
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY DATE_TRUNC('month', apd.date)::date
         ORDER BY month_start
     """
@@ -1183,10 +1221,13 @@ def get_purchase_count_weekly(account_id, date_start, date_end):
             COALESCE(SUM(apd.purchases), 0) AS purchases
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.purchases IS NOT NULL
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY DATE_TRUNC('week', apd.date)::date
         ORDER BY week_start
     """
@@ -1204,10 +1245,13 @@ def get_purchase_count_monthly(account_id, date_start, date_end):
             COALESCE(SUM(apd.purchases), 0) AS purchases
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.purchases IS NOT NULL
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY DATE_TRUNC('month', apd.date)::date
         ORDER BY month_start
     """
@@ -1244,11 +1288,14 @@ def has_revenue_data(account_id, date_start, date_end):
         SELECT 1
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.spend IS NOT NULL
           AND apd.purchase_roas IS NOT NULL
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         LIMIT 1
     """
 
@@ -1266,11 +1313,14 @@ def get_spend_and_revenue_weekly(account_id, date_start, date_end):
             ROUND(COALESCE(SUM(apd.spend * apd.purchase_roas), 0)::numeric, 0) AS revenue
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.spend IS NOT NULL
           AND apd.purchase_roas IS NOT NULL
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY DATE_TRUNC('week', apd.date)::date
         ORDER BY week_start
     """
@@ -1289,11 +1339,14 @@ def get_spend_and_revenue_monthly(account_id, date_start, date_end):
             ROUND(COALESCE(SUM(apd.spend * apd.purchase_roas), 0)::numeric, 0) AS revenue
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.spend IS NOT NULL
           AND apd.purchase_roas IS NOT NULL
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY DATE_TRUNC('month', apd.date)::date
         ORDER BY month_start
     """
@@ -1319,9 +1372,9 @@ def has_purchase_content_data(account_id, date_start, date_end):
         WHERE a.account_id = {account_id}
           AND a.ig_timestamp IS NOT NULL
           AND a.ig_timestamp::date >= '{date_start}'::date
-          AND a.ig_timestamp::date <= '{date_end}'::date
+          AND a.ig_timestamp::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= '{date_end}'::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.purchases IS NOT NULL
           AND apd.purchases > 0
           AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
@@ -1351,9 +1404,9 @@ def get_purchase_contents_data(account_id, date_start, date_end):
         WHERE a.account_id = {account_id}
           AND a.ig_timestamp IS NOT NULL
           AND a.ig_timestamp::date >= '{date_start}'::date
-          AND a.ig_timestamp::date <= '{date_end}'::date
+          AND a.ig_timestamp::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= '{date_end}'::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
         GROUP BY a.ad_id, a.ad_name, a.fb_ad_id, a.ig_timestamp, a.thumb_link
         HAVING COALESCE(SUM(apd.purchases), 0) >= 1
@@ -1399,7 +1452,7 @@ def get_a_content_target_purchase_data(ad_id, date_start, date_end):
         JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.ad_id = {ad_id}
           AND apd.date >= '{date_start}'::date
-          AND apd.date <= '{date_end}'::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.gender != 'unknown'
         GROUP BY apd.age, apd.gender
         HAVING COALESCE(SUM(apd.purchases), 0) > 0

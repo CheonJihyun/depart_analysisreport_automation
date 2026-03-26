@@ -26,10 +26,10 @@ DEFAULT_THEME = "#4e73df"
 def _configure_matplotlib_fonts() -> None:
     # Prefer Korean-capable fonts to avoid broken glyphs in SVG.
     preferred = [
-        #"Apple SD Gothic Neo",
+        "Apple SD Gothic Neo",
         "Noto Sans KR",
         "Malgun Gothic",
-        #"Arial Unicode MS",
+        "Arial Unicode MS",
         "DejaVu Sans",
     ]
     plt.rcParams["font.family"] = preferred
@@ -101,8 +101,10 @@ def build_color_map(theme_color: str) -> Dict[str, Any]:
     lighter = _adjust_lightness(base, 0.38)
     dark = _adjust_lightness(base, -0.18)
     darker = _adjust_lightness(base, -0.32)
-    header = _adjust_hls(base, 0.20, -0.45)
-    highlight = _adjust_hls(base, 0.35, -0.50)  # 형광펜용: 매우 밝고 채도 낮춤
+    # 채도 낮은 테마에서도 색이 살아있도록 최소 채도 보장
+    _, _, s0 = colorsys.rgb_to_hls(*_hex_to_rgb01(base))
+    header = _adjust_hls(base, 0.20, max(-0.45, 0.15 - s0))
+    highlight = _adjust_hls(base, 0.65, max(-0.40, 0.20 - s0))  # 형광펜용: 매우 밝고 채도 낮춤
     series = [base, dark, light, darker]
     return {
         "base": base,
@@ -367,7 +369,10 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
     y_max = max(plotted_values)
     y_span = y_max - y_min
     y_pad = max(y_span * 0.22, 0.3)
-    y_low = y_min - (y_pad * 0.35 if y_span < 1e-12 else y_pad * 0.20)
+    if unit == "%":
+        y_low = 0
+    else:
+        y_low = y_min - (y_pad * 0.35 if y_span < 1e-12 else y_pad * 0.20)
     y_high = y_max + y_pad
     if abs(y_high - y_low) < 1e-12:
         y_high = y_low + 1.0

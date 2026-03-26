@@ -1,13 +1,13 @@
 import json
 import pandas as pd
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 # 기존에 사용하시던 스크립트 임포트 (경로에 맞춰 유지)
 from scripts.processor import (
     get_account_name, get_active_ad_count, get_total_content_count,
     get_ad_period, get_content_period, get_total_keyword_count,
-    get_instagram_followers, get_ctr_data, get_organic_data, get_organic_monthly_data, get_imp_threshold, 
+    get_instagram_followers, get_ctr_data, get_ctr_monthly_data, get_organic_data, get_organic_monthly_data, get_imp_threshold,
     get_content_ctr_data, get_a_content_target_ctr_data, get_profile_visits_monthly,
     get_target_avg_imp_ctr, get_target_avg_imp_ctr_threshold,
     get_raw_keyword_performance, filter_keywords_by_pos, get_overall_ctr,
@@ -22,15 +22,19 @@ from scripts.processor import (
 def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", avoid_age="", avoid_gender=""):
     # 1. 기본 설정 및 파라미터
 
+    # 실제 집계 마지막 날: date_end가 속한 주의 직전 일요일
+    end_dt = datetime.strptime(end, "%Y-%m-%d")
+    actual_end = (end_dt - timedelta(days=end_dt.weekday())).strftime("%Y-%m-%d")
+
     acc_name = get_account_name(target_id)
     ad_start, ad_end = get_ad_period(target_id, start, end)
     content_start, content_end = get_content_period(target_id, start, end)
-    
+
     # 2. 결과 저장용 구조 (핵심)
     final_report = {
         "meta": {
             "account_name": acc_name,
-            "period": f"{start} ~ {end}",
+            "period": f"{start} ~ {actual_end}",
             "period_ads": f"{ad_start} ~ {ad_end}",
             "period_contents": f"{content_start} ~ {content_end}",
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -229,8 +233,10 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
 
     # 2. CTR 추이
     print("CTR 추이 생성 중...")
-    ctr_df = get_ctr_data(target_id, start, end)
-    add_ds("ctr_trend", "line", "주차별 CTR 추이", ctr_df, "%", "week_start", ["ctr"])
+    ctr_weekly_df = get_ctr_data(target_id, start, end)
+    add_ds("ctr_trend_weekly", "line", "주별 CTR 추이", ctr_weekly_df, "%", "week_start", ["ctr"])
+    ctr_monthly_df = get_ctr_monthly_data(target_id, start, end)
+    add_ds("ctr_trend_monthly", "line", "월별 CTR 추이", ctr_monthly_df, "%", "month_start", ["ctr"])
 
     #  --- [추가] ROAS, 구매건수 (2페이지 분량) ---
 
@@ -292,8 +298,8 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         final_report["spend_revenue_pages"] = {
             "is_visible": True,
             "titles": {
-                "section_title": "광고비 & 매출발생 분석",
-                "page_1_title": "광고비 & 매출발생 추이"
+                "section_title": "전체 매출 데이터 분석",
+                "page_1_title": "광고비 & 매출 발생"
             }
         }
     else:

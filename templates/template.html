@@ -210,18 +210,19 @@
 
 
   {# =========================================================
-     (4) Overall - CTR
+     (4) Overall - Profile Visits (2 charts)
      ========================================================= #}
   <section class="page">
     {{ page_header('전체 성과 분석') }}
-    {{ big_title('CTR') }}
+    {{ big_title('인스타그램 프로필 방문수') }}
 
     <div class="page-body">
-      <div class="span-12">
-        {{ figure(charts.ctr, alt='ctr chart', class_name='figure--line-primary') }}
+      <div class="span-6">
+        {{ figure(charts.profile_visits_1, alt='profile visits chart 1') }}
       </div>
-
-      {{ chips_row(annotations.ctr) }}
+      <div class="span-6">
+        {{ figure(charts.profile_visits_2, alt='profile visits chart 2') }}
+      </div>
     </div>
   </section>
 
@@ -249,24 +250,28 @@
 
 
   {# =========================================================
-     (6) Overall - Profile Visits (2 charts)
+     (6) Overall - CTR
      ========================================================= #}
   <section class="page">
     {{ page_header('전체 성과 분석') }}
-    {{ big_title('인스타그램 프로필 방문수') }}
+    {{ big_title('CTR') }}
 
     <div class="page-body">
       <div class="span-6">
-        {{ figure(charts.profile_visits_1, alt='profile visits chart 1') }}
+        {{ figure(charts.ctr_weekly, alt='ctr weekly chart') }}
       </div>
       <div class="span-6">
-        {{ figure(charts.profile_visits_2, alt='profile visits chart 2') }}
+        {{ figure(charts.ctr_monthly, alt='ctr monthly chart') }}
       </div>
+
+      {{ chips_row(annotations.ctr) }}
     </div>
   </section>
 
+
+
   {# =========================================================
-     (6-1) Purchase Analysis - ROAS
+     (7) Purchase Analysis - ROAS
      ========================================================= #}
   {% if purchase_analysis_pages and purchase_analysis_pages.is_visible %}
   <section class="page">
@@ -284,7 +289,7 @@
   </section>
 
   {# =========================================================
-     (6-2) Purchase Analysis - Purchase Count
+     (8) Purchase Analysis - Purchase Count
      ========================================================= #}
   <section class="page">
     {{ page_header(purchase_analysis_pages.titles.section_title) }}
@@ -302,7 +307,7 @@
   {% endif %}
 
   {# =========================================================
-     (6-3) Spend & Revenue Analysis
+     (9) Spend & Revenue Analysis
      ========================================================= #}
   {% if spend_revenue_pages and spend_revenue_pages.is_visible %}
   <section class="page">
@@ -320,9 +325,117 @@
   </section>
   {% endif %}
 
-  
+
+
   {# =========================================================
-     (7) Content Performance - Top CTR
+     (10) Target - Avg Impressions Heatmap
+     ========================================================= #}
+  <section class="page page--target-heatmap">
+    {{ page_header('타겟별 성과') }}
+    {{ big_title('타겟별 노출') }}
+
+    <div class="page-body page-body--heatmap">
+      <div class="span-12 heatmap-panel">
+        <div class="heatmap-center">
+          {{ figure(charts.heatmap_impressions, alt='heatmap impressions', class_name='figure--heatmap') }}
+        </div>
+        {% if target.impressions_rank %}
+          <div class="rank-block rank-block--center rank-block--heatmap rank-block--heatmap-inline">
+            {% for line in target.impressions_rank %}
+              <div class="rank-block__line">{{ line }}</div>
+            {% endfor %}
+            {% if target.impressions_footnote %}
+              <div class="rank-block__footnote">{{ target.impressions_footnote }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+
+
+  {# =========================================================
+     (11) Target - Avg CTR Heatmap
+     ========================================================= #}
+  <section class="page page--target-heatmap">
+    {{ page_header('타겟별 성과') }}
+    {{ big_title('타겟별 평균 CTR') }}
+
+    <div class="page-body page-body--heatmap">
+      <div class="span-12 heatmap-panel">
+        <div class="heatmap-center">
+          {{ figure(charts.heatmap_ctr, alt='heatmap ctr', class_name='figure--heatmap') }}
+        </div>
+        {% if target.ctr_note %}
+          <div class="footnote heatmap-note">{{ target.ctr_note }}</div>
+        {% endif %}
+        {% if target.ctr_rank %}
+          <div class="rank-block rank-block--center rank-block--heatmap rank-block--heatmap-inline">
+            {% for line in target.ctr_rank %}
+              <div class="rank-block__line">{{ line }}</div>
+            {% endfor %}
+            {% if target.ctr_footnote %}
+              <div class="rank-block__footnote">{{ target.ctr_footnote }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+
+
+  {# =========================================================
+     (12) Followers_demographics
+     ========================================================= #}
+  {% if follower_demographics_pages and follower_demographics_pages.is_visible %}
+    <section class="page page--follower-demographics">
+      {{ page_header(follower_demographics_pages.titles.section_title) }}
+      {{ big_title(follower_demographics_pages.titles.page_1_title) }}
+
+      <div class="page-body follower-demo-body">
+
+        <!-- 1행 -->
+        <div class="row">
+          <div class="span-6 demo-card">
+            <h4>성별 비율 (Unknown 제외)</h4>
+            {{ figure(charts.gender_clean, alt='gender clean') }}
+          </div>
+
+          <div class="span-6 demo-card">
+            <h4>성별 데이터 식별 여부</h4>
+            {{ figure(charts.gender_unknown, alt='gender unknown') }}
+          </div>
+        </div>
+
+        <!-- 2행 -->
+        <div class="row">
+          <div class="span-6 demo-card">
+            <h4>연령대별 성별 분포 (Unknown 제외)</h4>
+            {{ figure(charts.age_clean, alt='age gender clean') }}
+          </div>
+
+          <div class="span-6 demo-card">
+            <h4>연령 데이터 식별 여부</h4>
+            {{ figure(charts.age_unknown, alt='age unknown by age') }}
+          </div>
+        </div>
+
+      </div>
+
+      {% if follower_demographics_pages.latest_date %}
+      <div class="caption" style="margin-top: 2px; font-size: 11px; color: #666;">
+        기준일: {{ follower_demographics_pages.latest_date }}
+      </div>
+      {% endif %}
+    </section>
+  {% endif %}
+
+
+
+  {# =========================================================
+     (13) Content Performance - Top CTR
      ========================================================= #}
   <section class="page">
     {{ page_header('콘텐츠 성과') }}
@@ -369,7 +482,7 @@
 
 
   {# =========================================================
-     (8) Content Performance - Bottom CTR
+     (13) Content Performance - Bottom CTR
      ========================================================= #}
   <section class="page">
     {{ page_header('콘텐츠 성과') }}
@@ -415,108 +528,6 @@
 
 
 
-{# =========================================================
-   (8-1) Followers_demographics
-   ========================================================= #}
-  {% if follower_demographics_pages and follower_demographics_pages.is_visible %}
-    <section class="page page--follower-demographics">
-      {{ page_header(follower_demographics_pages.titles.section_title) }}
-      {{ big_title(follower_demographics_pages.titles.page_1_title) }}
-
-      <div class="page-body follower-demo-body">
-
-        <!-- 1행 -->
-        <div class="row">
-          <div class="span-6 demo-card">
-            <h4>성별 비율 (Unknown 제외)</h4>
-            {{ figure(charts.gender_clean, alt='gender clean') }}
-          </div>
-
-          <div class="span-6 demo-card">
-            <h4>성별 데이터 식별 여부</h4>
-            {{ figure(charts.gender_unknown, alt='gender unknown') }}
-          </div>
-        </div>
-
-        <!-- 2행 -->
-        <div class="row">
-          <div class="span-6 demo-card">
-            <h4>연령대별 성별 분포 (Unknown 제외)</h4>
-            {{ figure(charts.age_clean, alt='age gender clean') }}
-          </div>
-
-          <div class="span-6 demo-card">
-            <h4>연령 데이터 식별 여부</h4>
-            {{ figure(charts.age_unknown, alt='age unknown by age') }}
-          </div>
-        </div>
-
-      </div>
-
-      {% if follower_demographics_pages.latest_date %}
-      <div class="caption" style="margin-top: 2px; font-size: 11px; color: #666;">
-        기준일: {{ follower_demographics_pages.latest_date }}
-      </div>
-      {% endif %}
-    </section>
-  {% endif %}
-
-  {# =========================================================
-     (9) Target - Avg Impressions Heatmap
-     ========================================================= #}
-  <section class="page page--target-heatmap">
-    {{ page_header('타겟별 성과') }}
-    {{ big_title('타겟별 평균 노출') }}
-
-    <div class="page-body page-body--heatmap">
-      <div class="span-12 heatmap-panel">
-        <div class="heatmap-center">
-          {{ figure(charts.heatmap_impressions, alt='heatmap impressions', class_name='figure--heatmap') }}
-        </div>
-        {% if target.impressions_rank %}
-          <div class="rank-block rank-block--center rank-block--heatmap rank-block--heatmap-inline">
-            {% for line in target.impressions_rank %}
-              <div class="rank-block__line">{{ line }}</div>
-            {% endfor %}
-            {% if target.impressions_footnote %}
-              <div class="rank-block__footnote">{{ target.impressions_footnote }}</div>
-            {% endif %}
-          </div>
-        {% endif %}
-      </div>
-    </div>
-  </section>
-
-
-
-  {# =========================================================
-     (10) Target - Avg CTR Heatmap
-     ========================================================= #}
-  <section class="page page--target-heatmap">
-    {{ page_header('타겟별 성과') }}
-    {{ big_title('타겟별 평균 CTR') }}
-
-    <div class="page-body page-body--heatmap">
-      <div class="span-12 heatmap-panel">
-        <div class="heatmap-center">
-          {{ figure(charts.heatmap_ctr, alt='heatmap ctr', class_name='figure--heatmap') }}
-        </div>
-        {% if target.ctr_note %}
-          <div class="footnote heatmap-note">{{ target.ctr_note }}</div>
-        {% endif %}
-        {% if target.ctr_rank %}
-          <div class="rank-block rank-block--center rank-block--heatmap rank-block--heatmap-inline">
-            {% for line in target.ctr_rank %}
-              <div class="rank-block__line">{{ line }}</div>
-            {% endfor %}
-            {% if target.ctr_footnote %}
-              <div class="rank-block__footnote">{{ target.ctr_footnote }}</div>
-            {% endif %}
-          </div>
-        {% endif %}
-      </div>
-    </div>
-  </section>
 
 
 
