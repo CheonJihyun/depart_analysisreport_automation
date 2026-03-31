@@ -54,8 +54,8 @@ def get_total_content_count(account_id, date_start, date_end):
         WHERE ad.account_id = {account_id}
             AND ad.ig_permalink IS NOT NULL
             AND ad.ig_timestamp IS NOT NULL
-            AND ad.ig_timestamp::date >= '{date_start}'::date
-            AND ad.ig_timestamp::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+            AND (ad.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'::date
+            AND (ad.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
             AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
     """
 
@@ -376,8 +376,8 @@ def get_content_ctr_data(account_id, date_start, date_end, threshold, is_top=Tru
     LEFT JOIN ad_performance_daily apd ON apd.ad_id = ad.ad_id
     WHERE ad.account_id = {account_id}
         AND ad.ig_timestamp IS NOT NULL
-        AND ad.ig_timestamp::date >= '{date_start}'::date
-        AND ad.ig_timestamp::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+        AND (ad.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'::date
+        AND (ad.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
         AND apd.date >= '{date_start}'
         AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
         AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
@@ -1371,8 +1371,8 @@ def has_purchase_content_data(account_id, date_start, date_end):
         JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND a.ig_timestamp IS NOT NULL
-          AND a.ig_timestamp::date >= '{date_start}'::date
-          AND a.ig_timestamp::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND (a.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'::date
+          AND (a.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
           AND apd.date >= '{date_start}'::date
           AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.purchases IS NOT NULL
@@ -1403,8 +1403,8 @@ def get_purchase_contents_data(account_id, date_start, date_end):
         JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND a.ig_timestamp IS NOT NULL
-          AND a.ig_timestamp::date >= '{date_start}'::date
-          AND a.ig_timestamp::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+          AND (a.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'::date
+          AND (a.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
           AND apd.date >= '{date_start}'::date
           AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')

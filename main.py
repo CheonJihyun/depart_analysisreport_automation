@@ -483,10 +483,10 @@ def run():
     start_time = time.time()
 
     config = {
-        "target_id": 8,
-        "fb_ad_account_id":"act_618278251632554",
-        "start":"2025-08-01",
-        "end": "2026-03-01",
+        "target_id": 33,
+        "fb_ad_account_id":"act_2090736321329024",
+        "start":"2026-01-05",
+        "end": "2026-03-29",
         "main_age": ["35-44", "45-54"],
         "main_gender": "male",
         "avoid_age": "",
