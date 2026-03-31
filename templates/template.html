@@ -9,7 +9,11 @@
   <style>
     :root {
       --theme-color: {{ theme.base }};
+      --theme-dark-color: {{ theme.dark }};
+      --theme-header-color: {{ theme.header }};
       --theme-title-color: {{ theme.title }};
+      --highlight-main-color: {{ theme.highlight_main }};
+      --highlight-avoid-color: {{ theme.highlight_avoid }};
       --cover-text-color: {{ theme.cover_text }};
     }
   </style>
@@ -206,18 +210,19 @@
 
 
   {# =========================================================
-     (4) Overall - CTR
+     (4) Overall - Profile Visits (2 charts)
      ========================================================= #}
   <section class="page">
     {{ page_header('전체 성과 분석') }}
-    {{ big_title('CTR') }}
+    {{ big_title('인스타그램 프로필 방문수') }}
 
     <div class="page-body">
-      <div class="span-12">
-        {{ figure(charts.ctr, alt='ctr chart', class_name='figure--line-primary') }}
+      <div class="span-6">
+        {{ figure(charts.profile_visits_1, alt='profile visits chart 1') }}
       </div>
-
-      {{ chips_row(annotations.ctr) }}
+      <div class="span-6">
+        {{ figure(charts.profile_visits_2, alt='profile visits chart 2') }}
+      </div>
     </div>
   </section>
 
@@ -245,42 +250,56 @@
 
 
   {# =========================================================
-     (6) Overall - Profile Visits (2 charts)
+     (6) Overall - CTR
      ========================================================= #}
   <section class="page">
     {{ page_header('전체 성과 분석') }}
-    {{ big_title('인스타그램 프로필 방문수') }}
+    {{ big_title('CTR') }}
 
     <div class="page-body">
       <div class="span-6">
-        {{ figure(charts.profile_visits_1, alt='profile visits chart 1') }}
+        {{ figure(charts.ctr_weekly, alt='ctr weekly chart') }}
       </div>
       <div class="span-6">
-        {{ figure(charts.profile_visits_2, alt='profile visits chart 2') }}
+        {{ figure(charts.ctr_monthly, alt='ctr monthly chart') }}
       </div>
+
+      {{ chips_row(annotations.ctr) }}
     </div>
   </section>
 
+
+
   {# =========================================================
-     (6-1) Purchase Analysis - ROAS
+     (7) Purchase Analysis - ROAS
      ========================================================= #}
   {% if purchase_analysis_pages and purchase_analysis_pages.is_visible %}
   <section class="page">
     {{ page_header(purchase_analysis_pages.titles.section_title) }}
     {{ big_title(purchase_analysis_pages.titles.page_1_title) }}
 
-    <div class="page-body">
-      <div class="span-6">
+    {% if charts.purchase_roas_monthly %}
+    <div class="page-body roas-chart-row">
+    {% else %}
+    <div class="page-body roas-chart-row roas-chart-row--single">
+    {% endif %}
+
+      <div class="span-6 roas-chart-row__weekly">
         {{ figure(charts.purchase_roas_weekly, alt='purchase roas weekly') }}
       </div>
+
+      {% if charts.purchase_roas_monthly %}
       <div class="span-6">
         {{ figure(charts.purchase_roas_monthly, alt='purchase roas monthly') }}
       </div>
+      {% endif %}
+
     </div>
   </section>
+  {% endif %}
 
   {# =========================================================
-     (6-2) Purchase Analysis - Purchase Count
+     (8) Purchase Analysis - Purchase Count
      ========================================================= #}
   <section class="page">
     {{ page_header(purchase_analysis_pages.titles.section_title) }}
@@ -295,10 +314,10 @@
       </div>
     </div>
   </section>
-  {% endif %}
+
 
   {# =========================================================
-     (6-3) Spend & Revenue Analysis
+     (9) Spend & Revenue Analysis
      ========================================================= #}
   {% if spend_revenue_pages and spend_revenue_pages.is_visible %}
   <section class="page">
@@ -316,153 +335,13 @@
   </section>
   {% endif %}
 
-  
-  {# =========================================================
-     (7) Content Performance - Top CTR
-     ========================================================= #}
-  <section class="page">
-    {{ page_header('콘텐츠 성과') }}
-    {{ big_title('CTR 상위 콘텐츠') }}
-
-    <div class="page-body">
-      {% if content.top_note %}
-        <div class="page-note page-note--left">{{ content.top_note }}</div>
-      {% endif %}
-
-      {% for item in content.top %}
-        <div class="span-4">
-          <div class="content-card">
-            <div class="content-card__meta">
-              ({{ item.uploaded_at }}) (전체 CTR {{ item.ctr }})
-            </div>
-
-            <div class="content-card__thumb">
-              {% if item.thumbnail %}
-                <img src="{{ item.thumbnail }}" alt="thumbnail">
-              {% else %}
-                <div class="thumb-placeholder">THUMB</div>
-              {% endif %}
-            </div>
-
-            <div class="content-card__chart">
-              {% if item.chart %}
-                {% set _chart = item.chart | trim %}
-                {% if _chart.startswith('<svg') %}
-                  <div class="mini-chart-svg">{{ item.chart | safe }}</div>
-                {% else %}
-                  <img src="{{ item.chart }}" alt="mini chart">
-                {% endif %}
-              {% else %}
-                <div class="mini-chart-placeholder">MINI CHART</div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  </section>
-
-
 
   {# =========================================================
-     (8) Content Performance - Bottom CTR
-     ========================================================= #}
-  <section class="page">
-    {{ page_header('콘텐츠 성과') }}
-    {{ big_title('CTR 하위 콘텐츠') }}
-
-    <div class="page-body">
-      {% if content.bottom_note %}
-        <div class="page-note page-note--left">{{ content.bottom_note }}</div>
-      {% endif %}
-
-      {% for item in content.bottom %}
-        <div class="span-4">
-          <div class="content-card">
-            <div class="content-card__meta">
-              ({{ item.uploaded_at }}) (전체 CTR {{ item.ctr }})
-            </div>
-
-            <div class="content-card__thumb">
-              {% if item.thumbnail %}
-                <img src="{{ item.thumbnail }}" alt="thumbnail">
-              {% else %}
-                <div class="thumb-placeholder">THUMB</div>
-              {% endif %}
-            </div>
-
-            <div class="content-card__chart">
-              {% if item.chart %}
-                {% set _chart = item.chart | trim %}
-                {% if _chart.startswith('<svg') %}
-                  <div class="mini-chart-svg">{{ item.chart | safe }}</div>
-                {% else %}
-                  <img src="{{ item.chart }}" alt="mini chart">
-                {% endif %}
-              {% else %}
-                <div class="mini-chart-placeholder">MINI CHART</div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  </section>
-
-
-
-{# =========================================================
-   (8-1) Followers_demographics
-   ========================================================= #}
-  {% if follower_demographics_pages and follower_demographics_pages.is_visible %}
-    <section class="page page--follower-demographics">
-      {{ page_header(follower_demographics_pages.titles.section_title) }}
-      {{ big_title(follower_demographics_pages.titles.page_1_title) }}
-
-      <div class="page-body follower-demo-body">
-
-        <!-- 1행 -->
-        <div class="row">
-          <div class="span-6 demo-card">
-            <h4>성별 비율 (Unknown 제외)</h4>
-            {{ figure(charts.gender_clean, alt='gender clean') }}
-          </div>
-
-          <div class="span-6 demo-card">
-            <h4>성별 데이터 식별 여부</h4>
-            {{ figure(charts.gender_unknown, alt='gender unknown') }}
-          </div>
-        </div>
-
-        <!-- 2행 -->
-        <div class="row">
-          <div class="span-6 demo-card">
-            <h4>연령대별 성별 분포 (Unknown 제외)</h4>
-            {{ figure(charts.age_clean, alt='age gender clean') }}
-          </div>
-
-          <div class="span-6 demo-card">
-            <h4>연령 데이터 식별 여부</h4>
-            {{ figure(charts.age_unknown, alt='age unknown by age') }}
-          </div>
-        </div>
-
-      </div>
-
-      {% if follower_demographics_pages.latest_date %}
-      <div class="caption" style="margin-top: 2px; font-size: 11px; color: #666;">
-        기준일: {{ follower_demographics_pages.latest_date }}
-      </div>
-      {% endif %}
-    </section>
-  {% endif %}
-
-  {# =========================================================
-     (9) Target - Avg Impressions Heatmap
+     (10) Target - Avg Impressions Heatmap
      ========================================================= #}
   <section class="page page--target-heatmap">
     {{ page_header('타겟별 성과') }}
-    {{ big_title('타겟별 평균 노출') }}
+    {{ big_title('타겟별 노출') }}
 
     <div class="page-body page-body--heatmap">
       <div class="span-12 heatmap-panel">
@@ -474,6 +353,9 @@
             {% for line in target.impressions_rank %}
               <div class="rank-block__line">{{ line }}</div>
             {% endfor %}
+            {% if target.impressions_footnote %}
+              <div class="rank-block__footnote">{{ target.impressions_footnote }}</div>
+            {% endif %}
           </div>
         {% endif %}
       </div>
@@ -483,7 +365,7 @@
 
 
   {# =========================================================
-     (10) Target - Avg CTR Heatmap
+     (11) Target - Avg CTR Heatmap
      ========================================================= #}
   <section class="page page--target-heatmap">
     {{ page_header('타겟별 성과') }}
@@ -502,16 +384,186 @@
             {% for line in target.ctr_rank %}
               <div class="rank-block__line">{{ line }}</div>
             {% endfor %}
+            {% if target.ctr_footnote %}
+              <div class="rank-block__footnote">{{ target.ctr_footnote }}</div>
+            {% endif %}
           </div>
         {% endif %}
       </div>
     </div>
   </section>
 
+  {# =========================================================
+    (12) Target - Purchase Heatmap
+    ========================================================= #}
+  {% if purchase_age_gender_page and purchase_age_gender_page.is_visible %}
+  <section class="page page--target-heatmap">
+    {{ page_header('타겟별 성과') }}
+    {{ big_title(purchase_age_gender_page.title) }}
+
+    <div class="page-body page-body--heatmap">
+      <div class="span-12 heatmap-panel">
+        <div class="heatmap-center">
+          {{ purchase_age_gender_page.chart | safe }}
+        </div>
+
+        {% if target.purchase_rank %}
+          <div class="rank-block rank-block--center rank-block--heatmap rank-block--heatmap-inline">
+            {% for line in target.purchase_rank %}
+              <div class="rank-block__line">{{ line }}</div>
+            {% endfor %}
+            {% if target.purchase_footnote %}
+              <div class="rank-block__footnote">{{ target.purchase_footnote }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
 
 
   {# =========================================================
-     (11) Keywords - Overall Top 10
+     (13) Followers_demographics
+     ========================================================= #}
+     {% if follower_demographics_pages and follower_demographics_pages.is_visible %}
+  <section class="page page--follower-demographics">
+    {{ page_header(follower_demographics_pages.titles.section_title) }}
+    {{ big_title(follower_demographics_pages.titles.page_1_title) }}
+
+    {% if follower_demographics_pages.latest_date %}
+      <div class="follower-demo-date">
+        기준일: {{ follower_demographics_pages.latest_date }}
+      </div>
+    {% endif %}
+
+    <div class="page-body follower-demo-body">
+      <div class="row">
+        <div class="span-6 demo-card">
+          {{ figure(charts.gender_clean, alt='gender clean') }}
+        </div>
+
+        <div class="span-6 demo-card">
+          {{ figure(charts.gender_unknown, alt='gender unknown') }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span-6 demo-card">
+          {{ figure(charts.age_clean, alt='age gender clean') }}
+        </div>
+
+        <div class="span-6 demo-card">
+          {{ figure(charts.age_unknown, alt='age unknown by age') }}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+
+
+
+
+  {# =========================================================
+     (14) Content Performance - Top CTR
+     ========================================================= #}
+  <section class="page">
+    {{ page_header('콘텐츠 성과') }}
+    {{ big_title('CTR 상위 콘텐츠') }}
+
+    <div class="page-body">
+      {% if content.top_note %}
+        <div class="page-note page-note--left">{{ content.top_note }}</div>
+      {% endif %}
+      <div class="page-note page-note--right">*전체 평균 CTR: {{ content.overall_ctr }}%</div>
+
+      {% for item in content.top %}
+        <div class="span-4">
+          <div class="content-card">
+            <div class="content-card__thumb">
+              {% if item.thumbnail %}
+                <img src="{{ item.thumbnail }}" alt="thumbnail">
+              {% else %}
+                <div class="thumb-placeholder">THUMB</div>
+              {% endif %}
+            </div>
+
+            <div class="content-card__chart">
+              {% if item.chart %}
+                {% set _chart = item.chart | trim %}
+                {% if _chart.startswith('<svg') %}
+                  <div class="mini-chart-svg">{{ item.chart | safe }}</div>
+                {% else %}
+                  <img src="{{ item.chart }}" alt="mini chart">
+                {% endif %}
+              {% else %}
+                <div class="mini-chart-placeholder">MINI CHART</div>
+              {% endif %}
+            </div>
+
+            <div class="content-card__thumb-caption">{{ item.uploaded_at }} 업로드</div>
+            <div class="content-card__chart-caption">CTR {{ item.ctr }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+
+
+  {# =========================================================
+     (15) Content Performance - Bottom CTR
+     ========================================================= #}
+  <section class="page">
+    {{ page_header('콘텐츠 성과') }}
+    {{ big_title('CTR 하위 콘텐츠') }}
+
+    <div class="page-body">
+      {% if content.bottom_note %}
+        <div class="page-note page-note--left">{{ content.bottom_note }}</div>
+      {% endif %}
+      <div class="page-note page-note--right">*전체 평균 CTR: {{ content.overall_ctr }}%</div>
+
+      {% for item in content.bottom %}
+        <div class="span-4">
+          <div class="content-card">
+            <div class="content-card__thumb">
+              {% if item.thumbnail %}
+                <img src="{{ item.thumbnail }}" alt="thumbnail">
+              {% else %}
+                <div class="thumb-placeholder">THUMB</div>
+              {% endif %}
+            </div>
+
+            <div class="content-card__chart">
+              {% if item.chart %}
+                {% set _chart = item.chart | trim %}
+                {% if _chart.startswith('<svg') %}
+                  <div class="mini-chart-svg">{{ item.chart | safe }}</div>
+                {% else %}
+                  <img src="{{ item.chart }}" alt="mini chart">
+                {% endif %}
+              {% else %}
+                <div class="mini-chart-placeholder">MINI CHART</div>
+              {% endif %}
+            </div>
+
+            <div class="content-card__thumb-caption">{{ item.uploaded_at }} 업로드</div>
+            <div class="content-card__chart-caption">CTR {{ item.ctr }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+
+
+
+
+
+  {# =========================================================
+     (16) Keywords - Overall Top 10
      - ✅ noun / verb_adj 분리 차트가 있으면 2개 출력
      - ✅ 없으면 기존 keyword_overall_top 1개 출력
      - ✅ 표는 keywords.overall_top_tables 리스트로 받는 방식 지원
@@ -540,7 +592,7 @@
 
       {% if keywords.overall_top_tables is defined and keywords.overall_top_tables %}
         {% for t in keywords.overall_top_tables[:2] %}
-          {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+          {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
         {% endfor %}
       {% endif %}
     </div>
@@ -553,7 +605,7 @@
 
 
   {# =========================================================
-     (12) Keywords - Overall Combo Pages
+     (17) Keywords - Overall Combo Pages
      ========================================================= #}
   {% for p in keywords.overall_combo_pages %}
     {% set grouped_cards = (p.cards or []) | batch(3) %}
@@ -591,7 +643,7 @@
 
 
   {# =========================================================
-     (13) Keywords - Overall Bottom 10
+     (18) Keywords - Overall Bottom 10
      ========================================================= #}
   <section class="page">
     {{ page_header('타겟별 키워드') }}
@@ -617,7 +669,7 @@
 
       {% if keywords.overall_bottom_tables is defined and keywords.overall_bottom_tables %}
         {% for t in keywords.overall_bottom_tables[:2] %}
-          {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+          {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
         {% endfor %}
       {% endif %}
     </div>
@@ -630,7 +682,7 @@
 
 
   {# =========================================================
-     (14) Main target keywords (optional)
+     (19) Main target keywords (optional)
      ========================================================= #}
   {% if keywords.main_target %}
     <section class="page">
@@ -657,7 +709,7 @@
 
         {% if keywords.main_top_tables is defined and keywords.main_top_tables %}
           {% for t in keywords.main_top_tables[:2] %}
-            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+            {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -720,7 +772,7 @@
 
         {% if keywords.main_bottom_tables is defined and keywords.main_bottom_tables %}
           {% for t in keywords.main_bottom_tables[:2] %}
-            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+            {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -729,7 +781,7 @@
 
   
   {# =========================================================
-     (15) Avoiding target keywords (optional)
+     (20) Avoiding target keywords (optional)
      ========================================================= #}
   {% if keywords.avoid_target %}
     <section class="page">
@@ -756,7 +808,7 @@
 
         {% if keywords.avoid_top_tables is defined and keywords.avoid_top_tables %}
           {% for t in keywords.avoid_top_tables[:2] %}
-            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+            {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -819,7 +871,7 @@
 
         {% if keywords.avoid_bottom_tables is defined and keywords.avoid_bottom_tables %}
           {% for t in keywords.avoid_bottom_tables[:2] %}
-            {{ simple_table(t.headers, t.rows, t.footnote, title=t.title, span_class='span-3') }}
+            {{ simple_table(t.headers, t.rows, t.footnote, span_class='span-3') }}
           {% endfor %}
         {% endif %}
       </div>
@@ -828,7 +880,7 @@
 
 
   {# =========================================================
-      (16) Purchase Contents
+      (21) Purchase Contents
       ========================================================= #}
   {% if purchase_contents_pages and purchase_contents_pages["is_visible"] %}
     {% for page_items in purchase_contents_pages["pages"] %}
@@ -937,6 +989,14 @@
       </section>
     {% endfor %}
   {% endif %}
+
+  {# ========================= EOD Page ========================= #}
+  <section class="page page--cover">
+    <div class="cover cover--eod" style="writing-mode:horizontal-tb; text-orientation:mixed; justify-content:center; align-items:center;">
+      <div class="cover__eod">EOD</div>
+    </div>
+  </section>
+
 
 </body>
 </html>
