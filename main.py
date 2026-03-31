@@ -8,14 +8,12 @@ from typing import Any
 from urllib.parse import unquote, urlparse
 import pandas as pd
 from scripts.processor import _normalize_keyword_by_pos, _best_adverb_score, kiwi, VERB_ADJ_TAGS
-from scripts.visualizer import build_color_map, render_dataset, is_dark_color, render_bubble_chart, render_purchase_pie_chart, render_follower_gender_doughnut_chart, render_follower_age_gender_stacked_barh_chart
+from scripts.visualizer import build_color_map, complementary_hex, render_dataset, is_dark_color, render_bubble_chart, render_purchase_pie_chart, render_follower_gender_doughnut_chart, render_follower_age_gender_stacked_barh_chart, _render_purchase_conversion_heatmap
 from scripts.reporter import generate_html
 from to_json import run as generate_json
 import time
 
 
-G_CMAP = ["#0B3D02", "#659348", "#E3CC97"]
-B_CMAP = ["#EE8C8C", "#D7A9A9", "#E3CC97"]
 _KOREAN_RE = re.compile(r"[가-힣]")
 
 
@@ -166,18 +164,74 @@ def _load_report(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-
-def _top_targets(rows, metric: str, limit: int = 2):
+def _top_targets(rows, metric: str, limit: int = 2, filter_low_imps: bool = False):
+    """상위 타겟 순위 산출.
+    filter_low_imps=True 일 때: unknown 제외 후 전체 노출수의 5% 이하 타겟을 순위에서 제외하고 footnote 반환.
+    Returns: (rank_lines, footnote_text)
+    """
     if not rows:
-        return []
-    sorted_rows = sorted(rows, key=lambda r: r.get(metric, float("-inf")), reverse=True)
+        return [], ""
+
+    df = pd.DataFrame(rows)
+    if df.empty or metric not in df.columns:
+        return [], ""
+
+    df[metric] = pd.to_numeric(df[metric], errors="coerce").fillna(0)
+
+    # CTR 필터링에서만 impressions 필요
+    if filter_low_imps:
+        if "impressions" not in df.columns:
+            return [], ""
+
+        df["impressions"] = pd.to_numeric(df["impressions"], errors="coerce").fillna(0)
+
+        # unknown 제외
+        df_filtered = df[df["gender"].astype(str).str.lower() != "unknown"].copy()
+        if df_filtered.empty:
+            return [], ""
+
+        # 전체 노출수(unknown 제외) 기준 5% 임계값 산출
+        total_imps = int(df_filtered["impressions"].sum())
+        threshold = total_imps * 0.05
+
+        # 5% 이하 필터링
+        df_filtered = df_filtered[df_filtered["impressions"] > threshold].copy()
+        footnote = f"노출수가 전체 노출수({total_imps:,})의 5%({int(threshold):,}) 이하인 타겟은 제외"
+    else:
+        # purchases/impressions 랭킹도 unknown 제외하고 싶으면 이 줄 유지
+        df_filtered = df[df["gender"].astype(str).str.lower() != "unknown"].copy()
+        footnote = ""
+
+    if df_filtered.empty:
+        return [], footnote
+
+    # purchases는 합계 기준, 나머지는 기존처럼 행 기준 정렬
+    if metric == "purchases":
+        df_sorted = (
+            df_filtered.groupby(["age", "gender"], as_index=False)[metric]
+            .sum()
+            .sort_values(by=metric, ascending=False)
+        )
+        footnote = "구매전환 수 합계 기준"
+    else:
+        df_sorted = df_filtered.sort_values(by=metric, ascending=False)
+
     results = []
-    for idx, row in enumerate(sorted_rows[:limit], 1):
-        age = row.get("age", "")
-        gender = row.get("gender", "")
-        label = f"{idx}위 : {age} {gender}".strip()
+    for idx, row in enumerate(df_sorted.head(limit).itertuples(), 1):
+        age = str(getattr(row, "age", "") or "")
+        gender = str(getattr(row, "gender", "") or "")
+
+        if gender.lower() == "female":
+            gender_label = "여성"
+        elif gender.lower() == "male":
+            gender_label = "남성"
+        else:
+            gender_label = gender
+
+        label = f"{idx}위 : {age} {gender_label}".strip()
         results.append(label)
-    return results
+
+    return results, footnote
 
 
 def _normalize_selector(value: str | None) -> str | None:
@@ -450,14 +504,14 @@ def run():
     start_time = time.time()
 
     config = {
-        "target_id": 8,
-        "fb_ad_account_id":"act_618278251632554",
-        "start":"2025-08-01",
-        "end": "2026-03-01",
-        "main_age": ["35-44", "45-54"],
-        "main_gender": "male",
+        "target_id": 40,
+        "fb_ad_account_id":"act_629591912653973",
+        "start":"2026-01-12",
+        "end": "2026-03-29",
+        "main_age": ["18-24", "25-34"],
+        "main_gender": "",
         "avoid_age": "",
-        "avoid_gender": "female",
+        "avoid_gender": "",
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
     start, end = config["start"], config["end"]
@@ -475,7 +529,7 @@ def run():
                     avoid_age=avoid_age, avoid_gender=avoid_gender)
     
     report_path = "json_reports/integrated_report.json"
-    theme_color = "#2A3D1E"
+    theme_color = "#1A1A1A"
 
     report_json = _load_report(report_path)
     _apply_display_predicate_suffix(report_json)
@@ -491,9 +545,18 @@ def run():
     generated_at = meta.get("generated_at") or datetime.now().strftime("%Y-%m-%d %H:%M")
 
     color_map = build_color_map(theme_color)
+    comp_color_map = build_color_map(complementary_hex(theme_color))
+    # 상위 키워드·버블차트: theme_color 기반 (진한 → 밝은 순)
+    THEME_CMAP = [color_map["darker"], color_map["base"], color_map["light"]]
+    # 하위 키워드·avoid: 보색 기반 (진한 → 밝은 순)
+    COMP_CMAP  = [comp_color_map["darker"], comp_color_map["base"], comp_color_map["light"]]
     theme = {
         "base": color_map["base"],
+        "dark": color_map["dark"],
+        "header": color_map["header"],
         "title": color_map["darker"],
+        "highlight_main": color_map["highlight"],
+        "highlight_avoid": comp_color_map["highlight"],
         "cover_text": "#ffffff" if is_dark_color(color_map["base"]) else "#000000",
     }
 
@@ -511,7 +574,7 @@ def run():
     def add_chart(key: str, dataset_key: str, **kwargs):
         ds = datasets.get(dataset_key)
         if dataset_key in keyword_b_palette_keys and (ds or {}).get("kind") == "bar_h":
-            kwargs.setdefault("palette", B_CMAP)
+            kwargs.setdefault("palette", COMP_CMAP)
         svg = render_dataset(ds, color_map, **kwargs)
         if isinstance(svg, str) and svg:
             charts[key] = svg
@@ -525,7 +588,8 @@ def run():
         return f"{txt}개"
 
     add_chart("followers", "insta_followers")
-    add_chart("ctr", "ctr_trend")
+    add_chart("ctr_weekly", "ctr_trend_weekly")
+    add_chart("ctr_monthly", "ctr_trend_monthly")
     add_chart("organic_views_1", "organic_trend")
     add_chart("organic_views_2", "organic_trend_monthly")
     add_chart("profile_visits_1", "insta_profile_visits")
@@ -603,11 +667,16 @@ def run():
         series_data = ds.get("series", [{}])[0].get("data", [])
         
         rows = []
-        # labels(키워드)와 series_data(CTR 값)를 매칭
-        for i, (label, value) in enumerate(zip(labels, series_data), 1):
+        # labels(키워드)와 series_data(CTR 값)를 매칭 — 동률은 같은 순위, 다음 순위는 건너뜀
+        rank = 1
+        for i, (label, value) in enumerate(zip(labels, series_data)):
+            if i > 0:
+                prev_value = series_data[i - 1]
+                if value != prev_value:
+                    rank = i + 1   # 동률이 있으면 그 개수만큼 건너뜀
             rows.append([
-                f"{i}위", 
-                label, 
+                f"{rank}위",
+                label,
                 f"{value:.2f}%"
             ])
         
@@ -675,10 +744,13 @@ def run():
     _materialize_content_thumbnails(top_items + bottom_items)
 
     target_rows = (datasets.get("target_heatmap") or {}).get("rows") or []
-    impressions_rank = _top_targets(target_rows, "impressions")
-    ctr_rank = _top_targets(target_rows, "ctr")
+    impressions_rank, impressions_footnote = _top_targets(target_rows, "impressions")
+    ctr_rank, ctr_footnote = _top_targets(target_rows, "ctr", filter_low_imps=True)
 
-    overall_ctr_val = _average_series(datasets.get("ctr_trend"))
+    purchase_rows = (datasets.get("purchase_heatmap") or {}).get("rows") or []
+    purchase_rank, purchase_footnote = _top_targets(purchase_rows, "purchases")
+
+    overall_ctr_val = _average_series(datasets.get("ctr_trend_weekly"))
     overall_ctr = f"{overall_ctr_val:.2f}" if isinstance(overall_ctr_val, (int, float)) else "-"
 
     main_ctr_val = _target_ctr(target_rows, main_age, main_gender) if has_main_target else None
@@ -689,11 +761,11 @@ def run():
 
 
 
-    cards = _combo_cards(datasets.get("overall_keyword_combo_detail"), palette=G_CMAP)
-    cards_main = _combo_cards(datasets.get("main_keyword_combo_detail"), palette=G_CMAP) if has_main_target else []
-    cards_avoid = _combo_cards(datasets.get("avoid_keyword_combo_detail"), palette=B_CMAP) if has_avoid_target else []
+    cards = _combo_cards(datasets.get("overall_keyword_combo_detail"), palette=THEME_CMAP)
+    cards_main = _combo_cards(datasets.get("main_keyword_combo_detail"), palette=THEME_CMAP) if has_main_target else []
+    cards_avoid = _combo_cards(datasets.get("avoid_keyword_combo_detail"), palette=COMP_CMAP) if has_avoid_target else []
 
-    # 추가
+    # 구매 페이지 - 조건부 생성
     purchase_contents_pages = report_json.get("purchase_contents_pages", {"is_visible": False})
 
     if purchase_contents_pages.get("is_visible"):
@@ -704,6 +776,25 @@ def run():
                 target_details = item.get("target_details") or []
                 item["chart"] = render_purchase_pie_chart(target_details, color_map) if target_details else ""
 
+    # 구매 전환 히트맵 - 조건부 생성
+    purchase_age_gender_page = report_json.get(
+        "purchase_age_gender_page",
+        {"is_visible": False}
+    )
+
+    if purchase_age_gender_page.get("is_visible"):
+        heatmap_rows = purchase_age_gender_page.get("heatmap") or []
+
+        if heatmap_rows and sum((r.get("purchases") or 0) for r in heatmap_rows) > 0:
+            purchase_age_gender_page["chart"] = _render_purchase_conversion_heatmap(
+                heatmap_rows,
+                color_map
+            )
+        else:
+            purchase_age_gender_page["chart"] = ""
+            purchase_age_gender_page["heatmap"] = []
+
+
     context = {
         "css_path": "./templates/report.css",
         "theme": theme,
@@ -713,7 +804,7 @@ def run():
             "quarter_label": period,
             "year": year,
             "generated_at": generated_at,
-            "brand": "De:part",
+            "brand": "De;part",
             "period_ads": period_ads or "-",
             "period_contents": period_contents or "-",
             "keyword_count": f"{summary.get('total_keywords', '-') }개",
@@ -730,6 +821,7 @@ def run():
             "top": top_items,
             "bottom_note": "",
             "bottom": bottom_items,
+            "overall_ctr": overall_ctr,
         },
         "charts": charts,
         "annotations": {
@@ -738,8 +830,12 @@ def run():
         },
         "target": {
             "impressions_rank": impressions_rank,
+            "impressions_footnote": impressions_footnote,
             "ctr_note": "",
             "ctr_rank": ctr_rank,
+            "ctr_footnote": ctr_footnote,
+            "purchase_rank": purchase_rank,
+            "purchase_footnote": purchase_footnote,
         },
         "keywords": {
             "overall_top_note": "*3개 이상의 콘텐츠에 등장한 단어만 표시",
@@ -790,6 +886,10 @@ def run():
         ),
         "purchase_contents_pages": report_json.get(  # 구매 컨텐츠 추가
             "purchase_contents_pages",
+            {"is_visible": False}
+        ),
+        "purchase_age_gender_page": report_json.get(  # 구매 전환 히트맵 추가
+            "purchase_age_gender_page",
             {"is_visible": False}
         ),
                 "spend_revenue_pages": report_json.get(  # 광고/매출금액 추가
