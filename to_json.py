@@ -1,20 +1,20 @@
 import json
 import pandas as pd
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 # 기존에 사용하시던 스크립트 임포트 (경로에 맞춰 유지)
 from scripts.processor import (
     get_account_name, get_active_ad_count, get_total_content_count,
     get_ad_period, get_content_period, get_total_keyword_count,
-    get_instagram_followers, get_ctr_data, get_organic_data, get_organic_monthly_data, get_imp_threshold, 
+    get_instagram_followers, get_ctr_data, get_ctr_monthly_data, get_organic_data, get_organic_monthly_data, get_imp_threshold,
     get_content_ctr_data, get_a_content_target_ctr_data, get_profile_visits_monthly,
     get_target_avg_imp_ctr, get_target_avg_imp_ctr_threshold,
     get_raw_keyword_performance, filter_keywords_by_pos, get_overall_ctr,
     get_strategic_performance,get_essence_target_performance,get_variable_target_performance,
     has_purchase_data, get_purchase_roas_weekly, get_purchase_roas_monthly,  # ROAS,구매건수 데이터 추가
     get_purchase_count_weekly, get_purchase_count_monthly,
-    has_purchase_content_data, get_purchase_contents_pages_data, get_a_content_target_purchase_data,  # 구매 컨텐츠 추가
+    has_purchase_content_data, get_purchase_contents_pages_data, get_a_content_target_purchase_data, get_purchase_age_gender_heatmap,get_purchase_age_gender_heatmap_page_data,  # 구매 컨텐츠 추가
     has_revenue_data, get_spend_and_revenue_weekly, get_spend_and_revenue_monthly,  # 광고/매출금액 추가
     has_follower_demographics_data, get_follower_demographics_latest_date, get_demographics_ratio, get_follower_age_gender_known_only, get_age_known_unknown_by_age  # 팔로워 인구통계 추가
 )
@@ -22,15 +22,19 @@ from scripts.processor import (
 def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", avoid_age="", avoid_gender=""):
     # 1. 기본 설정 및 파라미터
 
+    # 실제 집계 마지막 날: date_end가 속한 주의 직전 일요일
+    end_dt = datetime.strptime(end, "%Y-%m-%d")
+    actual_end = (end_dt - timedelta(days=end_dt.weekday())).strftime("%Y-%m-%d")
+
     acc_name = get_account_name(target_id)
     ad_start, ad_end = get_ad_period(target_id, start, end)
     content_start, content_end = get_content_period(target_id, start, end)
-    
+
     # 2. 결과 저장용 구조 (핵심)
     final_report = {
         "meta": {
             "account_name": acc_name,
-            "period": f"{start} ~ {end}",
+            "period": f"{start} ~ {actual_end}",
             "period_ads": f"{ad_start} ~ {ad_end}",
             "period_contents": f"{content_start} ~ {content_end}",
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -229,8 +233,10 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
 
     # 2. CTR 추이
     print("CTR 추이 생성 중...")
-    ctr_df = get_ctr_data(target_id, start, end)
-    add_ds("ctr_trend", "line", "주차별 CTR 추이", ctr_df, "%", "week_start", ["ctr"])
+    ctr_weekly_df = get_ctr_data(target_id, start, end)
+    add_ds("ctr_trend_weekly", "line", "주별 CTR 추이", ctr_weekly_df, "%", "week_start", ["ctr"])
+    ctr_monthly_df = get_ctr_monthly_data(target_id, start, end)
+    add_ds("ctr_trend_monthly", "line", "월별 CTR 추이", ctr_monthly_df, "%", "month_start", ["ctr"])
 
     #  --- [추가] ROAS, 구매건수 (2페이지 분량) ---
 
@@ -260,50 +266,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             "is_visible": False
         }
 
-    # --- [추가] 광고비 & 매출발생 페이지 ---
-
-    if has_revenue_data(target_id, start, end):
-        print("광고비/매출발생 데이터 있음 - 생성 중...")
-        spend_revenue_weekly_df = get_spend_and_revenue_weekly(target_id, start, end)
-        spend_revenue_monthly_df = get_spend_and_revenue_monthly(target_id, start, end)
-
-        add_ds(
-            "spend_revenue_weekly",
-            "line",
-            "광고비 & 매출발생 (주별)",
-            spend_revenue_weekly_df,
-            "원",
-            "week_start",
-            ["spend", "revenue"],
-            extra_meta={"show_legend": True}
-        )
-
-        add_ds(
-            "spend_revenue_monthly",
-            "line",
-            "광고비 & 매출발생 (월별)",
-            spend_revenue_monthly_df,
-            "원",
-            "month_start",
-            ["spend", "revenue"],
-            extra_meta={"show_legend": True}
-        )
-
-        final_report["spend_revenue_pages"] = {
-            "is_visible": True,
-            "titles": {
-                "section_title": "광고비 & 매출발생 분석",
-                "page_1_title": "광고비 & 매출발생 추이"
-            }
-        }
-    else:
-        print("광고비/매출발생 데이터 없음...")
-        final_report["spend_revenue_pages"] = {
-            "is_visible": False
-        }
-
      #  --- [추가] 구매 발생 컨텐츠  --
-    print("구매가 발생한 콘텐츠 페이지 확인 중...")
     purchase_contents_data = get_purchase_contents_pages_data(target_id, start, end)
 
     if purchase_contents_data:
@@ -314,7 +277,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             enriched_items = []
 
             for item in page_items:
-                detail_df = get_a_content_target_purchase_data(item["ad_id"], start, end)
+                detail_df = get_a_content_target_purchase_data(item["ad_ids"], start, end)
                 if detail_df is not None:
                     item["target_details"] = detail_df.to_dict(orient="records")
                 else:
@@ -337,11 +300,71 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         }
 
     _, threshold = get_imp_threshold(target_id, start, end)
+
+    # ================================
+    # 구매 전환 히트맵 페이지 추가
+    # ================================
+    purchase_age_gender_data = get_purchase_age_gender_heatmap_page_data(target_id, start, end)
+
+    if purchase_age_gender_data:
+        heatmap_rows = purchase_age_gender_data.get("heatmap")
+
+        if heatmap_rows is not None:
+            heatmap_df = heatmap_rows.copy()
+
+            # 🔥 purchases 숫자화
+            heatmap_df["purchases"] = pd.to_numeric(
+                heatmap_df["purchases"], errors="coerce"
+            ).fillna(0)
+
+            # 🔥 실제 구매 있는 데이터만
+            valid_df = heatmap_df[heatmap_df["purchases"] > 0]
+
+            heatmap_rows = heatmap_df.to_dict(orient="records")
+        else:
+            heatmap_rows = []
+            valid_df = []
+
+        # 🔥 핵심 조건 (여기 중요)
+        if len(valid_df) >= 1:
+            print("구매 전환 히트맵 데이터 있음 → 생성 중...")
+
+            final_report["purchase_age_gender_page"] = {
+                "is_visible": True,
+                "title": purchase_age_gender_data.get("title", "타겟별 구매전환"),
+                "heatmap": heatmap_rows,
+            }
+        else:
+            print("구매 데이터 0 → 페이지 숨김")
+
+            final_report["purchase_age_gender_page"] = {
+                "is_visible": False
+            }
+
+    else:
+        print("구매 전환 히트맵 데이터 없음 ...")
+        final_report["purchase_age_gender_page"] = {
+            "is_visible": False
+        }
+
+    _, threshold = get_imp_threshold(target_id, start, end)
+
     # 3. 타겟 히트맵 데이터 (노출/CTR)
-    print("타겟 히트맵 데이터 (노출/CTR) 생성 중...")
+    print("타겟 히트맵 데이터 (노출/CTR/구매전환) 생성 중...")
     target_df = get_target_avg_imp_ctr_threshold(target_id, start, end, threshold)
     # 히트맵은 테이블 형태가 시각화하기 좋음
     add_ds("target_heatmap", "table", "타겟별 노출 및 CTR 성과", target_df)
+
+    # 3-1. 구매전환 히트맵 데이터
+    purchase_heatmap_df = get_purchase_age_gender_heatmap(target_id, start, end)
+
+    if purchase_heatmap_df is not None and not purchase_heatmap_df.empty:
+        add_ds(
+            "purchase_heatmap",
+            "table",
+            "타겟별 구매전환 성과",
+            purchase_heatmap_df
+        )
 
     # 4. 키워드 분석 (전체/메인/기피 + 명사/형용사)
     print("키워드 분석 (전체/메인/기피 + 명사/형용사) 생성 중...")
