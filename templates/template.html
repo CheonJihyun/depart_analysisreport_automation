@@ -301,6 +301,7 @@
   {# =========================================================
      (8) Purchase Analysis - Purchase Count
      ========================================================= #}
+  {% if purchase_analysis_pages and purchase_analysis_pages.is_visible %}
   <section class="page">
     {{ page_header(purchase_analysis_pages.titles.section_title) }}
     {{ big_title(purchase_analysis_pages.titles.page_2_title) }}
@@ -314,6 +315,7 @@
       </div>
     </div>
   </section>
+  {% endif %}
 
 
   {# =========================================================
