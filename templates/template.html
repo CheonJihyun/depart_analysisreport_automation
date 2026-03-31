@@ -278,15 +278,25 @@
     {{ page_header(purchase_analysis_pages.titles.section_title) }}
     {{ big_title(purchase_analysis_pages.titles.page_1_title) }}
 
-    <div class="page-body">
-      <div class="span-6">
+    {% if charts.purchase_roas_monthly %}
+    <div class="page-body roas-chart-row">
+    {% else %}
+    <div class="page-body roas-chart-row roas-chart-row--single">
+    {% endif %}
+
+      <div class="span-6 roas-chart-row__weekly">
         {{ figure(charts.purchase_roas_weekly, alt='purchase roas weekly') }}
       </div>
+
+      {% if charts.purchase_roas_monthly %}
       <div class="span-6">
         {{ figure(charts.purchase_roas_monthly, alt='purchase roas monthly') }}
       </div>
+      {% endif %}
+
     </div>
   </section>
+  {% endif %}
 
   {# =========================================================
      (8) Purchase Analysis - Purchase Count
@@ -304,7 +314,7 @@
       </div>
     </div>
   </section>
-  {% endif %}
+
 
   {# =========================================================
      (9) Spend & Revenue Analysis
@@ -324,7 +334,6 @@
     </div>
   </section>
   {% endif %}
-
 
 
   {# =========================================================
@@ -384,58 +393,80 @@
     </div>
   </section>
 
-
-
   {# =========================================================
-     (12) Followers_demographics
-     ========================================================= #}
-  {% if follower_demographics_pages and follower_demographics_pages.is_visible %}
-    <section class="page page--follower-demographics">
-      {{ page_header(follower_demographics_pages.titles.section_title) }}
-      {{ big_title(follower_demographics_pages.titles.page_1_title) }}
+    (12) Target - Purchase Heatmap
+    ========================================================= #}
+  {% if purchase_age_gender_page and purchase_age_gender_page.is_visible %}
+  <section class="page page--target-heatmap">
+    {{ page_header('타겟별 성과') }}
+    {{ big_title(purchase_age_gender_page.title) }}
 
-      <div class="page-body follower-demo-body">
-
-        <!-- 1행 -->
-        <div class="row">
-          <div class="span-6 demo-card">
-            <h4>성별 비율 (Unknown 제외)</h4>
-            {{ figure(charts.gender_clean, alt='gender clean') }}
-          </div>
-
-          <div class="span-6 demo-card">
-            <h4>성별 데이터 식별 여부</h4>
-            {{ figure(charts.gender_unknown, alt='gender unknown') }}
-          </div>
+    <div class="page-body page-body--heatmap">
+      <div class="span-12 heatmap-panel">
+        <div class="heatmap-center">
+          {{ purchase_age_gender_page.chart | safe }}
         </div>
 
-        <!-- 2행 -->
-        <div class="row">
-          <div class="span-6 demo-card">
-            <h4>연령대별 성별 분포 (Unknown 제외)</h4>
-            {{ figure(charts.age_clean, alt='age gender clean') }}
+        {% if target.purchase_rank %}
+          <div class="rank-block rank-block--center rank-block--heatmap rank-block--heatmap-inline">
+            {% for line in target.purchase_rank %}
+              <div class="rank-block__line">{{ line }}</div>
+            {% endfor %}
+            {% if target.purchase_footnote %}
+              <div class="rank-block__footnote">{{ target.purchase_footnote }}</div>
+            {% endif %}
           </div>
-
-          <div class="span-6 demo-card">
-            <h4>연령 데이터 식별 여부</h4>
-            {{ figure(charts.age_unknown, alt='age unknown by age') }}
-          </div>
-        </div>
-
+        {% endif %}
       </div>
-
-      {% if follower_demographics_pages.latest_date %}
-      <div class="caption" style="margin-top: 2px; font-size: 11px; color: #666;">
-        기준일: {{ follower_demographics_pages.latest_date }}
-      </div>
-      {% endif %}
-    </section>
+    </div>
+  </section>
   {% endif %}
 
 
+  {# =========================================================
+     (13) Followers_demographics
+     ========================================================= #}
+     {% if follower_demographics_pages and follower_demographics_pages.is_visible %}
+  <section class="page page--follower-demographics">
+    {{ page_header(follower_demographics_pages.titles.section_title) }}
+    {{ big_title(follower_demographics_pages.titles.page_1_title) }}
+
+    {% if follower_demographics_pages.latest_date %}
+      <div class="follower-demo-date">
+        기준일: {{ follower_demographics_pages.latest_date }}
+      </div>
+    {% endif %}
+
+    <div class="page-body follower-demo-body">
+      <div class="row">
+        <div class="span-6 demo-card">
+          {{ figure(charts.gender_clean, alt='gender clean') }}
+        </div>
+
+        <div class="span-6 demo-card">
+          {{ figure(charts.gender_unknown, alt='gender unknown') }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span-6 demo-card">
+          {{ figure(charts.age_clean, alt='age gender clean') }}
+        </div>
+
+        <div class="span-6 demo-card">
+          {{ figure(charts.age_unknown, alt='age unknown by age') }}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+
+
+
 
   {# =========================================================
-     (13) Content Performance - Top CTR
+     (14) Content Performance - Top CTR
      ========================================================= #}
   <section class="page">
     {{ page_header('콘텐츠 성과') }}
@@ -482,7 +513,7 @@
 
 
   {# =========================================================
-     (13) Content Performance - Bottom CTR
+     (15) Content Performance - Bottom CTR
      ========================================================= #}
   <section class="page">
     {{ page_header('콘텐츠 성과') }}
@@ -532,7 +563,7 @@
 
 
   {# =========================================================
-     (11) Keywords - Overall Top 10
+     (16) Keywords - Overall Top 10
      - ✅ noun / verb_adj 분리 차트가 있으면 2개 출력
      - ✅ 없으면 기존 keyword_overall_top 1개 출력
      - ✅ 표는 keywords.overall_top_tables 리스트로 받는 방식 지원
@@ -574,7 +605,7 @@
 
 
   {# =========================================================
-     (12) Keywords - Overall Combo Pages
+     (17) Keywords - Overall Combo Pages
      ========================================================= #}
   {% for p in keywords.overall_combo_pages %}
     {% set grouped_cards = (p.cards or []) | batch(3) %}
@@ -612,7 +643,7 @@
 
 
   {# =========================================================
-     (13) Keywords - Overall Bottom 10
+     (18) Keywords - Overall Bottom 10
      ========================================================= #}
   <section class="page">
     {{ page_header('타겟별 키워드') }}
@@ -651,7 +682,7 @@
 
 
   {# =========================================================
-     (14) Main target keywords (optional)
+     (19) Main target keywords (optional)
      ========================================================= #}
   {% if keywords.main_target %}
     <section class="page">
@@ -750,7 +781,7 @@
 
   
   {# =========================================================
-     (15) Avoiding target keywords (optional)
+     (20) Avoiding target keywords (optional)
      ========================================================= #}
   {% if keywords.avoid_target %}
     <section class="page">
@@ -849,7 +880,7 @@
 
 
   {# =========================================================
-      (16) Purchase Contents
+      (21) Purchase Contents
       ========================================================= #}
   {% if purchase_contents_pages and purchase_contents_pages["is_visible"] %}
     {% for page_items in purchase_contents_pages["pages"] %}

@@ -14,7 +14,7 @@ from scripts.processor import (
     get_strategic_performance,get_essence_target_performance,get_variable_target_performance,
     has_purchase_data, get_purchase_roas_weekly, get_purchase_roas_monthly,  # ROAS,구매건수 데이터 추가
     get_purchase_count_weekly, get_purchase_count_monthly,
-    has_purchase_content_data, get_purchase_contents_pages_data, get_a_content_target_purchase_data,  # 구매 컨텐츠 추가
+    has_purchase_content_data, get_purchase_contents_pages_data, get_a_content_target_purchase_data, get_purchase_age_gender_heatmap,get_purchase_age_gender_heatmap_page_data,  # 구매 컨텐츠 추가
     has_revenue_data, get_spend_and_revenue_weekly, get_spend_and_revenue_monthly,  # 광고/매출금액 추가
     has_follower_demographics_data, get_follower_demographics_latest_date, get_demographics_ratio, get_follower_age_gender_known_only, get_age_known_unknown_by_age  # 팔로워 인구통계 추가
 )
@@ -308,8 +308,8 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             "is_visible": False
         }
 
+
      #  --- [추가] 구매 발생 컨텐츠  --
-    print("구매가 발생한 콘텐츠 페이지 확인 중...")
     purchase_contents_data = get_purchase_contents_pages_data(target_id, start, end)
 
     if purchase_contents_data:
@@ -320,7 +320,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             enriched_items = []
 
             for item in page_items:
-                detail_df = get_a_content_target_purchase_data(item["ad_id"], start, end)
+                detail_df = get_a_content_target_purchase_data(item["ad_ids"], start, end)
                 if detail_df is not None:
                     item["target_details"] = detail_df.to_dict(orient="records")
                 else:
@@ -343,11 +343,71 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         }
 
     _, threshold = get_imp_threshold(target_id, start, end)
+
+    # ================================
+    # 구매 전환 히트맵 페이지 추가
+    # ================================
+    purchase_age_gender_data = get_purchase_age_gender_heatmap_page_data(target_id, start, end)
+
+    if purchase_age_gender_data:
+        heatmap_rows = purchase_age_gender_data.get("heatmap")
+
+        if heatmap_rows is not None:
+            heatmap_df = heatmap_rows.copy()
+
+            # 🔥 purchases 숫자화
+            heatmap_df["purchases"] = pd.to_numeric(
+                heatmap_df["purchases"], errors="coerce"
+            ).fillna(0)
+
+            # 🔥 실제 구매 있는 데이터만
+            valid_df = heatmap_df[heatmap_df["purchases"] > 0]
+
+            heatmap_rows = heatmap_df.to_dict(orient="records")
+        else:
+            heatmap_rows = []
+            valid_df = []
+
+        # 🔥 핵심 조건 (여기 중요)
+        if len(valid_df) >= 1:
+            print("구매 전환 히트맵 데이터 있음 → 생성 중...")
+
+            final_report["purchase_age_gender_page"] = {
+                "is_visible": True,
+                "title": purchase_age_gender_data.get("title", "타겟별 구매전환"),
+                "heatmap": heatmap_rows,
+            }
+        else:
+            print("구매 데이터 0 → 페이지 숨김")
+
+            final_report["purchase_age_gender_page"] = {
+                "is_visible": False
+            }
+
+    else:
+        print("구매 전환 히트맵 데이터 없음 ...")
+        final_report["purchase_age_gender_page"] = {
+            "is_visible": False
+        }
+
+    _, threshold = get_imp_threshold(target_id, start, end)
+
     # 3. 타겟 히트맵 데이터 (노출/CTR)
-    print("타겟 히트맵 데이터 (노출/CTR) 생성 중...")
+    print("타겟 히트맵 데이터 (노출/CTR/구매전환) 생성 중...")
     target_df = get_target_avg_imp_ctr_threshold(target_id, start, end, threshold)
     # 히트맵은 테이블 형태가 시각화하기 좋음
     add_ds("target_heatmap", "table", "타겟별 노출 및 CTR 성과", target_df)
+
+    # 3-1. 구매전환 히트맵 데이터
+    purchase_heatmap_df = get_purchase_age_gender_heatmap(target_id, start, end)
+
+    if purchase_heatmap_df is not None and not purchase_heatmap_df.empty:
+        add_ds(
+            "purchase_heatmap",
+            "table",
+            "타겟별 구매전환 성과",
+            purchase_heatmap_df
+        )
 
     # 4. 키워드 분석 (전체/메인/기피 + 명사/형용사)
     print("키워드 분석 (전체/메인/기피 + 명사/형용사) 생성 중...")

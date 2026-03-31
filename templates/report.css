@@ -1155,70 +1155,72 @@ body {
   font-weight: 700;
 }
 
-/* =========================
-   팔로워 인구통계 (최종)
-   ========================= */
+/* ========================= 
+  팔로워 인구통계 
+  ========================= */ 
+/* 카드 제목 (각 차트 제목) */ 
 
-/* 카드 제목 (각 차트 제목) */
 .page--follower-demographics .demo-card h4 {
-  margin: 4px 0 6px 0;   
-  font-size: 17px;         
+  margin: 2px 0 8px 0;
+  font-size: 20px;
   font-weight: 700;
-  line-height: 1.25;
-}
-
-/* 전체 레이아웃 */
+  line-height: 2; 
+} 
+/* 전체 레이아웃 */ 
 .page--follower-demographics .follower-demo-body {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-top: 0;
-}
+  gap: 0px;
+  margin-top: 24px; 
+} 
 
 .page--follower-demographics .row {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-
-.page--follower-demographics .span-6 {
-  flex: 1 1 0;
+  display: flex; gap: 12px;
+  align-items: flex-start; }
+  .page--follower-demographics
+  .span-6 { flex: 1 1 0;
   min-width: 0;
-}
+} 
 
-/* 카드 */
+/* 카드 */ 
 .page--follower-demographics .demo-card {
   display: flex;
-  padding-top: 2px;
+  padding-top: 1px;
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
+} 
 
 /* figure 기본 스타일 무력화 */
 .page--follower-demographics .demo-card .figure {
   width: 100%;
   margin: 0;
   display: block;
-}
-
-/* 핵심: 이미지 강제 확장 */
-.page--follower-demographics .demo-card .figure__img {
-  display: block;
-  width: 100% !important;
-  max-width: none !important;
-  height: auto !important;
-  margin: 0 auto;
-}
+} 
 
 /* 상단 도넛 */
 .page--follower-demographics .row:first-child .demo-card .figure__img {
-  width: 85% !important;
+  width: 95% !important;
   max-height: 400px;
+} 
+
+/* 하단 바 차트 */ 
+.roas-chart-row {
+  display: flex;
+  gap: 24px; /* 필요시 조절 */
 }
 
-/* 하단 바 차트 */
-.page--follower-demographics .row:last-child .demo-card .figure__img {
-  width: 100% !important;
-  max-height: 580px;
+
+/* 월별 없을 때: row 자체에서 가운데 정렬 */
+.roas-chart-row--single {
+  display: flex;              
+  justify-content: center;
+  align-items: center;        /* (세로 중앙) */
+  min-height: 500px;          /* (공간 확보) */
+}
+
+/* 주별 그래프 크기는 기존과 동일하게 유지 */
+.roas-chart-row--single .roas-chart-row__weekly {
+  flex: 0 0 50%;
+  max-width: 50%;
 }

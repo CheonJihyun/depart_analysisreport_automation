@@ -1277,6 +1277,46 @@ def get_purchase_analysis_pages_data(account_id, date_start, date_end):
         }
     }
 
+# 구매전환 히트맵
+
+def get_purchase_age_gender_heatmap(account_id, date_start, date_end):
+    engine = get_engine()
+
+    query = f"""
+        SELECT
+            apd.age,
+            apd.gender,
+            COALESCE(SUM(apd.purchases), 0) AS purchases
+        FROM ad_performance_daily apd
+        JOIN ad a ON apd.ad_id = a.ad_id
+        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
+        JOIN campaign c ON ads.campaign_id = c.campaign_id
+        WHERE a.account_id = {account_id}
+          AND apd.date >= '{date_start}'::date
+          AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
+          AND apd.purchases IS NOT NULL
+          AND apd.age IS NOT NULL
+          AND apd.gender IS NOT NULL
+          AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
+        GROUP BY apd.age, apd.gender
+        ORDER BY apd.age, apd.gender
+    """
+
+    df = pd.read_sql(query, engine)
+    return None if df.empty else df
+
+def get_purchase_age_gender_heatmap_page_data(account_id, date_start, date_end):
+    heatmap_df = get_purchase_age_gender_heatmap(account_id, date_start, date_end)
+
+    if heatmap_df is None or heatmap_df.empty:
+        return {"is_visible": False}
+
+    return {
+        "is_visible": True,
+        "title": "타겟별 구매전환",
+        "heatmap": heatmap_df,
+    }
+
 # ----------------------------------
 # 광고비 & 매출발생 페이지용 함수들
 # ----------------------------------
@@ -1371,6 +1411,7 @@ def has_purchase_content_data(account_id, date_start, date_end):
         JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND a.ig_timestamp IS NOT NULL
+          AND a.source_instagram_media_id IS NOT NULL
           AND (a.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'::date
           AND (a.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
           AND apd.date >= '{date_start}'::date
@@ -1391,11 +1432,12 @@ def get_purchase_contents_data(account_id, date_start, date_end):
 
     query = f"""
         SELECT
-            a.ad_id,
-            a.ad_name,
-            a.fb_ad_id,
-            a.ig_timestamp AS uploaded_at,
-            NULLIF(a.thumb_link, '') AS thumbnail,
+            a.source_instagram_media_id AS content_key,
+            MIN(a.ig_timestamp) AS uploaded_at,
+            MAX(NULLIF(a.thumb_link, '')) AS thumbnail,
+            STRING_AGG(DISTINCT a.ad_name, ' / ') AS ad_names,
+            ARRAY_AGG(DISTINCT a.ad_id) AS ad_ids,
+            ARRAY_AGG(DISTINCT a.fb_ad_id) FILTER (WHERE a.fb_ad_id IS NOT NULL) AS fb_ad_ids,
             COALESCE(SUM(apd.purchases), 0) AS purchases
         FROM ad_performance_daily apd
         JOIN ad a ON apd.ad_id = a.ad_id
@@ -1403,14 +1445,15 @@ def get_purchase_contents_data(account_id, date_start, date_end):
         JOIN campaign c ON ads.campaign_id = c.campaign_id
         WHERE a.account_id = {account_id}
           AND a.ig_timestamp IS NOT NULL
+          AND a.source_instagram_media_id IS NOT NULL
           AND (a.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'::date
           AND (a.ig_timestamp AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
           AND apd.date >= '{date_start}'::date
           AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND ({account_id} = 3 OR c.campaign_name ILIKE '%%depart%%' OR c.campaign_name LIKE '%%디파트%%' OR c.campaign_name ILIKE '%%de;part%%')
-        GROUP BY a.ad_id, a.ad_name, a.fb_ad_id, a.ig_timestamp, a.thumb_link
+        GROUP BY a.source_instagram_media_id
         HAVING COALESCE(SUM(apd.purchases), 0) >= 1
-        ORDER BY purchases DESC
+        ORDER BY purchases DESC, MIN(a.ig_timestamp) DESC
     """
 
     df = pd.read_sql(query, engine)
@@ -1419,18 +1462,22 @@ def get_purchase_contents_data(account_id, date_start, date_end):
         return []
 
     results = []
-    for _, row in df.iterrows():
+    for rank, (_, row) in enumerate(df.iterrows(), start=1):
         thumb_val = row.get("thumbnail")
-        if pd.isna(thumb_val):
-            thumb_val = None
-        else:
-            thumb_val = str(thumb_val).strip() or None
+        thumb_val = None if pd.isna(thumb_val) else str(thumb_val).strip() or None
+
+        uploaded_at = row.get("uploaded_at")
+        uploaded_at = uploaded_at.date() if pd.notna(uploaded_at) else None
 
         results.append({
-            "ad_id": row["ad_id"],
-            "ad_name": row.get("ad_name"),
-            "fb_ad_id": row.get("fb_ad_id"),
-            "uploaded_at": row["uploaded_at"].date() if pd.notna(row["uploaded_at"]) else None,
+            "rank": rank,
+            "content_key": row["content_key"],  # source_instagram_media_id
+            "source_instagram_media_id": row["content_key"],
+            "ad_name": row.get("ad_names"),
+            "fb_ad_id": (row.get("fb_ad_ids") or [None])[0],
+            "fb_ad_ids": row.get("fb_ad_ids") or [],
+            "ad_ids": row.get("ad_ids") or [],
+            "uploaded_at": uploaded_at,
             "thumbnail": thumb_val,
             "purchases": int(row["purchases"]) if pd.notna(row["purchases"]) else 0
         })
@@ -1438,8 +1485,13 @@ def get_purchase_contents_data(account_id, date_start, date_end):
     return results
 
 # 구매 발생 콘텐츠별 세부 데이터(성별/연령/건수)
-def get_a_content_target_purchase_data(ad_id, date_start, date_end):
+def get_a_content_target_purchase_data(ad_ids, date_start, date_end):
     engine = get_engine()
+
+    if not ad_ids:
+        return None
+
+    ad_ids_str = ",".join(str(int(ad_id)) for ad_id in ad_ids)
 
     query = f"""
         SELECT
@@ -1447,10 +1499,7 @@ def get_a_content_target_purchase_data(ad_id, date_start, date_end):
             apd.gender,
             COALESCE(SUM(apd.purchases), 0) AS purchases
         FROM ad_performance_daily apd
-        JOIN ad a ON apd.ad_id = a.ad_id
-        JOIN ad_set ads ON a.ad_set_id = ads.ad_set_id
-        JOIN campaign c ON ads.campaign_id = c.campaign_id
-        WHERE a.ad_id = {ad_id}
+        WHERE apd.ad_id IN ({ad_ids_str})
           AND apd.date >= '{date_start}'::date
           AND apd.date <= DATE_TRUNC('week', '{date_end}'::date)::date
           AND apd.gender != 'unknown'
@@ -1465,7 +1514,6 @@ def get_a_content_target_purchase_data(ad_id, date_start, date_end):
         return None
 
     return df
-
 # 리스트를 4개씩 나누기
 def chunk_list(data, chunk_size=4):
     return [data[i:i + chunk_size] for i in range(0, len(data), chunk_size)]
