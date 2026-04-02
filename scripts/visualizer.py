@@ -26,10 +26,10 @@ DEFAULT_THEME = "#4e73df"
 def _configure_matplotlib_fonts() -> None:
     # Prefer Korean-capable fonts to avoid broken glyphs in SVG.
     preferred = [
-        "Apple SD Gothic Neo",
+        #"Apple SD Gothic Neo",
         "Noto Sans KR",
         "Malgun Gothic",
-        "Arial Unicode MS",
+        #"Arial Unicode MS",
         "DejaVu Sans",
     ]
     plt.rcParams["font.family"] = preferred
@@ -297,8 +297,8 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         series_name = s.get("name") or f"series_{idx}"
 
         color_map_line = {
-            "spend": "#7A7A7AFF",     # 광고비 (회색)
-            "revenue": "#2E7D32",   # 매출 (초록)
+            "spend": "#1565C0",     # 광고비
+            "revenue": "#C62828",   # 매출
         }
 
         if dataset.get("show_legend"):
@@ -448,28 +448,25 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         _style_axes(ax, color_map, grid_axis=None)
         ax.tick_params(axis="x", which="both", length=0, labelbottom=False)
 
-    fig.tight_layout(pad=0.6, rect=(0, 0, 1, 0.95))
-
-    # 주별/월별 라벨
     if not compact:
         title_text = str(dataset.get("title") or "").strip()
         chart_label = None
+
         if "주별" in title_text:
             chart_label = "주별"
         elif "월별" in title_text:
             chart_label = "월별"
 
         if chart_label:
-            fig.text(
-                0.5, 1.05,
+            ax.set_title(
                 chart_label,
-                transform=ax.transAxes,
-                ha="center",
-                va="top",
                 fontsize=17,
                 color="#2E2E2E",
-                fontweight="bold"
+                fontweight="bold",
+                pad=18
             )
+
+    fig.tight_layout(pad=0.6, rect=(0, 0, 1, 0.95))
 
     # 범례 layout 뒤에
     if show_legend and not compact:
@@ -481,7 +478,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
             fontsize=9,
         )
 
-    plt.subplots_adjust(left=0.14, right=0.96, top=0.85)
+    plt.subplots_adjust(left=0.14, right=0.96, top=0.95)
 
     return _fig_to_svg(fig)
 
