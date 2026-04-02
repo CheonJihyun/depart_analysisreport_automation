@@ -146,7 +146,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             current_followers = int(follower_series.iloc[-1])
 
     if has_follower_demographics_data(target_id):
-        print("팔로워 인구통계학 데이터 있음 - 생성 중...")
+        print("팔로워 인구통계학 데이터 생성 중...")
 
         gender_clean_df = get_demographics_ratio(target_id, "gender", "exclude_unknown")
         age_gender_clean_df = get_follower_age_gender_known_only(target_id)
@@ -159,7 +159,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         if gender_clean_df is not None:
             datasets["gender_clean"] = {
                 "chart_type": "doughnut",
-                "title": "성별 비율 (알 수 없음 제외)",
+                "title": "팔로워 성별·연령 구성",
                 "labels": gender_clean_df["category"].astype(str).tolist(),
                 "series": [
                     {"name": "비율", "data": gender_clean_df["ratio"].astype(float).tolist()}
@@ -241,7 +241,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     #  --- [추가] ROAS, 구매건수 (2페이지 분량) ---
 
     if has_purchase_data(target_id, start, end):
-        print("구매 데이터 있음 - 생성 중...")
+        print("ROAS, 구매건수 생성 중...")
         roas_weekly_df = get_purchase_roas_weekly(target_id, start, end)
         roas_monthly_df = get_purchase_roas_monthly(target_id, start, end)
         purchase_weekly_df = get_purchase_count_weekly(target_id, start, end)
@@ -261,15 +261,20 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             }
         }
     else:
-        print("구매 데이터 없음...")
+        print("ROAS, 구매건수 없음...")
         final_report["purchase_analysis_pages"] = {
-            "is_visible": False
+            "is_visible": False,
+            "titles": {
+                "section_title": "전체 매출 데이터 분석",
+                "page_1_title": "평균 ROAS",
+                "page_2_title": "구매전환 건수"
+            }
         }
 
     # --- [추가] 광고비 & 매출발생 페이지 ---
 
     if has_revenue_data(target_id, start, end):
-        print("광고비/매출발생 데이터 있음 - 생성 중...")
+        print("광고비/매출발생 데이터 생성 중...")
         spend_revenue_weekly_df = get_spend_and_revenue_weekly(target_id, start, end)
         spend_revenue_monthly_df = get_spend_and_revenue_monthly(target_id, start, end)
 
@@ -308,12 +313,11 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             "is_visible": False
         }
 
-
      #  --- [추가] 구매 발생 컨텐츠  --
     purchase_contents_data = get_purchase_contents_pages_data(target_id, start, end)
 
-    if purchase_contents_data:
-        print("구매 발생 콘텐츠 페이지 데이터 있음 → 생성 중...")
+    if purchase_contents_data and purchase_contents_data.get("total_count", 0) > 0:
+        print("구매 발생 콘텐츠 생성 중...")
 
         enriched_pages = []
         for page_items in purchase_contents_data["pages"]:
@@ -337,7 +341,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             "total_count": purchase_contents_data["total_count"]
         }
     else:
-        print("구매 발생 콘텐츠 페이지 데이터 없음 → 생성 스킵...")
+        print("구매 발생 콘텐츠 없음...")
         final_report["purchase_contents_pages"] = {
             "is_visible": False
         }
@@ -370,7 +374,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
 
         # 🔥 핵심 조건 (여기 중요)
         if len(valid_df) >= 1:
-            print("구매 전환 히트맵 데이터 있음 → 생성 중...")
+            print("구매 전환 히트맵 생성 중...")
 
             final_report["purchase_age_gender_page"] = {
                 "is_visible": True,
@@ -378,7 +382,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
                 "heatmap": heatmap_rows,
             }
         else:
-            print("구매 데이터 0 → 페이지 숨김")
+            print("구매 전환 히트맵 없음...")
 
             final_report["purchase_age_gender_page"] = {
                 "is_visible": False
@@ -393,7 +397,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     _, threshold = get_imp_threshold(target_id, start, end)
 
     # 3. 타겟 히트맵 데이터 (노출/CTR)
-    print("타겟 히트맵 데이터 (노출/CTR/구매전환) 생성 중...")
+    print("타겟 히트맵 데이터 (노출/CTR) 생성 중...")
     target_df = get_target_avg_imp_ctr_threshold(target_id, start, end, threshold)
     # 히트맵은 테이블 형태가 시각화하기 좋음
     add_ds("target_heatmap", "table", "타겟별 노출 및 CTR 성과", target_df)

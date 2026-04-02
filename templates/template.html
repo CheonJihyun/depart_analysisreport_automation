@@ -302,37 +302,46 @@
      (8) Purchase Analysis - Purchase Count
      ========================================================= #}
   {% if purchase_analysis_pages and purchase_analysis_pages.is_visible %}
-  <section class="page">
-    {{ page_header(purchase_analysis_pages.titles.section_title) }}
-    {{ big_title(purchase_analysis_pages.titles.page_2_title) }}
+    <section class="page">
+      {{ page_header(purchase_analysis_pages.titles.section_title) }}
+      {{ big_title(purchase_analysis_pages.titles.page_2_title) }}
 
-    <div class="page-body">
-      <div class="span-6">
-        {{ figure(charts.purchase_count_weekly, alt='purchase count weekly') }}
+      <div class="page-body">
+        <div class="span-6">
+          {{ figure(charts.purchase_count_weekly, alt='purchase count weekly') }}
+        </div>
+        <div class="span-6">
+          {{ figure(charts.purchase_count_monthly, alt='purchase count monthly') }}
+        </div>
       </div>
-      <div class="span-6">
-        {{ figure(charts.purchase_count_monthly, alt='purchase count monthly') }}
-      </div>
-    </div>
-  </section>
+    </section>
   {% endif %}
 
 
-  {# =========================================================
-     (9) Spend & Revenue Analysis
-     ========================================================= #}
+{# =========================================================
+   (9) Spend & Revenue Analysis
+   ========================================================= #}
   {% if spend_revenue_pages and spend_revenue_pages.is_visible %}
   <section class="page">
     {{ page_header(spend_revenue_pages.titles.section_title) }}
     {{ big_title(spend_revenue_pages.titles.page_1_title) }}
 
-    <div class="page-body">
-      <div class="span-6">
-        {{ figure(charts.spend_revenue_weekly, alt='spend and revenue weekly') }}
+    {% if charts.spend_revenue_monthly %}
+    <div class="page-body roas-chart-row">
+    {% else %}
+    <div class="page-body roas-chart-row roas-chart-row--single">
+    {% endif %}
+
+      <div class="span-6 roas-chart-row__weekly">
+        {{ figure(charts.spend_revenue_weekly, alt='spend revenue weekly') }}
       </div>
+
+      {% if charts.spend_revenue_monthly %}
       <div class="span-6">
-        {{ figure(charts.spend_revenue_monthly, alt='spend and revenue monthly') }}
+        {{ figure(charts.spend_revenue_monthly, alt='spend revenue monthly') }}
       </div>
+      {% endif %}
+
     </div>
   </section>
   {% endif %}
@@ -406,7 +415,9 @@
     <div class="page-body page-body--heatmap">
       <div class="span-12 heatmap-panel">
         <div class="heatmap-center">
-          {{ purchase_age_gender_page.chart | safe }}
+          <figure class="figure figure--heatmap">
+            {{ figure(charts.purchase_heatmap, alt='purchase heatmap', class_name='figure--heatmap') }}
+          </figure>
         </div>
 
         {% if target.purchase_rank %}
@@ -462,9 +473,6 @@
     </div>
   </section>
 {% endif %}
-
-
-
 
 
   {# =========================================================

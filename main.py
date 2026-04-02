@@ -164,7 +164,6 @@ def _load_report(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-
 def _top_targets(rows, metric: str, limit: int = 2, filter_low_imps: bool = False):
     """상위 타겟 순위 산출.
     filter_low_imps=True 일 때: unknown 제외 후 전체 노출수의 5% 이하 타겟을 순위에서 제외하고 footnote 반환.
@@ -199,6 +198,7 @@ def _top_targets(rows, metric: str, limit: int = 2, filter_low_imps: bool = Fals
         df_filtered = df_filtered[df_filtered["impressions"] > threshold].copy()
         footnote = f"노출수가 전체 노출수({total_imps:,})의 5%({int(threshold):,}) 이하인 타겟은 제외"
     else:
+        # purchases/impressions 랭킹도 unknown 제외하고 싶으면 이 줄 유지
         df_filtered = df[df["gender"].astype(str).str.lower() != "unknown"].copy()
         footnote = ""
 
@@ -504,12 +504,12 @@ def run():
     start_time = time.time()
 
     config = {
-        "target_id": 12,
-        "fb_ad_account_id":"act_1358317995522216",
+        "target_id": 23,
+        "fb_ad_account_id":"act_799496024940107",
         "start":"2025-10-27",
         "end": "2026-03-29",
-        "main_age": ["35-44", "45-54"],
-        "main_gender": "male",
+        "main_age": ["25-34", "35-44"],
+        "main_gender": "",
         "avoid_age": "",
         "avoid_gender": "",
     }
@@ -529,7 +529,7 @@ def run():
                     avoid_age=avoid_age, avoid_gender=avoid_gender)
     
     report_path = "json_reports/integrated_report.json"
-    theme_color = "#1A1A1A"
+    theme_color = "#0076BD"
 
     report_json = _load_report(report_path)
     _apply_display_predicate_suffix(report_json)
@@ -601,7 +601,18 @@ def run():
         charts["heatmap_impressions"] = heatmap_imp
     heatmap_ctr = render_dataset(heatmap_ds, color_map, metric="ctr")
     if heatmap_ctr:
-        charts["heatmap_ctr"] = heatmap_ctr    
+        charts["heatmap_ctr"] = heatmap_ctr
+    # 구매 히트맵 추가
+    purchase_heatmap_ds = datasets.get("purchase_heatmap")
+
+    purchase_heatmap = render_dataset(
+        purchase_heatmap_ds,
+        color_map,
+        metric="purchases"
+    )
+
+    if purchase_heatmap:
+        charts["purchase_heatmap"] = purchase_heatmap    
 
     add_chart("keyword_overall_top_noun", "overall_top_noun")
     add_chart("keyword_overall_top_verb_adj", "overall_top_va")
@@ -747,10 +758,8 @@ def run():
     impressions_rank, impressions_footnote = _top_targets(target_rows, "impressions")
     ctr_rank, ctr_footnote = _top_targets(target_rows, "ctr", filter_low_imps=True)
 
-
     purchase_rows = (datasets.get("purchase_heatmap") or {}).get("rows") or []
     purchase_rank, purchase_footnote = _top_targets(purchase_rows, "purchases")
-
 
     overall_ctr_val = _average_series(datasets.get("ctr_trend_weekly"))
     overall_ctr = f"{overall_ctr_val:.2f}" if isinstance(overall_ctr_val, (int, float)) else "-"
@@ -777,25 +786,6 @@ def run():
             for item in page_items:
                 target_details = item.get("target_details") or []
                 item["chart"] = render_purchase_pie_chart(target_details, color_map) if target_details else ""
-
-    # 구매 전환 히트맵 - 조건부 생성
-    purchase_age_gender_page = report_json.get(
-        "purchase_age_gender_page",
-        {"is_visible": False}
-    )
-
-    if purchase_age_gender_page.get("is_visible"):
-        heatmap_rows = purchase_age_gender_page.get("heatmap") or []
-
-        if heatmap_rows and sum((r.get("purchases") or 0) for r in heatmap_rows) > 0:
-            purchase_age_gender_page["chart"] = _render_purchase_conversion_heatmap(
-                heatmap_rows,
-                color_map
-            )
-        else:
-            purchase_age_gender_page["chart"] = ""
-            purchase_age_gender_page["heatmap"] = []
-
 
     context = {
         "css_path": "./templates/report.css",

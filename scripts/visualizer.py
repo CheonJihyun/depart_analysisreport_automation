@@ -26,10 +26,10 @@ DEFAULT_THEME = "#4e73df"
 def _configure_matplotlib_fonts() -> None:
     # Prefer Korean-capable fonts to avoid broken glyphs in SVG.
     preferred = [
-        "Apple SD Gothic Neo",
+        #"Apple SD Gothic Neo",
         "Noto Sans KR",
         "Malgun Gothic",
-        "Arial Unicode MS",
+        #"Arial Unicode MS",
         "DejaVu Sans",
     ]
     plt.rcParams["font.family"] = preferred
@@ -270,18 +270,18 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         return ""
 
     x = list(range(len(labels)))
-    fig, ax = plt.subplots(figsize=(8.0, 4.4) if not compact else (3.6, 2.0))
+    fig, ax = plt.subplots(figsize=(8.0, 4.4))
+    # fig, ax = plt.subplots(figsize=(8.0, 4.4) if not compact else (3.6, 2.0))
     has_bottom_month_band = False
     unit = str(dataset.get("unit") or "").strip()
     plotted_values: List[float] = []
 
-    # ----------추가----------
     show_legend = bool(dataset.get("show_legend"))
+
     label_map = {
         "spend": "광고비",
         "revenue": "매출발생",
     }
-    # ------------------------
 
     for idx, s in enumerate(series):
         raw_data = s.get("data") or []
@@ -356,15 +356,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
                 color=color,
                 clip_on=False,
             )
-    # ----추가▼----
-    if show_legend and not compact:
-        ax.legend(
-            loc="upper center",
-            bbox_to_anchor=(0.5, 1.14),
-            ncol=len(series),
-            frameon=False,
-            fontsize=9,
-        )
+
     #-----순서 변경▼-----
     if not plotted_values:
         return ""
@@ -456,11 +448,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         _style_axes(ax, color_map, grid_axis=None)
         ax.tick_params(axis="x", which="both", length=0, labelbottom=False)
 
-    # layout 먼저
-    if not compact and has_bottom_month_band:
-        fig.tight_layout(pad=0.6, rect=(0, 0.10, 1, 1))
-    else:
-        fig.tight_layout(pad=0.6)
+    fig.tight_layout(pad=0.6, rect=(0, 0, 1, 0.95))
 
     # 주별/월별 라벨
     if not compact:
@@ -473,7 +461,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
 
         if chart_label:
             fig.text(
-                0.5, 1.17,
+                0.5, 1.05,
                 chart_label,
                 transform=ax.transAxes,
                 ha="center",
@@ -487,13 +475,13 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
     if show_legend and not compact:
         ax.legend(
             loc="upper right",
-            bbox_to_anchor=(1.0, 1.10),
+            bbox_to_anchor=(1.0, 1.02),
             ncol=len(series),
             frameon=False,
             fontsize=9,
         )
 
-    plt.subplots_adjust(left=0.14, right=0.96)
+    plt.subplots_adjust(left=0.14, right=0.96, top=0.85)
 
     return _fig_to_svg(fig)
 
@@ -1194,14 +1182,14 @@ def render_follower_age_gender_stacked_barh_chart(chart_data, color_map):
         df[f"p{i}"] = (df[f"v{i}"] / df["total"] * 100).fillna(0)
 
     y = np.arange(len(df))
-    fig, ax = plt.subplots(figsize=(8.2, 7.6))
+    fig, ax = plt.subplots(figsize=(7.5, 5))
 
     left = np.zeros(len(df))
     for i, (display_name, data, color, text_color) in enumerate(normalized):
         vals = df[f"p{i}"].tolist()
         ax.barh(
             y, vals, left=left,
-            color=color, edgecolor="none", height=0.84,
+            color=color, edgecolor="none", height=0.89,
             label=display_name
         )
 
@@ -1229,7 +1217,7 @@ def render_follower_age_gender_stacked_barh_chart(chart_data, color_map):
     ax.tick_params(axis="y", length=0)
     ax.tick_params(axis="x", length=0)
 
-    plt.tight_layout()
+    fig.subplots_adjust(left=0.18, right=0.98, top=0.95, bottom=0.12)
     return fig_to_base64(fig)
 
 #--------------------------------
@@ -1249,7 +1237,6 @@ def render_follower_gender_doughnut_chart(chart_data, color_map):
 
     def _pick_color(label: str) -> str:
         label = str(label).strip()
-
         if label == "여성":
             return color_map["lighter"]
         elif label == "남성":
@@ -1258,30 +1245,41 @@ def render_follower_gender_doughnut_chart(chart_data, color_map):
             return color_map["lighter"]
         elif label in ["알 수 없음", "Unknown", "unknown"]:
             return color_map["dark"]
-        else:
-            return color_map["dark"]
+        return color_map["dark"]
 
     colors = [_pick_color(label) for label in labels]
-    
-    fig, ax = plt.subplots(figsize=(3.8, 3.8))
 
-    fig.text(
-        0.517, 0.95,         
+    fig, ax = plt.subplots(figsize=(5.4, 4.8))
+
+    fig.suptitle(
         chart_data.get("title", ""),
-        ha="center", va="center",
-        fontsize=13, fontweight="bold"
+        y=0.94,
+        fontsize=14,
+        fontweight="bold"
     )
 
-    donut_x = 0.08
+    def autopct_func(pct):
+        return f"{pct:.0f}%" if pct >= 5 else ""
 
-    wedges, _ = ax.pie(
+    wedges, texts, autotexts = ax.pie(
         values,
         colors=colors,
         startangle=90,
         counterclock=False,
-        center=(donut_x, 0),
-        wedgeprops=dict(width=0.4, edgecolor="white")
+        radius=0.98,
+        wedgeprops=dict(width=0.48, edgecolor="white"),
+        autopct=autopct_func,
+        pctdistance=0.77
     )
+
+    for i, t in enumerate(autotexts):
+        if colors[i] == color_map["lighter"]:
+            t.set_color("#252525")
+        else:
+            t.set_color("white")
+
+        t.set_fontsize(14)
+        t.set_fontweight("bold")
 
     total = sum(values)
 
@@ -1297,37 +1295,32 @@ def render_follower_gender_doughnut_chart(chart_data, color_map):
         center_sub = "비율" if is_ratio_chart else "팔로워"
 
     ax.text(
-        donut_x, 0.05, center_main,
+        0, 0.05, center_main,
         ha="center", va="center",
-        fontsize=13, fontweight="bold"
+        fontsize=17, fontweight="bold"
     )
     ax.text(
-        donut_x, -0.18, center_sub,
+        0, -0.16, center_sub,
         ha="center", va="center",
-        fontsize=11, color="#666"
+        fontsize=13, color="#666"
     )
-
-    # 범례
-
-    ax.set_xlim(-1.35, 1.05)
-    ax.set_ylim(-1.2, 1.2)
-    
-    xlim_min, xlim_max = ax.get_xlim()  # (-1.35, 1.05)
-    legend_x = (donut_x - xlim_min) / (xlim_max - xlim_min)
 
     ax.legend(
         wedges, labels,
         loc="upper center",
-        bbox_to_anchor=(0.596, -0.1),  # ← donut_x → 변환된 axes 비율 좌표
+        bbox_to_anchor=(0.5, 0.02),
         ncol=2,
         frameon=False,
-        fontsize=13
+        fontsize=11,
+        columnspacing=1.0,
+        handletextpad=0.4,
+        borderaxespad=0.0
     )
 
     ax.set(aspect="equal")
     ax.axis("off")
 
-    plt.tight_layout()
+    fig.subplots_adjust(top=0.92, bottom=0.12, left=0.05, right=0.95)
     return fig_to_base64(fig)
 
 # 구매전환 히트맵
@@ -1382,10 +1375,11 @@ def _render_purchase_conversion_heatmap(
             ax.text(
                 j,
                 i,
-                f"{int(round(float(val))):,}",
+                f"{int(round(float(val))):,}\n ",
                 ha="center",
                 va="center",
                 fontsize=11,
+                linespacing=1.2,
                 color=_contrast_text_color(cell_color, threshold=0.45),
             )
 
@@ -1400,3 +1394,72 @@ def _render_purchase_conversion_heatmap(
 
     fig.tight_layout(pad=0.6)
     return _fig_to_svg(fig)
+# def _render_purchase_conversion_heatmap(
+#     rows: List[Dict[str, Any]],
+#     color_map: Dict[str, Any],
+# ) -> str:
+#     df = pd.DataFrame(rows)
+#     if df.empty or "purchases" not in df.columns:
+#         return ""
+#     if "age" not in df.columns or "gender" not in df.columns:
+#         return ""
+
+#     pivot = df.pivot_table(index="gender", columns="age", values="purchases", aggfunc="sum")
+
+#     age_order = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
+#     gender_order = ["female", "male"]
+#     pivot = pivot.reindex(
+#         index=[g for g in gender_order if g in pivot.index],
+#         columns=[a for a in age_order if a in pivot.columns],
+#     )
+
+#     if pivot.empty:
+#         return ""
+
+#     fig, ax = plt.subplots(figsize=(10.5, 5.2))
+#     cmap = LinearSegmentedColormap.from_list(
+#         "theme",
+#         [color_map["lighter"], color_map["light"], color_map["base"], color_map["dark"]],
+#     )
+
+#     heat_values = pivot.values.astype(float)
+#     vmin = float(np.nanmin(heat_values))
+#     vmax = float(np.nanmax(heat_values))
+
+#     im = ax.imshow(heat_values, cmap=cmap)
+#     cbar = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.035)
+#     cbar.outline.set_visible(False)
+#     cbar.ax.tick_params(labelsize=10, colors="#666666")
+#     cbar.formatter = FuncFormatter(lambda x, _: f"{int(round(float(x))):,}")
+#     cbar.update_ticks()
+
+#     for i in range(pivot.shape[0]):
+#         for j in range(pivot.shape[1]):
+#             val = pivot.iloc[i, j]
+#             if pd.isna(val):
+#                 continue
+
+#             norm = 0.5 if abs(vmax - vmin) < 1e-12 else (float(val) - vmin) / (vmax - vmin)
+#             cell_color = cmap(norm)
+
+#             ax.text(
+#                 j,
+#                 i,
+#                 f"{int(round(float(val))):,}",
+#                 ha="center",
+#                 va="center",
+#                 fontsize=11,
+#                 color=_contrast_text_color(cell_color, threshold=0.45),
+#             )
+
+#     ax.set_xticks(range(len(pivot.columns)))
+#     ax.set_xticklabels([str(c) for c in pivot.columns], fontsize=11)
+#     ax.set_yticks(range(len(pivot.index)))
+#     ax.set_yticklabels([str(c) for c in pivot.index], fontsize=11)
+#     ax.tick_params(axis="x", bottom=True, top=False)
+
+#     for spine in ax.spines.values():
+#         spine.set_visible(False)
+
+#     fig.tight_layout(pad=0.6)
+#     return _fig_to_svg(fig)
