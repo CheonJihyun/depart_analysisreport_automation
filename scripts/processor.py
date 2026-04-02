@@ -22,15 +22,23 @@ except Exception:
     _en_pos_tag = None
 
 # 제목 부분 : (기업명) 광고 계정
+
 def get_account_name(account_id):
-    """ID를 받아 DB에서 실제 대행사/광고주 이름을 찾아오는 함수"""
     engine = get_engine()
-    query = f"SELECT account_name FROM ad_account WHERE account_id = {account_id} LIMIT 1"
+    
+    query = f"""
+        SELECT brand_name[1] AS brand_name
+        FROM ad_account
+        WHERE account_id = {account_id}
+        LIMIT 1
+    """
+    
     df = pd.read_sql(query, engine)
     
     if not df.empty:
-        return df.iloc[0]['account_name']
-    return account_id  # 만약 이름이 없으면 ID라도 반환
+        return df.iloc[0]['brand_name']
+    
+    return account_id
 
 # ----------------------------------
 
