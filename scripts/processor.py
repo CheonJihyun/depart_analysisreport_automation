@@ -1,7 +1,25 @@
 # scripts/processor.py
+import os
 import pandas as pd
 import numpy as np
+from pathlib import Path
 from scripts.db_connector import get_engine, get_engine_db
+
+# .env에서 NLTK_DATA 경로 로드 후 nltk 초기화
+try:
+    from dotenv import load_dotenv
+    load_dotenv(dotenv_path=Path(__file__).parent.parent / "db_update" / ".env")
+except Exception:
+    pass
+
+try:
+    import nltk as _nltk
+    _nltk_data = os.environ.get("NLTK_DATA")
+    if _nltk_data and str(Path(_nltk_data).expanduser()) not in _nltk.data.path:
+        _nltk.data.path.insert(0, str(Path(_nltk_data).expanduser()))
+    from nltk import pos_tag as _en_pos_tag
+except Exception:
+    _en_pos_tag = None
 
 # 제목 부분 : (기업명) 광고 계정
 def get_account_name(account_id):
@@ -715,7 +733,24 @@ def _looks_like_predicate_stem(form):
 def _normalize_keyword_by_pos(text, pos_type='noun'):
     """
     텍스트를 형태소 분석해 지정한 품사(noun / verb_adj)에 맞는 원형 토큰만 반환.
+    영어 키워드(한글 없음)는 Kiwi 분석 불가 → noun으로만 통과, verb_adj는 제외.
     """
+    import re as _re
+    if not _re.search(r"[가-힣]", str(text)):
+        cleaned = _re.sub(r"[^a-zA-Z0-9]", "", str(text)).strip()
+        if len(cleaned) < 2:
+            return None
+        # NLTK pos_tag로 영어 품사 판별
+        try:
+            en_tag = _en_pos_tag([cleaned])[0][1] if _en_pos_tag else "NN"
+        except Exception:
+            en_tag = "NN"
+        if pos_type == 'noun':
+            return cleaned if en_tag.startswith("NN") else None
+        if pos_type == 'verb_adj':
+            return cleaned if (en_tag.startswith("VB") or en_tag.startswith("JJ")) else None
+        return None
+
     candidates = _keyword_pos_candidates(text)
     if not candidates:
         return None
