@@ -4,7 +4,7 @@
         "period": "2025-10-27 ~ 2026-03-23",
         "period_ads": "2025-11-12 ~ 2026-03-23",
         "period_contents": "2025-10-31 ~ 2026-03-20",
-        "generated_at": "2026-04-02 14:02:10"
+        "generated_at": "2026-04-02 14:17:15"
     },
     "summary": {
         "total_ads": 100,
@@ -234,7 +234,7 @@
         },
         "gender_clean": {
             "chart_type": "doughnut",
-            "title": "성별 비율 (알 수 없음 제외)",
+            "title": "팔로워 성별·연령 구성",
             "labels": [
                 "남성",
                 "여성"
@@ -940,31 +940,31 @@
             "title": "메인 타겟 TOP 10 (명사)",
             "unit": "%",
             "labels": [
-                "fit",
-                "define",
-                "reason",
-                "mid",
                 "try",
-                "temperature",
+                "sofa",
+                "exhaust",
+                "fade",
+                "color",
+                "mid",
+                "benefit",
+                "warmth",
                 "fall",
-                "lifestyle",
-                "timeless",
-                "tire"
+                "pay"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        7.0,
-                        5.25,
-                        5.07,
-                        4.61,
-                        4.34,
-                        4.27,
-                        4.27,
-                        4.17,
-                        3.96,
-                        3.92
+                        4.14,
+                        4.02,
+                        4.02,
+                        3.98,
+                        3.68,
+                        3.65,
+                        3.65,
+                        3.63,
+                        3.58,
+                        3.54
                     ]
                 }
             ]
@@ -975,29 +975,29 @@
             "unit": "%",
             "labels": [
                 "possible",
-                "high",
-                "own",
+                "black",
                 "classic",
-                "whole",
-                "modern",
-                "realize",
+                "bad",
+                "take",
+                "total",
                 "real",
-                "livable",
-                "heavy"
+                "lower",
+                "complete",
+                "special"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        7.69,
-                        5.62,
-                        5.22,
-                        4.94,
-                        4.37,
-                        3.96,
-                        3.85,
-                        3.84,
-                        3.8,
+                        4.84,
+                        3.74,
+                        3.52,
+                        3.19,
+                        3.17,
+                        3.13,
+                        3.08,
+                        3.07,
+                        3.05,
                         3.05
                     ]
                 }
@@ -1008,31 +1008,31 @@
             "title": "메인 타겟 BOTTOM 10 (명사)",
             "unit": "%",
             "labels": [
-                "south",
-                "repaint",
-                "fast",
                 "couch",
                 "sale",
-                "ivory",
-                "lot",
-                "guest",
-                "spring",
-                "select"
+                "select",
+                "rule",
+                "designer",
+                "treatment",
+                "custom",
+                "support",
+                "favorite",
+                "bring"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        0.85,
-                        0.86,
-                        0.93,
-                        1.1,
-                        1.26,
-                        1.26,
-                        1.27,
-                        1.28,
-                        1.29,
-                        1.35
+                        0.99,
+                        1.18,
+                        1.43,
+                        1.45,
+                        1.46,
+                        1.5,
+                        1.6,
+                        1.62,
+                        1.62,
+                        1.63
                     ]
                 }
             ]
@@ -1042,31 +1042,31 @@
             "title": "메인 타겟 BOTTOM 10 (형용사)",
             "unit": "%",
             "labels": [
-                "white",
-                "full",
-                "wrong",
-                "evening",
-                "lighting",
-                "big",
-                "expensive",
-                "add",
                 "other",
-                "next"
+                "limited",
+                "evening",
+                "romantic",
+                "next",
+                "full",
+                "add",
+                "wrong",
+                "open",
+                "happy"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.01,
-                        1.14,
-                        1.17,
-                        1.19,
-                        1.22,
-                        1.47,
-                        1.48,
-                        1.55,
-                        1.59,
-                        1.63
+                        0.82,
+                        1.35,
+                        1.42,
+                        1.51,
+                        1.56,
+                        1.68,
+                        1.86,
+                        1.89,
+                        1.91,
+                        1.97
                     ]
                 }
             ]
@@ -1077,220 +1077,220 @@
             "unit": "",
             "rows": [
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 10.11,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 12.16,
-                    "var_imps": 148.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 10.11,
-                    "var_keyword": "space",
-                    "with_var_ctr": 11.36,
-                    "var_imps": 176.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 10.11,
-                    "var_keyword": "look",
-                    "with_var_ctr": 7.62,
-                    "var_imps": 210.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 10.11,
-                    "var_keyword": "room",
-                    "with_var_ctr": 7.62,
-                    "var_imps": 210.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 10.11,
-                    "var_keyword": "use",
-                    "with_var_ctr": 7.62,
-                    "var_imps": 210.0
-                },
-                {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 8.56,
-                    "var_keyword": "choose",
-                    "with_var_ctr": 8.56,
-                    "var_imps": 187.0
-                },
-                {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 8.56,
-                    "var_keyword": "room",
-                    "with_var_ctr": 8.56,
-                    "var_imps": 187.0
-                },
-                {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 8.56,
-                    "var_keyword": "space",
-                    "with_var_ctr": 8.56,
-                    "var_imps": 187.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "interior",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.14,
-                    "var_keyword": "choose",
-                    "with_var_ctr": 5.14,
-                    "var_imps": 175.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "interior",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.14,
-                    "var_keyword": "look",
-                    "with_var_ctr": 5.14,
-                    "var_imps": 175.0
-                },
-                {
-                    "ess_1": "design",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.75,
-                    "var_keyword": "room",
-                    "with_var_ctr": 4.75,
-                    "var_imps": 568.0
-                },
-                {
-                    "ess_1": "design",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.75,
-                    "var_keyword": "space",
-                    "with_var_ctr": 4.75,
-                    "var_imps": 568.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "energy",
+                    "ess_1": "energy",
+                    "ess_2": "shade",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 4.05,
+                    "combo_overall_ctr": 3.95,
                     "var_keyword": "day",
-                    "with_var_ctr": 4.53,
-                    "var_imps": 905.0
+                    "with_var_ctr": 3.5,
+                    "var_imps": 2370.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "energy",
+                    "ess_1": "energy",
+                    "ess_2": "shade",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 4.05,
-                    "var_keyword": "work",
-                    "with_var_ctr": 4.53,
-                    "var_imps": 905.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 4.05,
-                    "var_keyword": "adjust",
-                    "with_var_ctr": 3.61,
-                    "var_imps": 943.0
-                },
-                {
-                    "ess_1": "blind",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 4.05,
-                    "var_keyword": "look",
-                    "with_var_ctr": 2.48,
-                    "var_imps": 483.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 3.78,
-                    "var_keyword": "space",
-                    "with_var_ctr": 4.81,
-                    "var_imps": 478.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 3.78,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 4.58,
-                    "var_imps": 568.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 3.78,
-                    "var_keyword": "right",
-                    "with_var_ctr": 3.92,
-                    "var_imps": 867.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 3.78,
+                    "combo_overall_ctr": 3.95,
                     "var_keyword": "room",
-                    "with_var_ctr": 3.78,
-                    "var_imps": 926.0
+                    "with_var_ctr": 3.5,
+                    "var_imps": 2370.0
+                },
+                {
+                    "ess_1": "energy",
+                    "ess_2": "shade",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.95,
+                    "var_keyword": "work",
+                    "with_var_ctr": 3.5,
+                    "var_imps": 2370.0
+                },
+                {
+                    "ess_1": "energy",
+                    "ess_2": "sun",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.76,
+                    "var_keyword": "day",
+                    "with_var_ctr": 3.76,
+                    "var_imps": 2555.0
+                },
+                {
+                    "ess_1": "energy",
+                    "ess_2": "sun",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.76,
+                    "var_keyword": "eye",
+                    "with_var_ctr": 3.76,
+                    "var_imps": 2555.0
+                },
+                {
+                    "ess_1": "energy",
+                    "ess_2": "sun",
+                    "combo_doc_freq": 3,
+                    "combo_overall_ctr": 3.76,
+                    "var_keyword": "room",
+                    "with_var_ctr": 3.76,
+                    "var_imps": 2555.0
+                },
+                {
+                    "ess_1": "fabric",
+                    "ess_2": "home",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.7,
+                    "var_keyword": "love",
+                    "with_var_ctr": 3.95,
+                    "var_imps": 2152.0
+                },
+                {
+                    "ess_1": "fabric",
+                    "ess_2": "home",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.7,
+                    "var_keyword": "feel",
+                    "with_var_ctr": 3.92,
+                    "var_imps": 2497.0
+                },
+                {
+                    "ess_1": "fabric",
+                    "ess_2": "home",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.7,
+                    "var_keyword": "look",
+                    "with_var_ctr": 3.92,
+                    "var_imps": 2497.0
+                },
+                {
+                    "ess_1": "fabric",
+                    "ess_2": "home",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.7,
+                    "var_keyword": "time",
+                    "with_var_ctr": 3.92,
+                    "var_imps": 2497.0
+                },
+                {
+                    "ess_1": "fabric",
+                    "ess_2": "home",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.7,
+                    "var_keyword": "day",
+                    "with_var_ctr": 3.69,
+                    "var_imps": 2577.0
+                },
+                {
+                    "ess_1": "fabric",
+                    "ess_2": "home",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 3.7,
+                    "var_keyword": "right",
+                    "with_var_ctr": 3.69,
+                    "var_imps": 1872.0
+                },
+                {
+                    "ess_1": "control",
+                    "ess_2": "energy",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "eye",
+                    "with_var_ctr": 3.7,
+                    "var_imps": 3216.0
+                },
+                {
+                    "ess_1": "control",
+                    "ess_2": "energy",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "day",
+                    "with_var_ctr": 3.57,
+                    "var_imps": 3897.0
+                },
+                {
+                    "ess_1": "control",
+                    "ess_2": "energy",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "work",
+                    "with_var_ctr": 3.57,
+                    "var_imps": 3897.0
+                },
+                {
+                    "ess_1": "control",
+                    "ess_2": "energy",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "room",
+                    "with_var_ctr": 3.5,
+                    "var_imps": 2370.0
+                },
+                {
+                    "ess_1": "control",
+                    "ess_2": "energy",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "adjust",
+                    "with_var_ctr": 3.35,
+                    "var_imps": 2658.0
+                },
+                {
+                    "ess_1": "control",
+                    "ess_2": "energy",
+                    "combo_doc_freq": 6,
+                    "combo_overall_ctr": 3.52,
+                    "var_keyword": "look",
+                    "with_var_ctr": 2.92,
+                    "var_imps": 1812.0
                 },
                 {
                     "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 3.78,
-                    "var_keyword": "choose",
-                    "with_var_ctr": 3.68,
-                    "var_imps": 516.0
+                    "ess_2": "sun",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.5,
+                    "var_keyword": "block",
+                    "with_var_ctr": 3.5,
+                    "var_imps": 2112.0
                 },
                 {
                     "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 3.78,
-                    "var_keyword": "bright",
-                    "with_var_ctr": 3.38,
-                    "var_imps": 799.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 3.78,
+                    "ess_2": "sun",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.5,
                     "var_keyword": "need",
-                    "with_var_ctr": 3.26,
-                    "var_imps": 858.0
+                    "with_var_ctr": 3.5,
+                    "var_imps": 2112.0
                 },
                 {
                     "ess_1": "privacy",
+                    "ess_2": "sun",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.5,
+                    "var_keyword": "room",
+                    "with_var_ctr": 3.5,
+                    "var_imps": 2112.0
+                },
+                {
+                    "ess_1": "smart",
                     "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 3.78,
-                    "var_keyword": "blackout",
-                    "with_var_ctr": 2.68,
-                    "var_imps": 448.0
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.45,
+                    "var_keyword": "simple",
+                    "with_var_ctr": 3.81,
+                    "var_imps": 1208.0
+                },
+                {
+                    "ess_1": "smart",
+                    "ess_2": "window",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.45,
+                    "var_keyword": "upgrade",
+                    "with_var_ctr": 3.51,
+                    "var_imps": 1569.0
+                },
+                {
+                    "ess_1": "smart",
+                    "ess_2": "window",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.45,
+                    "var_keyword": "look",
+                    "with_var_ctr": 2.95,
+                    "var_imps": 1389.0
                 }
             ]
         },
@@ -1730,16 +1730,18 @@
         }
     },
     "purchase_analysis_pages": {
-        "is_visible": false
+        "is_visible": false,
+        "titles": {
+            "section_title": "전체 매출 데이터 분석",
+            "page_1_title": "평균 ROAS",
+            "page_2_title": "구매전환 건수"
+        }
     },
     "spend_revenue_pages": {
         "is_visible": false
     },
     "purchase_contents_pages": {
-        "is_visible": true,
-        "title": "구매가 발생한 콘텐츠",
-        "pages": [],
-        "total_count": 0
+        "is_visible": false
     },
     "purchase_age_gender_page": {
         "is_visible": false
