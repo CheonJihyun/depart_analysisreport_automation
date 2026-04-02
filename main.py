@@ -601,7 +601,18 @@ def run():
         charts["heatmap_impressions"] = heatmap_imp
     heatmap_ctr = render_dataset(heatmap_ds, color_map, metric="ctr")
     if heatmap_ctr:
-        charts["heatmap_ctr"] = heatmap_ctr    
+        charts["heatmap_ctr"] = heatmap_ctr
+    # 구매 히트맵 추가
+    purchase_heatmap_ds = datasets.get("purchase_heatmap")
+
+    purchase_heatmap = render_dataset(
+        purchase_heatmap_ds,
+        color_map,
+        metric="purchases"
+    )
+
+    if purchase_heatmap:
+        charts["purchase_heatmap"] = purchase_heatmap    
 
     add_chart("keyword_overall_top_noun", "overall_top_noun")
     add_chart("keyword_overall_top_verb_adj", "overall_top_va")
@@ -775,25 +786,6 @@ def run():
             for item in page_items:
                 target_details = item.get("target_details") or []
                 item["chart"] = render_purchase_pie_chart(target_details, color_map) if target_details else ""
-
-    # 구매 전환 히트맵 - 조건부 생성
-    purchase_age_gender_page = report_json.get(
-        "purchase_age_gender_page",
-        {"is_visible": False}
-    )
-
-    if purchase_age_gender_page.get("is_visible"):
-        heatmap_rows = purchase_age_gender_page.get("heatmap") or []
-
-        if heatmap_rows and sum((r.get("purchases") or 0) for r in heatmap_rows) > 0:
-            purchase_age_gender_page["chart"] = _render_purchase_conversion_heatmap(
-                heatmap_rows,
-                color_map
-            )
-        else:
-            purchase_age_gender_page["chart"] = ""
-            purchase_age_gender_page["heatmap"] = []
-
 
     context = {
         "css_path": "./templates/report.css",

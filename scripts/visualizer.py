@@ -1387,10 +1387,11 @@ def _render_purchase_conversion_heatmap(
             ax.text(
                 j,
                 i,
-                f"{int(round(float(val))):,}",
+                f"{int(round(float(val))):,}\n ",
                 ha="center",
                 va="center",
                 fontsize=11,
+                linespacing=1.2,
                 color=_contrast_text_color(cell_color, threshold=0.45),
             )
 
@@ -1405,3 +1406,72 @@ def _render_purchase_conversion_heatmap(
 
     fig.tight_layout(pad=0.6)
     return _fig_to_svg(fig)
+# def _render_purchase_conversion_heatmap(
+#     rows: List[Dict[str, Any]],
+#     color_map: Dict[str, Any],
+# ) -> str:
+#     df = pd.DataFrame(rows)
+#     if df.empty or "purchases" not in df.columns:
+#         return ""
+#     if "age" not in df.columns or "gender" not in df.columns:
+#         return ""
+
+#     pivot = df.pivot_table(index="gender", columns="age", values="purchases", aggfunc="sum")
+
+#     age_order = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
+#     gender_order = ["female", "male"]
+#     pivot = pivot.reindex(
+#         index=[g for g in gender_order if g in pivot.index],
+#         columns=[a for a in age_order if a in pivot.columns],
+#     )
+
+#     if pivot.empty:
+#         return ""
+
+#     fig, ax = plt.subplots(figsize=(10.5, 5.2))
+#     cmap = LinearSegmentedColormap.from_list(
+#         "theme",
+#         [color_map["lighter"], color_map["light"], color_map["base"], color_map["dark"]],
+#     )
+
+#     heat_values = pivot.values.astype(float)
+#     vmin = float(np.nanmin(heat_values))
+#     vmax = float(np.nanmax(heat_values))
+
+#     im = ax.imshow(heat_values, cmap=cmap)
+#     cbar = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.035)
+#     cbar.outline.set_visible(False)
+#     cbar.ax.tick_params(labelsize=10, colors="#666666")
+#     cbar.formatter = FuncFormatter(lambda x, _: f"{int(round(float(x))):,}")
+#     cbar.update_ticks()
+
+#     for i in range(pivot.shape[0]):
+#         for j in range(pivot.shape[1]):
+#             val = pivot.iloc[i, j]
+#             if pd.isna(val):
+#                 continue
+
+#             norm = 0.5 if abs(vmax - vmin) < 1e-12 else (float(val) - vmin) / (vmax - vmin)
+#             cell_color = cmap(norm)
+
+#             ax.text(
+#                 j,
+#                 i,
+#                 f"{int(round(float(val))):,}",
+#                 ha="center",
+#                 va="center",
+#                 fontsize=11,
+#                 color=_contrast_text_color(cell_color, threshold=0.45),
+#             )
+
+#     ax.set_xticks(range(len(pivot.columns)))
+#     ax.set_xticklabels([str(c) for c in pivot.columns], fontsize=11)
+#     ax.set_yticks(range(len(pivot.index)))
+#     ax.set_yticklabels([str(c) for c in pivot.index], fontsize=11)
+#     ax.tick_params(axis="x", bottom=True, top=False)
+
+#     for spine in ax.spines.values():
+#         spine.set_visible(False)
+
+#     fig.tight_layout(pad=0.6)
+#     return _fig_to_svg(fig)

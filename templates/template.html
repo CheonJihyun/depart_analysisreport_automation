@@ -415,7 +415,9 @@
     <div class="page-body page-body--heatmap">
       <div class="span-12 heatmap-panel">
         <div class="heatmap-center">
-          {{ purchase_age_gender_page.chart | safe }}
+          <figure class="figure figure--heatmap">
+            {{ figure(charts.purchase_heatmap, alt='purchase heatmap', class_name='figure--heatmap') }}
+          </figure>
         </div>
 
         {% if target.purchase_rank %}
