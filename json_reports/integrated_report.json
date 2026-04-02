@@ -1,0 +1,2763 @@
+{
+    "meta": {
+        "account_name": "Steven's ad account",
+        "period": "2025-10-27 ~ 2026-03-23",
+        "period_ads": "2025-11-12 ~ 2026-03-23",
+        "period_contents": "2025-10-31 ~ 2026-03-20",
+        "generated_at": "2026-04-02 12:01:36"
+    },
+    "summary": {
+        "total_ads": 100,
+        "total_contents": 90,
+        "total_keywords": 2489
+    },
+    "datasets": {
+        "insta_followers": {
+            "kind": "line",
+            "title": "팔로워 추이",
+            "unit": "명",
+            "labels": [
+                "2025-10-31",
+                "2025-11-03",
+                "2025-11-10",
+                "2025-11-17",
+                "2025-11-25",
+                "2025-12-01",
+                "2025-12-08",
+                "2025-12-15",
+                "2025-12-22",
+                "2026-01-02",
+                "2026-01-05",
+                "2026-01-12",
+                "2026-01-19",
+                "2026-01-26",
+                "2026-02-02",
+                "2026-02-09",
+                "2026-02-16",
+                "2026-02-23",
+                "2026-03-03",
+                "2026-03-09",
+                "2026-03-16"
+            ],
+            "series": [
+                {
+                    "name": "follower_count",
+                    "data": [
+                        2431,
+                        2434,
+                        2435,
+                        2441,
+                        2448,
+                        2451,
+                        2466,
+                        2490,
+                        2516,
+                        2518,
+                        2516,
+                        2518,
+                        2519,
+                        2522,
+                        2524,
+                        2527,
+                        2522,
+                        2524,
+                        2530,
+                        2535,
+                        2538
+                    ]
+                }
+            ]
+        },
+        "insta_profile_visits": {
+            "kind": "line",
+            "title": "프로필 방문 수(주별)",
+            "unit": "회",
+            "labels": [
+                "2025-10-31",
+                "2025-11-03",
+                "2025-11-10",
+                "2025-11-17",
+                "2025-11-25",
+                "2025-12-01",
+                "2025-12-08",
+                "2025-12-15",
+                "2025-12-22",
+                "2026-01-02",
+                "2026-01-05",
+                "2026-01-12",
+                "2026-01-19",
+                "2026-01-26",
+                "2026-02-02",
+                "2026-02-09",
+                "2026-02-16",
+                "2026-02-23",
+                "2026-03-03",
+                "2026-03-09",
+                "2026-03-16"
+            ],
+            "series": [
+                {
+                    "name": "profile_views",
+                    "data": [
+                        111,
+                        125,
+                        125,
+                        121,
+                        114,
+                        75,
+                        382,
+                        143,
+                        179,
+                        350,
+                        542,
+                        471,
+                        402,
+                        366,
+                        185,
+                        252,
+                        193,
+                        49,
+                        468,
+                        414,
+                        97
+                    ]
+                }
+            ]
+        },
+        "insta_profile_visits_monthly": {
+            "kind": "line",
+            "title": "인스타그램 프로필 방문수 (월별)",
+            "unit": "회",
+            "labels": [
+                "2025-10-31",
+                "2025-11-03",
+                "2025-12-01",
+                "2026-01-02",
+                "2026-02-02",
+                "2026-03-03"
+            ],
+            "series": [
+                {
+                    "name": "profile_views",
+                    "data": [
+                        111,
+                        485,
+                        779,
+                        2131,
+                        679,
+                        979
+                    ]
+                }
+            ]
+        },
+        "organic_trend": {
+            "kind": "line",
+            "title": "오가닉 조회수 추이 (주별)",
+            "unit": "회",
+            "labels": [
+                "2025-10-27",
+                "2025-11-03",
+                "2025-11-10",
+                "2025-11-17",
+                "2025-11-24",
+                "2025-12-01",
+                "2025-12-08",
+                "2025-12-15",
+                "2025-12-22",
+                "2025-12-29",
+                "2026-01-05",
+                "2026-01-12",
+                "2026-01-19",
+                "2026-01-26",
+                "2026-02-02",
+                "2026-02-09",
+                "2026-02-16",
+                "2026-02-23",
+                "2026-03-02",
+                "2026-03-09",
+                "2026-03-16"
+            ],
+            "series": [
+                {
+                    "name": "organic_impressions",
+                    "data": [
+                        5015,
+                        10096,
+                        8082,
+                        6445,
+                        3746,
+                        6932,
+                        3240,
+                        3553,
+                        2534,
+                        2948,
+                        2108,
+                        1367,
+                        1688,
+                        1030,
+                        1066,
+                        2338,
+                        1443,
+                        1944,
+                        1250,
+                        1152,
+                        1237
+                    ]
+                }
+            ]
+        },
+        "organic_trend_monthly": {
+            "kind": "line",
+            "title": "오가닉 조회수 추이 (월별)",
+            "unit": "회",
+            "labels": [
+                "2025-10-27",
+                "2025-11-03",
+                "2025-12-01",
+                "2026-01-05",
+                "2026-02-02",
+                "2026-03-02"
+            ],
+            "series": [
+                {
+                    "name": "organic_impressions",
+                    "data": [
+                        5015,
+                        28369,
+                        19207,
+                        6193,
+                        6791,
+                        3639
+                    ]
+                }
+            ]
+        },
+        "gender_clean": {
+            "chart_type": "doughnut",
+            "title": "팔로워 성별·연령 구성",
+            "labels": [
+                "남성",
+                "여성"
+            ],
+            "series": [
+                {
+                    "name": "비율",
+                    "data": [
+                        41.9,
+                        58.1
+                    ]
+                }
+            ],
+            "unit": "%",
+            "center_text": "2,538",
+            "center_subtext": "팔로워"
+        },
+        "age_gender_clean": {
+            "chart_type": "stacked_barh",
+            "title": "연령대별 성별 분포 (알 수 없음 제외)",
+            "labels": [
+                "13-17",
+                "18-24",
+                "25-34",
+                "35-44",
+                "45-54",
+                "55-64",
+                "65+"
+            ],
+            "series": [
+                {
+                    "name": "male",
+                    "data": [
+                        0.0,
+                        43.0,
+                        162.0,
+                        153.0,
+                        88.0,
+                        18.0,
+                        13.0
+                    ]
+                },
+                {
+                    "name": "female",
+                    "data": [
+                        1.0,
+                        31.0,
+                        151.0,
+                        287.0,
+                        125.0,
+                        46.0,
+                        21.0
+                    ]
+                }
+            ],
+            "unit": "명"
+        },
+        "gender_unknown": {
+            "chart_type": "doughnut",
+            "title": "성별 데이터 식별 여부",
+            "labels": [
+                "남/여 전체",
+                "알 수 없음"
+            ],
+            "series": [
+                {
+                    "name": "비율",
+                    "data": [
+                        80.0,
+                        20.0
+                    ]
+                }
+            ],
+            "unit": "%",
+            "center_text": "20.0%",
+            "center_subtext": "알 수 없음 비율"
+        },
+        "age_known_unknown": {
+            "chart_type": "stacked_barh",
+            "title": "연령대별 성별 데이터 식별 여부 분포",
+            "labels": [
+                "13-17",
+                "18-24",
+                "25-34",
+                "35-44",
+                "45-54",
+                "55-64",
+                "65+"
+            ],
+            "series": [
+                {
+                    "name": "known",
+                    "data": [
+                        1.0,
+                        74.0,
+                        313.0,
+                        440.0,
+                        213.0,
+                        64.0,
+                        34.0
+                    ]
+                },
+                {
+                    "name": "unknown",
+                    "data": [
+                        1.0,
+                        30.0,
+                        70.0,
+                        106.0,
+                        49.0,
+                        25.0,
+                        4.0
+                    ]
+                }
+            ],
+            "unit": "명"
+        },
+        "ctr_trend_weekly": {
+            "kind": "line",
+            "title": "주별 CTR 추이",
+            "unit": "%",
+            "labels": [
+                "2025-11-10",
+                "2025-11-17",
+                "2025-12-01",
+                "2025-12-08",
+                "2025-12-15",
+                "2025-12-22",
+                "2025-12-29",
+                "2026-01-05",
+                "2026-01-12",
+                "2026-01-19",
+                "2026-01-26",
+                "2026-02-02",
+                "2026-02-09",
+                "2026-02-16",
+                "2026-02-23",
+                "2026-03-02",
+                "2026-03-09",
+                "2026-03-16",
+                "2026-03-23"
+            ],
+            "series": [
+                {
+                    "name": "ctr",
+                    "data": [
+                        11.61,
+                        14.52,
+                        2.21,
+                        2.12,
+                        2.4,
+                        3.01,
+                        2.86,
+                        2.91,
+                        2.83,
+                        3.44,
+                        3.15,
+                        3.02,
+                        4.7,
+                        5.65,
+                        4.12,
+                        3.34,
+                        1.89,
+                        3.6,
+                        4.55
+                    ]
+                }
+            ]
+        },
+        "ctr_trend_monthly": {
+            "kind": "line",
+            "title": "월별 CTR 추이",
+            "unit": "%",
+            "labels": [
+                "2025-11-01",
+                "2025-12-01",
+                "2026-01-01",
+                "2026-02-01",
+                "2026-03-01"
+            ],
+            "series": [
+                {
+                    "name": "ctr",
+                    "data": [
+                        12.96,
+                        2.53,
+                        2.99,
+                        3.99,
+                        3.1
+                    ]
+                }
+            ]
+        },
+        "target_heatmap": {
+            "kind": "table",
+            "title": "타겟별 노출 및 CTR 성과",
+            "unit": "",
+            "rows": [
+                {
+                    "age": "18-24",
+                    "gender": "female",
+                    "impressions": 24080,
+                    "clicks": 572,
+                    "ctr": 2.38
+                },
+                {
+                    "age": "35-44",
+                    "gender": "female",
+                    "impressions": 13855,
+                    "clicks": 397,
+                    "ctr": 2.87
+                },
+                {
+                    "age": "65+",
+                    "gender": "male",
+                    "impressions": 12734,
+                    "clicks": 475,
+                    "ctr": 3.73
+                },
+                {
+                    "age": "55-64",
+                    "gender": "male",
+                    "impressions": 11081,
+                    "clicks": 326,
+                    "ctr": 2.94
+                },
+                {
+                    "age": "45-54",
+                    "gender": "female",
+                    "impressions": 11886,
+                    "clicks": 456,
+                    "ctr": 3.84
+                },
+                {
+                    "age": "45-54",
+                    "gender": "male",
+                    "impressions": 9198,
+                    "clicks": 254,
+                    "ctr": 2.76
+                },
+                {
+                    "age": "25-34",
+                    "gender": "male",
+                    "impressions": 18520,
+                    "clicks": 412,
+                    "ctr": 2.22
+                },
+                {
+                    "age": "35-44",
+                    "gender": "male",
+                    "impressions": 11992,
+                    "clicks": 260,
+                    "ctr": 2.17
+                },
+                {
+                    "age": "18-24",
+                    "gender": "male",
+                    "impressions": 16644,
+                    "clicks": 283,
+                    "ctr": 1.7
+                },
+                {
+                    "age": "65+",
+                    "gender": "female",
+                    "impressions": 28466,
+                    "clicks": 1472,
+                    "ctr": 5.17
+                },
+                {
+                    "age": "55-64",
+                    "gender": "female",
+                    "impressions": 19339,
+                    "clicks": 890,
+                    "ctr": 4.6
+                },
+                {
+                    "age": "25-34",
+                    "gender": "female",
+                    "impressions": 18682,
+                    "clicks": 511,
+                    "ctr": 2.74
+                }
+            ]
+        },
+        "purchase_heatmap": {
+            "kind": "table",
+            "title": "타겟별 구매전환 성과",
+            "unit": "",
+            "rows": [
+                {
+                    "age": "18-24",
+                    "gender": "female",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "18-24",
+                    "gender": "male",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "18-24",
+                    "gender": "unknown",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "25-34",
+                    "gender": "female",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "25-34",
+                    "gender": "male",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "25-34",
+                    "gender": "unknown",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "35-44",
+                    "gender": "female",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "35-44",
+                    "gender": "male",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "35-44",
+                    "gender": "unknown",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "45-54",
+                    "gender": "female",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "45-54",
+                    "gender": "male",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "45-54",
+                    "gender": "unknown",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "55-64",
+                    "gender": "female",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "55-64",
+                    "gender": "male",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "55-64",
+                    "gender": "unknown",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "65+",
+                    "gender": "female",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "65+",
+                    "gender": "male",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "65+",
+                    "gender": "unknown",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "Unknown",
+                    "gender": "male",
+                    "purchases": 0.0
+                }
+            ]
+        },
+        "content_top_analysis": {
+            "kind": "content_card",
+            "title": "성과 top 콘텐츠 분석",
+            "items": [
+                {
+                    "ad_id": 2606,
+                    "fb_ad_id": "120234452900250406",
+                    "uploaded_at": "2025-11-05",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120234452900250406.jpg",
+                    "ctr": 19.02,
+                    "target_details": [
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 32.73
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 28.57
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "female",
+                            "ctr": 25.0
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 25.0
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 23.53
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 21.05
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 16.67
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 9.52
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 0.0
+                        }
+                    ]
+                },
+                {
+                    "ad_id": 2622,
+                    "fb_ad_id": "120234812285980406",
+                    "uploaded_at": "2025-11-12",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120234812285980406.jpg",
+                    "ctr": 18.14,
+                    "target_details": [
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 37.5
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "female",
+                            "ctr": 33.33
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 28.57
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 28.57
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 23.08
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 15.0
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 13.33
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 7.14
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 5.56
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 5.56
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 4.0
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 0.0
+                        }
+                    ]
+                },
+                {
+                    "ad_id": 2623,
+                    "fb_ad_id": "120234812285960406",
+                    "uploaded_at": "2025-11-10",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120234812285960406.jpg",
+                    "ctr": 14.34,
+                    "target_details": [
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 26.92
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 23.81
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 17.24
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 15.38
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 15.0
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 14.81
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 10.53
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "female",
+                            "ctr": 7.69
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 5.26
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 3.57
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 0.0
+                        }
+                    ]
+                }
+            ]
+        },
+        "content_bottom_analysis": {
+            "kind": "content_card",
+            "title": "성과 bottom 콘텐츠 분석",
+            "items": [
+                {
+                    "ad_id": 5694,
+                    "fb_ad_id": "120239427909900406",
+                    "uploaded_at": "2026-03-08",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120239427909900406.jpg",
+                    "ctr": 0.98,
+                    "target_details": [
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 3.17
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 2.73
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 2.14
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 2.04
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 1.48
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 0.82
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 0.76
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 0.73
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 0.63
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 0.45
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 0.0
+                        }
+                    ]
+                },
+                {
+                    "ad_id": 3643,
+                    "fb_ad_id": "120237275765150406",
+                    "uploaded_at": "2026-01-05",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120237275765150406.jpg",
+                    "ctr": 1.2,
+                    "target_details": [
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 3.47
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 2.38
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 1.89
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "female",
+                            "ctr": 1.79
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 1.38
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 1.34
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 1.19
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 1.08
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 1.04
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 0.94
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 0.84
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 0.43
+                        }
+                    ]
+                },
+                {
+                    "ad_id": 2878,
+                    "fb_ad_id": "120235479536840406",
+                    "uploaded_at": "2025-11-25",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120235479536840406.jpg",
+                    "ctr": 1.29,
+                    "target_details": [
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 5.97
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 5.56
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 3.7
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 3.03
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "female",
+                            "ctr": 2.33
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 1.08
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 0.96
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 0.85
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 0.44
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 0.0
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "follower_demographics_pages": {
+        "is_visible": true,
+        "latest_date": "2026-04-02",
+        "titles": {
+            "section_title": "팔로워 인구통계학 분석",
+            "page_1_title": "성별 및 연령대별 팔로워 분포"
+        }
+    },
+    "purchase_analysis_pages": {
+        "is_visible": false,
+        "titles": {
+            "section_title": "전체 매출 데이터 분석",
+            "page_1_title": "평균 ROAS",
+            "page_2_title": "구매전환 건수"
+        }
+    },
+    "spend_revenue_pages": {
+        "is_visible": false
+    },
+    "purchase_contents_pages": {
+        "is_visible": false
+    },
+    "purchase_age_gender_page": {
+        "is_visible": false
+    },
+    "appendix_groups": [
+        {
+            "title": "",
+            "items": [
+                {
+                    "title": "많이 사용한 업종 필수 키워드 - 노출 (전체)",
+                    "subtitle": "키워드가 가장 많이 노출된 타겟",
+                    "headers": [
+                        "랭킹",
+                        "키워드",
+                        "등장 광고 수",
+                        "최다 노출 타겟",
+                        "타겟 노출량",
+                        "노출 비중",
+                        "총 노출량"
+                    ],
+                    "rows": [
+                        [
+                            1,
+                            "light",
+                            71,
+                            "65+ female",
+                            19668,
+                            "14.6%",
+                            134825
+                        ],
+                        [
+                            2,
+                            "home",
+                            70,
+                            "65+ female",
+                            19996,
+                            "14.4%",
+                            138747
+                        ],
+                        [
+                            3,
+                            "window",
+                            39,
+                            "18-24 female",
+                            9680,
+                            "14.6%",
+                            66311
+                        ],
+                        [
+                            4,
+                            "blind",
+                            33,
+                            "65+ female",
+                            9365,
+                            "14.6%",
+                            64258
+                        ],
+                        [
+                            5,
+                            "blinds",
+                            32,
+                            "65+ female",
+                            9887,
+                            "14.9%",
+                            66350
+                        ],
+                        [
+                            6,
+                            "sun",
+                            30,
+                            "65+ female",
+                            9336,
+                            "14.7%",
+                            63328
+                        ],
+                        [
+                            7,
+                            "shades",
+                            30,
+                            "65+ female",
+                            7937,
+                            "12.7%",
+                            62519
+                        ],
+                        [
+                            8,
+                            "treatment",
+                            30,
+                            "65+ female",
+                            9291,
+                            "15.1%",
+                            61416
+                        ],
+                        [
+                            9,
+                            "insulation",
+                            30,
+                            "65+ female",
+                            9823,
+                            "16.6%",
+                            59282
+                        ],
+                        [
+                            10,
+                            "covering",
+                            29,
+                            "65+ female",
+                            9224,
+                            "15.3%",
+                            60365
+                        ],
+                        [
+                            11,
+                            "design",
+                            25,
+                            "65+ female",
+                            5782,
+                            "14.3%",
+                            40400
+                        ],
+                        [
+                            12,
+                            "shade",
+                            24,
+                            "65+ female",
+                            5648,
+                            "13.3%",
+                            42491
+                        ],
+                        [
+                            13,
+                            "windows",
+                            24,
+                            "65+ female",
+                            6751,
+                            "17.0%",
+                            39700
+                        ],
+                        [
+                            14,
+                            "custom",
+                            23,
+                            "65+ female",
+                            6856,
+                            "14.1%",
+                            48506
+                        ],
+                        [
+                            15,
+                            "control",
+                            23,
+                            "65+ female",
+                            5933,
+                            "12.3%",
+                            48241
+                        ],
+                        [
+                            16,
+                            "privacy",
+                            23,
+                            "18-24 female",
+                            4885,
+                            "13.0%",
+                            37563
+                        ],
+                        [
+                            17,
+                            "smart",
+                            18,
+                            "65+ female",
+                            6177,
+                            "15.1%",
+                            40867
+                        ],
+                        [
+                            18,
+                            "glare",
+                            18,
+                            "65+ female",
+                            6097,
+                            "16.3%",
+                            37299
+                        ],
+                        [
+                            19,
+                            "roller",
+                            18,
+                            "18-24 female",
+                            6199,
+                            "16.8%",
+                            36911
+                        ],
+                        [
+                            20,
+                            "solution",
+                            16,
+                            "18-24 female",
+                            6472,
+                            "21.4%",
+                            30206
+                        ],
+                        [
+                            21,
+                            "residential",
+                            14,
+                            "65+ female",
+                            5207,
+                            "20.6%",
+                            25284
+                        ],
+                        [
+                            22,
+                            "energy",
+                            13,
+                            "18-24 female",
+                            3848,
+                            "14.0%",
+                            27509
+                        ],
+                        [
+                            23,
+                            "venetian",
+                            11,
+                            "18-24 female",
+                            3975,
+                            "15.2%",
+                            26111
+                        ],
+                        [
+                            24,
+                            "style",
+                            11,
+                            "18-24 female",
+                            3933,
+                            "17.5%",
+                            22441
+                        ],
+                        [
+                            25,
+                            "fabric",
+                            11,
+                            "18-24 female",
+                            3406,
+                            "16.5%",
+                            20620
+                        ],
+                        [
+                            26,
+                            "interior",
+                            11,
+                            "18-24 female",
+                            2987,
+                            "15.6%",
+                            19137
+                        ],
+                        [
+                            27,
+                            "protection",
+                            10,
+                            "65+ female",
+                            2687,
+                            "12.3%",
+                            21874
+                        ],
+                        [
+                            28,
+                            "treatments",
+                            9,
+                            "65+ female",
+                            2668,
+                            "21.2%",
+                            12567
+                        ],
+                        [
+                            29,
+                            "shutter",
+                            8,
+                            "18-24 female",
+                            3203,
+                            "18.6%",
+                            17204
+                        ],
+                        [
+                            30,
+                            "solutions",
+                            8,
+                            "18-24 female",
+                            2644,
+                            "16.2%",
+                            16307
+                        ],
+                        [
+                            31,
+                            "shutters",
+                            8,
+                            "65+ female",
+                            2880,
+                            "19.8%",
+                            14562
+                        ],
+                        [
+                            32,
+                            "coverings",
+                            5,
+                            "18-24 female",
+                            2548,
+                            "17.7%",
+                            14431
+                        ],
+                        [
+                            33,
+                            "motorized",
+                            5,
+                            "65+ female",
+                            1385,
+                            "17.4%",
+                            7963
+                        ],
+                        [
+                            34,
+                            "efficiency",
+                            5,
+                            "65+ female",
+                            1041,
+                            "18.5%",
+                            5620
+                        ],
+                        [
+                            35,
+                            "commercial",
+                            4,
+                            "65+ female",
+                            1172,
+                            "13.4%",
+                            8772
+                        ],
+                        [
+                            36,
+                            "automation",
+                            3,
+                            "18-24 female",
+                            1302,
+                            "20.0%",
+                            6512
+                        ],
+                        [
+                            37,
+                            "exterior",
+                            1,
+                            "18-24 female",
+                            361,
+                            "13.1%",
+                            2752
+                        ],
+                        [
+                            38,
+                            "cellular",
+                            1,
+                            "65+ female",
+                            283,
+                            "14.3%",
+                            1973
+                        ]
+                    ],
+                    "footnote": "*등장한 전체 키워드 기준"
+                },
+                {
+                    "title": "많이 사용한 업종 필수 키워드 - 클릭 (전체)",
+                    "subtitle": "키워드가 가장 많이 노출된 타겟",
+                    "headers": [
+                        "랭킹",
+                        "키워드",
+                        "등장 광고 수",
+                        "최다 클릭 타겟",
+                        "타겟 클릭량",
+                        "클릭 비중",
+                        "총 클릭량"
+                    ],
+                    "rows": [
+                        [
+                            1,
+                            "light",
+                            71,
+                            "65+ female",
+                            992,
+                            "22.2%",
+                            4476
+                        ],
+                        [
+                            2,
+                            "home",
+                            70,
+                            "65+ female",
+                            1014,
+                            "22.4%",
+                            4529
+                        ],
+                        [
+                            3,
+                            "window",
+                            39,
+                            "65+ female",
+                            484,
+                            "23.1%",
+                            2099
+                        ],
+                        [
+                            4,
+                            "blind",
+                            33,
+                            "65+ female",
+                            530,
+                            "22.3%",
+                            2379
+                        ],
+                        [
+                            5,
+                            "blinds",
+                            32,
+                            "65+ female",
+                            606,
+                            "26.1%",
+                            2325
+                        ],
+                        [
+                            6,
+                            "sun",
+                            30,
+                            "65+ female",
+                            395,
+                            "20.6%",
+                            1916
+                        ],
+                        [
+                            7,
+                            "shades",
+                            30,
+                            "65+ female",
+                            393,
+                            "22.5%",
+                            1743
+                        ],
+                        [
+                            8,
+                            "treatment",
+                            30,
+                            "65+ female",
+                            515,
+                            "26.0%",
+                            1979
+                        ],
+                        [
+                            9,
+                            "insulation",
+                            30,
+                            "65+ female",
+                            559,
+                            "27.2%",
+                            2056
+                        ],
+                        [
+                            10,
+                            "covering",
+                            29,
+                            "65+ female",
+                            539,
+                            "26.4%",
+                            2041
+                        ],
+                        [
+                            11,
+                            "design",
+                            25,
+                            "65+ female",
+                            303,
+                            "21.8%",
+                            1390
+                        ],
+                        [
+                            12,
+                            "shade",
+                            24,
+                            "65+ female",
+                            266,
+                            "21.3%",
+                            1251
+                        ],
+                        [
+                            13,
+                            "windows",
+                            24,
+                            "65+ female",
+                            371,
+                            "28.0%",
+                            1325
+                        ],
+                        [
+                            14,
+                            "custom",
+                            23,
+                            "65+ female",
+                            448,
+                            "27.3%",
+                            1644
+                        ],
+                        [
+                            15,
+                            "control",
+                            23,
+                            "65+ female",
+                            286,
+                            "18.4%",
+                            1552
+                        ],
+                        [
+                            16,
+                            "privacy",
+                            23,
+                            "65+ female",
+                            259,
+                            "20.5%",
+                            1266
+                        ],
+                        [
+                            17,
+                            "smart",
+                            18,
+                            "65+ female",
+                            294,
+                            "22.5%",
+                            1305
+                        ],
+                        [
+                            18,
+                            "glare",
+                            18,
+                            "65+ female",
+                            351,
+                            "24.8%",
+                            1418
+                        ],
+                        [
+                            19,
+                            "roller",
+                            18,
+                            "65+ female",
+                            257,
+                            "23.8%",
+                            1079
+                        ],
+                        [
+                            20,
+                            "solution",
+                            16,
+                            "65+ female",
+                            173,
+                            "18.1%",
+                            955
+                        ],
+                        [
+                            21,
+                            "residential",
+                            14,
+                            "65+ female",
+                            343,
+                            "38.0%",
+                            903
+                        ],
+                        [
+                            22,
+                            "energy",
+                            13,
+                            "65+ female",
+                            200,
+                            "19.8%",
+                            1010
+                        ],
+                        [
+                            23,
+                            "venetian",
+                            11,
+                            "65+ female",
+                            165,
+                            "19.8%",
+                            835
+                        ],
+                        [
+                            24,
+                            "style",
+                            11,
+                            "18-24 female",
+                            100,
+                            "17.6%",
+                            567
+                        ],
+                        [
+                            25,
+                            "fabric",
+                            11,
+                            "65+ female",
+                            181,
+                            "22.7%",
+                            798
+                        ],
+                        [
+                            26,
+                            "interior",
+                            11,
+                            "65+ female",
+                            154,
+                            "22.5%",
+                            685
+                        ],
+                        [
+                            27,
+                            "protection",
+                            10,
+                            "18-24 female",
+                            91,
+                            "13.6%",
+                            670
+                        ],
+                        [
+                            28,
+                            "treatments",
+                            9,
+                            "65+ female",
+                            172,
+                            "34.4%",
+                            500
+                        ],
+                        [
+                            29,
+                            "shutter",
+                            8,
+                            "65+ female",
+                            135,
+                            "21.3%",
+                            633
+                        ],
+                        [
+                            30,
+                            "solutions",
+                            8,
+                            "65+ female",
+                            84,
+                            "18.5%",
+                            453
+                        ],
+                        [
+                            31,
+                            "shutters",
+                            8,
+                            "65+ female",
+                            207,
+                            "30.4%",
+                            681
+                        ],
+                        [
+                            32,
+                            "coverings",
+                            5,
+                            "65+ female",
+                            61,
+                            "14.0%",
+                            435
+                        ],
+                        [
+                            33,
+                            "motorized",
+                            5,
+                            "65+ female",
+                            66,
+                            "27.2%",
+                            243
+                        ],
+                        [
+                            34,
+                            "efficiency",
+                            5,
+                            "65+ female",
+                            62,
+                            "30.8%",
+                            201
+                        ],
+                        [
+                            35,
+                            "commercial",
+                            4,
+                            "65+ female",
+                            46,
+                            "20.7%",
+                            222
+                        ],
+                        [
+                            36,
+                            "automation",
+                            3,
+                            "55-64 female",
+                            40,
+                            "18.8%",
+                            213
+                        ],
+                        [
+                            37,
+                            "exterior",
+                            1,
+                            "18-24 female",
+                            13,
+                            "22.8%",
+                            57
+                        ],
+                        [
+                            38,
+                            "cellular",
+                            1,
+                            "18-24 female",
+                            9,
+                            "14.5%",
+                            62
+                        ]
+                    ],
+                    "footnote": "*등장한 전체 키워드 기준"
+                },
+                {
+                    "title": "많이 사용한 브랜드 변수 키워드 - 노출 (1~25위)",
+                    "subtitle": "키워드가 가장 많이 노출된 타겟",
+                    "headers": [
+                        "랭킹",
+                        "키워드",
+                        "등장 광고 수",
+                        "최다 노출 타겟",
+                        "타겟 노출량",
+                        "노출 비중",
+                        "총 노출량"
+                    ],
+                    "rows": [
+                        [
+                            1,
+                            "space",
+                            48,
+                            "65+ female",
+                            13648,
+                            "13.9%",
+                            98058
+                        ],
+                        [
+                            2,
+                            "can",
+                            41,
+                            "65+ female",
+                            13003,
+                            "16.1%",
+                            80603
+                        ],
+                        [
+                            3,
+                            "feel",
+                            40,
+                            "65+ female",
+                            11088,
+                            "14.5%",
+                            76516
+                        ],
+                        [
+                            4,
+                            "day",
+                            36,
+                            "18-24 female",
+                            12197,
+                            "15.1%",
+                            80630
+                        ],
+                        [
+                            5,
+                            "right",
+                            35,
+                            "65+ female",
+                            10854,
+                            "15.9%",
+                            68325
+                        ],
+                        [
+                            6,
+                            "room",
+                            32,
+                            "65+ female",
+                            9296,
+                            "16.2%",
+                            57237
+                        ],
+                        [
+                            7,
+                            "more",
+                            29,
+                            "65+ female",
+                            9081,
+                            "16.1%",
+                            56380
+                        ],
+                        [
+                            8,
+                            "feels",
+                            28,
+                            "65+ female",
+                            8757,
+                            "16.1%",
+                            54320
+                        ],
+                        [
+                            9,
+                            "not",
+                            27,
+                            "65+ female",
+                            8603,
+                            "17.1%",
+                            50348
+                        ],
+                        [
+                            10,
+                            "time",
+                            25,
+                            "65+ female",
+                            7486,
+                            "13.5%",
+                            55387
+                        ],
+                        [
+                            11,
+                            "like",
+                            25,
+                            "65+ female",
+                            6957,
+                            "13.8%",
+                            50365
+                        ],
+                        [
+                            12,
+                            "how",
+                            25,
+                            "18-24 female",
+                            7528,
+                            "16.0%",
+                            46974
+                        ],
+                        [
+                            13,
+                            "make",
+                            24,
+                            "65+ female",
+                            6980,
+                            "14.9%",
+                            46965
+                        ],
+                        [
+                            14,
+                            "all",
+                            24,
+                            "65+ female",
+                            7040,
+                            "15.2%",
+                            46314
+                        ],
+                        [
+                            15,
+                            "way",
+                            24,
+                            "65+ female",
+                            5598,
+                            "12.2%",
+                            45853
+                        ],
+                        [
+                            16,
+                            "just",
+                            24,
+                            "65+ female",
+                            7981,
+                            "19.5%",
+                            40943
+                        ],
+                        [
+                            17,
+                            "out",
+                            23,
+                            "18-24 female",
+                            9281,
+                            "17.3%",
+                            53573
+                        ],
+                        [
+                            18,
+                            "every",
+                            23,
+                            "65+ female",
+                            6748,
+                            "14.3%",
+                            47185
+                        ],
+                        [
+                            19,
+                            "one",
+                            23,
+                            "65+ female",
+                            6368,
+                            "16.1%",
+                            39457
+                        ],
+                        [
+                            20,
+                            "than",
+                            22,
+                            "65+ female",
+                            7811,
+                            "17.7%",
+                            44192
+                        ],
+                        [
+                            21,
+                            "natural",
+                            21,
+                            "65+ female",
+                            6619,
+                            "16.4%",
+                            40330
+                        ],
+                        [
+                            22,
+                            "look",
+                            20,
+                            "65+ female",
+                            5262,
+                            "13.5%",
+                            38968
+                        ],
+                        [
+                            23,
+                            "up",
+                            19,
+                            "25-34 male",
+                            5172,
+                            "12.3%",
+                            42211
+                        ],
+                        [
+                            24,
+                            "when",
+                            18,
+                            "18-24 female",
+                            5632,
+                            "15.2%",
+                            37166
+                        ],
+                        [
+                            25,
+                            "what",
+                            18,
+                            "18-24 female",
+                            6589,
+                            "17.8%",
+                            36987
+                        ]
+                    ],
+                    "footnote": "*등장 광고 수 상위 50개 기준"
+                },
+                {
+                    "title": "많이 사용한 브랜드 변수 키워드 - 노출 (26~50위)",
+                    "subtitle": "키워드가 가장 많이 노출된 타겟",
+                    "headers": [
+                        "랭킹",
+                        "키워드",
+                        "등장 광고 수",
+                        "최다 노출 타겟",
+                        "타겟 노출량",
+                        "노출 비중",
+                        "총 노출량"
+                    ],
+                    "rows": [
+                        [
+                            26,
+                            "When",
+                            18,
+                            "65+ female",
+                            5233,
+                            "16.1%",
+                            32540
+                        ],
+                        [
+                            27,
+                            "curtains",
+                            18,
+                            "65+ female",
+                            5404,
+                            "18.6%",
+                            29019
+                        ],
+                        [
+                            28,
+                            "What",
+                            17,
+                            "65+ female",
+                            4823,
+                            "14.2%",
+                            34013
+                        ],
+                        [
+                            29,
+                            "makes",
+                            17,
+                            "65+ female",
+                            5378,
+                            "18.8%",
+                            28640
+                        ],
+                        [
+                            30,
+                            "actually",
+                            16,
+                            "65+ female",
+                            5652,
+                            "15.2%",
+                            37265
+                        ],
+                        [
+                            31,
+                            "too",
+                            16,
+                            "65+ female",
+                            5319,
+                            "17.8%",
+                            29883
+                        ],
+                        [
+                            32,
+                            "while",
+                            16,
+                            "18-24 female",
+                            5462,
+                            "18.4%",
+                            29643
+                        ],
+                        [
+                            33,
+                            "comfort",
+                            16,
+                            "18-24 female",
+                            3994,
+                            "14.7%",
+                            27154
+                        ],
+                        [
+                            34,
+                            "change",
+                            15,
+                            "65+ female",
+                            4544,
+                            "14.7%",
+                            30896
+                        ],
+                        [
+                            35,
+                            "should",
+                            15,
+                            "65+ female",
+                            5877,
+                            "19.3%",
+                            30437
+                        ],
+                        [
+                            36,
+                            "most",
+                            15,
+                            "65+ female",
+                            4161,
+                            "13.7%",
+                            30291
+                        ],
+                        [
+                            37,
+                            "living",
+                            15,
+                            "65+ female",
+                            4059,
+                            "13.6%",
+                            29753
+                        ],
+                        [
+                            38,
+                            "Soft",
+                            15,
+                            "65+ female",
+                            3118,
+                            "15.6%",
+                            19928
+                        ],
+                        [
+                            39,
+                            "still",
+                            14,
+                            "65+ female",
+                            5185,
+                            "15.5%",
+                            33484
+                        ],
+                        [
+                            40,
+                            "work",
+                            14,
+                            "65+ female",
+                            4780,
+                            "15.2%",
+                            31358
+                        ],
+                        [
+                            41,
+                            "even",
+                            14,
+                            "65+ female",
+                            6190,
+                            "20.3%",
+                            30495
+                        ],
+                        [
+                            42,
+                            "help",
+                            14,
+                            "65+ female",
+                            3996,
+                            "14.2%",
+                            28125
+                        ],
+                        [
+                            43,
+                            "house",
+                            14,
+                            "65+ female",
+                            5756,
+                            "20.7%",
+                            27747
+                        ],
+                        [
+                            44,
+                            "don",
+                            14,
+                            "65+ female",
+                            4614,
+                            "17.0%",
+                            27219
+                        ],
+                        [
+                            45,
+                            "use",
+                            14,
+                            "65+ female",
+                            4619,
+                            "17.2%",
+                            26780
+                        ],
+                        [
+                            46,
+                            "difference",
+                            14,
+                            "18-24 female",
+                            3394,
+                            "13.6%",
+                            24959
+                        ],
+                        [
+                            47,
+                            "air",
+                            13,
+                            "18-24 female",
+                            4937,
+                            "17.4%",
+                            28423
+                        ],
+                        [
+                            48,
+                            "get",
+                            13,
+                            "18-24 female",
+                            4694,
+                            "18.8%",
+                            25007
+                        ],
+                        [
+                            49,
+                            "need",
+                            13,
+                            "18-24 female",
+                            3917,
+                            "16.2%",
+                            24137
+                        ],
+                        [
+                            50,
+                            "bright",
+                            13,
+                            "65+ female",
+                            3051,
+                            "13.6%",
+                            22450
+                        ]
+                    ],
+                    "footnote": "*등장 광고 수 상위 50개 기준"
+                },
+                {
+                    "title": "많이 사용한 브랜드 변수 키워드 - 클릭 (1~25위)",
+                    "subtitle": "키워드가 가장 많이 노출된 타겟",
+                    "headers": [
+                        "랭킹",
+                        "키워드",
+                        "등장 광고 수",
+                        "최다 클릭 타겟",
+                        "타겟 클릭량",
+                        "클릭 비중",
+                        "총 클릭량"
+                    ],
+                    "rows": [
+                        [
+                            1,
+                            "space",
+                            48,
+                            "65+ female",
+                            770,
+                            "23.8%",
+                            3230
+                        ],
+                        [
+                            2,
+                            "can",
+                            41,
+                            "65+ female",
+                            677,
+                            "24.6%",
+                            2748
+                        ],
+                        [
+                            3,
+                            "feel",
+                            40,
+                            "65+ female",
+                            606,
+                            "23.4%",
+                            2590
+                        ],
+                        [
+                            4,
+                            "day",
+                            36,
+                            "65+ female",
+                            508,
+                            "20.0%",
+                            2535
+                        ],
+                        [
+                            5,
+                            "right",
+                            35,
+                            "65+ female",
+                            613,
+                            "27.1%",
+                            2262
+                        ],
+                        [
+                            6,
+                            "room",
+                            32,
+                            "65+ female",
+                            548,
+                            "28.3%",
+                            1934
+                        ],
+                        [
+                            7,
+                            "more",
+                            29,
+                            "65+ female",
+                            482,
+                            "25.2%",
+                            1913
+                        ],
+                        [
+                            8,
+                            "feels",
+                            28,
+                            "65+ female",
+                            568,
+                            "28.1%",
+                            2021
+                        ],
+                        [
+                            9,
+                            "not",
+                            27,
+                            "65+ female",
+                            479,
+                            "25.1%",
+                            1907
+                        ],
+                        [
+                            10,
+                            "time",
+                            25,
+                            "65+ female",
+                            389,
+                            "21.1%",
+                            1847
+                        ],
+                        [
+                            11,
+                            "like",
+                            25,
+                            "65+ female",
+                            364,
+                            "22.7%",
+                            1601
+                        ],
+                        [
+                            12,
+                            "how",
+                            25,
+                            "65+ female",
+                            326,
+                            "20.4%",
+                            1595
+                        ],
+                        [
+                            13,
+                            "make",
+                            24,
+                            "65+ female",
+                            466,
+                            "28.6%",
+                            1632
+                        ],
+                        [
+                            14,
+                            "all",
+                            24,
+                            "65+ female",
+                            353,
+                            "23.0%",
+                            1532
+                        ],
+                        [
+                            15,
+                            "way",
+                            24,
+                            "65+ female",
+                            226,
+                            "20.3%",
+                            1114
+                        ],
+                        [
+                            16,
+                            "just",
+                            24,
+                            "65+ female",
+                            485,
+                            "31.5%",
+                            1538
+                        ],
+                        [
+                            17,
+                            "out",
+                            23,
+                            "18-24 female",
+                            215,
+                            "15.0%",
+                            1429
+                        ],
+                        [
+                            18,
+                            "every",
+                            23,
+                            "65+ female",
+                            342,
+                            "25.3%",
+                            1351
+                        ],
+                        [
+                            19,
+                            "one",
+                            23,
+                            "65+ female",
+                            356,
+                            "30.3%",
+                            1174
+                        ],
+                        [
+                            20,
+                            "than",
+                            22,
+                            "65+ female",
+                            459,
+                            "28.1%",
+                            1636
+                        ],
+                        [
+                            21,
+                            "natural",
+                            21,
+                            "65+ female",
+                            296,
+                            "23.1%",
+                            1279
+                        ],
+                        [
+                            22,
+                            "look",
+                            20,
+                            "65+ female",
+                            285,
+                            "22.9%",
+                            1242
+                        ],
+                        [
+                            23,
+                            "up",
+                            19,
+                            "65+ female",
+                            146,
+                            "15.0%",
+                            973
+                        ],
+                        [
+                            24,
+                            "when",
+                            18,
+                            "65+ female",
+                            311,
+                            "25.1%",
+                            1237
+                        ],
+                        [
+                            25,
+                            "what",
+                            18,
+                            "65+ female",
+                            333,
+                            "23.2%",
+                            1433
+                        ]
+                    ],
+                    "footnote": "*등장 광고 수 상위 50개 기준"
+                },
+                {
+                    "title": "많이 사용한 브랜드 변수 키워드 - 클릭 (26~50위)",
+                    "subtitle": "키워드가 가장 많이 노출된 타겟",
+                    "headers": [
+                        "랭킹",
+                        "키워드",
+                        "등장 광고 수",
+                        "최다 클릭 타겟",
+                        "타겟 클릭량",
+                        "클릭 비중",
+                        "총 클릭량"
+                    ],
+                    "rows": [
+                        [
+                            26,
+                            "When",
+                            18,
+                            "65+ female",
+                            277,
+                            "24.8%",
+                            1118
+                        ],
+                        [
+                            27,
+                            "curtains",
+                            18,
+                            "65+ female",
+                            347,
+                            "31.1%",
+                            1117
+                        ],
+                        [
+                            28,
+                            "What",
+                            17,
+                            "65+ female",
+                            202,
+                            "22.3%",
+                            907
+                        ],
+                        [
+                            29,
+                            "makes",
+                            17,
+                            "65+ female",
+                            262,
+                            "26.2%",
+                            999
+                        ],
+                        [
+                            30,
+                            "actually",
+                            16,
+                            "65+ female",
+                            287,
+                            "22.7%",
+                            1262
+                        ],
+                        [
+                            31,
+                            "too",
+                            16,
+                            "65+ female",
+                            220,
+                            "23.9%",
+                            920
+                        ],
+                        [
+                            32,
+                            "while",
+                            16,
+                            "18-24 female",
+                            146,
+                            "16.6%",
+                            877
+                        ],
+                        [
+                            33,
+                            "comfort",
+                            16,
+                            "65+ female",
+                            212,
+                            "26.5%",
+                            800
+                        ],
+                        [
+                            34,
+                            "change",
+                            15,
+                            "65+ female",
+                            247,
+                            "23.8%",
+                            1036
+                        ],
+                        [
+                            35,
+                            "should",
+                            15,
+                            "65+ female",
+                            317,
+                            "30.3%",
+                            1045
+                        ],
+                        [
+                            36,
+                            "most",
+                            15,
+                            "65+ female",
+                            194,
+                            "21.3%",
+                            911
+                        ],
+                        [
+                            37,
+                            "living",
+                            15,
+                            "65+ female",
+                            131,
+                            "16.7%",
+                            786
+                        ],
+                        [
+                            38,
+                            "Soft",
+                            15,
+                            "65+ female",
+                            159,
+                            "20.9%",
+                            761
+                        ],
+                        [
+                            39,
+                            "still",
+                            14,
+                            "65+ female",
+                            314,
+                            "22.2%",
+                            1412
+                        ],
+                        [
+                            40,
+                            "work",
+                            14,
+                            "65+ female",
+                            224,
+                            "21.4%",
+                            1048
+                        ],
+                        [
+                            41,
+                            "even",
+                            14,
+                            "65+ female",
+                            419,
+                            "30.8%",
+                            1361
+                        ],
+                        [
+                            42,
+                            "help",
+                            14,
+                            "65+ female",
+                            156,
+                            "20.2%",
+                            773
+                        ],
+                        [
+                            43,
+                            "house",
+                            14,
+                            "65+ female",
+                            400,
+                            "31.1%",
+                            1285
+                        ],
+                        [
+                            44,
+                            "don",
+                            14,
+                            "65+ female",
+                            234,
+                            "24.7%",
+                            948
+                        ],
+                        [
+                            45,
+                            "use",
+                            14,
+                            "65+ female",
+                            258,
+                            "28.1%",
+                            919
+                        ],
+                        [
+                            46,
+                            "difference",
+                            14,
+                            "65+ female",
+                            150,
+                            "19.6%",
+                            764
+                        ],
+                        [
+                            47,
+                            "air",
+                            13,
+                            "18-24 female",
+                            110,
+                            "15.2%",
+                            723
+                        ],
+                        [
+                            48,
+                            "get",
+                            13,
+                            "65+ female",
+                            144,
+                            "18.5%",
+                            780
+                        ],
+                        [
+                            49,
+                            "need",
+                            13,
+                            "65+ female",
+                            232,
+                            "23.8%",
+                            974
+                        ],
+                        [
+                            50,
+                            "bright",
+                            13,
+                            "65+ female",
+                            132,
+                            "21.4%",
+                            617
+                        ]
+                    ],
+                    "footnote": "*등장 광고 수 상위 50개 기준"
+                }
+            ]
+        }
+    ]
+}
