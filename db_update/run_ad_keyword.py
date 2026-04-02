@@ -53,6 +53,7 @@ _KIWI_EXCLUDE_TAGS = {
     "SF", "SP", "SS", "SE", "SO", "SW",
     "EC", "EF", "EP", "ETM", "ETN",
     "SL",  # 외국어(영어) → _extract_english 단계에서 lemmatization 포함 처리
+    "SN",  # 숫자
 }
 
 
@@ -181,7 +182,7 @@ class AdNounExtractor:
                 continue
             cleaned = re.sub(r"[^가-힣a-zA-Z0-9]", "", t.form)
             norm = cleaned.lower()
-            if len(cleaned) < 2 or not norm or norm in seen:
+            if len(cleaned) < 2 or not norm or norm in seen or norm.isdigit():
                 continue
             result.append(cleaned)
             seen.add(norm)
@@ -192,8 +193,9 @@ class AdNounExtractor:
             return []
 
         text = str(text)
-        # 단어 중간 줄바꿈 제거 ("ba\nnced" → "banced")
-        text = re.sub(r"([a-zA-Z가-힣])\n([a-zA-Z가-힣])", r"\1\2", text)
+        # 하이픈 줄바꿈만 병합 ("brand-\ning" → "branding"), 나머지는 공백으로
+        text = re.sub(r"([a-zA-Z가-힣])-\n([a-zA-Z가-힣])", r"\1\2", text)
+        text = re.sub(r"([a-zA-Z가-힣])\n([a-zA-Z가-힣])", r"\1 \2", text)
         all_words = []
         seen = set()
 
@@ -237,7 +239,7 @@ def classify_keywords(extracted_words, init_map, brand_set=None):
 
     for w in extracted_words:
         n = normalize_keyword(w)
-        if not n:
+        if not n or n.isdigit():
             continue
 
         is_brand_part = False
