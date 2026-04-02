@@ -145,7 +145,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         if not follower_series.empty:
             current_followers = int(follower_series.iloc[-1])
 
-    if has_follower_demographics_data(target_id):
+    if has_follower_demographics_data(target_id, start, end):
         print("팔로워 인구통계학 데이터 생성 중...")
 
         gender_clean_df = get_demographics_ratio(target_id, "gender", "exclude_unknown")
@@ -153,7 +153,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         gender_unknown_df = get_demographics_ratio(target_id, "gender", "unknown_vs_known")
         age_known_unknown_df = get_age_known_unknown_by_age(target_id)
 
-        follower_demo_latest_date = get_follower_demographics_latest_date(target_id)
+        follower_demo_latest_date = get_follower_demographics_latest_date(target_id, start, end)
 
         # 좌상: 성별 비율 (알 수 없음 제외) + 가운데 현재 팔로워 수
         if gender_clean_df is not None:

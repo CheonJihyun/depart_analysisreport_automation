@@ -224,8 +224,8 @@ def get_instagram_followers(fb_ad_account_id, date_start, date_end):
     JOIN ad_accounts aa ON fb.ad_account_id = aa.id
     JOIN campaigns c ON aa.id = c.ad_account_id
     WHERE aa.fb_ad_account_id = '{fb_ad_account_id}'
-        AND ig.updated_at >= '{date_start}'
-        AND ig.updated_at <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
+        AND (ig.updated_at AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'
+        AND (ig.updated_at AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
     ORDER BY ig.updated_at::date, ig.updated_at ASC
     """
     # 통합시 campaigns테이블명, ad_account_id컬럼명 주의 !!
@@ -1595,7 +1595,7 @@ def get_purchase_contents_pages_data(account_id, date_start, date_end):
 # 기준: fb_ad_account_id의 가장 최근 created_at 데이터
 # ----------------------------------
 
-def has_follower_demographics_data(account_id):
+def has_follower_demographics_data(account_id, date_start,date_end):
     engine = get_engine()
 
     query = f"""
@@ -1606,6 +1606,8 @@ def has_follower_demographics_data(account_id):
         JOIN ad_account aa
           ON ia.business_id = aa.business_id
         WHERE aa.account_id = {account_id}
+        AND (fdd.created_at AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'
+        AND (fdd.created_at AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
         LIMIT 1
     """
 
@@ -1613,7 +1615,7 @@ def has_follower_demographics_data(account_id):
     return not df.empty
 
 
-def get_follower_demographics_latest_date(account_id):
+def get_follower_demographics_latest_date(account_id, date_start, date_end):
     engine = get_engine()
 
     query = f"""
@@ -1624,6 +1626,8 @@ def get_follower_demographics_latest_date(account_id):
         JOIN ad_account aa
           ON ia.business_id = aa.business_id
         WHERE aa.account_id = {account_id}
+        AND (fdd.created_at AT TIME ZONE 'Asia/Seoul')::date >= '{date_start}'
+        AND (fdd.created_at AT TIME ZONE 'Asia/Seoul')::date <= (DATE_TRUNC('week', '{date_end}'::date) - INTERVAL '1 day')::date
     """
 
     df = pd.read_sql(query, engine)
