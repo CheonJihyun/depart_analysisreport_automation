@@ -397,7 +397,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     _, threshold = get_imp_threshold(target_id, start, end)
 
     # 3. 타겟 히트맵 데이터 (노출/CTR)
-    print("타겟 히트맵 데이터 (노출/CTR/구매전환) 생성 중...")
+    print("타겟 히트맵 데이터 (노출/CTR) 생성 중...")
     target_df = get_target_avg_imp_ctr_threshold(target_id, start, end, threshold)
     # 히트맵은 테이블 형태가 시각화하기 좋음
     add_ds("target_heatmap", "table", "타겟별 노출 및 CTR 성과", target_df)
