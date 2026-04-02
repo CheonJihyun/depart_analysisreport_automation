@@ -270,18 +270,18 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         return ""
 
     x = list(range(len(labels)))
-    fig, ax = plt.subplots(figsize=(8.0, 4.4) if not compact else (3.6, 2.0))
+    fig, ax = plt.subplots(figsize=(8.0, 4.4))
+    # fig, ax = plt.subplots(figsize=(8.0, 4.4) if not compact else (3.6, 2.0))
     has_bottom_month_band = False
     unit = str(dataset.get("unit") or "").strip()
     plotted_values: List[float] = []
 
-    # ----------추가----------
     show_legend = bool(dataset.get("show_legend"))
+
     label_map = {
         "spend": "광고비",
         "revenue": "매출발생",
     }
-    # ------------------------
 
     for idx, s in enumerate(series):
         raw_data = s.get("data") or []
@@ -356,15 +356,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
                 color=color,
                 clip_on=False,
             )
-    # ----추가▼----
-    if show_legend and not compact:
-        ax.legend(
-            loc="upper center",
-            bbox_to_anchor=(0.5, 1.14),
-            ncol=len(series),
-            frameon=False,
-            fontsize=9,
-        )
+
     #-----순서 변경▼-----
     if not plotted_values:
         return ""
@@ -456,11 +448,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         _style_axes(ax, color_map, grid_axis=None)
         ax.tick_params(axis="x", which="both", length=0, labelbottom=False)
 
-    # layout 먼저
-    if not compact and has_bottom_month_band:
-        fig.tight_layout(pad=0.6, rect=(0, 0.10, 1, 1))
-    else:
-        fig.tight_layout(pad=0.6)
+    fig.tight_layout(pad=0.6, rect=(0, 0, 1, 0.95))
 
     # 주별/월별 라벨
     if not compact:
@@ -473,7 +461,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
 
         if chart_label:
             fig.text(
-                0.5, 1.17,
+                0.5, 1.05,
                 chart_label,
                 transform=ax.transAxes,
                 ha="center",
@@ -487,13 +475,13 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
     if show_legend and not compact:
         ax.legend(
             loc="upper right",
-            bbox_to_anchor=(1.0, 1.10),
+            bbox_to_anchor=(1.0, 1.02),
             ncol=len(series),
             frameon=False,
             fontsize=9,
         )
 
-    plt.subplots_adjust(left=0.14, right=0.96)
+    plt.subplots_adjust(left=0.14, right=0.96, top=0.85)
 
     return _fig_to_svg(fig)
 
@@ -1278,7 +1266,7 @@ def render_follower_gender_doughnut_chart(chart_data, color_map):
         colors=colors,
         startangle=90,
         counterclock=False,
-        radius=1.1,
+        radius=0.98,
         wedgeprops=dict(width=0.48, edgecolor="white"),
         autopct=autopct_func,
         pctdistance=0.77

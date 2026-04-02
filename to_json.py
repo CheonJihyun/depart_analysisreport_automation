@@ -274,7 +274,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     # --- [추가] 광고비 & 매출발생 페이지 ---
 
     if has_revenue_data(target_id, start, end):
-        print("광고비/매출발생 데이터 있음 - 생성 중...")
+        print("광고비/매출발생 데이터 생성 중...")
         spend_revenue_weekly_df = get_spend_and_revenue_weekly(target_id, start, end)
         spend_revenue_monthly_df = get_spend_and_revenue_monthly(target_id, start, end)
 
@@ -317,7 +317,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     purchase_contents_data = get_purchase_contents_pages_data(target_id, start, end)
 
     if purchase_contents_data and purchase_contents_data.get("total_count", 0) > 0:
-        print("구매 발생 콘텐츠 있음...")
+        print("구매 발생 콘텐츠 생성 중...")
 
         enriched_pages = []
         for page_items in purchase_contents_data["pages"]:
