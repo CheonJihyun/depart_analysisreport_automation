@@ -1,15 +1,15 @@
 {
     "meta": {
-        "account_name": "JDX",
-        "period": "2025-10-27 ~ 2026-03-23",
-        "period_ads": "2025-11-12 ~ 2026-03-23",
-        "period_contents": "2025-10-31 ~ 2026-03-20",
-        "generated_at": "2026-04-02 18:33:18"
+        "account_name": "라트로프",
+        "period": "2026-01-12 ~ 2026-03-23",
+        "period_ads": "2026-01-18 ~ 2026-03-23",
+        "period_contents": "2026-01-12 ~ 2026-03-21",
+        "generated_at": "2026-04-03 14:07:54"
     },
     "summary": {
-        "total_ads": 100,
-        "total_contents": 90,
-        "total_keywords": 1468
+        "total_ads": 52,
+        "total_contents": 52,
+        "total_keywords": 1007
     },
     "datasets": {
         "insta_followers": {
@@ -17,19 +17,6 @@
             "title": "팔로워 추이",
             "unit": "명",
             "labels": [
-                "2025-10-31",
-                "2025-11-03",
-                "2025-11-10",
-                "2025-11-17",
-                "2025-11-25",
-                "2025-12-01",
-                "2025-12-08",
-                "2025-12-15",
-                "2025-12-22",
-                "2026-01-02",
-                "2026-01-05",
-                "2026-01-12",
-                "2026-01-19",
                 "2026-01-26",
                 "2026-02-02",
                 "2026-02-09",
@@ -44,28 +31,15 @@
                 {
                     "name": "follower_count",
                     "data": [
-                        2431,
-                        2434,
-                        2435,
-                        2441,
-                        2448,
-                        2451,
-                        2466,
-                        2490,
-                        2516,
-                        2518,
-                        2516,
-                        2518,
-                        2519,
-                        2522,
-                        2524,
-                        2527,
-                        2522,
-                        2524,
-                        2530,
-                        2535,
-                        2538,
-                        2538
+                        69,
+                        167,
+                        230,
+                        268,
+                        267,
+                        352,
+                        392,
+                        424,
+                        479
                     ]
                 }
             ]
@@ -75,19 +49,6 @@
             "title": "프로필 방문 수(주별)",
             "unit": "회",
             "labels": [
-                "2025-10-31",
-                "2025-11-03",
-                "2025-11-10",
-                "2025-11-17",
-                "2025-11-25",
-                "2025-12-01",
-                "2025-12-08",
-                "2025-12-15",
-                "2025-12-22",
-                "2026-01-02",
-                "2026-01-05",
-                "2026-01-12",
-                "2026-01-19",
                 "2026-01-26",
                 "2026-02-02",
                 "2026-02-09",
@@ -102,28 +63,15 @@
                 {
                     "name": "profile_views",
                     "data": [
-                        111,
-                        125,
-                        125,
-                        121,
-                        114,
-                        75,
-                        382,
-                        143,
-                        179,
-                        350,
-                        542,
-                        471,
-                        402,
-                        366,
-                        185,
-                        252,
-                        193,
-                        49,
-                        468,
-                        414,
-                        97,
-                        58
+                        1699,
+                        1674,
+                        2565,
+                        2005,
+                        39,
+                        1939,
+                        1182,
+                        1056,
+                        1169
                     ]
                 }
             ]
@@ -133,10 +81,7 @@
             "title": "인스타그램 프로필 방문수 (월별)",
             "unit": "회",
             "labels": [
-                "2025-10-31",
-                "2025-11-03",
-                "2025-12-01",
-                "2026-01-02",
+                "2026-01-26",
                 "2026-02-02",
                 "2026-03-03"
             ],
@@ -144,12 +89,9 @@
                 {
                     "name": "profile_views",
                     "data": [
-                        111,
-                        485,
-                        779,
-                        2131,
-                        679,
-                        1037
+                        1699,
+                        6283,
+                        5346
                     ]
                 }
             ]
@@ -159,18 +101,6 @@
             "title": "오가닉 조회수 추이 (주별)",
             "unit": "회",
             "labels": [
-                "2025-10-27",
-                "2025-11-03",
-                "2025-11-10",
-                "2025-11-17",
-                "2025-11-24",
-                "2025-12-01",
-                "2025-12-08",
-                "2025-12-15",
-                "2025-12-22",
-                "2025-12-29",
-                "2026-01-05",
-                "2026-01-12",
                 "2026-01-19",
                 "2026-01-26",
                 "2026-02-02",
@@ -185,27 +115,15 @@
                 {
                     "name": "organic_impressions",
                     "data": [
-                        5015,
-                        10096,
-                        8082,
-                        6445,
-                        3746,
-                        6932,
-                        3240,
-                        3553,
-                        2534,
-                        2948,
-                        2108,
-                        1367,
-                        1688,
-                        1030,
-                        1066,
-                        2338,
-                        1443,
-                        1944,
-                        1250,
-                        1152,
-                        1237
+                        3856,
+                        3747,
+                        3907,
+                        2914,
+                        2138,
+                        6106,
+                        3993,
+                        3104,
+                        2532
                     ]
                 }
             ]
@@ -215,10 +133,7 @@
             "title": "오가닉 조회수 추이 (월별)",
             "unit": "회",
             "labels": [
-                "2025-10-27",
-                "2025-11-03",
-                "2025-12-01",
-                "2026-01-05",
+                "2026-01-19",
                 "2026-02-02",
                 "2026-03-02"
             ],
@@ -226,12 +141,9 @@
                 {
                     "name": "organic_impressions",
                     "data": [
-                        5015,
-                        28369,
-                        19207,
-                        6193,
-                        6791,
-                        3639
+                        7603,
+                        15065,
+                        9629
                     ]
                 }
             ]
@@ -247,20 +159,19 @@
                 {
                     "name": "비율",
                     "data": [
-                        41.9,
-                        58.1
+                        92.9,
+                        7.1
                     ]
                 }
             ],
             "unit": "%",
-            "center_text": "2,538",
+            "center_text": "479",
             "center_subtext": "팔로워"
         },
         "age_gender_clean": {
             "chart_type": "stacked_barh",
             "title": "연령대별 성별 분포 (알 수 없음 제외)",
             "labels": [
-                "13-17",
                 "18-24",
                 "25-34",
                 "35-44",
@@ -272,25 +183,23 @@
                 {
                     "name": "male",
                     "data": [
-                        0.0,
-                        43.0,
-                        162.0,
-                        153.0,
-                        88.0,
-                        18.0,
-                        13.0
+                        68.0,
+                        132.0,
+                        85.0,
+                        20.0,
+                        8.0,
+                        2.0
                     ]
                 },
                 {
                     "name": "female",
                     "data": [
-                        1.0,
-                        31.0,
-                        151.0,
-                        287.0,
-                        125.0,
-                        46.0,
-                        21.0
+                        2.0,
+                        8.0,
+                        4.0,
+                        8.0,
+                        2.0,
+                        0.0
                     ]
                 }
             ],
@@ -307,20 +216,19 @@
                 {
                     "name": "비율",
                     "data": [
-                        80.0,
-                        20.0
+                        62.4,
+                        37.6
                     ]
                 }
             ],
             "unit": "%",
-            "center_text": "20.0%",
+            "center_text": "37.6%",
             "center_subtext": "알 수 없음 비율"
         },
         "age_known_unknown": {
             "chart_type": "stacked_barh",
             "title": "연령대별 성별 데이터 식별 여부 분포",
             "labels": [
-                "13-17",
                 "18-24",
                 "25-34",
                 "35-44",
@@ -332,24 +240,22 @@
                 {
                     "name": "known",
                     "data": [
-                        1.0,
-                        74.0,
-                        313.0,
-                        440.0,
-                        213.0,
-                        64.0,
-                        34.0
+                        70.0,
+                        140.0,
+                        89.0,
+                        28.0,
+                        10.0,
+                        2.0
                     ]
                 },
                 {
                     "name": "unknown",
                     "data": [
-                        1.0,
-                        30.0,
-                        70.0,
-                        106.0,
-                        49.0,
-                        25.0,
+                        42.0,
+                        77.0,
+                        54.0,
+                        19.0,
+                        8.0,
                         4.0
                     ]
                 }
@@ -361,15 +267,6 @@
             "title": "주별 CTR 추이",
             "unit": "%",
             "labels": [
-                "2025-11-10",
-                "2025-11-17",
-                "2025-12-01",
-                "2025-12-08",
-                "2025-12-15",
-                "2025-12-22",
-                "2025-12-29",
-                "2026-01-05",
-                "2026-01-12",
                 "2026-01-19",
                 "2026-01-26",
                 "2026-02-02",
@@ -385,25 +282,16 @@
                 {
                     "name": "ctr",
                     "data": [
-                        11.61,
-                        14.52,
-                        2.21,
-                        2.12,
-                        2.4,
-                        3.01,
-                        2.86,
-                        2.91,
-                        2.83,
-                        3.44,
-                        3.15,
-                        3.02,
-                        4.7,
-                        5.65,
-                        4.12,
-                        3.34,
-                        1.89,
-                        3.6,
-                        4.55
+                        4.76,
+                        5.98,
+                        5.02,
+                        5.12,
+                        5.73,
+                        4.58,
+                        4.61,
+                        4.6,
+                        4.57,
+                        4.14
                     ]
                 }
             ]
@@ -413,8 +301,6 @@
             "title": "월별 CTR 추이",
             "unit": "%",
             "labels": [
-                "2025-11-01",
-                "2025-12-01",
                 "2026-01-01",
                 "2026-02-01",
                 "2026-03-01"
@@ -423,11 +309,151 @@
                 {
                     "name": "ctr",
                     "data": [
-                        12.96,
-                        2.53,
-                        2.99,
-                        3.99,
-                        3.1
+                        5.25,
+                        4.93,
+                        4.63
+                    ]
+                }
+            ]
+        },
+        "purchase_roas_weekly": {
+            "kind": "line",
+            "title": "평균 ROAS (주별)",
+            "unit": "%",
+            "labels": [
+                "2026-03-15",
+                "2026-03-22",
+                "2026-03-29"
+            ],
+            "series": [
+                {
+                    "name": "avg_roas",
+                    "data": [
+                        75.0,
+                        80.0,
+                        63.0
+                    ]
+                }
+            ]
+        },
+        "purchase_roas_monthly": {
+            "kind": "line",
+            "title": "평균 ROAS (월별)",
+            "unit": "%",
+            "labels": [
+                "2026-03-01"
+            ],
+            "series": [
+                {
+                    "name": "avg_roas",
+                    "data": [
+                        72.0
+                    ]
+                }
+            ]
+        },
+        "purchase_count_weekly": {
+            "kind": "line",
+            "title": "구매전환 (주별)",
+            "unit": "건",
+            "labels": [
+                "2026-01-25",
+                "2026-02-01",
+                "2026-02-08",
+                "2026-02-15",
+                "2026-02-22",
+                "2026-03-01",
+                "2026-03-08",
+                "2026-03-15",
+                "2026-03-22",
+                "2026-03-29"
+            ],
+            "series": [
+                {
+                    "name": "purchases",
+                    "data": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        5.0,
+                        1.0,
+                        3.0
+                    ]
+                }
+            ]
+        },
+        "purchase_count_monthly": {
+            "kind": "line",
+            "title": "구매전환 (월별)",
+            "unit": "건",
+            "labels": [
+                "2026-01-01",
+                "2026-02-01",
+                "2026-03-01"
+            ],
+            "series": [
+                {
+                    "name": "purchases",
+                    "data": [
+                        0.0,
+                        0.0,
+                        9.0
+                    ]
+                }
+            ]
+        },
+        "spend_revenue_weekly": {
+            "kind": "line",
+            "title": "광고비 & 매출발생 (주별)",
+            "unit": "원",
+            "show_legend": true,
+            "labels": [
+                "2026-03-09",
+                "2026-03-16",
+                "2026-03-23"
+            ],
+            "series": [
+                {
+                    "name": "spend",
+                    "data": [
+                        4929.0,
+                        613.0,
+                        613.0
+                    ]
+                },
+                {
+                    "name": "revenue",
+                    "data": [
+                        358000.0,
+                        49000.0,
+                        49000.0
+                    ]
+                }
+            ]
+        },
+        "spend_revenue_monthly": {
+            "kind": "line",
+            "title": "광고비 & 매출발생 (월별)",
+            "unit": "원",
+            "show_legend": true,
+            "labels": [
+                "2026-03-01"
+            ],
+            "series": [
+                {
+                    "name": "spend",
+                    "data": [
+                        6155.0
+                    ]
+                },
+                {
+                    "name": "revenue",
+                    "data": [
+                        456000.0
                     ]
                 }
             ]
@@ -440,86 +466,86 @@
                 {
                     "age": "18-24",
                     "gender": "female",
-                    "impressions": 24080,
-                    "clicks": 572,
-                    "ctr": 2.38
-                },
-                {
-                    "age": "35-44",
-                    "gender": "female",
-                    "impressions": 13855,
-                    "clicks": 397,
-                    "ctr": 2.87
-                },
-                {
-                    "age": "65+",
-                    "gender": "male",
-                    "impressions": 12734,
-                    "clicks": 475,
-                    "ctr": 3.73
-                },
-                {
-                    "age": "55-64",
-                    "gender": "male",
-                    "impressions": 11081,
-                    "clicks": 326,
-                    "ctr": 2.94
-                },
-                {
-                    "age": "45-54",
-                    "gender": "female",
-                    "impressions": 11886,
-                    "clicks": 456,
-                    "ctr": 3.84
-                },
-                {
-                    "age": "45-54",
-                    "gender": "male",
-                    "impressions": 9198,
-                    "clicks": 254,
-                    "ctr": 2.76
-                },
-                {
-                    "age": "25-34",
-                    "gender": "male",
-                    "impressions": 18520,
-                    "clicks": 412,
-                    "ctr": 2.22
-                },
-                {
-                    "age": "35-44",
-                    "gender": "male",
-                    "impressions": 11992,
-                    "clicks": 260,
-                    "ctr": 2.17
+                    "impressions": 18087,
+                    "clicks": 849,
+                    "ctr": 4.69
                 },
                 {
                     "age": "18-24",
                     "gender": "male",
-                    "impressions": 16644,
-                    "clicks": 283,
-                    "ctr": 1.7
-                },
-                {
-                    "age": "65+",
-                    "gender": "female",
-                    "impressions": 28466,
-                    "clicks": 1472,
-                    "ctr": 5.17
-                },
-                {
-                    "age": "55-64",
-                    "gender": "female",
-                    "impressions": 19339,
-                    "clicks": 890,
-                    "ctr": 4.6
+                    "impressions": 89213,
+                    "clicks": 3479,
+                    "ctr": 3.9
                 },
                 {
                     "age": "25-34",
                     "gender": "female",
-                    "impressions": 18682,
-                    "clicks": 511,
-                    "ctr": 2.74
+                    "impressions": 15473,
+                    "clicks": 902,
+                    "ctr": 5.83
+                },
+                {
+                    "age": "25-34",
+                    "gender": "male",
+                    "impressions": 84186,
+                    "clicks": 4076,
+                    "ctr": 4.84
+                },
+                {
+                    "age": "35-44",
+                    "gender": "female",
+                    "impressions": 5689,
+                    "clicks": 363,
+                    "ctr": 6.38
+                },
+                {
+                    "age": "35-44",
+                    "gender": "male",
+                    "impressions": 26528,
+                    "clicks": 1606,
+                    "ctr": 6.05
+                },
+                {
+                    "age": "45-54",
+                    "gender": "female",
+                    "impressions": 3274,
+                    "clicks": 260,
+                    "ctr": 7.94
+                },
+                {
+                    "age": "45-54",
+                    "gender": "male",
+                    "impressions": 9148,
+                    "clicks": 623,
+                    "ctr": 6.81
+                },
+                {
+                    "age": "55-64",
+                    "gender": "female",
+                    "impressions": 1597,
+                    "clicks": 140,
+                    "ctr": 8.77
+                },
+                {
+                    "age": "55-64",
+                    "gender": "male",
+                    "impressions": 3842,
+                    "clicks": 253,
+                    "ctr": 6.59
+                },
+                {
+                    "age": "65+",
+                    "gender": "female",
+                    "impressions": 1133,
+                    "clicks": 81,
+                    "ctr": 7.15
+                },
+                {
+                    "age": "65+",
+                    "gender": "male",
+                    "impressions": 3143,
+                    "clicks": 176,
+                    "ctr": 5.6
                 }
             ]
         },
@@ -536,7 +562,7 @@
                 {
                     "age": "18-24",
                     "gender": "male",
-                    "purchases": 0.0
+                    "purchases": 3.0
                 },
                 {
                     "age": "18-24",
@@ -551,7 +577,7 @@
                 {
                     "age": "25-34",
                     "gender": "male",
-                    "purchases": 0.0
+                    "purchases": 1.0
                 },
                 {
                     "age": "25-34",
@@ -566,7 +592,7 @@
                 {
                     "age": "35-44",
                     "gender": "male",
-                    "purchases": 0.0
+                    "purchases": 3.0
                 },
                 {
                     "age": "35-44",
@@ -620,7 +646,17 @@
                 },
                 {
                     "age": "Unknown",
+                    "gender": "female",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "Unknown",
                     "gender": "male",
+                    "purchases": 0.0
+                },
+                {
+                    "age": "Unknown",
+                    "gender": "unknown",
                     "purchases": 0.0
                 }
             ]
@@ -630,31 +666,31 @@
             "title": "전체 TOP 10 (명사)",
             "unit": "%",
             "labels": [
-                "approach",
-                "hang",
-                "fit",
-                "reason",
-                "blend",
-                "mid",
-                "shutter",
-                "glow",
-                "drape",
-                "sit"
+                "착용감",
+                "방식",
+                "실루엣",
+                "고려",
+                "평균",
+                "움직임",
+                "과정",
+                "처음",
+                "정답",
+                "두껍"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        7.55,
-                        7.55,
-                        6.08,
-                        5.78,
-                        5.39,
-                        5.22,
-                        5.1,
-                        5.01,
-                        4.99,
-                        4.91
+                        7.03,
+                        6.87,
+                        6.79,
+                        6.4,
+                        6.28,
+                        6.12,
+                        6.12,
+                        6.02,
+                        5.99,
+                        5.97
                     ]
                 }
             ]
@@ -664,31 +700,31 @@
             "title": "전체 TOP 10 (형용사)",
             "unit": "%",
             "labels": [
-                "white",
-                "possible",
-                "whole",
-                "classic",
-                "high",
-                "neutral",
-                "modern",
-                "unfinished",
-                "say",
-                "heavy"
+                "바뀌",
+                "버티",
+                "달라지",
+                "망가지",
+                "끝나",
+                "쌓이",
+                "이러",
+                "위하",
+                "늘리",
+                "강하"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        6.65,
-                        5.82,
-                        5.68,
-                        5.24,
-                        4.98,
-                        4.44,
-                        4.44,
-                        4.31,
-                        4.26,
-                        4.2
+                        6.38,
+                        6.26,
+                        6.08,
+                        5.93,
+                        5.87,
+                        5.75,
+                        5.65,
+                        5.63,
+                        5.61,
+                        5.43
                     ]
                 }
             ]
@@ -698,31 +734,31 @@
             "title": "전체 BOTTOM 10 (명사)",
             "unit": "%",
             "labels": [
-                "sale",
-                "sheer",
-                "couch",
-                "select",
-                "connect",
-                "gentle",
-                "tune",
-                "feature",
-                "stay",
-                "peaceful"
+                "인상",
+                "대표",
+                "상의",
+                "정도",
+                "미국",
+                "브랜드",
+                "결국",
+                "전체",
+                "겨울",
+                "수정"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.47,
-                        1.66,
-                        1.68,
-                        1.81,
-                        1.91,
-                        2.0,
-                        2.0,
-                        2.1,
-                        2.14,
-                        2.14
+                        3.64,
+                        3.75,
+                        3.77,
+                        3.89,
+                        3.96,
+                        4.01,
+                        4.07,
+                        4.13,
+                        4.13,
+                        4.14
                     ]
                 }
             ]
@@ -732,31 +768,31 @@
             "title": "전체 BOTTOM 10 (형용사)",
             "unit": "%",
             "labels": [
-                "limited",
-                "other",
-                "full",
-                "happy",
-                "next",
-                "evening",
-                "durable",
-                "romantic",
-                "free",
-                "wrong"
+                "남기",
+                "돌아가",
+                "뿌리",
+                "피하",
+                "보내",
+                "만나",
+                "어울리",
+                "예쁘",
+                "올리",
+                "다리"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.46,
-                        1.63,
-                        1.69,
-                        1.91,
-                        1.92,
-                        2.19,
-                        2.35,
-                        2.43,
-                        2.47,
-                        2.49
+                        3.08,
+                        3.43,
+                        3.44,
+                        3.6,
+                        3.6,
+                        3.84,
+                        3.95,
+                        4.08,
+                        4.22,
+                        4.23
                     ]
                 }
             ]
@@ -767,211 +803,175 @@
             "unit": "",
             "rows": [
                 {
-                    "ess_1": "privacy",
-                    "ess_2": "sun",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 5.13,
-                    "var_keyword": "block",
-                    "with_var_ctr": 5.13,
-                    "var_imps": 8143.0
+                    "combo_overall_ctr": 5.42,
+                    "var_keyword": "기준",
+                    "with_var_ctr": 5.87,
+                    "var_imps": 16241.0
                 },
                 {
-                    "ess_1": "privacy",
-                    "ess_2": "sun",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 5.13,
-                    "var_keyword": "need",
-                    "with_var_ctr": 5.13,
-                    "var_imps": 8143.0
+                    "combo_overall_ctr": 5.42,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 5.87,
+                    "var_imps": 16241.0
                 },
                 {
-                    "ess_1": "privacy",
-                    "ess_2": "sun",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 5.13,
-                    "var_keyword": "room",
-                    "with_var_ctr": 5.13,
-                    "var_imps": 8143.0
+                    "combo_overall_ctr": 5.42,
+                    "var_keyword": "하나",
+                    "with_var_ctr": 5.52,
+                    "var_imps": 16860.0
                 },
                 {
-                    "ess_1": "shutter",
-                    "ess_2": "window",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.42,
+                    "var_keyword": "단순",
+                    "with_var_ctr": 5.42,
+                    "var_imps": 19950.0
+                },
+                {
+                    "ess_1": "우리",
+                    "ess_2": "함께",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 5.42,
+                    "var_keyword": "문제",
+                    "with_var_ctr": 5.24,
+                    "var_imps": 10187.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.06,
-                    "var_keyword": "curtain",
-                    "with_var_ctr": 5.73,
-                    "var_imps": 7638.0
+                    "combo_overall_ctr": 4.66,
+                    "var_keyword": "기준",
+                    "with_var_ctr": 5.27,
+                    "var_imps": 24177.0
                 },
                 {
-                    "ess_1": "shutter",
-                    "ess_2": "window",
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.06,
-                    "var_keyword": "wood",
-                    "with_var_ctr": 5.16,
-                    "var_imps": 7668.0
+                    "combo_overall_ctr": 4.66,
+                    "var_keyword": "자연",
+                    "with_var_ctr": 4.65,
+                    "var_imps": 20525.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.93,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 4.93,
-                    "var_imps": 3288.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.66,
+                    "var_keyword": "지금",
+                    "with_var_ctr": 4.65,
+                    "var_imps": 20525.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 4.93,
-                    "var_keyword": "room",
-                    "with_var_ctr": 4.93,
-                    "var_imps": 3288.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.66,
+                    "var_keyword": "개성",
+                    "with_var_ctr": 4.38,
+                    "var_imps": 20672.0
                 },
                 {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.55,
-                    "var_keyword": "eye",
-                    "with_var_ctr": 5.36,
-                    "var_imps": 10502.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.66,
+                    "var_keyword": "당시",
+                    "with_var_ctr": 4.38,
+                    "var_imps": 20672.0
                 },
                 {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.55,
-                    "var_keyword": "day",
-                    "with_var_ctr": 4.92,
-                    "var_imps": 12317.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.66,
+                    "var_keyword": "선택",
+                    "with_var_ctr": 4.38,
+                    "var_imps": 20672.0
                 },
                 {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.55,
-                    "var_keyword": "work",
-                    "with_var_ctr": 4.92,
-                    "var_imps": 12317.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.66,
+                    "var_keyword": "정리",
+                    "with_var_ctr": 4.38,
+                    "var_imps": 20672.0
                 },
                 {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.55,
-                    "var_keyword": "adjust",
-                    "with_var_ctr": 4.69,
-                    "var_imps": 9261.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.66,
+                    "var_keyword": "하나",
+                    "with_var_ctr": 4.38,
+                    "var_imps": 20672.0
                 },
                 {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.55,
-                    "var_keyword": "room",
-                    "with_var_ctr": 3.96,
-                    "var_imps": 6840.0
-                },
-                {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.55,
-                    "var_keyword": "look",
-                    "with_var_ctr": 2.54,
-                    "var_imps": 5599.0
-                },
-                {
-                    "ess_1": "design",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.47,
-                    "var_keyword": "room",
-                    "with_var_ctr": 4.47,
-                    "var_imps": 4387.0
+                    "combo_overall_ctr": 4.43,
+                    "var_keyword": "기준",
+                    "with_var_ctr": 4.76,
+                    "var_imps": 10816.0
                 },
                 {
-                    "ess_1": "design",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 4.47,
-                    "var_keyword": "space",
-                    "with_var_ctr": 4.47,
-                    "var_imps": 4387.0
+                    "combo_overall_ctr": 4.43,
+                    "var_keyword": "바지",
+                    "with_var_ctr": 4.76,
+                    "var_imps": 10816.0
                 },
                 {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 4.46,
-                    "var_keyword": "space",
-                    "with_var_ctr": 6.06,
-                    "var_imps": 4273.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.43,
+                    "var_keyword": "선택",
+                    "with_var_ctr": 4.76,
+                    "var_imps": 10816.0
                 },
                 {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 4.46,
-                    "var_keyword": "block",
-                    "with_var_ctr": 4.95,
-                    "var_imps": 5091.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.43,
+                    "var_keyword": "문제",
+                    "with_var_ctr": 4.56,
+                    "var_imps": 10642.0
                 },
                 {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 4.46,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 4.95,
-                    "var_imps": 6036.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.43,
+                    "var_keyword": "구조",
+                    "with_var_ctr": 4.12,
+                    "var_imps": 10682.0
                 },
                 {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 4.46,
-                    "var_keyword": "tone",
-                    "with_var_ctr": 4.92,
-                    "var_imps": 3575.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 4.46,
-                    "var_keyword": "room",
-                    "with_var_ctr": 4.46,
-                    "var_imps": 9315.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 4.46,
-                    "var_keyword": "filter",
-                    "with_var_ctr": 4.26,
-                    "var_imps": 6854.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 4.46,
-                    "var_keyword": "need",
-                    "with_var_ctr": 4.19,
-                    "var_imps": 9016.0
-                },
-                {
-                    "ess_1": "privacy",
-                    "ess_2": "window",
-                    "combo_doc_freq": 8,
-                    "combo_overall_ctr": 4.46,
-                    "var_keyword": "right",
-                    "with_var_ctr": 3.72,
-                    "var_imps": 7503.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.43,
+                    "var_keyword": "기장",
+                    "with_var_ctr": 4.12,
+                    "var_imps": 10682.0
                 }
             ]
         },
@@ -980,31 +980,31 @@
             "title": "메인 타겟 TOP 10 (명사)",
             "unit": "%",
             "labels": [
-                "fit",
-                "reason",
-                "mid",
-                "define",
-                "approach",
-                "hang",
-                "wood",
-                "shutter",
-                "sofa",
-                "temperature"
+                "착용감",
+                "고려",
+                "실루엣",
+                "평균",
+                "방식",
+                "움직임",
+                "순간",
+                "세탁",
+                "과정",
+                "설계"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        6.23,
-                        5.66,
-                        5.4,
-                        5.32,
-                        5.3,
-                        5.3,
-                        5.13,
-                        5.06,
-                        4.99,
-                        4.79
+                        7.57,
+                        7.33,
+                        7.28,
+                        7.1,
+                        7.08,
+                        6.73,
+                        6.49,
+                        6.41,
+                        6.4,
+                        6.39
                     ]
                 }
             ]
@@ -1014,31 +1014,31 @@
             "title": "메인 타겟 TOP 10 (형용사)",
             "unit": "%",
             "labels": [
-                "possible",
-                "classic",
-                "high",
-                "whole",
-                "white",
-                "own",
-                "real",
-                "lighting",
-                "say",
-                "bad"
+                "바뀌",
+                "쌓이",
+                "달라지",
+                "망가지",
+                "버티",
+                "따르",
+                "위하",
+                "끝나",
+                "괜찮",
+                "이러"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        6.64,
-                        5.52,
-                        5.26,
-                        4.77,
-                        4.74,
-                        4.53,
-                        4.18,
-                        4.03,
-                        3.97,
-                        3.95
+                        6.99,
+                        6.52,
+                        6.46,
+                        6.41,
+                        6.08,
+                        6.08,
+                        5.93,
+                        5.93,
+                        5.92,
+                        5.85
                     ]
                 }
             ]
@@ -1048,31 +1048,31 @@
             "title": "메인 타겟 BOTTOM 10 (명사)",
             "unit": "%",
             "labels": [
-                "couch",
-                "sale",
-                "gentle",
-                "tell",
-                "luxury",
-                "safer",
-                "select",
-                "repaint",
-                "sheer",
-                "installation"
+                "겨울",
+                "미국",
+                "상의",
+                "인상",
+                "대표",
+                "이번",
+                "전체",
+                "자리",
+                "유독",
+                "옷걸이"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        0.97,
-                        1.41,
-                        1.52,
-                        1.52,
-                        1.53,
-                        1.55,
-                        1.57,
-                        1.58,
-                        1.59,
-                        1.67
+                        3.64,
+                        3.7,
+                        3.87,
+                        3.9,
+                        3.93,
+                        3.99,
+                        4.03,
+                        4.22,
+                        4.24,
+                        4.28
                     ]
                 }
             ]
@@ -1082,31 +1082,31 @@
             "title": "메인 타겟 BOTTOM 10 (형용사)",
             "unit": "%",
             "labels": [
-                "full",
-                "limited",
-                "next",
-                "other",
-                "evening",
-                "wrong",
-                "free",
-                "romantic",
-                "go",
-                "easy"
+                "남기",
+                "피하",
+                "뿌리",
+                "돌아가",
+                "어울리",
+                "보내",
+                "만나",
+                "올리",
+                "돌아오",
+                "예쁘"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.49,
-                        1.5,
-                        1.53,
-                        1.56,
-                        1.71,
-                        1.84,
-                        1.87,
-                        1.97,
-                        2.19,
-                        2.21
+                        3.29,
+                        3.52,
+                        3.77,
+                        3.89,
+                        4.15,
+                        4.21,
+                        4.22,
+                        4.31,
+                        4.47,
+                        4.53
                     ]
                 }
             ]
@@ -1117,256 +1117,175 @@
             "unit": "",
             "rows": [
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 6.51,
-                    "var_keyword": "space",
-                    "with_var_ctr": 7.82,
-                    "var_imps": 294.0
+                    "combo_overall_ctr": 5.95,
+                    "var_keyword": "기준",
+                    "with_var_ctr": 6.42,
+                    "var_imps": 9489.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 6.51,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 7.17,
-                    "var_imps": 446.0
+                    "combo_overall_ctr": 5.95,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 6.42,
+                    "var_imps": 9489.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 6.51,
-                    "var_keyword": "look",
-                    "with_var_ctr": 5.33,
-                    "var_imps": 582.0
+                    "combo_overall_ctr": 5.95,
+                    "var_keyword": "하나",
+                    "with_var_ctr": 6.08,
+                    "var_imps": 9675.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 6.51,
-                    "var_keyword": "room",
-                    "with_var_ctr": 5.33,
-                    "var_imps": 582.0
+                    "combo_overall_ctr": 5.95,
+                    "var_keyword": "단순",
+                    "with_var_ctr": 5.95,
+                    "var_imps": 11715.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 6.51,
-                    "var_keyword": "use",
-                    "with_var_ctr": 5.33,
-                    "var_imps": 582.0
+                    "combo_overall_ctr": 5.95,
+                    "var_keyword": "문제",
+                    "with_var_ctr": 5.56,
+                    "var_imps": 6401.0
                 },
                 {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.96,
-                    "var_keyword": "choose",
-                    "with_var_ctr": 5.96,
-                    "var_imps": 302.0
-                },
-                {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.96,
-                    "var_keyword": "room",
-                    "with_var_ctr": 5.96,
-                    "var_imps": 302.0
-                },
-                {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 5.96,
-                    "var_keyword": "space",
-                    "with_var_ctr": 5.96,
-                    "var_imps": 302.0
-                },
-                {
-                    "ess_1": "shutter",
-                    "ess_2": "window",
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
                     "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.03,
-                    "var_keyword": "wood",
+                    "combo_overall_ctr": 5.19,
+                    "var_keyword": "기준",
+                    "with_var_ctr": 5.99,
+                    "var_imps": 13112.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.19,
+                    "var_keyword": "자연",
+                    "with_var_ctr": 5.19,
+                    "var_imps": 10902.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.19,
+                    "var_keyword": "지금",
+                    "with_var_ctr": 5.19,
+                    "var_imps": 10902.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.19,
+                    "var_keyword": "개성",
+                    "with_var_ctr": 5.0,
+                    "var_imps": 10048.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.19,
+                    "var_keyword": "당시",
+                    "with_var_ctr": 5.0,
+                    "var_imps": 10048.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.19,
+                    "var_keyword": "선택",
+                    "with_var_ctr": 5.0,
+                    "var_imps": 10048.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.19,
+                    "var_keyword": "정리",
+                    "with_var_ctr": 5.0,
+                    "var_imps": 10048.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 5.19,
+                    "var_keyword": "하나",
+                    "with_var_ctr": 5.0,
+                    "var_imps": 10048.0
+                },
+                {
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.98,
+                    "var_keyword": "기준",
                     "with_var_ctr": 5.31,
-                    "var_imps": 1638.0
+                    "var_imps": 6936.0
                 },
                 {
-                    "ess_1": "shutter",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 5.03,
-                    "var_keyword": "curtain",
-                    "with_var_ctr": 5.2,
-                    "var_imps": 1732.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.98,
+                    "var_keyword": "바지",
+                    "with_var_ctr": 5.31,
+                    "var_imps": 6936.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 4.89,
-                    "var_keyword": "day",
-                    "with_var_ctr": 5.35,
-                    "var_imps": 2279.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.98,
+                    "var_keyword": "선택",
+                    "with_var_ctr": 5.31,
+                    "var_imps": 6936.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 4.89,
-                    "var_keyword": "work",
-                    "with_var_ctr": 5.35,
-                    "var_imps": 2279.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.98,
+                    "var_keyword": "문제",
+                    "with_var_ctr": 5.12,
+                    "var_imps": 6625.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 4.89,
-                    "var_keyword": "adjust",
-                    "with_var_ctr": 4.87,
-                    "var_imps": 2341.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.98,
+                    "var_keyword": "구조",
+                    "with_var_ctr": 4.62,
+                    "var_imps": 6803.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 4.89,
-                    "var_keyword": "look",
-                    "with_var_ctr": 3.3,
-                    "var_imps": 1001.0
-                },
-                {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.78,
-                    "var_keyword": "day",
-                    "with_var_ctr": 5.1,
-                    "var_imps": 3197.0
-                },
-                {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.78,
-                    "var_keyword": "eye",
-                    "with_var_ctr": 5.1,
-                    "var_imps": 2982.0
-                },
-                {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.78,
-                    "var_keyword": "work",
-                    "with_var_ctr": 5.1,
-                    "var_imps": 3197.0
-                },
-                {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.78,
-                    "var_keyword": "adjust",
-                    "with_var_ctr": 4.87,
-                    "var_imps": 2341.0
-                },
-                {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.78,
-                    "var_keyword": "room",
-                    "with_var_ctr": 4.32,
-                    "var_imps": 1642.0
-                },
-                {
-                    "ess_1": "control",
-                    "ess_2": "energy",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 4.78,
-                    "var_keyword": "look",
-                    "with_var_ctr": 3.3,
-                    "var_imps": 1001.0
-                },
-                {
-                    "ess_1": "energy",
-                    "ess_2": "light",
-                    "combo_doc_freq": 9,
-                    "combo_overall_ctr": 4.44,
-                    "var_keyword": "afternoon",
-                    "with_var_ctr": 5.29,
-                    "var_imps": 2324.0
-                },
-                {
-                    "ess_1": "energy",
-                    "ess_2": "light",
-                    "combo_doc_freq": 9,
-                    "combo_overall_ctr": 4.44,
-                    "var_keyword": "work",
-                    "with_var_ctr": 5.1,
-                    "var_imps": 3197.0
-                },
-                {
-                    "ess_1": "energy",
-                    "ess_2": "light",
-                    "combo_doc_freq": 9,
-                    "combo_overall_ctr": 4.44,
-                    "var_keyword": "eye",
-                    "with_var_ctr": 5.06,
-                    "var_imps": 3242.0
-                },
-                {
-                    "ess_1": "energy",
-                    "ess_2": "light",
-                    "combo_doc_freq": 9,
-                    "combo_overall_ctr": 4.44,
-                    "var_keyword": "space",
-                    "with_var_ctr": 4.88,
-                    "var_imps": 2314.0
-                },
-                {
-                    "ess_1": "energy",
-                    "ess_2": "light",
-                    "combo_doc_freq": 9,
-                    "combo_overall_ctr": 4.44,
-                    "var_keyword": "adjust",
-                    "with_var_ctr": 4.87,
-                    "var_imps": 2341.0
-                },
-                {
-                    "ess_1": "energy",
-                    "ess_2": "light",
-                    "combo_doc_freq": 9,
-                    "combo_overall_ctr": 4.44,
-                    "var_keyword": "change",
-                    "with_var_ctr": 4.74,
-                    "var_imps": 3017.0
-                },
-                {
-                    "ess_1": "energy",
-                    "ess_2": "light",
-                    "combo_doc_freq": 9,
-                    "combo_overall_ctr": 4.44,
-                    "var_keyword": "sleep",
-                    "with_var_ctr": 4.74,
-                    "var_imps": 3017.0
-                },
-                {
-                    "ess_1": "energy",
-                    "ess_2": "light",
-                    "combo_doc_freq": 9,
-                    "combo_overall_ctr": 4.44,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 4.64,
-                    "var_imps": 2868.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 4.98,
+                    "var_keyword": "기장",
+                    "with_var_ctr": 4.62,
+                    "var_imps": 6803.0
                 }
             ]
         },
@@ -1375,31 +1294,31 @@
             "title": "기피 타겟 TOP 10 (명사)",
             "unit": "%",
             "labels": [
-                "approach",
-                "hang",
-                "fit",
-                "frame",
-                "blend",
-                "windows",
-                "kitchen",
-                "glow",
-                "layer",
-                "shutter"
+                "만족",
+                "착용감",
+                "핏과",
+                "구매",
+                "신경",
+                "주말",
+                "두껍",
+                "반복",
+                "언제",
+                "애매"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        10.16,
-                        10.16,
-                        9.49,
-                        8.97,
-                        8.0,
-                        7.88,
-                        7.73,
-                        7.57,
-                        7.46,
-                        7.32
+                        12.84,
+                        12.28,
+                        12.17,
+                        10.14,
+                        9.97,
+                        9.74,
+                        9.6,
+                        9.01,
+                        8.78,
+                        8.56
                     ]
                 }
             ]
@@ -1409,31 +1328,31 @@
             "title": "기피 타겟 TOP 10 (형용사)",
             "unit": "%",
             "labels": [
-                "high",
-                "whole",
-                "white",
-                "possible",
-                "classic",
-                "modern",
-                "expansive",
-                "lighting",
-                "add",
-                "special"
+                "끝나",
+                "편하",
+                "쓰이",
+                "올리",
+                "맞추",
+                "돌아오",
+                "버티",
+                "달라지",
+                "이러",
+                "보이"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        9.86,
-                        9.27,
-                        9.0,
-                        8.43,
-                        7.72,
-                        7.44,
-                        6.95,
-                        6.92,
-                        6.62,
-                        6.52
+                        11.22,
+                        9.74,
+                        9.42,
+                        8.04,
+                        7.87,
+                        7.53,
+                        7.01,
+                        6.96,
+                        6.77,
+                        6.73
                     ]
                 }
             ]
@@ -1443,31 +1362,31 @@
             "title": "기피 타겟 BOTTOM 10 (명사)",
             "unit": "%",
             "labels": [
-                "sheer",
-                "enter",
-                "rule",
-                "gentle",
-                "peaceful",
-                "stay",
-                "grow",
-                "enjoy",
-                "luxury",
-                "intention"
+                "이전",
+                "수정",
+                "응원",
+                "습관",
+                "제작",
+                "포기",
+                "브랜드",
+                "생산",
+                "결과",
+                "매일"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.79,
-                        1.9,
-                        2.25,
-                        2.59,
-                        2.61,
-                        2.74,
-                        2.78,
-                        2.87,
+                        2.46,
+                        2.57,
                         2.88,
-                        2.93
+                        2.89,
+                        2.89,
+                        2.92,
+                        2.97,
+                        2.99,
+                        3.09,
+                        3.15
                     ]
                 }
             ]
@@ -1477,31 +1396,31 @@
             "title": "기피 타겟 BOTTOM 10 (형용사)",
             "unit": "%",
             "labels": [
-                "other",
-                "happy",
-                "durable",
-                "romantic",
-                "give",
-                "easy",
-                "professional",
-                "full",
-                "next",
-                "evening"
+                "만나",
+                "뿌리",
+                "남기",
+                "괜찮",
+                "올라가",
+                "지나",
+                "말리",
+                "망가지",
+                "돌아가",
+                "바꾸"
             ],
             "series": [
                 {
                     "name": "avg_ctr",
                     "data": [
-                        1.87,
-                        2.47,
-                        2.82,
-                        2.86,
-                        2.94,
-                        2.99,
-                        3.05,
-                        3.06,
-                        3.07,
-                        3.13
+                        1.91,
+                        3.2,
+                        3.84,
+                        4.08,
+                        4.25,
+                        4.25,
+                        4.39,
+                        4.4,
+                        4.77,
+                        4.78
                     ]
                 }
             ]
@@ -1512,238 +1431,175 @@
             "unit": "",
             "rows": [
                 {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 13.73,
-                    "var_keyword": "choose",
-                    "with_var_ctr": 13.73,
-                    "var_imps": 153.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "기준",
+                    "with_var_ctr": 5.16,
+                    "var_imps": 155.0
                 },
                 {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 13.73,
-                    "var_keyword": "room",
-                    "with_var_ctr": 13.73,
-                    "var_imps": 153.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "개성",
+                    "with_var_ctr": 5.14,
+                    "var_imps": 311.0
                 },
                 {
-                    "ess_1": "interior",
-                    "ess_2": "privacy",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 13.73,
-                    "var_keyword": "space",
-                    "with_var_ctr": 13.73,
-                    "var_imps": 153.0
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "당시",
+                    "with_var_ctr": 5.14,
+                    "var_imps": 311.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "선택",
+                    "with_var_ctr": 5.14,
+                    "var_imps": 311.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "정리",
+                    "with_var_ctr": 5.14,
+                    "var_imps": 311.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "하나",
+                    "with_var_ctr": 5.14,
+                    "var_imps": 311.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 4.75,
+                    "var_imps": 400.0
+                },
+                {
+                    "ess_1": "패션",
+                    "ess_2": "라이프스타일",
+                    "combo_doc_freq": 5,
+                    "combo_overall_ctr": 4.63,
+                    "var_keyword": "필요",
+                    "with_var_ctr": 4.75,
+                    "var_imps": 400.0
+                },
+                {
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 9.11,
-                    "var_keyword": "space",
-                    "with_var_ctr": 17.39,
-                    "var_imps": 115.0
+                    "combo_overall_ctr": 3.8,
+                    "var_keyword": "기준",
+                    "with_var_ctr": 5.82,
+                    "var_imps": 189.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 9.11,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 9.55,
-                    "var_imps": 335.0
+                    "combo_overall_ctr": 3.8,
+                    "var_keyword": "사람",
+                    "with_var_ctr": 5.82,
+                    "var_imps": 189.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 9.11,
-                    "var_keyword": "look",
-                    "with_var_ctr": 6.08,
-                    "var_imps": 362.0
+                    "combo_overall_ctr": 3.8,
+                    "var_keyword": "단순",
+                    "with_var_ctr": 3.8,
+                    "var_imps": 368.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 9.11,
-                    "var_keyword": "room",
-                    "with_var_ctr": 6.08,
-                    "var_imps": 362.0
+                    "combo_overall_ctr": 3.8,
+                    "var_keyword": "하나",
+                    "with_var_ctr": 3.7,
+                    "var_imps": 270.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "privacy",
+                    "ess_1": "우리",
+                    "ess_2": "함께",
                     "combo_doc_freq": 4,
-                    "combo_overall_ctr": 9.11,
-                    "var_keyword": "use",
-                    "with_var_ctr": 6.08,
-                    "var_imps": 362.0
+                    "combo_overall_ctr": 3.8,
+                    "var_keyword": "문제",
+                    "with_var_ctr": 3.28,
+                    "var_imps": 305.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.66,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 7.66,
-                    "var_imps": 1370.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.37,
+                    "var_keyword": "기준",
+                    "with_var_ctr": 5.08,
+                    "var_imps": 177.0
                 },
                 {
-                    "ess_1": "blind",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 3,
-                    "combo_overall_ctr": 7.66,
-                    "var_keyword": "room",
-                    "with_var_ctr": 7.66,
-                    "var_imps": 1370.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.37,
+                    "var_keyword": "바지",
+                    "with_var_ctr": 5.08,
+                    "var_imps": 177.0
                 },
                 {
-                    "ess_1": "shade",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "clean",
-                    "with_var_ctr": 9.9,
-                    "var_imps": 1485.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.37,
+                    "var_keyword": "선택",
+                    "with_var_ctr": 5.08,
+                    "var_imps": 177.0
                 },
                 {
-                    "ess_1": "shade",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "curtain",
-                    "with_var_ctr": 9.9,
-                    "var_imps": 1485.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.37,
+                    "var_keyword": "문제",
+                    "with_var_ctr": 3.37,
+                    "var_imps": 326.0
                 },
                 {
-                    "ess_1": "shade",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "look",
-                    "with_var_ctr": 9.76,
-                    "var_imps": 861.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.37,
+                    "var_keyword": "구조",
+                    "with_var_ctr": 2.61,
+                    "var_imps": 307.0
                 },
                 {
-                    "ess_1": "shade",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "space",
-                    "with_var_ctr": 8.05,
-                    "var_imps": 1912.0
-                },
-                {
-                    "ess_1": "shade",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "simple",
-                    "with_var_ctr": 7.41,
-                    "var_imps": 1133.0
-                },
-                {
-                    "ess_1": "shade",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 7.23,
-                    "var_imps": 2421.0
-                },
-                {
-                    "ess_1": "shade",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "room",
-                    "with_var_ctr": 7.23,
-                    "var_imps": 2421.0
-                },
-                {
-                    "ess_1": "shade",
-                    "ess_2": "treatment",
-                    "combo_doc_freq": 6,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "filter",
-                    "with_var_ctr": 6.66,
-                    "var_imps": 1051.0
-                },
-                {
-                    "ess_1": "shutter",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "wood",
-                    "with_var_ctr": 7.53,
-                    "var_imps": 2230.0
-                },
-                {
-                    "ess_1": "shutter",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 7.23,
-                    "var_keyword": "curtain",
-                    "with_var_ctr": 7.32,
-                    "var_imps": 2856.0
-                },
-                {
-                    "ess_1": "fabric",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 6.77,
-                    "var_keyword": "curtain",
-                    "with_var_ctr": 9.11,
-                    "var_imps": 790.0
-                },
-                {
-                    "ess_1": "fabric",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 6.77,
-                    "var_keyword": "feel",
-                    "with_var_ctr": 9.11,
-                    "var_imps": 790.0
-                },
-                {
-                    "ess_1": "fabric",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 6.77,
-                    "var_keyword": "block",
-                    "with_var_ctr": 8.09,
-                    "var_imps": 1014.0
-                },
-                {
-                    "ess_1": "fabric",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 6.77,
-                    "var_keyword": "room",
-                    "with_var_ctr": 8.09,
-                    "var_imps": 1014.0
-                },
-                {
-                    "ess_1": "fabric",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 6.77,
-                    "var_keyword": "clean",
-                    "with_var_ctr": 6.92,
-                    "var_imps": 1502.0
-                },
-                {
-                    "ess_1": "fabric",
-                    "ess_2": "window",
-                    "combo_doc_freq": 5,
-                    "combo_overall_ctr": 6.77,
-                    "var_keyword": "material",
-                    "with_var_ctr": 6.92,
-                    "var_imps": 1502.0
+                    "ess_1": "우리",
+                    "ess_2": "브랜드",
+                    "combo_doc_freq": 4,
+                    "combo_overall_ctr": 3.37,
+                    "var_keyword": "기장",
+                    "with_var_ctr": 2.61,
+                    "var_imps": 307.0
                 }
             ]
         },
@@ -1752,209 +1608,214 @@
             "title": "성과 top 콘텐츠 분석",
             "items": [
                 {
-                    "ad_id": 2606,
-                    "fb_ad_id": "120234452900250406",
-                    "uploaded_at": "2025-11-05",
-                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120234452900250406.jpg",
-                    "ctr": 19.02,
+                    "ad_id": 4856,
+                    "fb_ad_id": "120239451911960682",
+                    "uploaded_at": "2026-01-21",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120239451911960682.jpg",
+                    "ctr": 7.96,
                     "target_details": [
                         {
-                            "age": "65+",
+                            "age": "45-54",
                             "gender": "female",
-                            "ctr": 32.73
+                            "ctr": 14.29
                         },
                         {
                             "age": "35-44",
                             "gender": "female",
-                            "ctr": 28.57
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "female",
-                            "ctr": 25.0
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "male",
-                            "ctr": 25.0
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "female",
-                            "ctr": 23.53
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "male",
-                            "ctr": 21.05
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "female",
-                            "ctr": 16.67
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "male",
-                            "ctr": 9.52
+                            "ctr": 13.04
                         },
                         {
                             "age": "35-44",
                             "gender": "male",
-                            "ctr": 0.0
+                            "ctr": 10.89
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 10.57
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 8.82
                         },
                         {
                             "age": "25-34",
                             "gender": "male",
-                            "ctr": 0.0
+                            "ctr": 8.05
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 7.5
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 7.27
                         },
                         {
                             "age": "18-24",
                             "gender": "male",
-                            "ctr": 0.0
+                            "ctr": 6.68
                         },
                         {
                             "age": "18-24",
+                            "gender": "female",
+                            "ctr": 4.5
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "Unknown",
                             "gender": "female",
                             "ctr": 0.0
                         }
                     ]
                 },
                 {
-                    "ad_id": 2622,
-                    "fb_ad_id": "120234812285980406",
-                    "uploaded_at": "2025-11-12",
-                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120234812285980406.jpg",
-                    "ctr": 18.14,
+                    "ad_id": 4855,
+                    "fb_ad_id": "120239451911890682",
+                    "uploaded_at": "2026-01-23",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120239451911890682.jpg",
+                    "ctr": 7.47,
                     "target_details": [
                         {
                             "age": "65+",
+                            "gender": "female",
+                            "ctr": 40.0
+                        },
+                        {
+                            "age": "55-64",
                             "gender": "male",
-                            "ctr": 37.5
+                            "ctr": 18.64
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 14.61
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 10.71
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 9.28
                         },
                         {
                             "age": "45-54",
                             "gender": "female",
-                            "ctr": 33.33
+                            "ctr": 6.67
                         },
                         {
-                            "age": "55-64",
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 5.84
+                        },
+                        {
+                            "age": "25-34",
                             "gender": "female",
-                            "ctr": 28.57
+                            "ctr": 5.33
                         },
                         {
                             "age": "65+",
+                            "gender": "male",
+                            "ctr": 4.76
+                        },
+                        {
+                            "age": "18-24",
                             "gender": "female",
-                            "ctr": 28.57
+                            "ctr": 3.85
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 3.31
                         },
                         {
                             "age": "55-64",
-                            "gender": "male",
-                            "ctr": 23.08
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "male",
-                            "ctr": 15.0
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "female",
-                            "ctr": 13.33
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "female",
-                            "ctr": 7.14
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "male",
-                            "ctr": 5.56
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "male",
-                            "ctr": 5.56
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "male",
-                            "ctr": 4.0
-                        },
-                        {
-                            "age": "25-34",
                             "gender": "female",
                             "ctr": 0.0
                         }
                     ]
                 },
                 {
-                    "ad_id": 2623,
-                    "fb_ad_id": "120234812285960406",
-                    "uploaded_at": "2025-11-10",
-                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120234812285960406.jpg",
-                    "ctr": 14.34,
+                    "ad_id": 4905,
+                    "fb_ad_id": "120239717656270682",
+                    "uploaded_at": "2026-01-31",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120239717656270682.jpg",
+                    "ctr": 7.13,
                     "target_details": [
                         {
-                            "age": "65+",
-                            "gender": "female",
-                            "ctr": 26.92
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "male",
-                            "ctr": 23.81
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "female",
-                            "ctr": 17.24
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "male",
-                            "ctr": 15.38
-                        },
-                        {
                             "age": "55-64",
                             "gender": "male",
-                            "ctr": 15.0
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "male",
-                            "ctr": 14.81
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "male",
-                            "ctr": 10.53
+                            "ctr": 25.81
                         },
                         {
                             "age": "45-54",
                             "gender": "female",
-                            "ctr": 7.69
+                            "ctr": 15.7
                         },
                         {
-                            "age": "18-24",
+                            "age": "55-64",
                             "gender": "female",
-                            "ctr": 5.26
+                            "ctr": 11.93
                         },
                         {
-                            "age": "18-24",
+                            "age": "45-54",
                             "gender": "male",
-                            "ctr": 3.57
+                            "ctr": 11.83
                         },
                         {
                             "age": "35-44",
                             "gender": "female",
-                            "ctr": 0.0
+                            "ctr": 11.27
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 9.3
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 8.51
                         },
                         {
                             "age": "25-34",
                             "gender": "female",
-                            "ctr": 0.0
+                            "ctr": 8.04
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 6.21
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 6.11
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 5.92
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 4.17
                         }
                     ]
                 }
@@ -1965,61 +1826,46 @@
             "title": "성과 bottom 콘텐츠 분석",
             "items": [
                 {
-                    "ad_id": 5694,
-                    "fb_ad_id": "120239427909900406",
-                    "uploaded_at": "2026-03-08",
-                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120239427909900406.jpg",
-                    "ctr": 0.98,
+                    "ad_id": 6369,
+                    "fb_ad_id": "120241879331390682",
+                    "uploaded_at": "2026-03-20",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120241879331390682.jpg",
+                    "ctr": 2.29,
                     "target_details": [
                         {
-                            "age": "18-24",
+                            "age": "65+",
                             "gender": "male",
-                            "ctr": 3.17
+                            "ctr": 20.0
                         },
                         {
                             "age": "55-64",
                             "gender": "male",
-                            "ctr": 2.73
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "male",
-                            "ctr": 2.14
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "female",
-                            "ctr": 2.04
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "female",
-                            "ctr": 1.48
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "female",
-                            "ctr": 0.82
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "male",
-                            "ctr": 0.76
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "male",
-                            "ctr": 0.73
+                            "ctr": 13.33
                         },
                         {
                             "age": "45-54",
                             "gender": "male",
-                            "ctr": 0.63
+                            "ctr": 3.23
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 2.2
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 1.87
                         },
                         {
                             "age": "25-34",
+                            "gender": "male",
+                            "ctr": 1.42
+                        },
+                        {
+                            "age": "18-24",
                             "gender": "female",
-                            "ctr": 0.45
+                            "ctr": 0.0
                         },
                         {
                             "age": "45-54",
@@ -2028,145 +1874,160 @@
                         },
                         {
                             "age": "35-44",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "25-34",
                             "gender": "female",
                             "ctr": 0.0
                         }
                     ]
                 },
                 {
-                    "ad_id": 3643,
-                    "fb_ad_id": "120237275765150406",
-                    "uploaded_at": "2026-01-05",
-                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120237275765150406.jpg",
-                    "ctr": 1.2,
+                    "ad_id": 5518,
+                    "fb_ad_id": "120240965443170682",
+                    "uploaded_at": "2026-02-24",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120240965443170682.jpg",
+                    "ctr": 2.37,
                     "target_details": [
                         {
                             "age": "65+",
                             "gender": "female",
-                            "ctr": 3.47
+                            "ctr": 6.45
                         },
                         {
-                            "age": "55-64",
-                            "gender": "male",
-                            "ctr": 2.38
+                            "age": "25-34",
+                            "gender": "female",
+                            "ctr": 4.32
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 3.57
                         },
                         {
                             "age": "55-64",
                             "gender": "female",
-                            "ctr": 1.89
+                            "ctr": 3.3
                         },
                         {
                             "age": "45-54",
                             "gender": "female",
+                            "ctr": 3.28
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 2.96
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 2.3
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 2.09
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 1.94
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
                             "ctr": 1.79
                         },
                         {
                             "age": "25-34",
                             "gender": "male",
-                            "ctr": 1.38
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "female",
-                            "ctr": 1.34
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "male",
-                            "ctr": 1.19
+                            "ctr": 1.74
                         },
                         {
                             "age": "45-54",
                             "gender": "male",
-                            "ctr": 1.08
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "female",
-                            "ctr": 1.04
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "male",
-                            "ctr": 0.94
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "female",
-                            "ctr": 0.84
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "male",
-                            "ctr": 0.43
+                            "ctr": 0.65
                         }
                     ]
                 },
                 {
-                    "ad_id": 2878,
-                    "fb_ad_id": "120235479536840406",
-                    "uploaded_at": "2025-11-25",
-                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120235479536840406.jpg",
-                    "ctr": 1.29,
+                    "ad_id": 5229,
+                    "fb_ad_id": "120240586684460682",
+                    "uploaded_at": "2026-02-21",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120240586684460682.jpg",
+                    "ctr": 2.7,
                     "target_details": [
                         {
-                            "age": "65+",
-                            "gender": "male",
-                            "ctr": 5.97
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "male",
-                            "ctr": 5.56
-                        },
-                        {
-                            "age": "65+",
-                            "gender": "female",
-                            "ctr": 3.7
-                        },
-                        {
-                            "age": "55-64",
-                            "gender": "female",
-                            "ctr": 3.03
-                        },
-                        {
                             "age": "45-54",
                             "gender": "female",
-                            "ctr": 2.33
-                        },
-                        {
-                            "age": "25-34",
-                            "gender": "male",
-                            "ctr": 1.08
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "male",
-                            "ctr": 0.96
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "female",
-                            "ctr": 0.85
-                        },
-                        {
-                            "age": "18-24",
-                            "gender": "male",
-                            "ctr": 0.44
-                        },
-                        {
-                            "age": "35-44",
-                            "gender": "female",
-                            "ctr": 0.0
-                        },
-                        {
-                            "age": "45-54",
-                            "gender": "male",
-                            "ctr": 0.0
+                            "ctr": 6.12
                         },
                         {
                             "age": "25-34",
                             "gender": "female",
+                            "ctr": 5.26
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "female",
+                            "ctr": 4.7
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "female",
+                            "ctr": 4.44
+                        },
+                        {
+                            "age": "45-54",
+                            "gender": "male",
+                            "ctr": 4.3
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "ctr": 2.48
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "ctr": 2.24
+                        },
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "ctr": 1.92
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "female",
+                            "ctr": 1.75
+                        },
+                        {
+                            "age": "55-64",
+                            "gender": "male",
+                            "ctr": 1.56
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "female",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "65+",
+                            "gender": "male",
+                            "ctr": 0.0
+                        },
+                        {
+                            "age": "Unknown",
+                            "gender": "male",
                             "ctr": 0.0
                         }
                     ]
@@ -2183,7 +2044,7 @@
         }
     },
     "purchase_analysis_pages": {
-        "is_visible": false,
+        "is_visible": true,
         "titles": {
             "section_title": "전체 매출 데이터 분석",
             "page_1_title": "평균 ROAS",
@@ -2191,13 +2052,187 @@
         }
     },
     "spend_revenue_pages": {
-        "is_visible": false
+        "is_visible": true,
+        "titles": {
+            "section_title": "전체 매출 데이터 분석",
+            "page_1_title": "광고비 & 매출 발생"
+        }
     },
     "purchase_contents_pages": {
-        "is_visible": false
+        "is_visible": true,
+        "title": "구매가 발생한 콘텐츠",
+        "pages": [
+            [
+                {
+                    "rank": 1,
+                    "content_key": "17913640608142427",
+                    "source_instagram_media_id": "17913640608142427",
+                    "ad_name": "S8-1 진작 알았으면 몇 백은 아꼈을 텐데요.",
+                    "fb_ad_id": "120241253102000682",
+                    "fb_ad_ids": [
+                        "120241253102000682"
+                    ],
+                    "ad_ids": [
+                        5659
+                    ],
+                    "uploaded_at": "2026-03-03",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120241253102000682.jpg",
+                    "purchases": 5,
+                    "target_details": [
+                        {
+                            "age": "35-44",
+                            "gender": "male",
+                            "purchases": 3.0
+                        },
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "purchases": 1.0
+                        },
+                        {
+                            "age": "25-34",
+                            "gender": "male",
+                            "purchases": 1.0
+                        }
+                    ]
+                },
+                {
+                    "rank": 2,
+                    "content_key": "17906737833204184",
+                    "source_instagram_media_id": "17906737833204184",
+                    "ad_name": "S10-5 키 큰 사람을 위한 바지가 잘 안 보이는 이유",
+                    "fb_ad_id": "120241879332070682",
+                    "fb_ad_ids": [
+                        "120241879332070682"
+                    ],
+                    "ad_ids": [
+                        6370
+                    ],
+                    "uploaded_at": "2026-03-21",
+                    "thumbnail": "https://depart-ad-thumbnails.s3.ap-northeast-2.amazonaws.com/thumbnails/120241879332070682.jpg",
+                    "purchases": 2,
+                    "target_details": [
+                        {
+                            "age": "18-24",
+                            "gender": "male",
+                            "purchases": 2.0
+                        }
+                    ]
+                }
+            ]
+        ],
+        "total_count": 2
     },
     "purchase_age_gender_page": {
-        "is_visible": false
+        "is_visible": true,
+        "title": "타겟별 구매전환",
+        "heatmap": [
+            {
+                "age": "18-24",
+                "gender": "female",
+                "purchases": 0.0
+            },
+            {
+                "age": "18-24",
+                "gender": "male",
+                "purchases": 3.0
+            },
+            {
+                "age": "18-24",
+                "gender": "unknown",
+                "purchases": 0.0
+            },
+            {
+                "age": "25-34",
+                "gender": "female",
+                "purchases": 0.0
+            },
+            {
+                "age": "25-34",
+                "gender": "male",
+                "purchases": 1.0
+            },
+            {
+                "age": "25-34",
+                "gender": "unknown",
+                "purchases": 0.0
+            },
+            {
+                "age": "35-44",
+                "gender": "female",
+                "purchases": 0.0
+            },
+            {
+                "age": "35-44",
+                "gender": "male",
+                "purchases": 3.0
+            },
+            {
+                "age": "35-44",
+                "gender": "unknown",
+                "purchases": 0.0
+            },
+            {
+                "age": "45-54",
+                "gender": "female",
+                "purchases": 0.0
+            },
+            {
+                "age": "45-54",
+                "gender": "male",
+                "purchases": 0.0
+            },
+            {
+                "age": "45-54",
+                "gender": "unknown",
+                "purchases": 0.0
+            },
+            {
+                "age": "55-64",
+                "gender": "female",
+                "purchases": 0.0
+            },
+            {
+                "age": "55-64",
+                "gender": "male",
+                "purchases": 0.0
+            },
+            {
+                "age": "55-64",
+                "gender": "unknown",
+                "purchases": 0.0
+            },
+            {
+                "age": "65+",
+                "gender": "female",
+                "purchases": 0.0
+            },
+            {
+                "age": "65+",
+                "gender": "male",
+                "purchases": 0.0
+            },
+            {
+                "age": "65+",
+                "gender": "unknown",
+                "purchases": 0.0
+            },
+            {
+                "age": "Unknown",
+                "gender": "female",
+                "purchases": 0.0
+            },
+            {
+                "age": "Unknown",
+                "gender": "male",
+                "purchases": 0.0
+            },
+            {
+                "age": "Unknown",
+                "gender": "unknown",
+                "purchases": 0.0
+            }
+        ]
     },
     "appendix_groups": [
         {
@@ -2218,246 +2253,156 @@
                     "rows": [
                         [
                             1,
-                            "home",
-                            67,
-                            "65+ female",
-                            17874,
-                            "13.5%",
-                            132654
+                            "우리",
+                            12,
+                            "18-24 male",
+                            22252,
+                            "34.7%",
+                            64114
                         ],
                         [
                             2,
-                            "light",
-                            65,
-                            "65+ female",
-                            17536,
-                            "14.3%",
-                            122341
+                            "함께",
+                            10,
+                            "25-34 male",
+                            16851,
+                            "37.4%",
+                            45073
                         ],
                         [
                             3,
-                            "shade",
-                            44,
-                            "65+ female",
-                            11239,
-                            "13.2%",
-                            85091
+                            "라이프스타일",
+                            9,
+                            "18-24 male",
+                            18353,
+                            "36.2%",
+                            50676
                         ],
                         [
                             4,
-                            "window",
-                            38,
-                            "65+ female",
-                            10707,
-                            "17.3%",
-                            61738
+                            "패션",
+                            8,
+                            "25-34 male",
+                            19444,
+                            "35.2%",
+                            55175
                         ],
                         [
                             5,
-                            "blind",
-                            33,
-                            "65+ female",
-                            10166,
-                            "15.0%",
-                            67636
+                            "제품",
+                            7,
+                            "25-34 male",
+                            7450,
+                            "31.5%",
+                            23654
                         ],
                         [
                             6,
-                            "control",
-                            23,
-                            "65+ female",
-                            5933,
-                            "12.3%",
-                            48241
+                            "일상",
+                            6,
+                            "18-24 male",
+                            13520,
+                            "34.8%",
+                            38824
                         ],
                         [
                             7,
-                            "design",
-                            23,
-                            "65+ female",
-                            5192,
-                            "13.4%",
-                            38713
+                            "데님",
+                            6,
+                            "25-34 male",
+                            14484,
+                            "38.7%",
+                            37388
                         ],
                         [
                             8,
-                            "sun",
-                            19,
-                            "65+ female",
-                            6327,
-                            "16.0%",
-                            39493
+                            "니트",
+                            6,
+                            "18-24 male",
+                            7527,
+                            "31.5%",
+                            23895
                         ],
                         [
                             9,
-                            "glare",
-                            18,
-                            "65+ female",
-                            6097,
-                            "16.3%",
-                            37299
+                            "브랜드",
+                            6,
+                            "25-34 male",
+                            8152,
+                            "34.7%",
+                            23479
                         ],
                         [
                             10,
-                            "privacy",
-                            18,
-                            "18-24 female",
-                            4351,
-                            "14.9%",
-                            29149
+                            "디자인",
+                            6,
+                            "25-34 male",
+                            6498,
+                            "31.2%",
+                            20823
                         ],
                         [
                             11,
-                            "smart",
-                            14,
-                            "65+ female",
-                            4456,
-                            "14.0%",
-                            31749
+                            "경험",
+                            4,
+                            "25-34 male",
+                            7990,
+                            "33.7%",
+                            23695
                         ],
                         [
                             12,
-                            "solution",
-                            11,
-                            "18-24 female",
-                            4868,
-                            "18.2%",
-                            26734
+                            "셔츠",
+                            4,
+                            "25-34 male",
+                            9845,
+                            "42.6%",
+                            23137
                         ],
                         [
                             13,
-                            "energy",
-                            11,
-                            "18-24 female",
-                            3399,
-                            "14.8%",
-                            22934
+                            "온라인",
+                            2,
+                            "18-24 male",
+                            5613,
+                            "33.9%",
+                            16562
                         ],
                         [
                             14,
-                            "treatment",
-                            9,
-                            "65+ female",
-                            2710,
-                            "24.1%",
-                            11222
+                            "다양한",
+                            1,
+                            "18-24 male",
+                            6029,
+                            "55.3%",
+                            10909
                         ],
                         [
                             15,
-                            "style",
-                            8,
-                            "18-24 female",
-                            3205,
-                            "18.2%",
-                            17644
+                            "프리뷰",
+                            1,
+                            "18-24 male",
+                            3267,
+                            "52.7%",
+                            6195
                         ],
                         [
                             16,
-                            "fabric",
-                            8,
-                            "18-24 female",
-                            2558,
-                            "16.9%",
-                            15175
+                            "동대문",
+                            1,
+                            "25-34 male",
+                            1566,
+                            "40.3%",
+                            3883
                         ],
                         [
                             17,
-                            "interior",
-                            8,
-                            "18-24 female",
-                            1842,
-                            "14.6%",
-                            12604
-                        ],
-                        [
-                            18,
-                            "roller",
-                            6,
+                            "티셔츠",
+                            1,
                             "25-34 male",
-                            1198,
-                            "11.7%",
-                            10245
-                        ],
-                        [
-                            19,
-                            "shutter",
-                            5,
-                            "65+ female",
-                            2283,
-                            "24.4%",
-                            9355
-                        ],
-                        [
-                            20,
-                            "insulation",
-                            5,
-                            "18-24 female",
-                            1465,
-                            "17.4%",
-                            8424
-                        ],
-                        [
-                            21,
-                            "protection",
-                            4,
-                            "65+ female",
-                            1380,
-                            "17.3%",
-                            7971
-                        ],
-                        [
-                            22,
-                            "custom",
-                            3,
-                            "65+ female",
-                            981,
-                            "16.6%",
-                            5921
-                        ],
-                        [
-                            23,
-                            "motorized",
-                            2,
-                            "65+ female",
-                            863,
-                            "16.2%",
-                            5324
-                        ],
-                        [
-                            24,
-                            "efficiency",
-                            2,
-                            "18-24 female",
-                            616,
-                            "29.1%",
-                            2114
-                        ],
-                        [
-                            25,
-                            "covering",
-                            1,
-                            "65+ female",
-                            283,
-                            "14.3%",
-                            1973
-                        ],
-                        [
-                            26,
-                            "cellular",
-                            1,
-                            "65+ female",
-                            283,
-                            "14.3%",
-                            1973
-                        ],
-                        [
-                            27,
-                            "automation",
-                            1,
-                            "18-24 male",
-                            439,
-                            "24.2%",
-                            1811
+                            536,
+                            "29.5%",
+                            1817
                         ]
                     ],
                     "footnote": "*등장한 전체 키워드 기준"
@@ -2477,246 +2422,156 @@
                     "rows": [
                         [
                             1,
-                            "home",
-                            67,
-                            "65+ female",
-                            876,
-                            "20.6%",
-                            4246
+                            "우리",
+                            12,
+                            "25-34 male",
+                            1102,
+                            "34.7%",
+                            3176
                         ],
                         [
                             2,
-                            "light",
-                            65,
-                            "65+ female",
-                            885,
-                            "21.9%",
-                            4047
+                            "함께",
+                            10,
+                            "25-34 male",
+                            814,
+                            "36.9%",
+                            2204
                         ],
                         [
                             3,
-                            "shade",
-                            44,
-                            "65+ female",
-                            552,
-                            "22.9%",
-                            2409
+                            "라이프스타일",
+                            9,
+                            "25-34 male",
+                            833,
+                            "35.8%",
+                            2324
                         ],
                         [
                             4,
-                            "window",
-                            38,
-                            "65+ female",
-                            564,
-                            "28.2%",
-                            1997
+                            "패션",
+                            8,
+                            "25-34 male",
+                            940,
+                            "38.4%",
+                            2447
                         ],
                         [
                             5,
-                            "blind",
-                            33,
-                            "65+ female",
-                            619,
-                            "26.2%",
-                            2362
+                            "제품",
+                            7,
+                            "25-34 male",
+                            340,
+                            "27.5%",
+                            1236
                         ],
                         [
                             6,
-                            "control",
-                            23,
-                            "65+ female",
-                            286,
-                            "18.4%",
-                            1552
+                            "일상",
+                            6,
+                            "25-34 male",
+                            784,
+                            "34.4%",
+                            2280
                         ],
                         [
                             7,
-                            "design",
-                            23,
-                            "65+ female",
-                            267,
-                            "20.3%",
-                            1313
+                            "데님",
+                            6,
+                            "25-34 male",
+                            663,
+                            "41.1%",
+                            1615
                         ],
                         [
                             8,
-                            "sun",
-                            19,
-                            "65+ female",
-                            280,
-                            "21.7%",
-                            1293
+                            "니트",
+                            6,
+                            "18-24 male",
+                            307,
+                            "25.1%",
+                            1223
                         ],
                         [
                             9,
-                            "glare",
-                            18,
-                            "65+ female",
-                            351,
-                            "24.8%",
-                            1418
+                            "브랜드",
+                            6,
+                            "25-34 male",
+                            309,
+                            "32.9%",
+                            940
                         ],
                         [
                             10,
-                            "privacy",
-                            18,
-                            "65+ female",
-                            222,
-                            "21.1%",
-                            1050
+                            "디자인",
+                            6,
+                            "25-34 male",
+                            284,
+                            "29.1%",
+                            977
                         ],
                         [
                             11,
-                            "smart",
-                            14,
-                            "65+ female",
-                            161,
-                            "18.0%",
-                            892
+                            "경험",
+                            4,
+                            "25-34 male",
+                            432,
+                            "33.6%",
+                            1286
                         ],
                         [
                             12,
-                            "solution",
-                            11,
-                            "65+ female",
-                            134,
-                            "17.6%",
-                            761
+                            "셔츠",
+                            4,
+                            "25-34 male",
+                            486,
+                            "45.3%",
+                            1073
                         ],
                         [
                             13,
-                            "energy",
-                            11,
-                            "65+ female",
-                            180,
-                            "19.7%",
-                            916
+                            "온라인",
+                            2,
+                            "18-24 male",
+                            257,
+                            "26.8%",
+                            958
                         ],
                         [
                             14,
-                            "treatment",
-                            9,
-                            "65+ female",
-                            173,
-                            "40.9%",
-                            423
+                            "다양한",
+                            1,
+                            "18-24 male",
+                            219,
+                            "51.4%",
+                            426
                         ],
                         [
                             15,
-                            "style",
-                            8,
-                            "18-24 female",
-                            72,
-                            "17.8%",
-                            404
+                            "프리뷰",
+                            1,
+                            "18-24 male",
+                            93,
+                            "40.3%",
+                            231
                         ],
                         [
                             16,
-                            "fabric",
-                            8,
-                            "65+ female",
-                            161,
-                            "24.6%",
-                            654
+                            "동대문",
+                            1,
+                            "25-34 male",
+                            68,
+                            "42.8%",
+                            159
                         ],
                         [
                             17,
-                            "interior",
-                            8,
-                            "65+ female",
-                            106,
-                            "22.2%",
-                            478
-                        ],
-                        [
-                            18,
-                            "roller",
-                            6,
-                            "65+ female",
-                            43,
-                            "19.5%",
-                            221
-                        ],
-                        [
-                            19,
-                            "shutter",
-                            5,
-                            "65+ female",
-                            175,
-                            "37.0%",
-                            473
-                        ],
-                        [
-                            20,
-                            "insulation",
-                            5,
-                            "65+ female",
-                            37,
-                            "16.4%",
-                            225
-                        ],
-                        [
-                            21,
-                            "protection",
-                            4,
-                            "65+ female",
-                            50,
-                            "20.1%",
-                            249
-                        ],
-                        [
-                            22,
-                            "custom",
-                            3,
-                            "65+ female",
-                            69,
-                            "32.5%",
-                            212
-                        ],
-                        [
-                            23,
-                            "motorized",
-                            2,
-                            "65+ female",
-                            33,
-                            "23.2%",
-                            142
-                        ],
-                        [
-                            24,
-                            "efficiency",
-                            2,
-                            "65+ female",
-                            18,
-                            "22.5%",
-                            80
-                        ],
-                        [
-                            25,
-                            "covering",
-                            1,
-                            "18-24 female",
-                            9,
-                            "14.5%",
-                            62
-                        ],
-                        [
-                            26,
-                            "cellular",
-                            1,
-                            "18-24 female",
-                            9,
-                            "14.5%",
-                            62
-                        ],
-                        [
-                            27,
-                            "automation",
+                            "티셔츠",
                             1,
                             "25-34 male",
-                            9,
-                            "24.3%",
-                            37
+                            18,
+                            "22.2%",
+                            81
                         ]
                     ],
                     "footnote": "*등장한 전체 키워드 기준"
@@ -2736,228 +2591,228 @@
                     "rows": [
                         [
                             1,
-                            "feel",
-                            54,
-                            "65+ female",
-                            15966,
-                            "15.0%",
-                            106148
+                            "아니",
+                            37,
+                            "18-24 male",
+                            68577,
+                            "34.3%",
+                            200153
                         ],
                         [
                             2,
-                            "space",
-                            51,
-                            "65+ female",
-                            13722,
-                            "13.8%",
-                            99774
+                            "만들",
+                            29,
+                            "25-34 male",
+                            48756,
+                            "34.0%",
+                            143286
                         ],
                         [
                             3,
-                            "make",
-                            43,
-                            "65+ female",
-                            13086,
-                            "16.1%",
-                            81239
+                            "바지",
+                            24,
+                            "18-24 male",
+                            41683,
+                            "34.4%",
+                            121210
                         ],
                         [
                             4,
-                            "room",
-                            41,
-                            "65+ female",
-                            11547,
-                            "15.5%",
-                            74602
+                            "보이",
+                            23,
+                            "18-24 male",
+                            41999,
+                            "35.0%",
+                            119996
                         ],
                         [
                             5,
-                            "can",
-                            39,
-                            "65+ female",
-                            11945,
-                            "15.9%",
-                            74984
+                            "기준",
+                            22,
+                            "18-24 male",
+                            41002,
+                            "35.9%",
+                            114347
                         ],
                         [
                             6,
-                            "not",
-                            36,
-                            "65+ female",
-                            10841,
-                            "15.4%",
-                            70298
+                            "그래서",
+                            22,
+                            "25-34 male",
+                            37376,
+                            "37.1%",
+                            100796
                         ],
                         [
                             7,
-                            "right",
-                            36,
-                            "65+ female",
-                            11245,
-                            "16.1%",
-                            70039
+                            "사람",
+                            20,
+                            "18-24 male",
+                            36625,
+                            "36.8%",
+                            99621
                         ],
                         [
                             8,
-                            "when",
-                            36,
-                            "65+ female",
-                            10786,
-                            "15.5%",
-                            69706
+                            "스럽",
+                            19,
+                            "25-34 male",
+                            37627,
+                            "37.2%",
+                            101106
                         ],
                         [
                             9,
-                            "what",
-                            35,
-                            "65+ female",
-                            10087,
-                            "14.2%",
-                            71000
+                            "선택",
+                            18,
+                            "18-24 male",
+                            33131,
+                            "35.5%",
+                            93263
                         ],
                         [
                             10,
-                            "day",
-                            34,
-                            "18-24 female",
-                            12912,
-                            "17.0%",
-                            75822
+                            "필요",
+                            18,
+                            "25-34 male",
+                            34086,
+                            "36.7%",
+                            92835
                         ],
                         [
                             11,
-                            "keep",
-                            34,
-                            "18-24 female",
-                            9618,
-                            "14.9%",
-                            64410
+                            "시작",
+                            18,
+                            "25-34 male",
+                            28720,
+                            "36.7%",
+                            78349
                         ],
                         [
                             12,
-                            "more",
-                            31,
-                            "65+ female",
-                            9336,
-                            "15.9%",
-                            58674
+                            "고르",
+                            17,
+                            "25-34 male",
+                            30631,
+                            "34.0%",
+                            90037
                         ],
                         [
                             13,
-                            "just",
-                            31,
-                            "65+ female",
-                            9607,
-                            "17.6%",
-                            54638
+                            "기장",
+                            17,
+                            "18-24 male",
+                            32236,
+                            "36.4%",
+                            88594
                         ],
                         [
                             14,
-                            "time",
-                            30,
-                            "65+ female",
-                            8661,
-                            "13.7%",
-                            63426
+                            "문제",
+                            16,
+                            "18-24 male",
+                            32742,
+                            "38.7%",
+                            84656
                         ],
                         [
                             15,
-                            "like",
-                            30,
-                            "65+ female",
-                            8119,
-                            "13.2%",
-                            61512
+                            "자연",
+                            15,
+                            "18-24 male",
+                            31022,
+                            "36.9%",
+                            84044
                         ],
                         [
                             16,
-                            "look",
-                            29,
-                            "18-24 female",
-                            8249,
-                            "13.9%",
-                            59239
+                            "가장",
+                            14,
+                            "25-34 male",
+                            29282,
+                            "35.9%",
+                            81602
                         ],
                         [
                             17,
-                            "one",
-                            29,
-                            "65+ female",
-                            8679,
-                            "16.3%",
-                            53314
+                            "생각",
+                            14,
+                            "18-24 male",
+                            26213,
+                            "35.5%",
+                            73775
                         ],
                         [
                             18,
-                            "all",
-                            27,
-                            "65+ female",
-                            8069,
-                            "15.1%",
-                            53604
+                            "너무",
+                            13,
+                            "25-34 male",
+                            30508,
+                            "35.0%",
+                            87189
                         ],
                         [
                             19,
-                            "need",
-                            27,
-                            "65+ female",
-                            9092,
-                            "17.0%",
-                            53431
+                            "하지만",
+                            13,
+                            "25-34 male",
+                            18728,
+                            "29.6%",
+                            63192
                         ],
                         [
                             20,
-                            "way",
-                            27,
-                            "18-24 female",
-                            6695,
-                            "12.6%",
-                            53146
+                            "순간",
+                            12,
+                            "18-24 male",
+                            33156,
+                            "38.1%",
+                            86942
                         ],
                         [
                             21,
-                            "every",
-                            27,
-                            "65+ female",
-                            8189,
-                            "15.5%",
-                            52990
+                            "때문",
+                            12,
+                            "25-34 male",
+                            19898,
+                            "32.4%",
+                            61440
                         ],
                         [
                             22,
-                            "how",
-                            27,
-                            "18-24 female",
-                            7606,
-                            "15.6%",
-                            48613
+                            "사이즈",
+                            12,
+                            "18-24 male",
+                            18645,
+                            "34.4%",
+                            54179
                         ],
                         [
                             23,
-                            "start",
-                            25,
-                            "65+ female",
-                            7725,
-                            "14.1%",
-                            54911
+                            "원단",
+                            11,
+                            "18-24 male",
+                            19561,
+                            "30.8%",
+                            63508
                         ],
                         [
                             24,
-                            "live",
-                            25,
-                            "65+ female",
-                            7479,
-                            "15.0%",
-                            49695
+                            "오래",
+                            10,
+                            "18-24 male",
+                            24962,
+                            "35.9%",
+                            69597
                         ],
                         [
                             25,
-                            "natural",
-                            24,
-                            "65+ female",
-                            7463,
-                            "15.7%",
-                            47594
+                            "하나",
+                            10,
+                            "18-24 male",
+                            24623,
+                            "37.4%",
+                            65867
                         ]
                     ],
                     "footnote": "*등장 광고 수 상위 50개 기준"
@@ -2977,228 +2832,228 @@
                     "rows": [
                         [
                             26,
-                            "have",
-                            24,
-                            "65+ female",
-                            8050,
-                            "20.3%",
-                            39677
+                            "먼저",
+                            10,
+                            "18-24 male",
+                            21143,
+                            "33.0%",
+                            64130
                         ],
                         [
                             27,
-                            "most",
-                            23,
-                            "65+ female",
-                            7757,
-                            "16.1%",
-                            48221
+                            "이미",
+                            10,
+                            "18-24 male",
+                            24118,
+                            "38.0%",
+                            63541
                         ],
                         [
                             28,
-                            "than",
-                            23,
-                            "65+ female",
-                            8037,
-                            "17.4%",
-                            46118
+                            "가볍",
+                            10,
+                            "18-24 male",
+                            18957,
+                            "32.4%",
+                            58574
                         ],
                         [
                             29,
-                            "curtain",
-                            23,
-                            "65+ female",
-                            6594,
-                            "16.8%",
-                            39228
+                            "처음",
+                            10,
+                            "18-24 male",
+                            18330,
+                            "35.0%",
+                            52414
                         ],
                         [
                             30,
-                            "out",
-                            22,
-                            "18-24 female",
-                            9046,
-                            "17.5%",
-                            51790
+                            "고민",
+                            10,
+                            "25-34 male",
+                            19283,
+                            "37.1%",
+                            51971
                         ],
                         [
                             31,
-                            "too",
-                            22,
-                            "65+ female",
-                            7704,
-                            "17.7%",
-                            43425
+                            "단순히",
+                            10,
+                            "18-24 male",
+                            17256,
+                            "34.3%",
+                            50283
                         ],
                         [
                             32,
-                            "change",
-                            21,
-                            "18-24 female",
-                            6157,
-                            "13.7%",
-                            45036
+                            "불편",
+                            10,
+                            "18-24 male",
+                            16629,
+                            "33.2%",
+                            50073
                         ],
                         [
                             33,
-                            "get",
-                            21,
-                            "18-24 female",
-                            7003,
-                            "16.2%",
-                            43271
+                            "다르",
+                            10,
+                            "25-34 male",
+                            18713,
+                            "37.7%",
+                            49633
                         ],
                         [
                             34,
-                            "up",
-                            20,
+                            "다시",
+                            10,
                             "25-34 male",
-                            5485,
-                            "12.1%",
-                            45263
+                            14423,
+                            "35.5%",
+                            40578
                         ],
                         [
                             35,
-                            "let",
-                            20,
-                            "65+ female",
-                            6080,
-                            "15.3%",
-                            39815
+                            "움직이",
+                            9,
+                            "18-24 male",
+                            20406,
+                            "37.6%",
+                            54269
                         ],
                         [
                             36,
-                            "help",
-                            20,
-                            "65+ female",
-                            5750,
-                            "15.3%",
-                            37653
+                            "지금",
+                            9,
+                            "18-24 male",
+                            21294,
+                            "39.6%",
+                            53838
                         ],
                         [
                             37,
-                            "sunlight",
-                            20,
-                            "18-24 female",
-                            5761,
-                            "15.3%",
-                            37570
+                            "맞추",
+                            9,
+                            "25-34 male",
+                            15978,
+                            "34.4%",
+                            46454
                         ],
                         [
                             38,
-                            "comfort",
-                            20,
-                            "65+ female",
-                            5227,
-                            "15.1%",
-                            34622
+                            "시간",
+                            9,
+                            "18-24 male",
+                            18247,
+                            "40.1%",
+                            45531
                         ],
                         [
                             39,
-                            "work",
-                            19,
-                            "65+ female",
-                            6018,
-                            "13.7%",
-                            43952
+                            "중요",
+                            9,
+                            "18-24 male",
+                            14381,
+                            "33.2%",
+                            43286
                         ],
                         [
                             40,
-                            "small",
-                            19,
-                            "65+ female",
-                            8015,
-                            "18.9%",
-                            42327
+                            "그리고",
+                            9,
+                            "18-24 male",
+                            11572,
+                            "29.2%",
+                            39604
                         ],
                         [
                             41,
-                            "open",
-                            19,
-                            "65+ female",
-                            4689,
-                            "12.2%",
-                            38455
+                            "이유",
+                            9,
+                            "18-24 male",
+                            12824,
+                            "34.0%",
+                            37737
                         ],
                         [
                             42,
-                            "morning",
-                            18,
-                            "65+ female",
-                            5724,
-                            "13.7%",
-                            41654
+                            "계속",
+                            9,
+                            "25-34 male",
+                            9818,
+                            "29.7%",
+                            33048
                         ],
                         [
                             43,
-                            "even",
-                            18,
-                            "65+ female",
-                            7752,
-                            "19.7%",
-                            39372
+                            "달라지",
+                            8,
+                            "18-24 male",
+                            17796,
+                            "33.0%",
+                            53975
                         ],
                         [
                             44,
-                            "soft",
-                            18,
-                            "65+ female",
-                            3961,
-                            "16.3%",
-                            24322
+                            "느끼",
+                            8,
+                            "18-24 male",
+                            20374,
+                            "39.9%",
+                            51005
                         ],
                         [
                             45,
-                            "still",
-                            17,
-                            "65+ female",
-                            6024,
-                            "15.2%",
-                            39710
+                            "당신",
+                            8,
+                            "18-24 male",
+                            19952,
+                            "40.0%",
+                            49935
                         ],
                         [
                             46,
-                            "create",
-                            17,
-                            "65+ female",
-                            4516,
-                            "13.9%",
-                            32504
+                            "오늘",
+                            8,
+                            "25-34 male",
+                            12808,
+                            "33.0%",
+                            38807
                         ],
                         [
                             47,
-                            "clean",
-                            17,
-                            "65+ female",
-                            6403,
-                            "20.4%",
-                            31376
+                            "위하",
+                            8,
+                            "18-24 male",
+                            13293,
+                            "35.5%",
+                            37434
                         ],
                         [
                             48,
-                            "find",
-                            17,
-                            "18-24 female",
-                            4596,
-                            "15.9%",
-                            28851
+                            "팬츠",
+                            8,
+                            "25-34 male",
+                            13177,
+                            "37.0%",
+                            35614
                         ],
                         [
                             49,
-                            "block",
-                            17,
-                            "65+ female",
-                            4012,
-                            "15.0%",
-                            26759
+                            "체형",
+                            8,
+                            "18-24 male",
+                            12767,
+                            "38.0%",
+                            33577
                         ],
                         [
                             50,
-                            "screen",
-                            16,
-                            "65+ female",
-                            5053,
-                            "13.2%",
-                            38283
+                            "허리",
+                            8,
+                            "25-34 male",
+                            10622,
+                            "33.3%",
+                            31909
                         ]
                     ],
                     "footnote": "*등장 광고 수 상위 50개 기준"
@@ -3218,228 +3073,228 @@
                     "rows": [
                         [
                             1,
-                            "feel",
-                            54,
-                            "65+ female",
-                            915,
-                            "25.5%",
-                            3594
+                            "아니",
+                            37,
+                            "25-34 male",
+                            3034,
+                            "30.3%",
+                            10019
                         ],
                         [
                             2,
-                            "space",
-                            51,
-                            "65+ female",
-                            772,
-                            "23.7%",
-                            3259
+                            "만들",
+                            29,
+                            "25-34 male",
+                            2396,
+                            "33.8%",
+                            7083
                         ],
                         [
                             3,
-                            "make",
-                            43,
-                            "65+ female",
-                            701,
-                            "26.3%",
-                            2666
+                            "바지",
+                            24,
+                            "25-34 male",
+                            1943,
+                            "32.3%",
+                            6016
                         ],
                         [
                             4,
-                            "room",
-                            41,
-                            "65+ female",
-                            629,
-                            "26.2%",
-                            2404
+                            "보이",
+                            23,
+                            "25-34 male",
+                            1960,
+                            "34.6%",
+                            5670
                         ],
                         [
                             5,
-                            "can",
-                            39,
-                            "65+ female",
-                            633,
-                            "24.9%",
-                            2540
+                            "기준",
+                            22,
+                            "25-34 male",
+                            2211,
+                            "36.7%",
+                            6032
                         ],
                         [
                             6,
-                            "not",
-                            36,
-                            "65+ female",
-                            578,
-                            "22.8%",
-                            2530
+                            "그래서",
+                            22,
+                            "25-34 male",
+                            1890,
+                            "36.1%",
+                            5242
                         ],
                         [
                             7,
-                            "right",
-                            36,
-                            "65+ female",
-                            629,
-                            "27.1%",
-                            2319
+                            "사람",
+                            20,
+                            "25-34 male",
+                            1641,
+                            "34.5%",
+                            4754
                         ],
                         [
                             8,
-                            "when",
-                            36,
-                            "65+ female",
-                            588,
-                            "25.0%",
-                            2355
+                            "스럽",
+                            19,
+                            "25-34 male",
+                            1944,
+                            "37.5%",
+                            5179
                         ],
                         [
                             9,
-                            "what",
-                            35,
-                            "65+ female",
-                            535,
-                            "22.9%",
-                            2340
+                            "선택",
+                            18,
+                            "25-34 male",
+                            1673,
+                            "36.0%",
+                            4644
                         ],
                         [
                             10,
-                            "day",
-                            34,
-                            "65+ female",
-                            493,
-                            "20.1%",
-                            2450
+                            "필요",
+                            18,
+                            "25-34 male",
+                            1642,
+                            "38.2%",
+                            4301
                         ],
                         [
                             11,
-                            "keep",
-                            34,
-                            "65+ female",
-                            333,
-                            "17.2%",
-                            1939
+                            "시작",
+                            18,
+                            "25-34 male",
+                            1409,
+                            "35.5%",
+                            3973
                         ],
                         [
                             12,
-                            "more",
-                            31,
-                            "65+ female",
-                            506,
-                            "24.9%",
-                            2032
+                            "고르",
+                            17,
+                            "25-34 male",
+                            1462,
+                            "33.0%",
+                            4434
                         ],
                         [
                             13,
-                            "just",
-                            31,
-                            "65+ female",
-                            532,
-                            "29.1%",
-                            1827
+                            "기장",
+                            17,
+                            "25-34 male",
+                            1410,
+                            "32.4%",
+                            4353
                         ],
                         [
                             14,
-                            "time",
-                            30,
-                            "65+ female",
-                            435,
-                            "20.8%",
-                            2088
+                            "문제",
+                            16,
+                            "25-34 male",
+                            1295,
+                            "32.7%",
+                            3957
                         ],
                         [
                             15,
-                            "like",
-                            30,
-                            "65+ female",
-                            413,
-                            "21.7%",
-                            1901
+                            "자연",
+                            15,
+                            "25-34 male",
+                            1539,
+                            "37.2%",
+                            4135
                         ],
                         [
                             16,
-                            "look",
-                            29,
-                            "65+ female",
-                            436,
-                            "23.7%",
-                            1840
+                            "가장",
+                            14,
+                            "25-34 male",
+                            1534,
+                            "37.2%",
+                            4122
                         ],
                         [
                             17,
-                            "one",
-                            29,
-                            "65+ female",
-                            454,
-                            "26.6%",
-                            1708
+                            "생각",
+                            14,
+                            "25-34 male",
+                            1042,
+                            "30.9%",
+                            3374
                         ],
                         [
                             18,
-                            "all",
-                            27,
-                            "65+ female",
-                            385,
-                            "21.9%",
-                            1754
+                            "너무",
+                            13,
+                            "25-34 male",
+                            1572,
+                            "34.6%",
+                            4546
                         ],
                         [
                             19,
-                            "need",
-                            27,
-                            "65+ female",
-                            486,
-                            "25.1%",
-                            1940
+                            "하지만",
+                            13,
+                            "25-34 male",
+                            898,
+                            "29.3%",
+                            3068
                         ],
                         [
                             20,
-                            "way",
-                            27,
-                            "65+ female",
-                            244,
-                            "17.8%",
-                            1367
+                            "순간",
+                            12,
+                            "25-34 male",
+                            1554,
+                            "31.5%",
+                            4934
                         ],
                         [
                             21,
-                            "every",
-                            27,
-                            "65+ female",
-                            466,
-                            "28.1%",
-                            1656
+                            "때문",
+                            12,
+                            "25-34 male",
+                            1068,
+                            "32.8%",
+                            3253
                         ],
                         [
                             22,
-                            "how",
-                            27,
-                            "65+ female",
-                            342,
-                            "20.7%",
-                            1649
+                            "사이즈",
+                            12,
+                            "25-34 male",
+                            846,
+                            "32.2%",
+                            2626
                         ],
                         [
                             23,
-                            "start",
-                            25,
-                            "65+ female",
-                            391,
-                            "25.4%",
-                            1542
+                            "원단",
+                            11,
+                            "18-24 male",
+                            916,
+                            "25.7%",
+                            3565
                         ],
                         [
                             24,
-                            "live",
-                            25,
-                            "65+ female",
-                            278,
-                            "19.3%",
-                            1438
+                            "오래",
+                            10,
+                            "18-24 male",
+                            999,
+                            "28.7%",
+                            3479
                         ],
                         [
                             25,
-                            "natural",
-                            24,
-                            "65+ female",
-                            329,
-                            "21.9%",
-                            1503
+                            "하나",
+                            10,
+                            "25-34 male",
+                            995,
+                            "30.6%",
+                            3253
                         ]
                     ],
                     "footnote": "*등장 광고 수 상위 50개 기준"
@@ -3459,228 +3314,228 @@
                     "rows": [
                         [
                             26,
-                            "have",
-                            24,
-                            "65+ female",
-                            466,
-                            "30.8%",
-                            1515
+                            "먼저",
+                            10,
+                            "25-34 male",
+                            1037,
+                            "32.3%",
+                            3207
                         ],
                         [
                             27,
-                            "most",
-                            23,
-                            "65+ female",
-                            476,
-                            "26.8%",
-                            1778
+                            "이미",
+                            10,
+                            "25-34 male",
+                            1380,
+                            "38.5%",
+                            3584
                         ],
                         [
                             28,
-                            "than",
-                            23,
-                            "65+ female",
-                            472,
-                            "27.6%",
-                            1709
+                            "가볍",
+                            10,
+                            "25-34 male",
+                            866,
+                            "30.9%",
+                            2802
                         ],
                         [
                             29,
-                            "curtain",
-                            23,
-                            "65+ female",
-                            413,
-                            "27.8%",
-                            1485
+                            "처음",
+                            10,
+                            "25-34 male",
+                            1038,
+                            "32.9%",
+                            3152
                         ],
                         [
                             30,
-                            "out",
-                            22,
-                            "18-24 female",
-                            213,
-                            "15.1%",
-                            1406
+                            "고민",
+                            10,
+                            "25-34 male",
+                            918,
+                            "37.4%",
+                            2452
                         ],
                         [
                             31,
-                            "too",
-                            22,
-                            "65+ female",
-                            303,
-                            "23.2%",
-                            1307
+                            "단순히",
+                            10,
+                            "25-34 male",
+                            864,
+                            "33.5%",
+                            2582
                         ],
                         [
                             32,
-                            "change",
-                            21,
-                            "65+ female",
-                            306,
-                            "20.1%",
-                            1522
+                            "불편",
+                            10,
+                            "25-34 male",
+                            831,
+                            "34.5%",
+                            2407
                         ],
                         [
                             33,
-                            "get",
-                            21,
-                            "65+ female",
-                            217,
-                            "16.4%",
-                            1327
+                            "다르",
+                            10,
+                            "25-34 male",
+                            1004,
+                            "37.6%",
+                            2673
                         ],
                         [
                             34,
-                            "up",
-                            20,
-                            "65+ female",
-                            175,
-                            "15.4%",
-                            1139
+                            "다시",
+                            10,
+                            "25-34 male",
+                            766,
+                            "33.9%",
+                            2259
                         ],
                         [
                             35,
-                            "let",
-                            20,
-                            "65+ female",
-                            306,
-                            "25.7%",
-                            1192
+                            "움직이",
+                            9,
+                            "25-34 male",
+                            985,
+                            "35.4%",
+                            2784
                         ],
                         [
                             36,
-                            "help",
-                            20,
-                            "65+ female",
-                            242,
-                            "22.6%",
-                            1070
+                            "지금",
+                            9,
+                            "25-34 male",
+                            924,
+                            "33.6%",
+                            2750
                         ],
                         [
                             37,
-                            "sunlight",
-                            20,
-                            "65+ female",
-                            197,
-                            "17.8%",
-                            1108
+                            "맞추",
+                            9,
+                            "25-34 male",
+                            781,
+                            "34.5%",
+                            2263
                         ],
                         [
                             38,
-                            "comfort",
-                            20,
-                            "65+ female",
-                            280,
-                            "26.4%",
-                            1061
+                            "시간",
+                            9,
+                            "18-24 male",
+                            722,
+                            "34.1%",
+                            2118
                         ],
                         [
                             39,
-                            "work",
-                            19,
-                            "65+ female",
-                            291,
-                            "19.7%",
-                            1476
+                            "중요",
+                            9,
+                            "18-24 male",
+                            508,
+                            "27.9%",
+                            1821
                         ],
                         [
                             40,
-                            "small",
-                            19,
-                            "65+ female",
-                            449,
-                            "29.6%",
-                            1515
+                            "그리고",
+                            9,
+                            "25-34 male",
+                            458,
+                            "25.8%",
+                            1778
                         ],
                         [
                             41,
-                            "open",
-                            19,
-                            "65+ female",
-                            206,
-                            "20.1%",
-                            1025
+                            "이유",
+                            9,
+                            "25-34 male",
+                            527,
+                            "32.2%",
+                            1638
                         ],
                         [
                             42,
-                            "morning",
-                            18,
-                            "65+ female",
-                            214,
-                            "19.4%",
-                            1102
+                            "계속",
+                            9,
+                            "25-34 male",
+                            453,
+                            "23.7%",
+                            1914
                         ],
                         [
                             43,
-                            "even",
-                            18,
-                            "65+ female",
-                            518,
-                            "30.9%",
-                            1676
+                            "달라지",
+                            8,
+                            "25-34 male",
+                            1045,
+                            "31.9%",
+                            3279
                         ],
                         [
                             44,
-                            "soft",
-                            18,
-                            "65+ female",
-                            237,
-                            "24.4%",
-                            970
+                            "느끼",
+                            8,
+                            "25-34 male",
+                            797,
+                            "35.1%",
+                            2272
                         ],
                         [
                             45,
-                            "still",
-                            17,
-                            "65+ female",
-                            350,
-                            "21.5%",
-                            1631
+                            "당신",
+                            8,
+                            "25-34 male",
+                            826,
+                            "35.6%",
+                            2317
                         ],
                         [
                             46,
-                            "create",
-                            17,
-                            "65+ female",
-                            244,
-                            "22.2%",
-                            1100
+                            "오늘",
+                            8,
+                            "25-34 male",
+                            559,
+                            "34.1%",
+                            1641
                         ],
                         [
                             47,
-                            "clean",
-                            17,
-                            "65+ female",
-                            389,
-                            "32.1%",
-                            1210
+                            "위하",
+                            8,
+                            "25-34 male",
+                            737,
+                            "35.0%",
+                            2107
                         ],
                         [
                             48,
-                            "find",
-                            17,
-                            "65+ female",
-                            146,
-                            "17.8%",
-                            822
+                            "팬츠",
+                            8,
+                            "25-34 male",
+                            605,
+                            "35.3%",
+                            1712
                         ],
                         [
                             49,
-                            "block",
-                            17,
-                            "65+ female",
-                            212,
-                            "22.7%",
-                            934
+                            "체형",
+                            8,
+                            "25-34 male",
+                            536,
+                            "32.8%",
+                            1636
                         ],
                         [
                             50,
-                            "screen",
-                            16,
-                            "65+ female",
-                            238,
-                            "18.2%",
-                            1307
+                            "허리",
+                            8,
+                            "25-34 male",
+                            483,
+                            "30.0%",
+                            1608
                         ]
                     ],
                     "footnote": "*등장 광고 수 상위 50개 기준"

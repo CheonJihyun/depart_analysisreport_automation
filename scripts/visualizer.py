@@ -256,83 +256,68 @@ def _line_label_indices(values: List[Any]) -> List[int]:
     label_idxs.sort()
     return label_idxs
 
-
 def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compact: bool = False) -> str:
     if not dataset:
         return ""
+
     labels = dataset.get("labels") or []
     series = dataset.get("series") or []
-    if not labels or not series:
-        return ""
 
-    # 데이터 1개 이하인 경우 표시 X
-    if len(labels) <= 1:
+    if not labels or not series or len(labels) <= 1:
         return ""
 
     x = list(range(len(labels)))
     fig, ax = plt.subplots(figsize=(8.0, 4.4))
-    # fig, ax = plt.subplots(figsize=(8.0, 4.4) if not compact else (3.6, 2.0))
-    has_bottom_month_band = False
+
     unit = str(dataset.get("unit") or "").strip()
     plotted_values: List[float] = []
-
     show_legend = bool(dataset.get("show_legend"))
+
+    # 제목용 라벨 계산
+    title_text = str(dataset.get("title") or "").strip()
+    chart_label = "주별" if "주별" in title_text else "월별" if "월별" in title_text else None
 
     label_map = {
         "spend": "광고비",
         "revenue": "매출발생",
     }
 
+    color_map_line = {
+        "spend": "#1565C0",
+        "revenue": "#C62828",
+    }
+
+    # 데이터 라인 그리기
     for idx, s in enumerate(series):
         raw_data = s.get("data") or []
         if not raw_data:
             continue
+
         data = pd.to_numeric(pd.Series(raw_data), errors="coerce").tolist()
         x_values = x[: len(data)]
         if not x_values:
             continue
 
-        color = color_map["series"][idx % len(color_map["series"])]
-        # ----------추가----------
         series_name = s.get("name") or f"series_{idx}"
 
-        color_map_line = {
-            "spend": "#1565C0",     # 광고비
-            "revenue": "#C62828",   # 매출
-        }
-
-        if dataset.get("show_legend"):
-            color = color_map_line.get(
-                series_name,
-                color_map["series"][idx % len(color_map["series"])]
-            )
-        else:
-            color = color_map["series"][idx % len(color_map["series"])]
-        
+        color = (
+            color_map_line.get(series_name, color_map["series"][idx % len(color_map["series"])])
+            if show_legend
+            else color_map["series"][idx % len(color_map["series"])]
+        )
 
         plot_label = label_map.get(series_name, series_name)
 
-        if show_legend:
-            ax.plot(
-                x_values,
-                data,
-                color=color,
-                linewidth=2,
-                marker="o",
-                markersize=3.8,
-                label=plot_label,
-            )
-        else:
-            ax.plot(
-                x_values,
-                data,
-                color=color,
-                linewidth=2,
-                marker="o",
-                markersize=3.8,
-            )
-        # ------------------------
-        
+        ax.plot(
+            x_values,
+            data,
+            color=color,
+            linewidth=2,
+            marker="o",
+            markersize=3.8,
+            label=plot_label if show_legend else None,
+        )
+
         label_idx_set = set(_line_label_indices(data))
 
         for x_val, y_val in zip(x_values, data):
@@ -341,147 +326,123 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
 
             y_num = float(y_val)
             plotted_values.append(y_num)
+
             if x_val not in label_idx_set:
                 continue
-            label = _format_chart_value(y_num)
 
             ax.annotate(
-                label,
+                _format_chart_value(y_num),
                 (x_val, y_num),
                 textcoords="offset points",
-                xytext=(0, 5 if compact else 10),
+                xytext=(0, 6),
                 ha="center",
                 va="bottom",
-                fontsize=6 if compact else 8,
+                fontsize=8,
                 color=color,
                 clip_on=False,
             )
 
-    #-----순서 변경▼-----
     if not plotted_values:
         return ""
 
-    y_min = min(plotted_values)
-    y_max = max(plotted_values)
+    # Y축 범위 설정
+    y_min, y_max = min(plotted_values), max(plotted_values)
     y_span = y_max - y_min
     y_pad = max(y_span * 0.22, 0.3)
-    if unit == "%":
-        y_low = 0
-    else:
-        y_low = y_min - (y_pad * 0.35 if y_span < 1e-12 else y_pad * 0.20)
+
+    y_low = 0 if unit == "%" else y_min - y_pad * 0.2
     y_high = y_max + y_pad
+
     if abs(y_high - y_low) < 1e-12:
         y_high = y_low + 1.0
+
     ax.set_ylim(y_low, y_high)
 
-    if compact:
-        ax.set_xticks([])
-        ax.set_yticks([])
-        for spine in ax.spines.values():
-            spine.set_visible(False)
-    else:
-        chart_label = None
-        title_text = str(dataset.get("title") or "").strip()
+    # 월 밴드
+    month_spans = _extract_month_spans(labels)
 
-        if "주별" in title_text:
-            chart_label = "주별"
-        elif "월별" in title_text:
-            chart_label = "월별"
+    if month_spans:
+        ax.set_xlim(-0.5, len(labels) - 0.5)
 
-        month_spans = _extract_month_spans(labels)
+        month_band_ymin, month_band_ymax = -0.06, 0.0
 
-        if month_spans:
-            if len(labels) > 1:
-                ax.set_xlim(-0.5, len(labels) - 0.5)
+        for span_idx, span in enumerate(month_spans):
+            start, end, period = span["start"], span["end"], span["month"]
 
-            month_band_ymin, month_band_ymax = -0.12, 0.0
-            for span_idx, span in enumerate(month_spans):
-                start = span["start"]
-                end = span["end"]
-                period = span["month"]
-
-                ax.add_patch(
-                    Rectangle(
-                        (start - 0.5, month_band_ymin),
-                        (end - start) + 1.0,
-                        month_band_ymax - month_band_ymin,
-                        transform=ax.get_xaxis_transform(),
-                        facecolor="#f5f5f5" if span_idx % 2 == 0 else "#fafafa",
-                        edgecolor="none",
-                        zorder=0,
-                        clip_on=False,
-                    )
-                )
-                ax.text(
-                    (start + end) / 2,
-                    (month_band_ymin + month_band_ymax) / 2,
-                    f"{period.year}.{period.month:02d}",
+            ax.add_patch(
+                Rectangle(
+                    (start - 0.5, month_band_ymin),
+                    (end - start) + 1.0,
+                    month_band_ymax - month_band_ymin,
                     transform=ax.get_xaxis_transform(),
-                    ha="center",
-                    va="center",
-                    fontsize=7.5,
-                    color="#7a7a7a",
-                    zorder=1,
+                    facecolor="#f5f5f5" if span_idx % 2 == 0 else "#fafafa",
+                    edgecolor="none",
+                    zorder=0,
                     clip_on=False,
                 )
-            has_bottom_month_band = True
-
-            for span in month_spans[1:]:
-                ax.axvline(
-                    span["start"] - 0.5,
-                    color="#d9d9d9",
-                    linestyle=(0, (2, 3)),
-                    linewidth=0.9,
-                    zorder=1.5,
-                )
-
-        ax.set_xticks([])
-        if unit:
-            ax.set_ylabel(unit, fontsize=9.5, color=color_map["muted"])
-
-        ax.yaxis.set_major_formatter(
-            FuncFormatter(
-                lambda v, _: f"{int(round(v)):,}" if abs(v - round(v)) < 1e-9 else f"{v:,.2f}"
             )
+
+            ax.text(
+                (start + end) / 2,
+                (month_band_ymin + month_band_ymax) / 2,
+                f"{period.year}.{period.month:02d}",
+                transform=ax.get_xaxis_transform(),
+                ha="center",
+                va="center",
+                fontsize=7.5,
+                color="#7a7a7a",
+                zorder=1,
+                clip_on=False,
+            )
+
+        for span in month_spans[1:]:
+            ax.axvline(
+                span["start"] - 0.5,
+                color="#d9d9d9",
+                linestyle=(0, (2, 3)),
+                linewidth=0.9,
+                zorder=1.5,
+            )
+
+    # 스타일
+    ax.set_xticks([])
+
+    if unit:
+        ax.set_ylabel(unit, fontsize=9.5, color=color_map["muted"])
+
+    ax.yaxis.set_major_formatter(
+        FuncFormatter(
+            lambda v, _: f"{int(round(v)):,}" if abs(v - round(v)) < 1e-9 else f"{v:,.2f}"
+        )
+    )
+
+    _style_axes(ax, color_map, grid_axis=None)
+    ax.tick_params(axis="x", length=0, labelbottom=False)
+
+    # 제목
+    if chart_label:
+        ax.set_title(
+            chart_label,
+            fontsize=17,
+            color="#2E2E2E",
+            fontweight="bold",
+            pad=0,
+            y=1.03
         )
 
-        _style_axes(ax, color_map, grid_axis=None)
-        ax.tick_params(axis="x", which="both", length=0, labelbottom=False)
-
-    if not compact:
-        title_text = str(dataset.get("title") or "").strip()
-        chart_label = None
-
-        if "주별" in title_text:
-            chart_label = "주별"
-        elif "월별" in title_text:
-            chart_label = "월별"
-
-        if chart_label:
-            ax.set_title(
-                chart_label,
-                fontsize=17,
-                color="#2E2E2E",
-                fontweight="bold",
-                pad=18
-            )
-
-    fig.tight_layout(pad=0.6, rect=(0, 0, 1, 0.95))
-
-    # 범례 layout 뒤에
-    if show_legend and not compact:
+    # 범례
+    if show_legend:
         ax.legend(
             loc="upper right",
-            bbox_to_anchor=(1.0, 1.02),
+            bbox_to_anchor=(1.0, 1.0),
             ncol=len(series),
             frameon=False,
             fontsize=9,
         )
 
-    plt.subplots_adjust(left=0.14, right=0.96, top=0.95)
-
+    # 위치 조정
+    ax.set_position([0.14, 0.20, 0.82, 0.72])
     return _fig_to_svg(fig)
-
 
 def render_bar_h_chart(
     dataset: Dict[str, Any],
@@ -1266,7 +1227,7 @@ def render_follower_gender_doughnut_chart(chart_data, color_map):
         radius=0.98,
         wedgeprops=dict(width=0.48, edgecolor="white"),
         autopct=autopct_func,
-        pctdistance=0.77
+        pctdistance=0.74
     )
 
     for i, t in enumerate(autotexts):
@@ -1391,72 +1352,3 @@ def _render_purchase_conversion_heatmap(
 
     fig.tight_layout(pad=0.6)
     return _fig_to_svg(fig)
-# def _render_purchase_conversion_heatmap(
-#     rows: List[Dict[str, Any]],
-#     color_map: Dict[str, Any],
-# ) -> str:
-#     df = pd.DataFrame(rows)
-#     if df.empty or "purchases" not in df.columns:
-#         return ""
-#     if "age" not in df.columns or "gender" not in df.columns:
-#         return ""
-
-#     pivot = df.pivot_table(index="gender", columns="age", values="purchases", aggfunc="sum")
-
-#     age_order = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
-#     gender_order = ["female", "male"]
-#     pivot = pivot.reindex(
-#         index=[g for g in gender_order if g in pivot.index],
-#         columns=[a for a in age_order if a in pivot.columns],
-#     )
-
-#     if pivot.empty:
-#         return ""
-
-#     fig, ax = plt.subplots(figsize=(10.5, 5.2))
-#     cmap = LinearSegmentedColormap.from_list(
-#         "theme",
-#         [color_map["lighter"], color_map["light"], color_map["base"], color_map["dark"]],
-#     )
-
-#     heat_values = pivot.values.astype(float)
-#     vmin = float(np.nanmin(heat_values))
-#     vmax = float(np.nanmax(heat_values))
-
-#     im = ax.imshow(heat_values, cmap=cmap)
-#     cbar = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.035)
-#     cbar.outline.set_visible(False)
-#     cbar.ax.tick_params(labelsize=10, colors="#666666")
-#     cbar.formatter = FuncFormatter(lambda x, _: f"{int(round(float(x))):,}")
-#     cbar.update_ticks()
-
-#     for i in range(pivot.shape[0]):
-#         for j in range(pivot.shape[1]):
-#             val = pivot.iloc[i, j]
-#             if pd.isna(val):
-#                 continue
-
-#             norm = 0.5 if abs(vmax - vmin) < 1e-12 else (float(val) - vmin) / (vmax - vmin)
-#             cell_color = cmap(norm)
-
-#             ax.text(
-#                 j,
-#                 i,
-#                 f"{int(round(float(val))):,}",
-#                 ha="center",
-#                 va="center",
-#                 fontsize=11,
-#                 color=_contrast_text_color(cell_color, threshold=0.45),
-#             )
-
-#     ax.set_xticks(range(len(pivot.columns)))
-#     ax.set_xticklabels([str(c) for c in pivot.columns], fontsize=11)
-#     ax.set_yticks(range(len(pivot.index)))
-#     ax.set_yticklabels([str(c) for c in pivot.index], fontsize=11)
-#     ax.tick_params(axis="x", bottom=True, top=False)
-
-#     for spine in ax.spines.values():
-#         spine.set_visible(False)
-
-#     fig.tight_layout(pad=0.6)
-#     return _fig_to_svg(fig)

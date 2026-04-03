@@ -216,9 +216,10 @@
     {{ page_header('전체 성과 분석') }}
     {{ big_title('인스타그램 프로필 방문수') }}
 
-    <div class="page-body">
+    <div class="page-body line-chart-row">
       <div class="span-6">
         {{ figure(charts.profile_visits_1, alt='profile visits chart 1') }}
+
       </div>
       <div class="span-6">
         {{ figure(charts.profile_visits_2, alt='profile visits chart 2') }}
@@ -235,7 +236,7 @@
     {{ page_header('전체 성과 분석') }}
     {{ big_title('오가닉 조회수') }}
 
-    <div class="page-body">
+    <div class="page-body line-chart-row">
       <div class="span-6">
         {{ figure(charts.organic_views_1, alt='organic views chart 1') }}
       </div>
@@ -256,7 +257,7 @@
     {{ page_header('전체 성과 분석') }}
     {{ big_title('CTR') }}
 
-    <div class="page-body">
+    <div class="page-body line-chart-row">
       <div class="span-6">
         {{ figure(charts.ctr_weekly, alt='ctr weekly chart') }}
       </div>
@@ -279,12 +280,12 @@
     {{ big_title(purchase_analysis_pages.titles.page_1_title) }}
 
     {% if charts.purchase_roas_monthly %}
-    <div class="page-body roas-chart-row">
+    <div class="page-body line-chart-row">
     {% else %}
-    <div class="page-body roas-chart-row roas-chart-row--single">
+    <div class="page-body line-chart-row line-chart-row--single">
     {% endif %}
 
-      <div class="span-6 roas-chart-row__weekly">
+      <div class="span-6">
         {{ figure(charts.purchase_roas_weekly, alt='purchase roas weekly') }}
       </div>
 
@@ -306,7 +307,7 @@
       {{ page_header(purchase_analysis_pages.titles.section_title) }}
       {{ big_title(purchase_analysis_pages.titles.page_2_title) }}
 
-      <div class="page-body">
+      <div class="page-body line-chart-row">
         <div class="span-6">
           {{ figure(charts.purchase_count_weekly, alt='purchase count weekly') }}
         </div>
@@ -327,12 +328,12 @@
     {{ big_title(spend_revenue_pages.titles.page_1_title) }}
 
     {% if charts.spend_revenue_monthly %}
-    <div class="page-body roas-chart-row">
+    <div class="page-body line-chart-row">
     {% else %}
-    <div class="page-body roas-chart-row roas-chart-row--single">
+    <div class="page-body line-chart-row line-chart-row--single">
     {% endif %}
 
-      <div class="span-6 roas-chart-row__weekly">
+      <div class="span-6">
         {{ figure(charts.spend_revenue_weekly, alt='spend revenue weekly') }}
       </div>
 

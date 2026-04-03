@@ -1158,9 +1158,6 @@ body {
 /* ========================= 
   팔로워 인구통계 
   ========================= */ 
-/* ========================= 
-   팔로워 인구통계 (A4 FULL)
-   ========================= */
 
 .page--follower-demographics {
   height: 100%;
@@ -1207,7 +1204,7 @@ body {
 
 /* 상단 (도넛) */
 .page--follower-demographics .row:first-child {
-  flex: 0.9;
+  flex: 0.95;
 }
 
 /* 하단 (바차트) */
@@ -1225,18 +1222,39 @@ body {
 
 
 /* ========================= 
-  주별, 월별 차트 정렬 
-  ========================= */ 
-/* 월별 없을 때: row 자체에서 가운데 정렬 */
-.roas-chart-row--single {
-  display: flex;              
-  justify-content: center;
-  align-items: center;        /* (세로 중앙) */
-  min-height: 500px;          /* (공간 확보) */
+  라인차트 위치 조정
+  ========================= */
+/* 2개 차트 */
+.line-chart-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  max-width: 2200px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: px;
+  align-items: center;
 }
 
-/* 주별 그래프 크기는 기존과 동일하게 유지 */
-.roas-chart-row--single .roas-chart-row__weekly {
-  flex: 0 0 50%;
-  max-width: 50%;
+.line-chart-row .span-6 {
+  grid-column: span 1;
+  width: 100%;
+}
+
+.line-chart-row .span-12 {
+  grid-column: 1 / -1;
+}
+
+/* 1개 차트 */
+.line-chart-row.line-chart-row--single {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 520px;
+  margin-top: 10px;
+}
+
+.line-chart-row--single .span-6 {
+  max-width: 60%;
+  margin: 0 auto;
 }
