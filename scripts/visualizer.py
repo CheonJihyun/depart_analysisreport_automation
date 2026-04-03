@@ -344,46 +344,65 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
 
                 if x_gap <= 2 and y_gap < series_y_span * 0.12:
                     continue
+            
 
-            # ===== 시리즈별 위치 분기 =====
-            if show_legend:
-                if series_name == "spend":
-                    base_offset = 10
-                    va = "bottom"
-                elif series_name == "revenue":
-                    base_offset = 18
-                    va = "bottom"
+            # 광고비/매출 첫 값 겹침 방지
+            for idx, (x_val, y_num) in enumerate(zip(x_values, data)):
+                if pd.isna(y_num):
+                    continue
+
+                y_num = float(y_num)
+                plotted_values.append(y_num)
+                if x_val not in label_idx_set:
+                    continue
+
+                # 기본값
+                if show_legend:
+                    if series_name == "spend":
+                        base_offset = 6
+                        va = "bottom"
+                    elif series_name == "revenue":
+                        base_offset = 6
+                        va = "bottom"
+                    else:
+                        base_offset = 6
+                        va = "bottom"
                 else:
                     base_offset = 6
                     va = "bottom"
-            else:
-                base_offset = 6
-                va = "bottom"
 
-            # 위치
-            xytext = (0, base_offset)
-            ha = "center"
+                # 첫 번째 값만 강제 위치
+                if idx == 0:
+                    if series_name == "spend":
+                        base_offset = 6   # 광고비는 아래
+                        va = "bottom"
+                    elif series_name == "revenue":
+                        base_offset = 17    # 매출은 위
+                        va = "bottom"
 
-            ax.annotate(
-                f"{_format_chart_value(y_num)}{unit}" if unit else _format_chart_value(y_num),
-                (x_val, y_num),
-                textcoords="offset points",
-                xytext=xytext,
-                ha=ha,
-                va=va,
-                fontsize=8,
-                color=color,
-                clip_on=False,
-                bbox=dict(
-                    boxstyle="round,pad=0.15",
-                    facecolor="white",
-                    edgecolor="none",
-                    alpha=0.85
-                ),
-            )
+                xytext = (0, base_offset)
+                ha = "center"
 
-            last_labeled_x = x_val
-            last_labeled_y = y_num
+                ax.annotate(
+                    f"{_format_chart_value(y_num)}{unit}" if unit else _format_chart_value(y_num),
+                    (x_val, y_num),
+                    textcoords="offset points",
+                    xytext=xytext,
+                    ha=ha,
+                    va=va,
+                    fontsize=8,
+                    color=color,
+                    clip_on=False,
+                    bbox=dict(
+                        boxstyle="round,pad=0.15",
+                        facecolor="white",
+                        edgecolor="none",
+                        alpha=0.85
+                    ),
+                )
+
+                last_labeled_x = x_val
+                last_labeled_y = y_num
             
     if not plotted_values:
         return ""
