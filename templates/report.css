@@ -1220,10 +1220,18 @@ body {
   color: #666;
 }
 
-
 /* ========================= 
   라인차트 위치 조정
   ========================= */
+.title-block {
+  margin-bottom: 2mm;
+}
+
+.page-body.line-chart-row {
+  align-content: start !important;
+  min-height: auto !important;
+}
+
 /* 2개 차트 */
 .line-chart-row {
   display: grid;
@@ -1231,30 +1239,49 @@ body {
   gap: 32px;
   max-width: 2200px;
   width: 100%;
-  margin: 0 auto;
-  min-height: px;
-  align-items: center;
+  margin: 0 auto !important;
+  padding-top: 0 !important;
+  align-items: start !important;
 }
 
 .line-chart-row .span-6 {
   grid-column: span 1;
   width: 100%;
+  padding-top: 0 !important;
+  align-self: start !important;
+}
+
+.line-chart-row .figure {
+  margin-top: 50mm !important;   /* 여기로 이동 */
 }
 
 .line-chart-row .span-12 {
   grid-column: 1 / -1;
 }
 
+.line-chart-row img,
+.line-chart-row svg,
+.line-chart-row figure {
+  display: block;
+}
+
 /* 1개 차트 */
 .line-chart-row.line-chart-row--single {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 520px;
-  margin-top: 10px;
+  align-items: flex-start !important;
+  min-height: 0 !important;
+  height: auto;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .line-chart-row--single .span-6 {
   max-width: 60%;
-  margin: 0 auto;
+  margin: 0 auto !important;
+  padding-top: 0 !important;
+}
+
+.line-chart-row--single .figure {
+  margin-top: 50mm !important;
 }

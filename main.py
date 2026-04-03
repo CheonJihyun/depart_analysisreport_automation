@@ -8,7 +8,7 @@ from typing import Any
 from urllib.parse import unquote, urlparse
 import pandas as pd
 from scripts.processor import _normalize_keyword_by_pos, _best_adverb_score, kiwi, VERB_ADJ_TAGS
-from scripts.visualizer import build_color_map, complementary_hex, render_dataset, is_dark_color, render_bubble_chart, render_purchase_pie_chart, render_follower_gender_doughnut_chart, render_follower_age_gender_stacked_barh_chart, _render_purchase_conversion_heatmap
+from scripts.visualizer import build_color_map, complementary_hex, render_dataset, is_dark_color, render_bubble_chart, render_purchase_pie_chart, render_follower_gender_doughnut_chart, render_follower_age_gender_stacked_barh_chart
 from scripts.reporter import generate_html
 from to_json import run as generate_json
 import time
@@ -511,7 +511,8 @@ def run():
         "main_age": ["25-34","35-44"],
         "main_gender": "",
         "avoid_age": "65+",
-        "avoid_gender": ""
+        "avoid_gender": "",
+        "currency": ""  # ""=원화, "dollar"=달러
     }
     target_id, fb_ad_account_id = config["target_id"], config["fb_ad_account_id"]
     start, end = config["start"], config["end"]
@@ -520,13 +521,14 @@ def run():
     has_main_target = _has_selector(main_age) or _has_selector(main_gender)
     has_avoid_target = _has_selector(avoid_age) or _has_selector(avoid_gender)
     main_label = _target_label(main_age, main_gender)
-    avoid_label = _target_label(avoid_age, avoid_gender)
+    avoid_label = _target_label(avoid_age, avoid_gender)  
+    currency=config["currency"]
 
     # 3. to_json 실행코드 (수정된 파라미터 방식)
     generate_json(target_id=target_id, fb_ad_account_id=fb_ad_account_id,\
                   start=start, end=end,\
                    main_age=main_age, main_gender=main_gender,\
-                    avoid_age=avoid_age, avoid_gender=avoid_gender)
+                    avoid_age=avoid_age, avoid_gender=avoid_gender, currency=currency)
     
     report_path = "json_reports/integrated_report.json"
     theme_color = "#1A1A1A"

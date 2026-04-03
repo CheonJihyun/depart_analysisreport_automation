@@ -26,10 +26,10 @@ DEFAULT_THEME = "#4e73df"
 def _configure_matplotlib_fonts() -> None:
     # Prefer Korean-capable fonts to avoid broken glyphs in SVG.
     preferred = [
-        "Apple SD Gothic Neo",
+        #"Apple SD Gothic Neo",
         "Noto Sans KR",
         "Malgun Gothic",
-        "Arial Unicode MS",
+        #"Arial Unicode MS",
         "DejaVu Sans",
     ]
     plt.rcParams["font.family"] = preferred
@@ -319,8 +319,15 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         )
 
         label_idx_set = set(_line_label_indices(data))
+        last_labeled_x = None
+        last_labeled_y = None
 
-        for x_val, y_val in zip(x_values, data):
+        valid_values = [float(v) for v in data if pd.notna(v)]
+        series_y_min = min(valid_values)
+        series_y_max = max(valid_values)
+        series_y_span = max(series_y_max - series_y_min, 1)
+
+        for point_idx, (x_val, y_val) in enumerate(zip(x_values, data)):
             if pd.isna(y_val):
                 continue
 
@@ -330,18 +337,54 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
             if x_val not in label_idx_set:
                 continue
 
+            # ===== 라벨 겹침 방지 =====
+            if last_labeled_x is not None and last_labeled_y is not None:
+                x_gap = abs(x_val - last_labeled_x)
+                y_gap = abs(y_num - last_labeled_y)
+
+                if x_gap <= 2 and y_gap < series_y_span * 0.12:
+                    continue
+
+            # ===== 시리즈별 위치 분기 =====
+            if show_legend:
+                if series_name == "spend":
+                    base_offset = 10
+                    va = "bottom"
+                elif series_name == "revenue":
+                    base_offset = 18
+                    va = "bottom"
+                else:
+                    base_offset = 6
+                    va = "bottom"
+            else:
+                base_offset = 6
+                va = "bottom"
+
+            # 위치
+            xytext = (0, base_offset)
+            ha = "center"
+
             ax.annotate(
-                _format_chart_value(y_num),
+                f"{_format_chart_value(y_num)}{unit}" if unit else _format_chart_value(y_num),
                 (x_val, y_num),
                 textcoords="offset points",
-                xytext=(0, 6),
-                ha="center",
-                va="bottom",
+                xytext=xytext,
+                ha=ha,
+                va=va,
                 fontsize=8,
                 color=color,
                 clip_on=False,
+                bbox=dict(
+                    boxstyle="round,pad=0.15",
+                    facecolor="white",
+                    edgecolor="none",
+                    alpha=0.85
+                ),
             )
 
+            last_labeled_x = x_val
+            last_labeled_y = y_num
+            
     if not plotted_values:
         return ""
 
@@ -362,7 +405,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
     month_spans = _extract_month_spans(labels)
 
     if month_spans:
-        ax.set_xlim(-0.5, len(labels) - 0.5)
+        ax.set_xlim(-0.55, len(labels) - 0.5)
 
         month_band_ymin, month_band_ymax = -0.06, 0.0
 
@@ -407,9 +450,6 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
     # 스타일
     ax.set_xticks([])
 
-    if unit:
-        ax.set_ylabel(unit, fontsize=9.5, color=color_map["muted"])
-
     ax.yaxis.set_major_formatter(
         FuncFormatter(
             lambda v, _: f"{int(round(v)):,}" if abs(v - round(v)) < 1e-9 else f"{v:,.2f}"
@@ -427,7 +467,7 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
             color="#2E2E2E",
             fontweight="bold",
             pad=0,
-            y=1.03
+            y=1.08
         )
 
     # 범례
@@ -441,7 +481,6 @@ def render_line_chart(dataset: Dict[str, Any], color_map: Dict[str, Any], compac
         )
 
     # 위치 조정
-    ax.set_position([0.14, 0.20, 0.82, 0.72])
     return _fig_to_svg(fig)
 
 def render_bar_h_chart(

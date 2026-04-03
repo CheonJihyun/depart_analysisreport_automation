@@ -19,7 +19,7 @@ from scripts.processor import (
     has_follower_demographics_data, get_follower_demographics_latest_date, get_demographics_ratio, get_follower_age_gender_known_only, get_age_known_unknown_by_age  # 팔로워 인구통계 추가
 )
 
-def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", avoid_age="", avoid_gender=""):
+def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", avoid_age="", avoid_gender="", currency=""):
     # 1. 기본 설정 및 파라미터
 
     # 실제 집계 마지막 날: date_end가 속한 주의 직전 일요일
@@ -30,6 +30,9 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
     ad_start, ad_end = get_ad_period(target_id, start, end)
     content_start, content_end = get_content_period(target_id, start, end)
 
+    # 통화 설정 추가
+    currency_symbol = "$" if currency == "dollar" else "원"
+
     # 2. 결과 저장용 구조 (핵심)
     final_report = {
         "meta": {
@@ -39,6 +42,11 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             "period_contents": f"{content_start} ~ {content_end}",
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         },
+
+        # 통화 설정
+        "currency": currency,
+        "currency_symbol": currency_symbol,
+
         "summary": {
             "total_ads": get_active_ad_count(target_id, start, end),
             "total_contents": get_total_content_count(target_id, start, end),
@@ -272,7 +280,6 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
         }
 
     # --- [추가] 광고비 & 매출발생 페이지 ---
-
     if has_revenue_data(target_id, start, end):
         print("광고비/매출발생 데이터 생성 중...")
         spend_revenue_weekly_df = get_spend_and_revenue_weekly(target_id, start, end)
@@ -283,7 +290,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             "line",
             "광고비 & 매출발생 (주별)",
             spend_revenue_weekly_df,
-            "원",
+            currency_symbol,
             "week_start",
             ["spend", "revenue"],
             extra_meta={"show_legend": True}
@@ -294,7 +301,7 @@ def run(target_id, fb_ad_account_id, start, end, main_age="", main_gender="", av
             "line",
             "광고비 & 매출발생 (월별)",
             spend_revenue_monthly_df,
-            "원",
+            currency_symbol,
             "month_start",
             ["spend", "revenue"],
             extra_meta={"show_legend": True}
